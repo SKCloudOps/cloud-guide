@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/></filter>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#ff9900"/></marker>
+  </defs>
+  <rect width="900" height="420" rx="12" fill="#f8fafc"/>
+  <rect width="900" height="52" rx="12" fill="#0f1b2d"/>
+  <rect y="40" width="900" height="12" fill="#0f1b2d"/>
+  <text x="450" y="33" fill="#fff" font-size="18" font-weight="700" text-anchor="middle">API Gateway — Authentication &amp; Authorization Methods</text>
+
+  <!-- API Gateway center -->
+  <rect x="370" y="80" width="160" height="300" rx="10" fill="#fff" stroke="#ff9900" stroke-width="2.5" filter="url(#shadow)"/>
+  <rect x="370" y="80" width="160" height="36" rx="10" fill="#ff9900"/>
+  <rect x="370" y="106" width="160" height="10" fill="#ff9900"/>
+  <text x="450" y="104" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">API Gateway</text>
+  <text x="450" y="135" fill="#64748b" font-size="9" text-anchor="middle">REST API or HTTP API</text>
+  <text x="450" y="150" fill="#64748b" font-size="9" text-anchor="middle">Throttling · Caching</text>
+  <text x="450" y="165" fill="#64748b" font-size="9" text-anchor="middle">Request validation</text>
+
+  <!-- Auth Method 1: IAM -->
+  <rect x="20" y="80" width="230" height="70" rx="8" fill="#fff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="20" y="80" width="6" height="70" rx="3" fill="#3b82f6"/>
+  <text x="38" y="100" fill="#1e40af" font-size="12" font-weight="700">🔐 IAM Authorization (SigV4)</text>
+  <text x="38" y="115" fill="#64748b" font-size="10">Caller signs request with AWS creds</text>
+  <text x="38" y="130" fill="#64748b" font-size="10">Best for: service-to-service (internal)</text>
+  <line x1="250" y1="115" x2="370" y2="115" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="275" y="104" width="80" height="18" rx="4" fill="#dbeafe"/>
+  <text x="315" y="117" fill="#1e40af" font-size="9" font-weight="600" text-anchor="middle">Signed request</text>
+
+  <!-- Auth Method 2: Cognito -->
+  <rect x="20" y="165" width="230" height="70" rx="8" fill="#fff" stroke="#8b5cf6" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="20" y="165" width="6" height="70" rx="3" fill="#8b5cf6"/>
+  <text x="38" y="185" fill="#6b21a8" font-size="12" font-weight="700">👤 Cognito User Pools</text>
+  <text x="38" y="200" fill="#64748b" font-size="10">User signs in → gets JWT token</text>
+  <text x="38" y="215" fill="#64748b" font-size="10">Best for: web/mobile apps (external users)</text>
+  <line x1="250" y1="200" x2="370" y2="200" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="280" y="189" width="70" height="18" rx="4" fill="#ede9fe"/>
+  <text x="315" y="202" fill="#6b21a8" font-size="9" font-weight="600" text-anchor="middle">JWT token</text>
+
+  <!-- Auth Method 3: Lambda Authorizer -->
+  <rect x="20" y="250" width="230" height="70" rx="8" fill="#fff" stroke="#f97316" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="20" y="250" width="6" height="70" rx="3" fill="#f97316"/>
+  <text x="38" y="270" fill="#9a3412" font-size="12" font-weight="700">λ Lambda Authorizer</text>
+  <text x="38" y="285" fill="#64748b" font-size="10">Custom Lambda validates token</text>
+  <text x="38" y="300" fill="#64748b" font-size="10">Best for: Okta, Auth0, custom auth</text>
+  <line x1="250" y1="285" x2="370" y2="285" stroke="#f97316" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="270" y="274" width="85" height="18" rx="4" fill="#fed7aa"/>
+  <text x="312" y="287" fill="#9a3412" font-size="9" font-weight="600" text-anchor="middle">Bearer → Policy</text>
+
+  <!-- Auth Method 4: API Keys -->
+  <rect x="20" y="335" width="230" height="70" rx="8" fill="#fff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="20" y="335" width="6" height="70" rx="3" fill="#94a3b8"/>
+  <text x="38" y="355" fill="#475569" font-size="12" font-weight="700">🔑 API Keys + Usage Plans</text>
+  <text x="38" y="370" fill="#64748b" font-size="10">x-api-key header (NOT real auth)</text>
+  <text x="38" y="385" fill="#64748b" font-size="10">Best for: rate limiting, client tracking</text>
+  <line x1="250" y1="370" x2="370" y2="370" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <rect x="272" y="359" width="80" height="18" rx="4" fill="#f1f5f9"/>
+  <text x="312" y="372" fill="#64748b" font-size="9" font-weight="600" text-anchor="middle">x-api-key</text>
+
+  <!-- Backend targets -->
+  <rect x="630" y="90" width="250" height="50" rx="8" fill="#fff" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="755" y="115" fill="#166534" font-size="12" font-weight="600" text-anchor="middle">λ Lambda Functions</text>
+  <text x="755" y="130" fill="#64748b" font-size="9" text-anchor="middle">Business logic (most common)</text>
+  <line x1="530" y1="115" x2="630" y2="115" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="630" y="155" width="250" height="40" rx="8" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="755" y="180" fill="#64748b" font-size="11" text-anchor="middle">HTTP / ECS / ALB / Step Functions</text>
+  <line x1="530" y1="175" x2="630" y2="175" stroke="#cbd5e1" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- Decision box -->
+  <rect x="630" y="230" width="250" height="155" rx="10" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+  <text x="755" y="252" fill="#1e40af" font-size="12" font-weight="700" text-anchor="middle">Decision Guide</text>
+  <line x1="645" y1="260" x2="865" y2="260" stroke="#bfdbfe"/>
+  <text x="645" y="278" fill="#334155" font-size="10">AWS → AWS calls?</text>
+  <text x="830" y="278" fill="#3b82f6" font-size="10" font-weight="600" text-anchor="end">→ IAM</text>
+  <text x="645" y="298" fill="#334155" font-size="10">End-user signup/login?</text>
+  <text x="830" y="298" fill="#8b5cf6" font-size="10" font-weight="600" text-anchor="end">→ Cognito</text>
+  <text x="645" y="318" fill="#334155" font-size="10">3rd-party IdP (Okta)?</text>
+  <text x="830" y="318" fill="#f97316" font-size="10" font-weight="600" text-anchor="end">→ Lambda Auth</text>
+  <text x="645" y="338" fill="#334155" font-size="10">Track/throttle clients?</text>
+  <text x="830" y="338" fill="#64748b" font-size="10" font-weight="600" text-anchor="end">→ API Keys</text>
+  <text x="645" y="358" fill="#334155" font-size="10">Per-resource perms?</text>
+  <text x="830" y="358" fill="#f97316" font-size="10" font-weight="600" text-anchor="end">→ Lambda Auth</text>
+  <text x="645" y="378" fill="#334155" font-size="10">Cheapest option?</text>
+  <text x="830" y="378" fill="#8b5cf6" font-size="10" font-weight="600" text-anchor="end">→ HTTP API + JWT</text>
+</svg>

@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/></filter>
+  </defs>
+  <rect width="900" height="500" rx="12" fill="#f8fafc"/>
+  <!-- Header -->
+  <rect width="900" height="52" rx="12" fill="#0f1b2d"/>
+  <rect y="40" width="900" height="12" fill="#0f1b2d"/>
+  <text x="450" y="33" fill="#fff" font-size="18" font-weight="700" text-anchor="middle">AWS Disaster Recovery Strategies</text>
+
+  <!-- Cost arrow on left -->
+  <line x1="35" y1="90" x2="35" y2="460" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <text x="25" y="280" fill="#64748b" font-size="11" font-weight="600" text-anchor="middle" transform="rotate(-90,25,280)">COST →</text>
+  <defs><marker id="arrowGray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#94a3b8"/></marker></defs>
+
+  <!-- RTO arrow on right -->
+  <line x1="870" y1="460" x2="870" y2="90" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text x="885" y="280" fill="#22c55e" font-size="11" font-weight="600" text-anchor="middle" transform="rotate(90,885,280)">← FASTER RECOVERY</text>
+  <defs><marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#22c55e"/></marker></defs>
+
+  <!-- Strategy 1: Backup & Restore -->
+  <rect x="60" y="75" width="795" height="85" rx="10" fill="#fff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="60" y="75" width="8" height="85" rx="4" fill="#94a3b8"/>
+  <text x="85" y="100" fill="#0f1b2d" font-size="14" font-weight="700">1. Backup &amp; Restore</text>
+  <text x="85" y="118" fill="#64748b" font-size="11">Periodic backups to S3 / EBS snapshots. Rebuild infrastructure from IaC on disaster.</text>
+  <text x="85" y="136" fill="#64748b" font-size="11">Cheapest option. Acceptable when hours of downtime are OK.</text>
+  <!-- Badges -->
+  <rect x="540" y="88" width="72" height="22" rx="11" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="576" y="103" fill="#92400e" font-size="10" font-weight="600" text-anchor="middle">RTO: Hours</text>
+  <rect x="620" y="88" width="72" height="22" rx="11" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="656" y="103" fill="#92400e" font-size="10" font-weight="600" text-anchor="middle">RPO: Hours</text>
+  <rect x="700" y="88" width="50" height="22" rx="11" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="725" y="103" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">💰</text>
+  <!-- Services -->
+  <rect x="540" y="120" width="65" height="20" rx="4" fill="#e0f2fe"/>
+  <text x="572" y="134" fill="#1e40af" font-size="9" font-weight="600" text-anchor="middle">S3</text>
+  <rect x="612" y="120" width="90" height="20" rx="4" fill="#e0f2fe"/>
+  <text x="657" y="134" fill="#1e40af" font-size="9" font-weight="600" text-anchor="middle">EBS Snapshots</text>
+  <rect x="709" y="120" width="90" height="20" rx="4" fill="#e0f2fe"/>
+  <text x="754" y="134" fill="#1e40af" font-size="9" font-weight="600" text-anchor="middle">AWS Backup</text>
+
+  <!-- Strategy 2: Pilot Light -->
+  <rect x="60" y="175" width="795" height="85" rx="10" fill="#fff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="60" y="175" width="8" height="85" rx="4" fill="#3b82f6"/>
+  <text x="85" y="200" fill="#0f1b2d" font-size="14" font-weight="700">2. Pilot Light</text>
+  <text x="85" y="218" fill="#64748b" font-size="11">Core DB runs in DR region (continuously replicated). Compute is OFF. On failover: start EC2, scale up, flip DNS.</text>
+  <text x="85" y="236" fill="#64748b" font-size="11">Good balance of cost and recovery speed. Most common architect answer.</text>
+  <rect x="540" y="188" width="82" height="22" rx="11" fill="#dbeafe" stroke="#3b82f6"/>
+  <text x="581" y="203" fill="#1e40af" font-size="10" font-weight="600" text-anchor="middle">RTO: ~10 min</text>
+  <rect x="630" y="188" width="72" height="22" rx="11" fill="#dbeafe" stroke="#3b82f6"/>
+  <text x="666" y="203" fill="#1e40af" font-size="10" font-weight="600" text-anchor="middle">RPO: Min</text>
+  <rect x="710" y="188" width="50" height="22" rx="11" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="735" y="203" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">💰💰</text>
+  <rect x="540" y="220" width="85" height="20" rx="4" fill="#e0f2fe"/>
+  <text x="582" y="234" fill="#1e40af" font-size="9" font-weight="600" text-anchor="middle">Aurora Global</text>
+  <rect x="632" y="220" width="65" height="20" rx="4" fill="#e0f2fe"/>
+  <text x="664" y="234" fill="#1e40af" font-size="9" font-weight="600" text-anchor="middle">Route 53</text>
+  <rect x="704" y="220" width="95" height="20" rx="4" fill="#e0f2fe"/>
+  <text x="751" y="234" fill="#1e40af" font-size="9" font-weight="600" text-anchor="middle">CloudFormation</text>
+
+  <!-- Strategy 3: Warm Standby -->
+  <rect x="60" y="275" width="795" height="85" rx="10" fill="#fff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="60" y="275" width="8" height="85" rx="4" fill="#f59e0b"/>
+  <text x="85" y="300" fill="#0f1b2d" font-size="14" font-weight="700">3. Warm Standby</text>
+  <text x="85" y="318" fill="#64748b" font-size="11">Scaled-down but fully running copy in DR region. On failover: scale up Auto Scaling groups and switch traffic.</text>
+  <text x="85" y="336" fill="#64748b" font-size="11">Faster recovery than Pilot Light, but higher ongoing cost.</text>
+  <rect x="540" y="288" width="82" height="22" rx="11" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="581" y="303" fill="#92400e" font-size="10" font-weight="600" text-anchor="middle">RTO: Minutes</text>
+  <rect x="630" y="288" width="72" height="22" rx="11" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="666" y="303" fill="#92400e" font-size="10" font-weight="600" text-anchor="middle">RPO: Sec</text>
+  <rect x="710" y="288" width="50" height="22" rx="11" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="735" y="303" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">💰💰💰</text>
+  <rect x="540" y="320" width="75" height="20" rx="4" fill="#e0f2fe"/>
+  <text x="577" y="334" fill="#1e40af" font-size="9" font-weight="600" text-anchor="middle">Auto Scaling</text>
+  <rect x="622" y="320" width="65" height="20" rx="4" fill="#e0f2fe"/>
+  <text x="654" y="334" fill="#1e40af" font-size="9" font-weight="600" text-anchor="middle">Route 53</text>
+  <rect x="694" y="320" width="105" height="20" rx="4" fill="#e0f2fe"/>
+  <text x="746" y="334" fill="#1e40af" font-size="9" font-weight="600" text-anchor="middle">DynamoDB Global</text>
+
+  <!-- Strategy 4: Active-Active -->
+  <rect x="60" y="375" width="795" height="85" rx="10" fill="#fff" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="60" y="375" width="8" height="85" rx="4" fill="#22c55e"/>
+  <text x="85" y="400" fill="#0f1b2d" font-size="14" font-weight="700">4. Multi-Site Active-Active</text>
+  <text x="85" y="418" fill="#64748b" font-size="11">Full production in 2+ regions simultaneously. Route 53 health checks auto-failover. Near-zero RTO and RPO.</text>
+  <text x="85" y="436" fill="#64748b" font-size="11">Most expensive. For mission-critical workloads where any downtime is unacceptable.</text>
+  <rect x="540" y="388" width="82" height="22" rx="11" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="581" y="403" fill="#166534" font-size="10" font-weight="600" text-anchor="middle">RTO: ~Zero</text>
+  <rect x="630" y="388" width="72" height="22" rx="11" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="666" y="403" fill="#166534" font-size="10" font-weight="600" text-anchor="middle">RPO: ~Zero</text>
+  <rect x="710" y="388" width="60" height="22" rx="11" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="740" y="403" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">💰💰💰💰</text>
+  <rect x="540" y="420" width="85" height="20" rx="4" fill="#dcfce7"/>
+  <text x="582" y="434" fill="#166534" font-size="9" font-weight="600" text-anchor="middle">Aurora Global</text>
+  <rect x="632" y="420" width="100" height="20" rx="4" fill="#dcfce7"/>
+  <text x="682" y="434" fill="#166534" font-size="9" font-weight="600" text-anchor="middle">DynamoDB Global</text>
+  <rect x="739" y="420" width="65" height="20" rx="4" fill="#dcfce7"/>
+  <text x="771" y="434" fill="#166534" font-size="9" font-weight="600" text-anchor="middle">Route 53</text>
+
+  <!-- Bottom tip -->
+  <rect x="60" y="472" width="795" height="22" rx="6" fill="#eff6ff"/>
+  <text x="458" y="487" fill="#1e40af" font-size="10" font-weight="600" text-anchor="middle">💡 Interview Tip: Start by asking about RTO/RPO requirements, then map to the appropriate strategy. Pilot Light is the most common architect answer.</text>
+</svg>

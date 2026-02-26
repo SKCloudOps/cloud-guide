@@ -288,6 +288,11 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/aws-global-infrastructure.svg"
+                  alt="AWS Global Infrastructure — Regions, Availability Zones, and Data Centers" loading="lazy" />
+                <figcaption>AWS Global Infrastructure hierarchy</figcaption>
+              </figure>
               <div class="topic-body">
                 <p><strong>How Many Data Centers in One Availability Zone?</strong></p>
                 <div class="answer-block correct">
@@ -373,6 +378,12 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/aws-dr-strategies.svg"
+                  alt="AWS Disaster Recovery Strategies — Backup & Restore, Pilot Light, Warm Standby, Active-Active"
+                  loading="lazy" />
+                <figcaption>DR Strategies comparison — cost vs RTO/RPO</figcaption>
+              </figure>
               <div class="topic-body">
                 <div class="answer-block correct">
                   <h4>Definitions</h4>
@@ -471,9 +482,15 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/aws-well-architected.svg" alt="AWS Well-Architected Framework — 6 Pillars"
+                  loading="lazy" />
+                <figcaption>The 6 pillars of the Well-Architected Framework</figcaption>
+              </figure>
               <div class="topic-body">
                 <p>The Well-Architected Framework is AWS's blueprint for building production-grade systems. Built around
-                  <strong>6 pillars</strong>:</p>
+                  <strong>6 pillars</strong>:
+                </p>
                 <table class="topic-table">
                   <thead>
                     <tr>
@@ -556,6 +573,10 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/aws-migration-7rs.svg" alt="AWS Cloud Migration — The 7 Rs" loading="lazy" />
+                <figcaption>The 7 Rs of Cloud Migration</figcaption>
+              </figure>
               <div class="topic-body">
                 <table class="topic-table">
                   <thead>
@@ -630,7 +651,8 @@
                     the portfolio, then categorize each app using the 7 Rs." Most enterprise migrations start with
                     <strong>Rehost</strong> for speed, then <strong>Replatform/Refactor</strong> post-migration. Always
                     mention <strong>Direct Connect</strong> for network and <strong>DMS with CDC</strong> for
-                    near-zero-downtime database migration.</p>
+                    near-zero-downtime database migration.
+                  </p>
                 </div>
               </div>
             </div>
@@ -651,6 +673,11 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/aws-api-gateway-auth.svg"
+                  alt="API Gateway Authentication Methods — IAM, Cognito, Lambda Authorizer, API Keys" loading="lazy" />
+                <figcaption>API Gateway authentication and authorization flows</figcaption>
+              </figure>
               <div class="topic-body">
                 <table class="topic-table">
                   <thead>
@@ -738,6 +765,12 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/aws-serverless-webapp.svg"
+                  alt="Serverless Web Application Architecture — Route 53, CloudFront, S3, API Gateway, Lambda, DynamoDB"
+                  loading="lazy" />
+                <figcaption>Serverless web application architecture on AWS</figcaption>
+              </figure>
               <div class="topic-body">
                 <h4>Full Architecture (Layer by Layer)</h4>
                 <table class="topic-table">
@@ -815,7 +848,8 @@
                 <h4>Cost Profile</h4>
                 <p>A serverless web app serving <strong>1M requests/month</strong> typically costs
                   <strong>$5-20/month</strong> total (S3 + CloudFront + API Gateway + Lambda + DynamoDB on-demand). The
-                  same on EC2 would cost $50-100+/month minimum.</p>
+                  same on EC2 would cost $50-100+/month minimum.
+                </p>
               </div>
               <div class="key-takeaway">
                 <div class="takeaway-icon">💡</div>
