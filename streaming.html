@@ -4,50 +4,155 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Streaming | Cloud Interview Guide</title>
+  <meta name="description" content="Live streaming and live streaming with ads." />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/devops.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header-inner container">
-      <a class="logo" href="index.html">Cloud Interview Guide</a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="streaming.html">Streaming</a>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+      <div class="sidebar-header">
+        <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-label">Categories</div>
+        <a href="aws.html" class="sidebar-link">AWS <span class="count">7</span></a>
+        <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+        <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+        <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+        <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+        <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+        <a href="streaming.html" class="sidebar-link active">Streaming <span class="count">2</span></a>
+        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
       </nav>
-    </div>
-  </header>
+      <div class="sidebar-footer">
+        <div class="sidebar-progress-label">Study Progress</div>
+        <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progressFill"></div></div>
+        <div class="sidebar-progress-text" id="progressText">0 / 2 reviewed</div>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+    <main class="content-area" role="main">
+      <div class="topbar">
+        <div class="topbar-inner">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+          </div>
+          <div class="difficulty-filters">
+            <button class="filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+            <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+            <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+          </div>
+        </div>
+      </div>
+      <div class="content-split">
+        <aside class="toc-sidebar" id="tocSidebar">
+          <div class="toc-title">In This Section</div>
+          <nav class="toc-nav" id="tocNav">
+            <a href="#live-streaming" class="toc-link" data-section="live-streaming"><span class="toc-dot"></span>Live Streaming</a>
+            <a href="#live-streaming-ads" class="toc-link" data-section="live-streaming-ads"><span class="toc-dot"></span>Live Streaming with Ads</a>
+          </nav>
+          <div class="toc-keyboard-hint">
+            <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+          </div>
+        </aside>
+        <div class="content-panel">
+          <header class="page-hero">
+            <div class="hero-badge" style="background:linear-gradient(135deg,#a855f7, #7c3aed)">Streaming</div>
+            <h1>Streaming Interview Guide</h1>
+            <p class="hero-lead">Live streaming and live streaming with ads.</p>
+            <div class="hero-stats">
+              <div class="stat"><span class="stat-number">2</span><span class="stat-label">Topics</span></div>
+            </div>
+          </header>
 
-  <main class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Home</a>
-      <span aria-hidden="true">/</span>
-      <span>Streaming</span>
-    </nav>
 
-    <header class="page-title">
-      <h1>Streaming</h1>
-      <p>Live streaming and live streaming with ads.</p>
-    </header>
+          <article id="live-streaming" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Live Streaming</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Live Streaming as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>AWS architecture for live video streaming at scale:</p>
+              <h4>Architecture Flow</h4>
+              <ol>
+                <li><strong>Ingest</strong> — Live video source (camera, encoder) sends an RTMP/SRT stream to
+                  <strong>AWS Elemental MediaLive</strong> or <strong>Amazon Interactive Video Service (IVS)</strong>.
+                </li>
+                <li><strong>Process</strong> — MediaLive transcodes the stream into multiple bitrates and formats (ABR —
+                  Adaptive Bitrate) for different devices and network conditions.</li>
+                <li><strong>Package</strong> — <strong>AWS Elemental MediaPackage</strong> packages the transcoded
+                  stream into HLS/DASH formats and provides origin endpoints with DVR/time-shift capabilities.</li>
+                <li><strong>Deliver</strong> — <strong>Amazon CloudFront</strong> (CDN) distributes the live stream
+                  globally to millions of viewers with low latency.</li>
+                <li><strong>Play</strong> — Viewers watch on web, mobile, or smart TV using a video player that
+                  dynamically switches quality based on bandwidth (ABR).</li>
+              </ol>
+              <h4>Amazon IVS (Simpler Option)</h4>
+              <p>For simpler use cases, Amazon IVS provides a fully managed, low-latency live streaming service. Send
+                your stream to IVS, and it handles transcoding, packaging, and delivery automatically — no need to
+                configure MediaLive, MediaPackage, or CloudFront separately.</p>
+            </div>
+            </div>
+          </article>
 
-    <ul class="topic-list">
-      <li><a href="#live-streaming">Live Streaming</a></li>
-      <li><a href="#live-streaming-ads">Live Streaming with Ads</a></li>
-    </ul>
-
-    <section id="live-streaming" class="topic-detail">
-      <h2>Live Streaming</h2>
-      <div class="content">Architecture for live video streaming (e.g. IVS, MediaLive, CDN).</div>
-    </section>
-    <section id="live-streaming-ads" class="topic-detail">
-      <h2>Live Streaming with Ads</h2>
-      <div class="content">Inserting ads into live streams and ad-serving architecture.</div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <p><a href="index.html">Cloud Interview Guide</a></p>
-    </div>
-  </footer>
+          <article id="live-streaming-ads" class="topic-card" data-difficulty="advanced">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>Live Streaming with Ads</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Live Streaming with Ads as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Inserting ads into live streams requires server-side ad insertion (SSAI) to prevent ad blockers and
+                deliver a seamless viewing experience:</p>
+              <h4>Architecture Flow</h4>
+              <ol>
+                <li><strong>Live Stream</strong> — MediaLive transcodes the live video and inserts SCTE-35 ad markers
+                  (cue points) at designated ad break positions.</li>
+                <li><strong>Ad Decision Server</strong> — When a viewer requests the stream, <strong>AWS Elemental
+                    MediaTailor</strong> detects the SCTE-35 markers and calls the Ad Decision Server (ADS) to fetch
+                  personalized ads for that viewer.</li>
+                <li><strong>Server-Side Ad Insertion (SSAI)</strong> — MediaTailor stitches the ad content directly into
+                  the video stream on the server side. The viewer receives a single, seamless stream with ads built in.
+                </li>
+                <li><strong>Delivery</strong> — CloudFront delivers the personalized stream (with stitched ads) to each
+                  viewer.</li>
+              </ol>
+              <h4>Why SSAI Over Client-Side Ads?</h4>
+              <ul>
+                <li><strong>Ad blocker resistant</strong> — Ads are part of the video stream itself, not loaded from a
+                  separate ad server URL.</li>
+                <li><strong>Consistent experience</strong> — No buffering or quality change when transitioning between
+                  content and ads.</li>
+                <li><strong>Personalization</strong> — Each viewer can receive different ads based on demographics,
+                  location, or behavior.</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+  </button>
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+  <script src="js/page.js"></script>
 </body>
 </html>

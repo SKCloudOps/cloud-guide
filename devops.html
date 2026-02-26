@@ -1,68 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DevOps &amp; CI/CD | Cloud Interview Guide</title>
+  <title>DevOps & CI/CD | Cloud Interview Guide</title>
+  <meta name="description"
+    content="Master DevOps & CI/CD for cloud interviews. Covers DevOps phases, CI vs CD, GitOps, Git workflows, and DevSecOps with diagrams and key takeaways." />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/devops.css" />
 </head>
+
 <body>
-  <header class="site-header">
-    <div class="site-header-inner container">
-      <a class="logo" href="index.html">Cloud Interview Guide</a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="devops.html">DevOps</a>
+  <div class="app-layout">
+    <!-- Sidebar matching index.html -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+      <div class="sidebar-header">
+        <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-label">Categories</div>
+        <a href="aws.html" class="sidebar-link">AWS <span class="count">7</span></a>
+        <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+        <a href="devops.html" class="sidebar-link active">DevOps &amp; CI/CD <span class="count">5</span></a>
+        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+        <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+        <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+        <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+        <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
       </nav>
-    </div>
-  </header>
+      <div class="sidebar-footer">
+        <div class="sidebar-progress-label">Study Progress</div>
+        <div class="sidebar-progress-bar">
+          <div class="sidebar-progress-fill" id="progressFill"></div>
+        </div>
+        <div class="sidebar-progress-text" id="progressText">0 / 5 reviewed</div>
+      </div>
+    </aside>
 
-  <main class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Home</a>
-      <span aria-hidden="true">/</span>
-      <span>DevOps &amp; CI/CD</span>
-    </nav>
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
 
-    <header class="page-title">
-      <h1>DevOps &amp; CI/CD</h1>
-      <p>Phases, CI vs CD, GitOps, Git workflow, and DevSecOps.</p>
-    </header>
+    <main class="content-area" role="main">
+      <!-- Top search & filter bar -->
+      <div class="topbar">
+        <div class="topbar-inner">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" />
+            </svg>
+            <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+          </div>
+          <div class="difficulty-filters">
+            <button class="filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+            <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+            <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+          </div>
+        </div>
+      </div>
 
-    <ul class="topic-list">
-      <li><a href="#devops-phases">DevOps Phases</a></li>
-      <li><a href="#ci-cd-cd">CI Vs CD Vs CD</a></li>
-      <li><a href="#gitops">Traditional CICD Vs GitOps</a></li>
-      <li><a href="#git-workflow">Git Workflow</a></li>
-      <li><a href="#devsecops">DevSecOps Workflow</a></li>
-    </ul>
+      <div class="content-split">
+        <!-- Sticky right-side "In this section" nav -->
+        <aside class="toc-sidebar" id="tocSidebar">
+          <div class="toc-title">In This Section</div>
+          <nav class="toc-nav" id="tocNav">
+            <a href="#devops-phases" class="toc-link" data-section="devops-phases">
+              <span class="toc-dot"></span>DevOps Phases
+            </a>
+            <a href="#ci-cd-cd" class="toc-link" data-section="ci-cd-cd">
+              <span class="toc-dot"></span>CI vs CD vs CD
+            </a>
+            <a href="#gitops" class="toc-link" data-section="gitops">
+              <span class="toc-dot"></span>Traditional CICD vs GitOps
+            </a>
+            <a href="#git-workflow" class="toc-link" data-section="git-workflow">
+              <span class="toc-dot"></span>Git Workflow
+            </a>
+            <a href="#devsecops" class="toc-link" data-section="devsecops">
+              <span class="toc-dot"></span>DevSecOps Workflow
+            </a>
+          </nav>
+          <div class="toc-keyboard-hint">
+            <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Enter</kbd> Expand
+          </div>
+        </aside>
 
-    <section id="devops-phases" class="topic-detail">
-      <h2>DevOps Phases</h2>
-      <div class="content">Plan, build, CI/CD, operate, and continuous feedback.</div>
-    </section>
-    <section id="ci-cd-cd" class="topic-detail">
-      <h2>CI Vs CD Vs CD</h2>
-      <div class="content">Continuous Integration, Continuous Delivery, and Continuous Deployment—differences and use cases.</div>
-    </section>
-    <section id="gitops" class="topic-detail">
-      <h2>Traditional CICD Vs GitOps</h2>
-      <div class="content">GitOps: declarative, Git as source of truth, and reconciliation.</div>
-    </section>
-    <section id="git-workflow" class="topic-detail">
-      <h2>Git Workflow</h2>
-      <div class="content">Branching strategies and workflows for teams.</div>
-    </section>
-    <section id="devsecops" class="topic-detail">
-      <h2>DevSecOps Workflow</h2>
-      <div class="content">Integrating security into the DevOps pipeline.</div>
-    </section>
-  </main>
+        <!-- Main content panel -->
+        <div class="content-panel">
+          <header class="page-hero">
+            <div class="hero-badge">DevOps &amp; CI/CD</div>
+            <h1>DevOps &amp; CI/CD Interview Guide</h1>
+            <p class="hero-lead">Master DevOps phases, CI vs CD, GitOps, Git branching strategies, and DevSecOps — with
+              diagrams, key takeaways, and interview tips.</p>
+            <div class="hero-stats">
+              <div class="stat"><span class="stat-number">5</span><span class="stat-label">Topics</span></div>
+              <div class="stat"><span class="stat-number">~12</span><span class="stat-label">Min Read</span></div>
+              <div class="stat"><span class="stat-number">5</span><span class="stat-label">Diagrams</span></div>
+            </div>
+          </header>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p><a href="index.html">Cloud Interview Guide</a></p>
-    </div>
-  </footer>
+          <!-- Hero overview diagram -->
+          <figure class="hero-diagram">
+            <img src="assets/devops-architecture.png" alt="DevOps and CI/CD Enterprise Overview Diagram" />
+            <figcaption>DevOps &amp; CI/CD — Enterprise Overview</figcaption>
+          </figure>
+
+          <!-- ====== TOPIC 1: DevOps Phases ====== -->
+          <article id="devops-phases" class="topic-card" data-difficulty="beginner"
+            data-keywords="devops phases plan build ci cd operate feedback author source test deploy monitor">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+                <span class="read-time">~2 min</span>
+              </div>
+              <h2>DevOps Phases</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark DevOps Phases as reviewed">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+              </button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/devops-phases.png" alt="DevOps Lifecycle Phases Diagram" />
+              </figure>
+              <div class="topic-body">
+                <p>DevOps CI/CD phases with recommended tools:</p>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Phase</th>
+                      <th>Description</th>
+                      <th>Tools</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Author</strong></td>
+                      <td>Write code</td>
+                      <td>VS Code</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Source</strong></td>
+                      <td>Check-in source code</td>
+                      <td>AWS CodeCommit, GitHub</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Build</strong></td>
+                      <td>Compile code, create artifacts</td>
+                      <td>AWS CodeBuild, Jenkins</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Test</strong></td>
+                      <td>Unit, integration, load, UI, penetration testing</td>
+                      <td>AWS CodeBuild, Jenkins</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Deploy</strong></td>
+                      <td>Deploy artifacts</td>
+                      <td>Jenkins, AWS CodeDeploy</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Monitor</strong></td>
+                      <td>Logs, metrics, and traces</td>
+                      <td>Amazon CloudWatch, AWS X-Ray</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="key-takeaway">
+                <div class="takeaway-icon">💡</div>
+                <div>
+                  <strong>Key Takeaway for Interviews</strong>
+                  <p>DevOps is an infinite loop: Plan → Build → CI → CD → Operate → Monitor → Feedback → Plan. Know each
+                    phase and at least one tool per phase.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== TOPIC 2: CI vs CD vs CD ====== -->
+          <article id="ci-cd-cd" class="topic-card" data-difficulty="beginner"
+            data-keywords="continuous integration delivery deployment ci cd manual approval automated">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+                <span class="read-time">~2 min</span>
+              </div>
+              <h2>CI vs CD vs Continuous Deployment</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark CI vs CD as reviewed"><svg width="20"
+                  height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/devops-ci-cd.png" alt="Continuous Integration vs Delivery vs Deployment Diagram" />
+              </figure>
+              <div class="topic-body">
+                <ul>
+                  <li><strong>Continuous Integration (CI)</strong> — Author → Source → Build → Test. Developers
+                    frequently merge code changes, which are automatically built and tested.</li>
+                  <li><strong>Continuous Deployment (CD)</strong> — Extends CI by automatically deploying every change
+                    that passes all stages to production.</li>
+                  <li><strong>Continuous Delivery (CD)</strong> — Similar to Continuous Deployment, but includes a
+                    <strong>Manual Approval</strong> step before deploying to production.
+                  </li>
+                </ul>
+              </div>
+              <div class="key-takeaway">
+                <div class="takeaway-icon">💡</div>
+                <div>
+                  <strong>Key Takeaway for Interviews</strong>
+                  <p>The key difference: Continuous <em>Delivery</em> requires manual approval before production;
+                    Continuous <em>Deployment</em> deploys automatically. Both extend CI.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== TOPIC 3: Traditional CICD vs GitOps ====== -->
+          <article id="gitops" class="topic-card" data-difficulty="intermediate"
+            data-keywords="gitops argocd push pull based traditional cicd git source of truth reconciliation drift detection">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+                <span class="read-time">~3 min</span>
+              </div>
+              <h2>Traditional CICD vs GitOps</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark GitOps as reviewed"><svg width="20"
+                  height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/devops-gitops.png" alt="Traditional vs GitOps Pipeline Diagram" />
+              </figure>
+              <div class="topic-body">
+                <h4>Traditional DevOps (Push-based)</h4>
+                <ol>
+                  <li>Developers check in Code, Dockerfile, and manifest YAMLs to an application repository. CI tools
+                    (e.g. Jenkins) build the container image and save it in a container registry such as Amazon ECR.
+                  </li>
+                  <li>CD tools (e.g. Jenkins) update the deployment manifest files with the tag of the container image.
+                  </li>
+                  <li>CD tools execute the command to deploy the manifest files into the cluster, deploying the newly
+                    built container in Amazon EKS.</li>
+                </ol>
+                <p><strong>Conclusion:</strong> Traditional CI/CD is a push-based model. If a sneaky SRE changes the
+                  YAML file directly in the cluster, the resources running in the cluster will deviate from what's
+                  defined in Git.</p>
+                <h4>GitOps (Pull-based)</h4>
+                <ol type="A">
+                  <li>Developers check in Code, Dockerfile, and manifest YAMLs. CI tools build the container image and
+                    save it in Amazon ECR.</li>
+                  <li>CD tools update the deployment manifest files with the tag of the container image.</li>
+                  <li>With GitOps, Git becomes the single source of truth. You install a GitOps tool like Argo inside
+                    the cluster and point to a Git repo. It keeps checking if there is a new file, or if the files in
+                    the cluster drift from the ones in Git. As soon as YAML is updated, ArgoCD detects the drift and
+                    pulls in the updated YAML file to deploy the new container.</li>
+                </ol>
+                <p><strong>Conclusion:</strong> GitOps does NOT replace DevOps — it only replaces part of the CD
+                  process. If the sneaky SRE directly changes the YAML in the cluster, ArgoCD will detect the mismatch,
+                  pull in the file from Git, and bring Kubernetes resources to its intended state.</p>
+              </div>
+              <div class="key-takeaway">
+                <div class="takeaway-icon">💡</div>
+                <div>
+                  <strong>Key Takeaway for Interviews</strong>
+                  <p>GitOps = Git as single source of truth + pull-based reconciliation. It does NOT replace CI — only
+                    the CD part. Know ArgoCD and Flux by name.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== TOPIC 4: Git Workflow ====== -->
+          <article id="git-workflow" class="topic-card" data-difficulty="intermediate"
+            data-keywords="git flow trunk based development github flow branching strategy feature release hotfix main develop">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+                <span class="read-time">~3 min</span>
+              </div>
+              <h2>Git Workflow Strategies</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Git Workflow as reviewed"><svg
+                  width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/devops-git-workflow.png" alt="Git Branching Strategies and Workflow Diagram" />
+              </figure>
+              <div class="topic-body">
+                <h4>Git Flow</h4>
+                <ul>
+                  <li><strong>main</strong> — Production-ready code. Only receives merges from release or hotfix
+                    branches.</li>
+                  <li><strong>develop</strong> — Integration branch for features. All feature branches merge here.</li>
+                  <li><strong>feature/*</strong> — One branch per feature. Created from develop, merged back into
+                    develop.</li>
+                  <li><strong>release/*</strong> — Stabilization branch. Created from develop when ready for release,
+                    merged into both main and develop.</li>
+                  <li><strong>hotfix/*</strong> — Emergency fixes off main. Merged back into both main and develop.</li>
+                </ul>
+                <h4>Trunk-Based Development</h4>
+                <ul>
+                  <li>All developers commit directly to <strong>main</strong> (or via very short-lived feature
+                    branches).</li>
+                  <li>Relies on feature flags to hide incomplete features in production.</li>
+                  <li>Preferred for CI/CD-heavy teams — enables continuous deployment with small, frequent releases.
+                  </li>
+                </ul>
+                <h4>GitHub Flow (Simplified)</h4>
+                <ul>
+                  <li>Single main branch + feature branches. Pull request → code review → merge to main → deploy.</li>
+                  <li>Best for smaller teams and SaaS products with continuous delivery.</li>
+                </ul>
+              </div>
+              <div class="key-takeaway">
+                <div class="takeaway-icon">💡</div>
+                <div>
+                  <strong>Key Takeaway for Interviews</strong>
+                  <p>Know all three strategies. Git Flow = complex releases. Trunk-Based = CI/CD + feature flags. GitHub
+                    Flow = simple PR-based. Most interviewers ask "which would you choose and why?"</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== TOPIC 5: DevSecOps ====== -->
+          <article id="devsecops" class="topic-card" data-difficulty="advanced"
+            data-keywords="devsecops security shift left sast dast secrets scanning trivy sonarqube guardduty waf checkov">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+                <span class="read-time">~2 min</span>
+              </div>
+              <h2>DevSecOps Workflow</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark DevSecOps as reviewed"><svg
+                  width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/devops-devsecops.png" alt="DevSecOps Security Integrated Pipeline Diagram" />
+              </figure>
+              <div class="topic-body">
+                <p>DevSecOps integrates security into every phase of the CI/CD pipeline rather than treating it as a
+                  final gate:</p>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Phase</th>
+                      <th>Security Activity</th>
+                      <th>Tools</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Code</strong></td>
+                      <td>Static Application Security Testing (SAST), secret scanning</td>
+                      <td>SonarQube, git-secrets, Snyk</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Build</strong></td>
+                      <td>Dependency vulnerability scanning, container image scanning</td>
+                      <td>Trivy, ECR Scan, Snyk</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Test</strong></td>
+                      <td>Dynamic Application Security Testing (DAST), penetration testing</td>
+                      <td>OWASP ZAP, Burp Suite</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Deploy</strong></td>
+                      <td>Infrastructure as Code scanning, compliance checks</td>
+                      <td>Checkov, tfsec, AWS Config</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Runtime</strong></td>
+                      <td>Threat detection, anomaly monitoring, WAF</td>
+                      <td>GuardDuty, AWS WAF, Shield</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <h4>Key Principles</h4>
+                <ul>
+                  <li><strong>Shift Left</strong> — Find and fix vulnerabilities as early as possible (in code, not in
+                    production).</li>
+                  <li><strong>Automate Everything</strong> — Security checks run automatically in the pipeline; no
+                    manual gates.</li>
+                  <li><strong>Shared Responsibility</strong> — Security is everyone's job, not just the security team's.
+                  </li>
+                  <li><strong>Continuous Monitoring</strong> — Runtime protection with GuardDuty, CloudTrail, and
+                    automated remediation.</li>
+                </ul>
+              </div>
+              <div class="key-takeaway">
+                <div class="takeaway-icon">💡</div>
+                <div>
+                  <strong>Key Takeaway for Interviews</strong>
+                  <p>"Shift Left" is the buzzword interviewers love. Know SAST vs DAST, and name at least one tool per
+                    pipeline phase. DevSecOps ≠ a separate team — it's security baked into DevOps.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div><!-- .content-panel -->
+      </div><!-- .content-split -->
+    </main>
+  </div>
+
+  <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18" />
+    </svg>
+  </button>
+
+  <!-- Scroll to top -->
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 15l-6-6-6 6" />
+    </svg>
+  </button>
+
+  <script src="js/page.js"></script>
 </body>
+
 </html>

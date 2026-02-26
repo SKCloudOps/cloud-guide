@@ -1,0 +1,351 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 800" width="100%" height="auto"
+  style="background:#F1F5F9; border-radius:12px; font-family:'Segoe UI',Roboto,Helvetica,sans-serif;">
+
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="headerGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1E3A5F"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="laneRedGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FEF2F2"/>
+      <stop offset="100%" stop-color="#FEE2E2"/>
+    </linearGradient>
+    <linearGradient id="laneGreenGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F0FDF4"/>
+      <stop offset="100%" stop-color="#DCFCE7"/>
+    </linearGradient>
+
+    <!-- Drop shadow filter -->
+    <filter id="cardShadow" x="-10%" y="-10%" width="130%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0F172A" flood-opacity="0.12"/>
+    </filter>
+
+    <!-- Arrow markers -->
+    <marker id="arrowGray" viewBox="0 0 10 10" refX="9" refY="5"
+      markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="9" refY="5"
+      markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#DC2626"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5"
+      markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#16A34A"/>
+    </marker>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5"
+      markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563EB"/>
+    </marker>
+
+    <!-- Clip path for header rounded corners -->
+    <clipPath id="headerClip">
+      <rect x="0" y="0" width="1100" height="64" rx="12"/>
+    </clipPath>
+  </defs>
+
+  <!-- ===== BACKGROUND ===== -->
+  <rect x="0" y="0" width="1100" height="800" rx="12" fill="#F1F5F9"/>
+
+  <!-- ===== TITLE HEADER ===== -->
+  <rect x="0" y="0" width="1100" height="64" rx="12" fill="url(#headerGrad)" clip-path="url(#headerClip)"/>
+  <text x="550" y="39" font-size="22" font-weight="700" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.5">
+    Traditional CI/CD (Push-Based) vs GitOps (Pull-Based) — Enterprise Architecture
+  </text>
+
+  <!-- ===================================================================
+       SECTION 1 — TRADITIONAL CI/CD (PUSH-BASED)
+       =================================================================== -->
+
+  <!-- Lane background -->
+  <rect x="20" y="80" width="1060" height="320" rx="10" fill="url(#laneRedGrad)" stroke="#FECACA" stroke-width="2"/>
+
+  <!-- Lane label -->
+  <rect x="20" y="80" width="1060" height="36" rx="10" fill="#DC2626"/>
+  <rect x="20" y="96" width="1060" height="20" fill="#DC2626"/><!-- flatten bottom corners of label -->
+  <text x="550" y="104" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">
+    ❶  TRADITIONAL CI/CD — Push-Based Pipeline
+  </text>
+  <!-- Sub-label: Risks -->
+  <text x="900" y="104" font-size="12" fill="#FCA5A5" text-anchor="middle">
+    ⚠ Manual access · Drift risk · No audit trail
+  </text>
+
+  <!-- Step boxes — Traditional -->
+  <!-- 1. Developer -->
+  <g filter="url(#cardShadow)">
+    <rect x="38" y="135" width="118" height="80" rx="8" fill="#FFFFFF" stroke="#F87171" stroke-width="2"/>
+    <text x="97" y="161" font-size="13" font-weight="700" fill="#1E293B" text-anchor="middle">👨‍💻 Developer</text>
+    <text x="97" y="179" font-size="11" fill="#64748B" text-anchor="middle">Code Commit</text>
+    <text x="97" y="194" font-size="11" fill="#64748B" text-anchor="middle">+ PR / Review</text>
+  </g>
+
+  <!-- Arrow 1→2 -->
+  <path d="M 157 175 L 185 175" stroke="#64748B" stroke-width="2" fill="none" marker-end="url(#arrowGray)"/>
+
+  <!-- 2. Git Repo (App + Manifest) -->
+  <g filter="url(#cardShadow)">
+    <rect x="186" y="135" width="118" height="80" rx="8" fill="#FFFFFF" stroke="#3B82F6" stroke-width="2"/>
+    <text x="245" y="157" font-size="13" font-weight="700" fill="#1E293B" text-anchor="middle">📦 Git Repo</text>
+    <text x="245" y="173" font-size="11" fill="#64748B" text-anchor="middle">App Code</text>
+    <text x="245" y="188" font-size="11" fill="#64748B" text-anchor="middle">+ K8s Manifests</text>
+  </g>
+
+  <!-- Arrow 2→3 -->
+  <path d="M 305 175 L 333 175" stroke="#64748B" stroke-width="2" fill="none" marker-end="url(#arrowGray)"/>
+
+  <!-- 3. CI Pipeline -->
+  <g filter="url(#cardShadow)">
+    <rect x="334" y="135" width="128" height="80" rx="8" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+    <text x="398" y="157" font-size="13" font-weight="700" fill="#1E293B" text-anchor="middle">🔧 CI Pipeline</text>
+    <text x="398" y="173" font-size="11" fill="#64748B" text-anchor="middle">Jenkins / GitHub</text>
+    <text x="398" y="188" font-size="11" fill="#64748B" text-anchor="middle">Actions / GitLab CI</text>
+  </g>
+
+  <!-- Arrow 3→4 -->
+  <path d="M 463 175 L 491 175" stroke="#64748B" stroke-width="2" fill="none" marker-end="url(#arrowGray)"/>
+
+  <!-- 4. Build & Test -->
+  <g filter="url(#cardShadow)">
+    <rect x="492" y="135" width="118" height="80" rx="8" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+    <text x="551" y="157" font-size="13" font-weight="700" fill="#1E293B" text-anchor="middle">🧪 Build &amp; Test</text>
+    <text x="551" y="173" font-size="11" fill="#64748B" text-anchor="middle">Compile · Unit</text>
+    <text x="551" y="188" font-size="11" fill="#64748B" text-anchor="middle">SAST · Container</text>
+  </g>
+
+  <!-- Arrow 4→5 -->
+  <path d="M 611 175 L 639 175" stroke="#64748B" stroke-width="2" fill="none" marker-end="url(#arrowGray)"/>
+
+  <!-- 5. Artifact Registry -->
+  <g filter="url(#cardShadow)">
+    <rect x="640" y="135" width="118" height="80" rx="8" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="2"/>
+    <text x="699" y="157" font-size="13" font-weight="700" fill="#1E293B" text-anchor="middle">📂 Registry</text>
+    <text x="699" y="173" font-size="11" fill="#64748B" text-anchor="middle">ECR / DockerHub</text>
+    <text x="699" y="188" font-size="11" fill="#64748B" text-anchor="middle">Versioned Image</text>
+  </g>
+
+  <!-- Arrow 5→6  (PUSH — highlighted red) -->
+  <path d="M 759 175 L 787 175" stroke="#DC2626" stroke-width="2.5" fill="none" marker-end="url(#arrowRed)"/>
+  <text x="773" y="163" font-size="10" font-weight="700" fill="#DC2626" text-anchor="middle">PUSH</text>
+
+  <!-- 6. CD Pipeline pushes to cluster -->
+  <g filter="url(#cardShadow)">
+    <rect x="788" y="135" width="128" height="80" rx="8" fill="#FFFFFF" stroke="#DC2626" stroke-width="2"/>
+    <text x="852" y="157" font-size="13" font-weight="700" fill="#DC2626" text-anchor="middle">🚀 CD / Deploy</text>
+    <text x="852" y="173" font-size="11" fill="#64748B" text-anchor="middle">kubectl apply /</text>
+    <text x="852" y="188" font-size="11" fill="#64748B" text-anchor="middle">Helm upgrade</text>
+  </g>
+
+  <!-- Arrow 6→7 (PUSH to cluster — red) -->
+  <path d="M 917 175 L 945 175" stroke="#DC2626" stroke-width="2.5" fill="none" marker-end="url(#arrowRed)"/>
+  <text x="930" y="163" font-size="10" font-weight="700" fill="#DC2626" text-anchor="middle">PUSH</text>
+
+  <!-- 7. EKS / Cluster -->
+  <g filter="url(#cardShadow)">
+    <rect x="946" y="125" width="116" height="100" rx="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+    <text x="1004" y="149" font-size="13" font-weight="700" fill="#1E293B" text-anchor="middle">☸ EKS Cluster</text>
+    <text x="1004" y="166" font-size="11" fill="#64748B" text-anchor="middle">Dev / Staging</text>
+    <text x="1004" y="181" font-size="11" fill="#64748B" text-anchor="middle">Production</text>
+    <text x="1004" y="196" font-size="10" fill="#9333EA" text-anchor="middle">Running Pods</text>
+  </g>
+
+  <!-- ── Risks annotation row ── -->
+  <!-- Risk 1: No drift detection -->
+  <rect x="38" y="245" width="160" height="40" rx="6" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1.5"/>
+  <text x="118" y="262" font-size="11" font-weight="600" fill="#991B1B" text-anchor="middle">❌ No Drift Detection</text>
+  <text x="118" y="277" font-size="10" fill="#7F1D1D" text-anchor="middle">Live state ≠ Git state</text>
+
+  <!-- Risk 2: Manual cluster creds -->
+  <rect x="220" y="245" width="160" height="40" rx="6" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1.5"/>
+  <text x="300" y="262" font-size="11" font-weight="600" fill="#991B1B" text-anchor="middle">❌ Cluster Credentials</text>
+  <text x="300" y="277" font-size="10" fill="#7F1D1D" text-anchor="middle">CI pipeline has kubeconfig</text>
+
+  <!-- Risk 3: Rollback is manual -->
+  <rect x="402" y="245" width="160" height="40" rx="6" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1.5"/>
+  <text x="482" y="262" font-size="11" font-weight="600" fill="#991B1B" text-anchor="middle">❌ Manual Rollback</text>
+  <text x="482" y="277" font-size="10" fill="#7F1D1D" text-anchor="middle">Re-run pipeline to revert</text>
+
+  <!-- Risk 4: Not auditable  -->
+  <rect x="584" y="245" width="160" height="40" rx="6" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1.5"/>
+  <text x="664" y="262" font-size="11" font-weight="600" fill="#991B1B" text-anchor="middle">❌ Poor Auditability</text>
+  <text x="664" y="277" font-size="10" fill="#7F1D1D" text-anchor="middle">No single source of truth</text>
+
+  <!-- Risk 5: Env drift -->
+  <rect x="766" y="245" width="160" height="40" rx="6" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1.5"/>
+  <text x="846" y="262" font-size="11" font-weight="600" fill="#991B1B" text-anchor="middle">❌ Environment Drift</text>
+  <text x="846" y="277" font-size="10" fill="#7F1D1D" text-anchor="middle">Dev ≠ Staging ≠ Prod</text>
+
+  <!-- Divider row annotation label -->
+  <text x="30" y="310" font-size="11" font-weight="700" fill="#DC2626">❌ Problems:</text>
+
+  <!-- Phase labels below boxes -->
+  <text x="97"   y="132" font-size="10" fill="#94A3B8" text-anchor="middle">SOURCE</text>
+  <text x="245"  y="132" font-size="10" fill="#94A3B8" text-anchor="middle">VERSION CONTROL</text>
+  <text x="398"  y="132" font-size="10" fill="#94A3B8" text-anchor="middle">CI TOOL</text>
+  <text x="551"  y="132" font-size="10" fill="#94A3B8" text-anchor="middle">BUILD &amp; TEST</text>
+  <text x="699"  y="132" font-size="10" fill="#94A3B8" text-anchor="middle">ARTIFACT</text>
+  <text x="852"  y="132" font-size="10" fill="#94A3B8" text-anchor="middle">CD / DEPLOY</text>
+  <text x="1004" y="122" font-size="10" fill="#94A3B8" text-anchor="middle">RUNTIME</text>
+
+  <!-- ===================================================================
+       SECTION 2 — GITOPS (PULL-BASED)
+       =================================================================== -->
+
+  <!-- Lane background -->
+  <rect x="20" y="420" width="1060" height="360" rx="10" fill="url(#laneGreenGrad)" stroke="#BBF7D0" stroke-width="2"/>
+
+  <!-- Lane label -->
+  <rect x="20" y="420" width="1060" height="36" rx="10" fill="#16A34A"/>
+  <rect x="20" y="436" width="1060" height="20" fill="#16A34A"/>
+  <text x="550" y="444" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">
+    ❷  GITOPS — Pull-Based, Reconciliation-Driven Pipeline
+  </text>
+  <text x="900" y="444" font-size="12" fill="#BBF7D0" text-anchor="middle">
+    ✅ Declarative · Auditable · Self-healing
+  </text>
+
+  <!-- ── Step 1: Developer (GitOps) ── -->
+  <g filter="url(#cardShadow)">
+    <rect x="38" y="476" width="118" height="80" rx="8" fill="#FFFFFF" stroke="#4ADE80" stroke-width="2"/>
+    <text x="97" y="499" font-size="13" font-weight="700" fill="#1E293B" text-anchor="middle">👨‍💻 Developer</text>
+    <text x="97" y="516" font-size="11" fill="#64748B" text-anchor="middle">PR to App Repo</text>
+    <text x="97" y="531" font-size="11" fill="#64748B" text-anchor="middle">Code Review</text>
+  </g>
+
+  <!-- Arrow 1→2 -->
+  <path d="M 157 516 L 185 516" stroke="#64748B" stroke-width="2" fill="none" marker-end="url(#arrowGray)"/>
+
+  <!-- ── Step 2: App Git Repo ── -->
+  <g filter="url(#cardShadow)">
+    <rect x="186" y="476" width="118" height="80" rx="8" fill="#FFFFFF" stroke="#3B82F6" stroke-width="2"/>
+    <text x="245" y="498" font-size="13" font-weight="700" fill="#1E293B" text-anchor="middle">📦 App Repo</text>
+    <text x="245" y="515" font-size="11" fill="#64748B" text-anchor="middle">Source Code</text>
+    <text x="245" y="530" font-size="11" fill="#64748B" text-anchor="middle">Only (no manifests)</text>
+  </g>
+
+  <!-- Arrow 2→3 -->
+  <path d="M 305 516 L 333 516" stroke="#64748B" stroke-width="2" fill="none" marker-end="url(#arrowGray)"/>
+
+  <!-- ── Step 3: CI Pipeline (build only) ── -->
+  <g filter="url(#cardShadow)">
+    <rect x="334" y="476" width="128" height="80" rx="8" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+    <text x="398" y="498" font-size="13" font-weight="700" fill="#1E293B" text-anchor="middle">🔧 CI Pipeline</text>
+    <text x="398" y="515" font-size="11" fill="#64748B" text-anchor="middle">Build · Test · SAST</text>
+    <text x="398" y="530" font-size="11" fill="#64748B" text-anchor="middle">Push Image Only</text>
+  </g>
+
+  <!-- Arrow 3→4 -->
+  <path d="M 463 516 L 491 516" stroke="#64748B" stroke-width="2" fill="none" marker-end="url(#arrowGray)"/>
+
+  <!-- ── Step 4: Container Registry ── -->
+  <g filter="url(#cardShadow)">
+    <rect x="492" y="476" width="118" height="80" rx="8" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="2"/>
+    <text x="551" y="498" font-size="13" font-weight="700" fill="#1E293B" text-anchor="middle">📂 Registry</text>
+    <text x="551" y="515" font-size="11" fill="#64748B" text-anchor="middle">ECR / GCR</text>
+    <text x="551" y="530" font-size="11" fill="#64748B" text-anchor="middle">Image:v2.1.0</text>
+  </g>
+
+  <!-- CI updates manifest repo (curved arrow going to config repo) -->
+  <!-- Arrow from CI Pipeline DOWN, then right to Config Repo -->
+  <path d="M 398 557 L 398 600 L 250 600 L 250 637" stroke="#2563EB" stroke-width="2"
+        stroke-dasharray="6,3" fill="none" marker-end="url(#arrowBlue)"/>
+  <text x="320" y="597" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">Updates Manifest (image tag)</text>
+
+  <!-- ── Config/Manifest Git Repo (separate) ── -->
+  <g filter="url(#cardShadow)">
+    <rect x="186" y="638" width="128" height="80" rx="8" fill="#FFFFFF" stroke="#6366F1" stroke-width="2.5"/>
+    <text x="250" y="660" font-size="13" font-weight="700" fill="#1E293B" text-anchor="middle">📋 Config Repo</text>
+    <text x="250" y="677" font-size="11" fill="#64748B" text-anchor="middle">K8s Manifests</text>
+    <text x="250" y="692" font-size="11" fill="#64748B" text-anchor="middle">Helm / Kustomize</text>
+    <text x="250" y="706" font-size="10" font-weight="700" fill="#6366F1" text-anchor="middle">⭐ Source of Truth</text>
+  </g>
+
+  <!-- GitOps Operator PULLS from Config Repo -->
+  <path d="M 315 678 L 700 678 L 700 634" stroke="#16A34A" stroke-width="2.5"
+        stroke-dasharray="7,4" fill="none" marker-end="url(#arrowGreen)"/>
+  <text x="510" y="673" font-size="11" font-weight="700" fill="#16A34A" text-anchor="middle">PULL — Watches &amp; Reconciles</text>
+
+  <!-- ── EKS Cluster with ArgoCD ── -->
+  <!-- Cluster boundary -->
+  <rect x="630" y="476" width="430" height="264" rx="10" fill="#F8FAFC" stroke="#A7F3D0" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="845" y="497" font-size="13" font-weight="700" fill="#16A34A" text-anchor="middle">☸ Amazon EKS Cluster</text>
+
+  <!-- ArgoCD -->
+  <g filter="url(#cardShadow)">
+    <rect x="648" y="508" width="140" height="80" rx="8" fill="#FFFFFF" stroke="#EC4899" stroke-width="2"/>
+    <text x="718" y="532" font-size="13" font-weight="700" fill="#1E293B" text-anchor="middle">🔄 ArgoCD</text>
+    <text x="718" y="549" font-size="11" fill="#64748B" text-anchor="middle">GitOps Operator</text>
+    <text x="718" y="564" font-size="11" fill="#64748B" text-anchor="middle">Drift Detection</text>
+    <text x="718" y="579" font-size="10" font-weight="700" fill="#EC4899" text-anchor="middle">Auto-Reconcile</text>
+  </g>
+
+  <!-- ArgoCD → Pods  -->
+  <path d="M 788 548 L 820 548" stroke="#64748B" stroke-width="2" fill="none" marker-end="url(#arrowGray)"/>
+
+  <!-- Pods -->
+  <g filter="url(#cardShadow)">
+    <rect x="820" y="508" width="110" height="80" rx="8" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+    <text x="875" y="532" font-size="13" font-weight="700" fill="#1D4ED8" text-anchor="middle">🟦 Pods</text>
+    <text x="875" y="549" font-size="11" fill="#64748B" text-anchor="middle">App v2.1.0</text>
+    <text x="875" y="564" font-size="11" fill="#64748B" text-anchor="middle">Desired State</text>
+    <text x="875" y="579" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">= Git State</text>
+  </g>
+
+  <!-- Self-heal arrow (cluster → ArgoCD loop) -->
+  <path d="M 875 508 L 875 490 L 718 490 L 718 508" stroke="#EC4899" stroke-width="1.5"
+        stroke-dasharray="4,3" fill="none" marker-end="url(#arrowGray)"/>
+  <text x="797" y="487" font-size="10" font-weight="600" fill="#BE185D" text-anchor="middle">Self-Heal if Drift Detected</text>
+
+  <!-- Rollback note -->
+  <g filter="url(#cardShadow)">
+    <rect x="948" y="508" width="100" height="80" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+    <text x="998" y="530" font-size="11" font-weight="700" fill="#C2410C" text-anchor="middle">⏪ Rollback</text>
+    <text x="998" y="546" font-size="10" fill="#64748B" text-anchor="middle">git revert</text>
+    <text x="998" y="561" font-size="10" fill="#64748B" text-anchor="middle">Auto-sync</text>
+    <text x="998" y="576" font-size="10" font-weight="700" fill="#EA580C" text-anchor="middle">1-command</text>
+  </g>
+
+  <!-- Benefits row -->
+  <rect x="38" y="638" width="130" height="80" rx="6" fill="#DCFCE7" stroke="#86EFAC" stroke-width="1.5"/>
+  <text x="103" y="660" font-size="11" font-weight="700" fill="#15803D" text-anchor="middle">✅ Separation</text>
+  <text x="103" y="676" font-size="10" fill="#166534" text-anchor="middle">App Repo ≠ Config</text>
+  <text x="103" y="691" font-size="10" fill="#166534" text-anchor="middle">Repo — clean</text>
+  <text x="103" y="706" font-size="10" fill="#166534" text-anchor="middle">boundaries</text>
+
+  <!-- Benefit 2 col header -->
+  <rect x="380" y="638" width="130" height="80" rx="6" fill="#DCFCE7" stroke="#86EFAC" stroke-width="1.5"/>
+  <text x="445" y="660" font-size="11" font-weight="700" fill="#15803D" text-anchor="middle">✅ No Secrets</text>
+  <text x="445" y="676" font-size="10" fill="#166534" text-anchor="middle">Cluster creds stay</text>
+  <text x="445" y="691" font-size="10" fill="#166534" text-anchor="middle">inside cluster</text>
+  <text x="445" y="706" font-size="10" fill="#166534" text-anchor="middle">CI has no kubeconfig</text>
+
+  <!-- Benefit 3 -->
+  <rect x="530" y="638" width="80" height="80" rx="6" fill="#DCFCE7" stroke="#86EFAC" stroke-width="1.5"/>
+  <text x="570" y="660" font-size="11" font-weight="700" fill="#15803D" text-anchor="middle">✅ Audit</text>
+  <text x="570" y="676" font-size="10" fill="#166534" text-anchor="middle">Every deploy</text>
+  <text x="570" y="691" font-size="10" fill="#166534" text-anchor="middle">is a git commit</text>
+  <text x="570" y="706" font-size="10" fill="#166534" text-anchor="middle">Full history</text>
+
+  <!-- Benefit 4 inside cluster area -->
+  <rect x="648" y="618" width="80" height="80" rx="6" fill="#DCFCE7" stroke="#86EFAC" stroke-width="1.5"/>
+  <text x="688" y="638" font-size="11" font-weight="700" fill="#15803D" text-anchor="middle">✅ Self</text>
+  <text x="688" y="653" font-size="10" fill="#166534" text-anchor="middle">Healing</text>
+  <text x="688" y="668" font-size="10" fill="#166534" text-anchor="middle">ArgoCD</text>
+  <text x="688" y="683" font-size="10" fill="#166534" text-anchor="middle">detects &amp;</text>
+  <text x="688" y="698" font-size="10" fill="#166534" text-anchor="middle">corrects</text>
+
+  <!-- Phase labels -->
+  <text x="97"  y="473" font-size="10" fill="#94A3B8" text-anchor="middle">SOURCE</text>
+  <text x="245" y="473" font-size="10" fill="#94A3B8" text-anchor="middle">APP REPO</text>
+  <text x="398" y="473" font-size="10" fill="#94A3B8" text-anchor="middle">CI ONLY (No Deploy)</text>
+  <text x="551" y="473" font-size="10" fill="#94A3B8" text-anchor="middle">ARTIFACT</text>
+  <text x="250" y="635" font-size="10" fill="#94A3B8" text-anchor="middle">CONFIG REPO (GitOps Store)</text>
+
+  <!-- Legend strip at bottom -->
+  <rect x="20" y="786" width="1060" height="10" rx="4" fill="url(#headerGrad)" opacity="0.3"/>
+  <text x="550" y="796" font-size="10" fill="#475569" text-anchor="middle">
+    Push-Based: CI/CD pipeline has direct write access to cluster | Pull-Based: GitOps agent inside cluster reconciles to desired Git state
+  </text>
+
+</svg>

@@ -4,115 +4,683 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Kubernetes &amp; EKS | Cloud Interview Guide</title>
+  <meta name="description" content="EKS scaling, Karpenter, container lifecycle, and Kubernetes tech stack." />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/devops.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header-inner container">
-      <a class="logo" href="index.html">Cloud Interview Guide</a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="kubernetes.html">Kubernetes</a>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+      <div class="sidebar-header">
+        <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-label">Categories</div>
+        <a href="aws.html" class="sidebar-link">AWS <span class="count">7</span></a>
+        <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+        <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+        <a href="kubernetes.html" class="sidebar-link active">Kubernetes &amp; EKS <span class="count">15</span></a>
+        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+        <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+        <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+        <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+        <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
       </nav>
-    </div>
-  </header>
+      <div class="sidebar-footer">
+        <div class="sidebar-progress-label">Study Progress</div>
+        <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progressFill"></div></div>
+        <div class="sidebar-progress-text" id="progressText">0 / 15 reviewed</div>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+    <main class="content-area" role="main">
+      <div class="topbar">
+        <div class="topbar-inner">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+          </div>
+          <div class="difficulty-filters">
+            <button class="filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+            <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+            <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+          </div>
+        </div>
+      </div>
+      <div class="content-split">
+        <aside class="toc-sidebar" id="tocSidebar">
+          <div class="toc-title">In This Section</div>
+          <nav class="toc-nav" id="tocNav">
+            <a href="#k8s-tools" class="toc-link" data-section="k8s-tools"><span class="toc-dot"></span>Kubernetes Tools Landscape</a>
+            <a href="#scaling-ec2-lambda-eks" class="toc-link" data-section="scaling-ec2-lambda-eks"><span class="toc-dot"></span>Scaling EC2 Vs Lambda Vs EKS</a>
+            <a href="#eks-scaling" class="toc-link" data-section="eks-scaling"><span class="toc-dot"></span>Kubernetes (EKS) Scaling</a>
+            <a href="#eks-karpenter" class="toc-link" data-section="eks-karpenter"><span class="toc-dot"></span>EKS Upgrade With Karpenter</a>
+            <a href="#eks-karpenter-advanced" class="toc-link" data-section="eks-karpenter-advanced"><span class="toc-dot"></span>EKS Upgrade With Karpenter - Advanced</a>
+            <a href="#container-lifecycle" class="toc-link" data-section="container-lifecycle"><span class="toc-dot"></span>Container Lifecycle - Local to Cloud</a>
+            <a href="#node-pod-container" class="toc-link" data-section="node-pod-container"><span class="toc-dot"></span>Kubernetes Node Pod Container Relationship</a>
+            <a href="#karpenter-saves-money" class="toc-link" data-section="karpenter-saves-money"><span class="toc-dot"></span>How Karpenter Saves Money</a>
+            <a href="#eda-kubernetes" class="toc-link" data-section="eda-kubernetes"><span class="toc-dot"></span>EDA with Kubernetes</a>
+            <a href="#eda-sns-sqs-k8s" class="toc-link" data-section="eda-sns-sqs-k8s"><span class="toc-dot"></span>EDA with SNS, SQS, Kubernetes</a>
+            <a href="#eks-auto" class="toc-link" data-section="eks-auto"><span class="toc-dot"></span>EKS Auto (Re:Invent 2024)</a>
+            <a href="#docker-vs-k8s" class="toc-link" data-section="docker-vs-k8s"><span class="toc-dot"></span>Docker Vs Kubernetes</a>
+            <a href="#pod-sidecar" class="toc-link" data-section="pod-sidecar"><span class="toc-dot"></span>Pod Container Sidecar</a>
+            <a href="#karpenter-binpack" class="toc-link" data-section="karpenter-binpack"><span class="toc-dot"></span>Karpenter Bin Pack Granular Control</a>
+            <a href="#k8s-tech-stack" class="toc-link" data-section="k8s-tech-stack"><span class="toc-dot"></span>Kubernetes Tech Stack</a>
+          </nav>
+          <div class="toc-keyboard-hint">
+            <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+          </div>
+        </aside>
+        <div class="content-panel">
+          <header class="page-hero">
+            <div class="hero-badge" style="background:linear-gradient(135deg,#326ce5, #2563eb)">Kubernetes &amp; EKS</div>
+            <h1>Kubernetes &amp; EKS Interview Guide</h1>
+            <p class="hero-lead">EKS scaling, Karpenter, container lifecycle, and Kubernetes tech stack.</p>
+            <div class="hero-stats">
+              <div class="stat"><span class="stat-number">15</span><span class="stat-label">Topics</span></div>
+            </div>
+          </header>
 
-  <main class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Home</a>
-      <span aria-hidden="true">/</span>
-      <span>Kubernetes &amp; EKS</span>
-    </nav>
 
-    <header class="page-title">
-      <h1>Kubernetes &amp; EKS</h1>
-      <p>EKS scaling, Karpenter, container lifecycle, and Kubernetes tech stack.</p>
-    </header>
+          <article id="k8s-tools" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>Kubernetes Tools Landscape</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Kubernetes Tools Landscape as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Kubernetes Tools Ecosystem with AWS Cloud Implementation:</p>
+              <ul>
+                <li><strong>Observability:</strong> Prometheus, Grafana, Fluentbit, Jaeger, ADOT, CloudWatch, X-Ray</li>
+                <li><strong>Scaling:</strong> Karpenter, AutoScaling</li>
+                <li><strong>Delivery/Automation:</strong> Argo, Terraform, Jenkins, GitHub Actions, GitLab CI/CD</li>
+                <li><strong>Security:</strong> Gatekeeper, Trivy, ECR Scan, GuardDuty, Kube Bench, Secrets Manager,
+                  Istio</li>
+                <li><strong>Cost Optimization:</strong> CloudWatch Container Insights, Cost and Usage Report (Split Cost
+                  Allocation), Kubecost</li>
+              </ul>
+            </div>
+            </div>
+          </article>
 
-    <ul class="topic-list">
-      <li><a href="#k8s-tools">Kubernetes Tools Landscape</a></li>
-      <li><a href="#scaling-ec2-lambda-eks">Scaling EC2 Vs Lambda Vs EKS</a></li>
-      <li><a href="#eks-scaling">Kubernetes (EKS) Scaling</a></li>
-      <li><a href="#eks-karpenter">EKS Upgrade With Karpenter</a></li>
-      <li><a href="#eks-karpenter-advanced">EKS Upgrade With Karpenter - Advanced</a></li>
-      <li><a href="#container-lifecycle">Container Lifecycle - Local to Cloud</a></li>
-      <li><a href="#node-pod-container">Kubernetes Node Pod Container Relationship</a></li>
-      <li><a href="#karpenter-saves-money">How Karpenter Saves Money</a></li>
-      <li><a href="#eda-kubernetes">EDA with Kubernetes</a></li>
-      <li><a href="#eda-sns-sqs-k8s">EDA with SNS, SQS, Kubernetes</a></li>
-      <li><a href="#eks-auto">EKS Auto (Re:Invent 2024)</a></li>
-      <li><a href="#docker-vs-k8s">Docker Vs Kubernetes</a></li>
-      <li><a href="#pod-sidecar">Pod Container Sidecar</a></li>
-      <li><a href="#karpenter-binpack">Karpenter Bin Pack Granular Control</a></li>
-      <li><a href="#k8s-tech-stack">Kubernetes Tech Stack</a></li>
-    </ul>
+          <article id="scaling-ec2-lambda-eks" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Scaling EC2 Vs Lambda Vs EKS</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Scaling EC2 Vs Lambda Vs EKS as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <table class="topic-table">
+                <thead>
+                  <tr>
+                    <th>Aspect</th>
+                    <th>EC2 + Auto Scaling</th>
+                    <th>Lambda</th>
+                    <th>EKS (Kubernetes)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Scaling Unit</strong></td>
+                    <td>VM instance</td>
+                    <td>Function invocation</td>
+                    <td>Pod (container)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scaling Speed</strong></td>
+                    <td>Minutes (launch new EC2)</td>
+                    <td>Milliseconds (concurrent executions)</td>
+                    <td>Seconds (new pods) to minutes (new nodes)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scaling Mechanism</strong></td>
+                    <td>Auto Scaling Group (target tracking, step, scheduled)</td>
+                    <td>Automatic concurrency scaling</td>
+                    <td>HPA (Horizontal Pod Autoscaler), Karpenter/Cluster Autoscaler for nodes</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Max Duration</strong></td>
+                    <td>Unlimited</td>
+                    <td>15 minutes</td>
+                    <td>Unlimited</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Best For</strong></td>
+                    <td>Long-running, stateful workloads</td>
+                    <td>Short, event-driven, bursty workloads</td>
+                    <td>Containerized microservices at scale</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Operational Overhead</strong></td>
+                    <td>Medium (patch, AMI management)</td>
+                    <td>Lowest (fully managed)</td>
+                    <td>Highest (cluster management, networking)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            </div>
+          </article>
 
-    <section id="k8s-tools" class="topic-detail">
-      <h2>Kubernetes Tools Landscape</h2>
-      <div class="content">Tools and ecosystem around Kubernetes (Helm, operators, etc.).</div>
-    </section>
-    <section id="scaling-ec2-lambda-eks" class="topic-detail">
-      <h2>Scaling EC2 Vs Lambda Vs EKS</h2>
-      <div class="content">When to choose each for scaling workloads.</div>
-    </section>
-    <section id="eks-scaling" class="topic-detail">
-      <h2>Kubernetes (EKS) Scaling</h2>
-      <div class="content">Cluster Autoscaler, Karpenter, and scaling strategies.</div>
-    </section>
-    <section id="eks-karpenter" class="topic-detail">
-      <h2>EKS Upgrade With Karpenter</h2>
-      <div class="content">Using Karpenter for node management and upgrades.</div>
-    </section>
-    <section id="eks-karpenter-advanced" class="topic-detail">
-      <h2>EKS Upgrade With Karpenter - Advanced</h2>
-      <div class="content">Advanced Karpenter configuration and node pools.</div>
-    </section>
-    <section id="container-lifecycle" class="topic-detail">
-      <h2>Container Lifecycle - Local to Cloud</h2>
-      <div class="content">From local Docker to cloud-managed containers.</div>
-    </section>
-    <section id="node-pod-container" class="topic-detail">
-      <h2>Kubernetes Node Pod Container Relationship</h2>
-      <div class="content">How nodes, pods, and containers relate in K8s.</div>
-    </section>
-    <section id="karpenter-saves-money" class="topic-detail">
-      <h2>How Karpenter Saves Money</h2>
-      <div class="content">Right-sizing and bin-packing with Karpenter.</div>
-    </section>
-    <section id="eda-kubernetes" class="topic-detail">
-      <h2>EDA with Kubernetes</h2>
-      <div class="content">Event-driven architecture on Kubernetes.</div>
-    </section>
-    <section id="eda-sns-sqs-k8s" class="topic-detail">
-      <h2>EDA with SNS, SQS, Kubernetes</h2>
-      <div class="content">Combining AWS messaging with Kubernetes consumers.</div>
-    </section>
-    <section id="eks-auto" class="topic-detail">
-      <h2>EKS Auto (Re:Invent 2024)</h2>
-      <div class="content">EKS Auto announcements and capabilities.</div>
-    </section>
-    <section id="docker-vs-k8s" class="topic-detail">
-      <h2>Docker Vs Kubernetes</h2>
-      <div class="content">Docker as runtime vs Kubernetes as orchestration.</div>
-    </section>
-    <section id="pod-sidecar" class="topic-detail">
-      <h2>Pod Container Sidecar</h2>
-      <div class="content">Sidecar pattern for logging, proxies, and agents.</div>
-    </section>
-    <section id="karpenter-binpack" class="topic-detail">
-      <h2>Karpenter Bin Pack Granular Control</h2>
-      <div class="content">Fine-tuning bin packing and consolidation.</div>
-    </section>
-    <section id="k8s-tech-stack" class="topic-detail">
-      <h2>Kubernetes Tech Stack</h2>
-      <div class="content">Typical stack: ingress, service mesh, observability, etc.</div>
-    </section>
-  </main>
+          <article id="eks-scaling" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Kubernetes (EKS) Scaling</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Kubernetes (EKS) Scaling as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>EKS scaling operates at two levels:</p>
+              <h4>Pod-Level Scaling</h4>
+              <ul>
+                <li><strong>Horizontal Pod Autoscaler (HPA)</strong> — Adds or removes pod replicas based on CPU,
+                  memory, or custom metrics. Reacts in seconds.</li>
+                <li><strong>Vertical Pod Autoscaler (VPA)</strong> — Adjusts CPU/memory requests and limits for
+                  individual pods. Requires pod restart.</li>
+                <li><strong>KEDA (Kubernetes Event Driven Autoscaling)</strong> — Scales pods based on external event
+                  sources (SQS queue depth, Kafka lag, etc.).</li>
+              </ul>
+              <h4>Node-Level Scaling</h4>
+              <ul>
+                <li><strong>Cluster Autoscaler</strong> — Watches for pods that can't be scheduled due to insufficient
+                  resources, then adds nodes from pre-configured Auto Scaling Groups. Limited to predefined instance
+                  types.</li>
+                <li><strong>Karpenter</strong> — Next-generation node provisioner. Directly provisions the right-sized
+                  EC2 instance for pending pods. No need for pre-configured node groups. Faster, more efficient, and
+                  supports consolidation.</li>
+              </ul>
+            </div>
+            </div>
+          </article>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p><a href="index.html">Cloud Interview Guide</a></p>
-    </div>
-  </footer>
+          <article id="eks-karpenter" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>EKS Upgrade With Karpenter</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark EKS Upgrade With Karpenter as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Karpenter simplifies EKS upgrades by managing node lifecycle automatically:</p>
+              <ol>
+                <li><strong>Update the EKS control plane</strong> — Upgrade the Kubernetes version of the EKS cluster
+                  (managed by AWS).</li>
+                <li><strong>Update the Karpenter NodePool AMI</strong> — Change the <code>amiFamily</code> or AMI
+                  selector in the Karpenter NodePool spec to point to the new Kubernetes version AMI.</li>
+                <li><strong>Karpenter handles the rest</strong> — Karpenter detects nodes running outdated AMIs and uses
+                  its <strong>drift detection</strong> feature. It automatically cordons old nodes, gracefully drains
+                  pods, launches new nodes with the updated AMI, and schedules pods onto them.</li>
+              </ol>
+              <p><strong>Key advantage over Cluster Autoscaler:</strong> No need to manually manage multiple managed
+                node groups, roll out updates ASG-by-ASG, or deal with PodDisruptionBudgets manually. Karpenter handles
+                disruption budgets, pod rescheduling, and node replacement in one workflow.</p>
+            </div>
+            </div>
+          </article>
+
+          <article id="eks-karpenter-advanced" class="topic-card" data-difficulty="advanced">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>EKS Upgrade With Karpenter - Advanced</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark EKS Upgrade With Karpenter - Advanced as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <h4>Disruption Controls</h4>
+              <ul>
+                <li><strong>Consolidation</strong> — Karpenter continuously watches for underutilized nodes. It deletes
+                  or replaces nodes when pods can be rescheduled on fewer/smaller instances, reducing cost.</li>
+                <li><strong>Expiration (TTL)</strong> — Set <code>expireAfter</code> on NodePool to force node recycling
+                  after a time period, ensuring nodes stay fresh and up-to-date.</li>
+                <li><strong>Drift Detection</strong> — Karpenter detects when a node's configuration no longer matches
+                  the NodePool spec (AMI, instance type, labels) and replaces it.</li>
+              </ul>
+              <h4>NodePool Configuration</h4>
+              <ul>
+                <li><strong>Multiple NodePools</strong> — Create separate NodePools for different workload types (e.g.,
+                  GPU workloads, spot-tolerant batch jobs, on-demand critical services).</li>
+                <li><strong>Instance Type Flexibility</strong> — Specify broad requirements (CPU, memory, architecture)
+                  and let Karpenter choose the cheapest matching instance.</li>
+                <li><strong>Spot &amp; On-Demand Mix</strong> — Use <code>capacityType</code> to mix Spot and On-Demand
+                  within the same NodePool with weighted priorities.</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="container-lifecycle" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>Container Lifecycle - Local to Cloud</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Container Lifecycle - Local to Cloud as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>The journey of a containerized application from a developer's laptop to production in the cloud:</p>
+              <ol>
+                <li><strong>Write Code + Dockerfile</strong> — Developer writes application code and a Dockerfile that
+                  defines the runtime environment, dependencies, and startup command.</li>
+                <li><strong>Build Container Image</strong> — Run <code>docker build</code> locally to create a container
+                  image from the Dockerfile.</li>
+                <li><strong>Test Locally</strong> — Run <code>docker run</code> to test the container on the local
+                  machine. Verify the application works as expected.</li>
+                <li><strong>Push to Registry</strong> — Push the image to <strong>Amazon ECR</strong> (Elastic Container
+                  Registry) so it's available in the cloud.</li>
+                <li><strong>Deploy to Orchestrator</strong> — Deploy the container image to <strong>Amazon EKS</strong>
+                  (Kubernetes), <strong>ECS</strong> (Elastic Container Service), or <strong>Fargate</strong>
+                  (serverless containers) using manifest YAMLs or task definitions.</li>
+                <li><strong>Run in Production</strong> — The orchestrator manages scheduling, scaling, health checks,
+                  rolling updates, and self-healing across multiple nodes and AZs.</li>
+              </ol>
+            </div>
+            </div>
+          </article>
+
+          <article id="node-pod-container" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>Kubernetes Node Pod Container Relationship</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Kubernetes Node Pod Container Relationship as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Understanding the hierarchy in Kubernetes:</p>
+              <ul>
+                <li><strong>Cluster</strong> — The top-level unit. A cluster is a set of nodes managed by the Kubernetes
+                  control plane.</li>
+                <li><strong>Node</strong> — A worker machine (EC2 instance in EKS). Nodes provide compute resources
+                  (CPU, memory) for running pods.</li>
+                <li><strong>Pod</strong> — The smallest deployable unit in Kubernetes. A pod wraps one or more
+                  containers that share the same network namespace (IP address) and storage volumes.</li>
+                <li><strong>Container</strong> — The actual running application process. A container runs from a
+                  container image (e.g., from ECR).</li>
+              </ul>
+              <h4>Key Relationships</h4>
+              <ul>
+                <li>One <strong>Node</strong> runs many <strong>Pods</strong></li>
+                <li>One <strong>Pod</strong> typically runs one <strong>Container</strong> (but can run multiple — see
+                  sidecar pattern)</li>
+                <li>All containers in a pod share the same IP address, ports, and volumes</li>
+                <li>Pods are ephemeral — they can be killed and rescheduled on different nodes at any time</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="karpenter-saves-money" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>How Karpenter Saves Money</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark How Karpenter Saves Money as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Karpenter reduces costs through intelligent node provisioning and continuous optimization:</p>
+              <ol>
+                <li><strong>Right-Sizing</strong> — Karpenter selects the optimal EC2 instance type for the pending
+                  pod's resource requirements. Instead of using a pre-configured m5.xlarge for a pod that needs 0.5
+                  vCPU, Karpenter might launch a smaller t3.medium.</li>
+                <li><strong>Bin Packing</strong> — Karpenter packs pods tightly onto nodes to maximize utilization. Less
+                  wasted CPU/memory per node means fewer nodes needed overall.</li>
+                <li><strong>Consolidation</strong> — Karpenter continuously monitors running nodes. If pods can be
+                  reshuffled onto fewer or cheaper nodes, it automatically migrates them and terminates the excess
+                  nodes.</li>
+                <li><strong>Spot Instance Integration</strong> — Karpenter natively supports Spot instances and can fall
+                  back to On-Demand when Spot capacity is unavailable. Spot can save up to 90% vs On-Demand pricing.
+                </li>
+                <li><strong>No Idle Node Groups</strong> — Unlike Cluster Autoscaler (which requires pre-configured ASGs
+                  that might sit idle), Karpenter provisions nodes on-demand and removes them when empty.</li>
+              </ol>
+            </div>
+            </div>
+          </article>
+
+          <article id="eda-kubernetes" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>EDA with Kubernetes</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark EDA with Kubernetes as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Running event-driven architectures on Kubernetes combines the decoupling benefits of EDA with the
+                orchestration power of K8s:</p>
+              <h4>Pattern</h4>
+              <p>Event Producer &rarr; Message Broker (SQS/SNS/Kafka) &rarr; Kubernetes Consumer Pods</p>
+              <h4>Key Components</h4>
+              <ul>
+                <li><strong>KEDA (Kubernetes Event Driven Autoscaler)</strong> — Scales consumer pods to zero when there
+                  are no messages, and scales up based on queue depth or event lag. Prevents idle resource costs.</li>
+                <li><strong>Consumer Pods</strong> — Long-running pods that poll SQS, subscribe to SNS, or consume from
+                  Kafka topics. Each pod processes events independently.</li>
+                <li><strong>DLQ (Dead Letter Queue)</strong> — Messages that fail processing after max retries are sent
+                  to a DLQ for investigation and replay.</li>
+              </ul>
+              <h4>Why Kubernetes for EDA?</h4>
+              <ul>
+                <li>Scale consumer pods independently per event type</li>
+                <li>Use different resource profiles for different event processors</li>
+                <li>Built-in health checks and self-healing for consumer reliability</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="eda-sns-sqs-k8s" class="topic-card" data-difficulty="advanced">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>EDA with SNS, SQS, Kubernetes</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark EDA with SNS, SQS, Kubernetes as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>A common event-driven pattern combining AWS messaging with Kubernetes consumers:</p>
+              <h4>Architecture Flow</h4>
+              <ol>
+                <li><strong>Producer</strong> publishes events to an <strong>SNS Topic</strong>.</li>
+                <li><strong>SNS</strong> fans out to multiple <strong>SQS Queues</strong> (one per consumer type), with
+                  message filtering to route events to the right queue.</li>
+                <li><strong>Kubernetes pods</strong> on EKS poll their respective SQS queues and process messages.</li>
+                <li><strong>KEDA</strong> monitors each SQS queue's <code>ApproximateNumberOfMessages</code> and scales
+                  the consumer pods accordingly — scaling to zero when the queue is empty.</li>
+              </ol>
+              <h4>Why SNS + SQS (not just SQS)?</h4>
+              <ul>
+                <li><strong>SNS</strong> provides fan-out — one event goes to multiple subscribers</li>
+                <li><strong>SQS</strong> provides buffering — messages are retained even if the consumer is down, with
+                  built-in retry and DLQ</li>
+                <li>Together they decouple producers from consumers and enable independent scaling</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="eks-auto" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>EKS Auto (Re:Invent 2024)</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark EKS Auto (Re:Invent 2024) as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>EKS Auto Mode, announced at Re:Invent 2024, is a fully managed experience for Amazon EKS that automates
+                cluster infrastructure management:</p>
+              <h4>What EKS Auto Manages</h4>
+              <ul>
+                <li><strong>Compute</strong> — Automatically provisions and right-sizes EC2 instances (powered by
+                  Karpenter). No need to configure node groups or instance types.</li>
+                <li><strong>Networking</strong> — Automatically configures VPC CNI, load balancers, and DNS for
+                  services.</li>
+                <li><strong>Storage</strong> — Automatically provisions EBS volumes via CSI drivers.</li>
+                <li><strong>Upgrades</strong> — Automatically upgrades the Kubernetes version, AMIs, and add-ons with
+                  minimal disruption.</li>
+              </ul>
+              <h4>Key Benefit</h4>
+              <p>EKS Auto eliminates the operational burden of managing Kubernetes infrastructure. You focus on
+                deploying applications; AWS handles the cluster. It's the "serverless experience" for Kubernetes — you
+                just deploy pods and EKS Auto handles everything underneath.</p>
+            </div>
+            </div>
+          </article>
+
+          <article id="docker-vs-k8s" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>Docker Vs Kubernetes</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Docker Vs Kubernetes as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Docker and Kubernetes solve different problems and work together, not against each other:</p>
+              <table class="topic-table">
+                <thead>
+                  <tr>
+                    <th>Aspect</th>
+                    <th>Docker</th>
+                    <th>Kubernetes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>What It Is</strong></td>
+                    <td>Container runtime — builds and runs containers</td>
+                    <td>Container orchestrator — manages containers at scale</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scope</strong></td>
+                    <td>Single host (one machine)</td>
+                    <td>Multi-host cluster (many machines)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scaling</strong></td>
+                    <td>Manual (<code>docker run</code> more containers)</td>
+                    <td>Automatic (HPA, Karpenter)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Self-Healing</strong></td>
+                    <td>None — if container crashes, it stays down</td>
+                    <td>Automatic restart, reschedule to healthy nodes</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Load Balancing</strong></td>
+                    <td>Not built-in</td>
+                    <td>Built-in Service + Ingress</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Rolling Updates</strong></td>
+                    <td>Manual</td>
+                    <td>Built-in Deployment strategies (rolling, blue-green)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Use Case</strong></td>
+                    <td>Development, testing, single-server apps</td>
+                    <td>Production workloads at scale</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p><strong>Think of it this way:</strong> Docker is like a shipping container. Kubernetes is the port that
+                manages thousands of shipping containers — scheduling, routing, stacking, and replacing them
+                automatically.</p>
+            </div>
+            </div>
+          </article>
+
+          <article id="pod-sidecar" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Pod Container Sidecar</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Pod Container Sidecar as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>The sidecar pattern runs a secondary container alongside the main application container within the same
+                pod. Both containers share the same network and storage.</p>
+              <h4>Common Sidecar Use Cases</h4>
+              <ul>
+                <li><strong>Logging / Log Forwarding</strong> — Sidecar container (e.g., Fluentbit) reads log files
+                  written by the main container and ships them to CloudWatch, Elasticsearch, or Splunk.</li>
+                <li><strong>Service Mesh Proxy</strong> — Envoy proxy sidecar (used by Istio, App Mesh) handles mTLS,
+                  traffic routing, retries, and observability without changing application code.</li>
+                <li><strong>Monitoring Agent</strong> — Sidecar collects metrics and traces (e.g., ADOT, Datadog agent)
+                  and exports them to monitoring backends.</li>
+                <li><strong>Secret Injection</strong> — Sidecar fetches secrets from AWS Secrets Manager or Vault and
+                  mounts them as files for the main container.</li>
+              </ul>
+              <h4>Why Sidecar Instead of Building It In?</h4>
+              <ul>
+                <li><strong>Separation of concerns</strong> — Application code stays clean; cross-cutting concerns live
+                  in the sidecar.</li>
+                <li><strong>Reusability</strong> — Same sidecar image works across all microservices.</li>
+                <li><strong>Independent updates</strong> — Update the sidecar without redeploying the main application.
+                </li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="karpenter-binpack" class="topic-card" data-difficulty="advanced">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>Karpenter Bin Pack Granular Control</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Karpenter Bin Pack Granular Control as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Karpenter's bin packing decides how tightly pods are packed onto nodes to maximize resource
+                utilization:</p>
+              <h4>Consolidation Policies</h4>
+              <ul>
+                <li><strong>WhenUnderutilized</strong> — Karpenter replaces nodes when it detects pods can fit on fewer
+                  or cheaper nodes. Aggressive cost savings but more pod disruption.</li>
+                <li><strong>WhenEmpty</strong> — Karpenter only removes nodes when all pods have been drained (safest,
+                  least disruptive, but less cost-efficient).</li>
+              </ul>
+              <h4>Granular Controls</h4>
+              <ul>
+                <li><strong>Pod resource requests</strong> — Set accurate CPU/memory requests so Karpenter can calculate
+                  true utilization and choose the right instance size.</li>
+                <li><strong>Topology spread constraints</strong> — Force pods to spread across AZs or nodes for high
+                  availability, even if bin packing would prefer a single node.</li>
+                <li><strong>Node affinity / anti-affinity</strong> — Control which pods can or cannot share the same
+                  node.</li>
+                <li><strong>Do-not-disrupt annotation</strong> — Mark critical pods with
+                  <code>karpenter.sh/do-not-disrupt: "true"</code> to prevent Karpenter from evicting them during
+                  consolidation.
+                </li>
+              </ul>
+              <p><strong>Best practice:</strong> Set accurate resource requests, use topology constraints for HA, and
+                let Karpenter handle the rest. Over-requesting resources defeats the purpose of bin packing.</p>
+            </div>
+            </div>
+          </article>
+
+          <article id="k8s-tech-stack" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Kubernetes Tech Stack</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Kubernetes Tech Stack as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>A typical production-ready Kubernetes tech stack on AWS EKS:</p>
+              <table class="topic-table">
+                <thead>
+                  <tr>
+                    <th>Layer</th>
+                    <th>Component</th>
+                    <th>Tools</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Ingress</strong></td>
+                    <td>External traffic routing</td>
+                    <td>AWS ALB Ingress Controller, Nginx Ingress, Traefik</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Service Mesh</strong></td>
+                    <td>Service-to-service communication, mTLS, traffic management</td>
+                    <td>Istio, Linkerd, AWS App Mesh</td>
+                  </tr>
+                  <tr>
+                    <td><strong>CI/CD</strong></td>
+                    <td>Build and deploy pipelines</td>
+                    <td>ArgoCD (GitOps), Jenkins, GitHub Actions, Flux</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Observability</strong></td>
+                    <td>Metrics, logs, traces</td>
+                    <td>Prometheus + Grafana, Fluentbit + CloudWatch, Jaeger / X-Ray (ADOT)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scaling</strong></td>
+                    <td>Pod and node autoscaling</td>
+                    <td>HPA, KEDA, Karpenter</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Security</strong></td>
+                    <td>Policy enforcement, scanning</td>
+                    <td>OPA Gatekeeper, Trivy, Kube-bench, Falco</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Secrets</strong></td>
+                    <td>Secret management</td>
+                    <td>AWS Secrets Manager CSI Driver, External Secrets Operator</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Storage</strong></td>
+                    <td>Persistent volumes</td>
+                    <td>EBS CSI Driver, EFS CSI Driver</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Networking</strong></td>
+                    <td>Pod networking</td>
+                    <td>AWS VPC CNI, Calico (network policies)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+  </button>
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+  <script src="js/page.js"></script>
 </body>
 </html>

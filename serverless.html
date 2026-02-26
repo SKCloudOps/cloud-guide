@@ -4,55 +4,186 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Serverless | Cloud Interview Guide</title>
+  <meta name="description" content="Lambda vs EC2, serverless web apps, and transforms." />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/devops.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header-inner container">
-      <a class="logo" href="index.html">Cloud Interview Guide</a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="serverless.html">Serverless</a>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+      <div class="sidebar-header">
+        <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-label">Categories</div>
+        <a href="aws.html" class="sidebar-link">AWS <span class="count">7</span></a>
+        <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+        <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+        <a href="serverless.html" class="sidebar-link active">Serverless <span class="count">3</span></a>
+        <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+        <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+        <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
       </nav>
-    </div>
-  </header>
+      <div class="sidebar-footer">
+        <div class="sidebar-progress-label">Study Progress</div>
+        <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progressFill"></div></div>
+        <div class="sidebar-progress-text" id="progressText">0 / 3 reviewed</div>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+    <main class="content-area" role="main">
+      <div class="topbar">
+        <div class="topbar-inner">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+          </div>
+          <div class="difficulty-filters">
+            <button class="filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+            <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+            <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+          </div>
+        </div>
+      </div>
+      <div class="content-split">
+        <aside class="toc-sidebar" id="tocSidebar">
+          <div class="toc-title">In This Section</div>
+          <nav class="toc-nav" id="tocNav">
+            <a href="#lambda-cheaper" class="toc-link" data-section="lambda-cheaper"><span class="toc-dot"></span>Lambda Cheaper Than EC2?</a>
+            <a href="#serverless-webapp-sls" class="toc-link" data-section="serverless-webapp-sls"><span class="toc-dot"></span>Serverless Web Application</a>
+            <a href="#lambda-transform" class="toc-link" data-section="lambda-transform"><span class="toc-dot"></span>Lambda Transform</a>
+          </nav>
+          <div class="toc-keyboard-hint">
+            <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+          </div>
+        </aside>
+        <div class="content-panel">
+          <header class="page-hero">
+            <div class="hero-badge" style="background:linear-gradient(135deg,#f59e0b, #f97316)">Serverless</div>
+            <h1>Serverless Interview Guide</h1>
+            <p class="hero-lead">Lambda vs EC2, serverless web apps, and transforms.</p>
+            <div class="hero-stats">
+              <div class="stat"><span class="stat-number">3</span><span class="stat-label">Topics</span></div>
+            </div>
+          </header>
 
-  <main class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Home</a>
-      <span aria-hidden="true">/</span>
-      <span>Serverless</span>
-    </nav>
 
-    <header class="page-title">
-      <h1>Serverless</h1>
-      <p>Lambda vs EC2, serverless web apps, and transforms.</p>
-    </header>
+          <article id="lambda-cheaper" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>Lambda Cheaper Than EC2?</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Lambda Cheaper Than EC2? as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <div class="answer-block incorrect">
+                <h4>Incorrect Answer</h4>
+                <p>Yes, AWS Lambda is cheaper than Amazon EC2.</p>
+              </div>
+              <div class="answer-block correct">
+                <h4>Correct Answer</h4>
+                <p>It depends on the application. Both Lambda and EC2 have different cost factors. It is possible that,
+                  depending on the application, AWS Lambda can have a higher charge than EC2, and vice versa. It is
+                  important to consider not just the compute cost but the <strong>TCO (Total Cost of
+                    Ownership)</strong>. With AWS Lambda there is no AMI to maintain, patch, and rehydrate, reducing
+                  management overhead and hence overall TCO.</p>
+              </div>
+              <h4>Lambda Cost Factors</h4>
+              <ul>
+                <li>Architecture (x86 vs. Graviton)</li>
+                <li>Number of requests</li>
+                <li>Duration of each request</li>
+                <li>Amount of memory allocated (NOT used)</li>
+                <li>Amount of ephemeral storage allocated</li>
+              </ul>
+              <h4>EC2 Main Cost Factors</h4>
+              <ul>
+                <li>Instance family</li>
+                <li>Attached EBS</li>
+                <li>Duration of EC2 runtime</li>
+              </ul>
+            </div>
+            </div>
+          </article>
 
-    <ul class="topic-list">
-      <li><a href="#lambda-cheaper">Lambda Cheaper Than EC2?</a></li>
-      <li><a href="#serverless-webapp">Serverless Web Application</a></li>
-      <li><a href="#lambda-transform">Lambda Transform</a></li>
-    </ul>
+          <article id="serverless-webapp-sls" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>Serverless Web Application</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Serverless Web Application as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>A fully serverless web application on AWS (no servers to manage):</p>
+              <h4>Architecture</h4>
+              <ol>
+                <li><strong>Amazon S3 + CloudFront</strong> — Host static frontend (React, Angular, Vue) on S3, served
+                  globally via CloudFront CDN.</li>
+                <li><strong>Amazon Cognito</strong> — User authentication (sign-up, sign-in, social login, MFA).</li>
+                <li><strong>Amazon API Gateway</strong> — REST/WebSocket API layer. Handles request validation,
+                  throttling, and auth token verification.</li>
+                <li><strong>AWS Lambda</strong> — Backend business logic. Each API endpoint triggers a Lambda function.
+                  Scales automatically from zero to thousands of concurrent executions.</li>
+                <li><strong>Amazon DynamoDB</strong> — NoSQL database for application data. Single-digit-millisecond
+                  latency, fully managed, scales on demand.</li>
+              </ol>
+              <p><strong>Cost model:</strong> Pay only when the API is called. Zero traffic = zero cost (excluding S3
+                storage). Ideal for variable or unpredictable workloads.</p>
+            </div>
+            </div>
+          </article>
 
-    <section id="lambda-cheaper" class="topic-detail">
-      <h2>Lambda Cheaper Than EC2?</h2>
-      <div class="content">Cost comparison and when Lambda is more cost-effective than EC2.</div>
-    </section>
-    <section id="serverless-webapp" class="topic-detail">
-      <h2>Serverless Web Application</h2>
-      <div class="content">Building web apps with Lambda, API Gateway, and managed services.</div>
-    </section>
-    <section id="lambda-transform" class="topic-detail">
-      <h2>Lambda Transform</h2>
-      <div class="content">Using Lambda for data transformation in pipelines.</div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <p><a href="index.html">Cloud Interview Guide</a></p>
-    </div>
-  </footer>
+          <article id="lambda-transform" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Lambda Transform</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Lambda Transform as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>AWS Lambda can be used as a transformation step in data pipelines to modify, enrich, or filter data in
+                transit:</p>
+              <h4>Common Patterns</h4>
+              <ul>
+                <li><strong>Kinesis Data Firehose Transform</strong> — Firehose invokes a Lambda function to transform
+                  records before delivering them to S3, Redshift, or Elasticsearch. Use cases: convert formats (CSV to
+                  JSON), redact PII, enrich with metadata.</li>
+                <li><strong>S3 Event Transform</strong> — S3 triggers Lambda when a new file is uploaded. Lambda reads
+                  the file, transforms it (resize images, transcode video, parse CSV), and writes the result to another
+                  S3 bucket or DynamoDB.</li>
+                <li><strong>CloudFormation Macro</strong> — Lambda-backed macros that transform CloudFormation templates
+                  at deploy time. Can add custom logic, conditionals, or template generation.</li>
+                <li><strong>API Gateway Request/Response Transform</strong> — Lambda modifies the request before it
+                  reaches the backend, or transforms the response before returning it to the client.</li>
+              </ul>
+              <p><strong>Key benefit:</strong> Serverless transforms eliminate the need for always-on ETL servers. You
+                pay only for the transformation compute time, and Lambda scales automatically with the data volume.</p>
+            </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+  </button>
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+  <script src="js/page.js"></script>
 </body>
 </html>

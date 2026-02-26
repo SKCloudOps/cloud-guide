@@ -1,29 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cloud Interview Guide</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
+
 <body>
   <div class="app-layout">
     <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
       <div class="sidebar-header">
-        <a class="sidebar-logo" href="#" data-category="aws">Cloud Interview Guide</a>
+        <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
       </div>
       <nav class="sidebar-nav">
         <div class="sidebar-nav-label">Categories</div>
-        <a href="#" class="sidebar-link active" data-category="aws">AWS <span class="count">7</span></a>
-        <a href="#" class="sidebar-link" data-category="architecture">Architecture <span class="count">11</span></a>
-        <a href="#" class="sidebar-link" data-category="devops">DevOps &amp; CI/CD <span class="count">5</span></a>
-        <a href="#" class="sidebar-link" data-category="kubernetes">Kubernetes &amp; EKS <span class="count">15</span></a>
-        <a href="#" class="sidebar-link" data-category="genai">Gen AI <span class="count">4</span></a>
-        <a href="#" class="sidebar-link" data-category="serverless">Serverless <span class="count">3</span></a>
-        <a href="#" class="sidebar-link" data-category="fundamentals">Fundamentals <span class="count">2</span></a>
-        <a href="#" class="sidebar-link" data-category="reinvent">Re:Invent 2024 <span class="count">3</span></a>
-        <a href="#" class="sidebar-link" data-category="streaming">Streaming <span class="count">2</span></a>
-        <a href="#" class="sidebar-link" data-category="interview">Interview &amp; Career <span class="count">12</span></a>
+        <a href="aws.html" class="sidebar-link active" data-category="aws">AWS <span class="count">7</span></a>
+        <a href="architecture.html" class="sidebar-link" data-category="architecture">Architecture <span
+            class="count">11</span></a>
+        <a href="devops.html" class="sidebar-link" data-category="devops">DevOps &amp; CI/CD <span
+            class="count">5</span></a>
+        <a href="kubernetes.html" class="sidebar-link" data-category="kubernetes">Kubernetes &amp; EKS <span
+            class="count">15</span></a>
+        <a href="genai.html" class="sidebar-link" data-category="genai">Gen AI <span class="count">4</span></a>
+        <a href="serverless.html" class="sidebar-link" data-category="serverless">Serverless <span
+            class="count">3</span></a>
+        <a href="fundamentals.html" class="sidebar-link" data-category="fundamentals">Fundamentals <span
+            class="count">2</span></a>
+        <a href="reinvent.html" class="sidebar-link" data-category="reinvent">Re:Invent 2024 <span
+            class="count">3</span></a>
+        <a href="streaming.html" class="sidebar-link" data-category="streaming">Streaming <span
+            class="count">2</span></a>
+        <a href="interview.html" class="sidebar-link" data-category="interview">Interview &amp; Career <span
+            class="count">12</span></a>
       </nav>
     </aside>
 
@@ -35,7 +45,8 @@
         <section id="content-aws" class="category-content active">
           <header class="category-header">
             <h1>AWS</h1>
-            <p class="lead">Core AWS services, Well-Architected Framework, migration, and solutions architecture topics.</p>
+            <p class="lead">Core AWS services, Well-Architected Framework, migration, and solutions architecture topics.
+            </p>
           </header>
           <nav class="topic-nav" aria-label="Topics in this category">
             <div class="topic-nav-title">In this section</div>
@@ -52,55 +63,116 @@
           <article id="aws-services" class="topic-block">
             <h2>AWS Services for Interviews</h2>
             <div class="topic-body">
-              <p>Key AWS services to know for solutions architect and cloud engineer interviews, organized by domain:</p>
+              <p>Key AWS services to know for solutions architect and cloud engineer interviews, organized by domain:
+              </p>
               <div class="service-grid">
                 <div class="service-category">
                   <h3>Compute</h3>
-                  <ul><li>EC2</li><li>Auto Scaling</li><li>Lambda</li><li>Elastic Kubernetes Service (EKS)</li><li>ECS</li></ul>
+                  <ul>
+                    <li>EC2</li>
+                    <li>Auto Scaling</li>
+                    <li>Lambda</li>
+                    <li>Elastic Kubernetes Service (EKS)</li>
+                    <li>ECS</li>
+                  </ul>
                 </div>
                 <div class="service-category">
                   <h3>Storage</h3>
-                  <ul><li>S3</li><li>EBS</li></ul>
+                  <ul>
+                    <li>S3</li>
+                    <li>EBS</li>
+                  </ul>
                 </div>
                 <div class="service-category">
                   <h3>Database</h3>
-                  <ul><li>RDS</li><li>DynamoDB</li><li>ElastiCache</li></ul>
+                  <ul>
+                    <li>RDS</li>
+                    <li>DynamoDB</li>
+                    <li>ElastiCache</li>
+                  </ul>
                 </div>
                 <div class="service-category">
                   <h3>Network</h3>
-                  <ul><li>VPC</li><li>Load Balancer</li><li>API Gateway</li></ul>
+                  <ul>
+                    <li>VPC</li>
+                    <li>Load Balancer</li>
+                    <li>API Gateway</li>
+                  </ul>
                 </div>
                 <div class="service-category">
                   <h3>Security</h3>
-                  <ul><li>KMS</li><li>IAM</li><li>WAF</li><li>Shield</li><li>GuardDuty</li><li>Secrets Manager</li><li>Config</li></ul>
+                  <ul>
+                    <li>KMS</li>
+                    <li>IAM</li>
+                    <li>WAF</li>
+                    <li>Shield</li>
+                    <li>GuardDuty</li>
+                    <li>Secrets Manager</li>
+                    <li>Config</li>
+                  </ul>
                 </div>
                 <div class="service-category">
                   <h3>Migration</h3>
-                  <ul><li>DMS</li><li>Migration Hub</li><li>Application Migration Service</li><li>Application Discovery Service</li></ul>
+                  <ul>
+                    <li>DMS</li>
+                    <li>Migration Hub</li>
+                    <li>Application Migration Service</li>
+                    <li>Application Discovery Service</li>
+                  </ul>
                 </div>
                 <div class="service-category">
                   <h3>Gen AI</h3>
-                  <ul><li>BedRock</li><li>Q</li><li>SageMaker</li><li>Partyrock</li></ul>
+                  <ul>
+                    <li>BedRock</li>
+                    <li>Q</li>
+                    <li>SageMaker</li>
+                    <li>Partyrock</li>
+                  </ul>
                 </div>
                 <div class="service-category">
                   <h3>Event Driven</h3>
-                  <ul><li>SNS</li><li>SQS</li><li>EventBridge</li><li>Step Functions</li></ul>
+                  <ul>
+                    <li>SNS</li>
+                    <li>SQS</li>
+                    <li>EventBridge</li>
+                    <li>Step Functions</li>
+                  </ul>
                 </div>
                 <div class="service-category">
                   <h3>Observability</h3>
-                  <ul><li>CloudWatch</li><li>CloudTrail</li><li>X-Ray</li></ul>
+                  <ul>
+                    <li>CloudWatch</li>
+                    <li>CloudTrail</li>
+                    <li>X-Ray</li>
+                  </ul>
                 </div>
                 <div class="service-category">
                   <h3>Cost Optimization</h3>
-                  <ul><li>Compute Optimizer</li><li>CloudWatch Insights</li><li>Cost Explorer</li><li>Budget</li><li>Spot Instance</li><li>Reserve Instance</li><li>Savings Plan</li></ul>
+                  <ul>
+                    <li>Compute Optimizer</li>
+                    <li>CloudWatch Insights</li>
+                    <li>Cost Explorer</li>
+                    <li>Budget</li>
+                    <li>Spot Instance</li>
+                    <li>Reserve Instance</li>
+                    <li>Savings Plan</li>
+                  </ul>
                 </div>
                 <div class="service-category">
                   <h3>Analytics</h3>
-                  <ul><li>Glue</li><li>EMR</li><li>Athena</li><li>QuickSight</li><li>Kinesis</li></ul>
+                  <ul>
+                    <li>Glue</li>
+                    <li>EMR</li>
+                    <li>Athena</li>
+                    <li>QuickSight</li>
+                    <li>Kinesis</li>
+                  </ul>
                 </div>
                 <div class="service-category">
                   <h3>DevOps</h3>
-                  <ul><li>CloudFormation</li></ul>
+                  <ul>
+                    <li>CloudFormation</li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -111,7 +183,8 @@
               <p><strong>How Many Data Centers in One Availability Zone?</strong></p>
               <div class="answer-block correct">
                 <h4>Correct Answer</h4>
-                <p>An AWS availability zone (AZ) can contain <strong>multiple data centers</strong>. Each zone is usually backed by one or more physical data centers, with the largest backed by as many as five.</p>
+                <p>An AWS availability zone (AZ) can contain <strong>multiple data centers</strong>. Each zone is
+                  usually backed by one or more physical data centers, with the largest backed by as many as five.</p>
               </div>
               <div class="answer-block incorrect">
                 <h4>Incorrect Answer</h4>
@@ -122,29 +195,49 @@
           <article id="rpo-rto" class="topic-block">
             <h2>RPO Vs RTO</h2>
             <div class="topic-body">
-              <p>Candidates are sometimes confused by RPO thinking it's measured in units of data (e.g. gigabyte, petabyte).</p>
+              <p>Candidates are sometimes confused by RPO thinking it's measured in units of data (e.g. gigabyte,
+                petabyte).</p>
               <div class="answer-block correct">
                 <h4>Correct Answer</h4>
                 <p>Both RPO and RTO are measured in <strong>time</strong>.</p>
                 <ul>
-                  <li><strong>RTO (Recovery Time Objective)</strong> — a measure of how quickly after an outage an application must be available again.</li>
-                  <li><strong>RPO (Recovery Point Objective)</strong> — refers to how much data loss your application can tolerate. Another way to think about RPO is how old can the data be when this application is recovered, i.e. the time between the last backup and the disaster.</li>
+                  <li><strong>RTO (Recovery Time Objective)</strong> — a measure of how quickly after an outage an
+                    application must be available again.</li>
+                  <li><strong>RPO (Recovery Point Objective)</strong> — refers to how much data loss your application
+                    can tolerate. Another way to think about RPO is how old can the data be when this application is
+                    recovered, i.e. the time between the last backup and the disaster.</li>
                 </ul>
-                <p>With both RTO and RPO, the targets are measured in hours, minutes, or seconds, with lower numbers representing less downtime or less data loss. RPO and RTO can be — and often have — different values for an application.</p>
+                <p>With both RTO and RPO, the targets are measured in hours, minutes, or seconds, with lower numbers
+                  representing less downtime or less data loss. RPO and RTO can be — and often have — different values
+                  for an application.</p>
               </div>
             </div>
           </article>
           <article id="well-architected" class="topic-block">
             <h2>AWS Well Architected Framework</h2>
             <div class="topic-body">
-              <p>The AWS Well-Architected Framework helps cloud architects build secure, high-performing, resilient, and efficient infrastructure. It is built around <strong>six pillars</strong>:</p>
+              <p>The AWS Well-Architected Framework helps cloud architects build secure, high-performing, resilient, and
+                efficient infrastructure. It is built around <strong>six pillars</strong>:</p>
               <ol>
-                <li><strong>Operational Excellence</strong> — Run and monitor systems to deliver business value and continually improve supporting processes. Key practices: infrastructure as code, frequent small reversible changes, anticipate failure, and learn from operational events.</li>
-                <li><strong>Security</strong> — Protect information, systems, and assets while delivering business value. Key practices: implement a strong identity foundation, enable traceability, apply security at all layers, automate security best practices, protect data in transit and at rest.</li>
-                <li><strong>Reliability</strong> — Ensure a workload performs its intended function correctly and consistently. Key practices: automatically recover from failure, test recovery procedures, scale horizontally, stop guessing capacity, manage change through automation.</li>
-                <li><strong>Performance Efficiency</strong> — Use computing resources efficiently to meet system requirements and maintain that efficiency as demand changes. Key practices: democratize advanced technologies, go global in minutes, use serverless architectures, experiment more often.</li>
-                <li><strong>Cost Optimization</strong> — Run systems to deliver business value at the lowest price point. Key practices: implement cloud financial management, adopt a consumption model, measure overall efficiency, stop spending money on undifferentiated heavy lifting, analyze and attribute expenditure.</li>
-                <li><strong>Sustainability</strong> — Minimize the environmental impacts of running cloud workloads. Key practices: understand your impact, establish sustainability goals, maximize utilization, anticipate and adopt more efficient hardware and software offerings, reduce downstream impact.</li>
+                <li><strong>Operational Excellence</strong> — Run and monitor systems to deliver business value and
+                  continually improve supporting processes. Key practices: infrastructure as code, frequent small
+                  reversible changes, anticipate failure, and learn from operational events.</li>
+                <li><strong>Security</strong> — Protect information, systems, and assets while delivering business
+                  value. Key practices: implement a strong identity foundation, enable traceability, apply security at
+                  all layers, automate security best practices, protect data in transit and at rest.</li>
+                <li><strong>Reliability</strong> — Ensure a workload performs its intended function correctly and
+                  consistently. Key practices: automatically recover from failure, test recovery procedures, scale
+                  horizontally, stop guessing capacity, manage change through automation.</li>
+                <li><strong>Performance Efficiency</strong> — Use computing resources efficiently to meet system
+                  requirements and maintain that efficiency as demand changes. Key practices: democratize advanced
+                  technologies, go global in minutes, use serverless architectures, experiment more often.</li>
+                <li><strong>Cost Optimization</strong> — Run systems to deliver business value at the lowest price
+                  point. Key practices: implement cloud financial management, adopt a consumption model, measure overall
+                  efficiency, stop spending money on undifferentiated heavy lifting, analyze and attribute expenditure.
+                </li>
+                <li><strong>Sustainability</strong> — Minimize the environmental impacts of running cloud workloads. Key
+                  practices: understand your impact, establish sustainability goals, maximize utilization, anticipate
+                  and adopt more efficient hardware and software offerings, reduce downstream impact.</li>
               </ol>
             </div>
           </article>
@@ -153,21 +246,32 @@
             <div class="topic-body">
               <h4>The 7 Rs of Migration</h4>
               <ol>
-                <li><strong>Rehost (Lift &amp; Shift)</strong> — Move applications as-is to AWS without changes. Use AWS Application Migration Service (MGN).</li>
-                <li><strong>Replatform (Lift, Tinker &amp; Shift)</strong> — Make a few cloud optimizations without changing core architecture. E.g., migrate to RDS instead of self-managed database.</li>
-                <li><strong>Repurchase</strong> — Move to a different product, typically SaaS (e.g., migrate CRM to Salesforce).</li>
-                <li><strong>Refactor / Re-architect</strong> — Re-imagine the application using cloud-native features. Driven by a strong business need for scalability, performance, or agility.</li>
+                <li><strong>Rehost (Lift &amp; Shift)</strong> — Move applications as-is to AWS without changes. Use AWS
+                  Application Migration Service (MGN).</li>
+                <li><strong>Replatform (Lift, Tinker &amp; Shift)</strong> — Make a few cloud optimizations without
+                  changing core architecture. E.g., migrate to RDS instead of self-managed database.</li>
+                <li><strong>Repurchase</strong> — Move to a different product, typically SaaS (e.g., migrate CRM to
+                  Salesforce).</li>
+                <li><strong>Refactor / Re-architect</strong> — Re-imagine the application using cloud-native features.
+                  Driven by a strong business need for scalability, performance, or agility.</li>
                 <li><strong>Retire</strong> — Decommission applications that are no longer needed.</li>
-                <li><strong>Retain</strong> — Keep applications in the source environment (not ready to migrate yet).</li>
-                <li><strong>Relocate</strong> — Move infrastructure to AWS without purchasing new hardware (e.g., VMware Cloud on AWS).</li>
+                <li><strong>Retain</strong> — Keep applications in the source environment (not ready to migrate yet).
+                </li>
+                <li><strong>Relocate</strong> — Move infrastructure to AWS without purchasing new hardware (e.g., VMware
+                  Cloud on AWS).</li>
               </ol>
               <h4>Key AWS Migration Services</h4>
               <ul>
-                <li><strong>AWS Migration Hub</strong> — Central place to track migration progress across multiple AWS and partner solutions.</li>
-                <li><strong>AWS Application Migration Service (MGN)</strong> — Automates lift-and-shift migrations by continuously replicating source servers to AWS.</li>
-                <li><strong>AWS Application Discovery Service</strong> — Collects information about on-premises data centers to help plan migration.</li>
-                <li><strong>AWS Database Migration Service (DMS)</strong> — Migrates databases to AWS with minimal downtime. Supports homogeneous and heterogeneous migrations.</li>
-                <li><strong>AWS Schema Conversion Tool (SCT)</strong> — Converts source database schema to a format compatible with the target database.</li>
+                <li><strong>AWS Migration Hub</strong> — Central place to track migration progress across multiple AWS
+                  and partner solutions.</li>
+                <li><strong>AWS Application Migration Service (MGN)</strong> — Automates lift-and-shift migrations by
+                  continuously replicating source servers to AWS.</li>
+                <li><strong>AWS Application Discovery Service</strong> — Collects information about on-premises data
+                  centers to help plan migration.</li>
+                <li><strong>AWS Database Migration Service (DMS)</strong> — Migrates databases to AWS with minimal
+                  downtime. Supports homogeneous and heterogeneous migrations.</li>
+                <li><strong>AWS Schema Conversion Tool (SCT)</strong> — Converts source database schema to a format
+                  compatible with the target database.</li>
               </ul>
             </div>
           </article>
@@ -176,12 +280,22 @@
             <div class="topic-body">
               <p>Amazon API Gateway supports multiple authentication and authorization mechanisms:</p>
               <ol>
-                <li><strong>IAM Authorization</strong> — Uses AWS Signature Version 4 (SigV4). Best for AWS users and roles, service-to-service communication. The caller signs the request with AWS credentials, and API Gateway validates the signature with IAM.</li>
-                <li><strong>Amazon Cognito User Pools</strong> — Best for external users (web/mobile apps). Users authenticate with Cognito and receive a JWT token. API Gateway validates the token directly with Cognito. Supports social identity providers (Google, Facebook) and SAML.</li>
-                <li><strong>Lambda Authorizer (Custom Authorizer)</strong> — A Lambda function that implements custom authorization logic. Receives a bearer token or request parameters, returns an IAM policy. Best for third-party auth systems, custom business logic, or OAuth/OIDC tokens from external providers.</li>
-                <li><strong>API Keys</strong> — Simple key-based identification (not true authentication). Used with usage plans to throttle and meter API access per client. Should be combined with another auth method for security.</li>
+                <li><strong>IAM Authorization</strong> — Uses AWS Signature Version 4 (SigV4). Best for AWS users and
+                  roles, service-to-service communication. The caller signs the request with AWS credentials, and API
+                  Gateway validates the signature with IAM.</li>
+                <li><strong>Amazon Cognito User Pools</strong> — Best for external users (web/mobile apps). Users
+                  authenticate with Cognito and receive a JWT token. API Gateway validates the token directly with
+                  Cognito. Supports social identity providers (Google, Facebook) and SAML.</li>
+                <li><strong>Lambda Authorizer (Custom Authorizer)</strong> — A Lambda function that implements custom
+                  authorization logic. Receives a bearer token or request parameters, returns an IAM policy. Best for
+                  third-party auth systems, custom business logic, or OAuth/OIDC tokens from external providers.</li>
+                <li><strong>API Keys</strong> — Simple key-based identification (not true authentication). Used with
+                  usage plans to throttle and meter API access per client. Should be combined with another auth method
+                  for security.</li>
               </ol>
-              <p><strong>When to use which?</strong> IAM for internal AWS-to-AWS calls, Cognito for end-user-facing apps, Lambda Authorizer for custom/third-party auth, API Keys for rate limiting and client identification.</p>
+              <p><strong>When to use which?</strong> IAM for internal AWS-to-AWS calls, Cognito for end-user-facing
+                apps, Lambda Authorizer for custom/third-party auth, API Keys for rate limiting and client
+                identification.</p>
             </div>
           </article>
           <article id="serverless-webapp" class="topic-block">
@@ -190,11 +304,16 @@
               <p>A fully serverless web application architecture on AWS:</p>
               <h4>Architecture Flow</h4>
               <ol>
-                <li><strong>Frontend Hosting</strong> — Static assets (HTML, CSS, JS) hosted on <strong>Amazon S3</strong> and served globally via <strong>Amazon CloudFront</strong> (CDN).</li>
-                <li><strong>Authentication</strong> — <strong>Amazon Cognito</strong> handles user sign-up, sign-in, and issues JWT tokens.</li>
-                <li><strong>API Layer</strong> — <strong>Amazon API Gateway</strong> exposes RESTful APIs, validates auth tokens, and routes requests.</li>
-                <li><strong>Business Logic</strong> — <strong>AWS Lambda</strong> functions execute backend logic (no servers to manage, scales automatically).</li>
-                <li><strong>Data Storage</strong> — <strong>Amazon DynamoDB</strong> provides a fully managed NoSQL database with single-digit-millisecond latency.</li>
+                <li><strong>Frontend Hosting</strong> — Static assets (HTML, CSS, JS) hosted on <strong>Amazon
+                    S3</strong> and served globally via <strong>Amazon CloudFront</strong> (CDN).</li>
+                <li><strong>Authentication</strong> — <strong>Amazon Cognito</strong> handles user sign-up, sign-in, and
+                  issues JWT tokens.</li>
+                <li><strong>API Layer</strong> — <strong>Amazon API Gateway</strong> exposes RESTful APIs, validates
+                  auth tokens, and routes requests.</li>
+                <li><strong>Business Logic</strong> — <strong>AWS Lambda</strong> functions execute backend logic (no
+                  servers to manage, scales automatically).</li>
+                <li><strong>Data Storage</strong> — <strong>Amazon DynamoDB</strong> provides a fully managed NoSQL
+                  database with single-digit-millisecond latency.</li>
               </ol>
               <h4>Key Benefits</h4>
               <ul>
@@ -211,7 +330,8 @@
         <section id="content-architecture" class="category-content">
           <header class="category-header">
             <h1>Architecture</h1>
-            <p class="lead">Microservices, event-driven systems, three-tier, hybrid cloud, and system design trade-offs.</p>
+            <p class="lead">Microservices, event-driven systems, three-tier, hybrid cloud, and system design trade-offs.
+            </p>
           </header>
           <nav class="topic-nav" aria-label="Topics in this category">
             <div class="topic-nav-title">In this section</div>
@@ -232,58 +352,88 @@
           <article id="microservice-alb" class="topic-block">
             <h2>Microservice with ALB</h2>
             <figure class="topic-diagram">
-              <img src="assets/architecture-microservices-alb.png" alt="Architecture diagram: Microservices with ALB — path-based routing to independent microservices on EKS with separate databases." />
+              <img src="assets/architecture-microservices-alb.png"
+                alt="Architecture diagram: Microservices with ALB — path-based routing to independent microservices on EKS with separate databases." />
             </figure>
             <div class="topic-body">
-              <p>Application Load Balancer (ALB) enables <strong>path-based routing</strong> to direct traffic to different microservices:</p>
+              <p>Application Load Balancer (ALB) enables <strong>path-based routing</strong> to direct traffic to
+                different microservices:</p>
               <ul>
-                <li><code>/browse</code> &rarr; <strong>Target Group 1</strong> — handles traffic for browsing (e.g. cloudwithraj.com/browse)</li>
-                <li><code>/buy</code> &rarr; <strong>Target Group 2</strong> — handles traffic for purchases (e.g. cloudwithraj.com/buy)</li>
+                <li><code>/browse</code> &rarr; <strong>Target Group 1</strong> — handles traffic for browsing (e.g.
+                  cloudwithraj.com/browse)</li>
+                <li><code>/buy</code> &rarr; <strong>Target Group 2</strong> — handles traffic for purchases (e.g.
+                  cloudwithraj.com/buy)</li>
                 <li><code>/*</code> (catch all) &rarr; <strong>Target Group 3</strong> — handles all other traffic</li>
               </ul>
-              <p>Each microservice can have its own compute (EC2 with Auto Scaling Group or Lambda), and its own database (Amazon Aurora, DynamoDB, etc.). The ALB sits behind a domain (e.g. cloudwithraj.com) and routes requests to the appropriate target group based on the URL path. This allows each microservice to scale independently using an Auto Scaling Group behind Amazon EKS.</p>
+              <p>Each microservice can have its own compute (EC2 with Auto Scaling Group or Lambda), and its own
+                database (Amazon Aurora, DynamoDB, etc.). The ALB sits behind a domain (e.g. cloudwithraj.com) and
+                routes requests to the appropriate target group based on the URL path. This allows each microservice to
+                scale independently using an Auto Scaling Group behind Amazon EKS.</p>
             </div>
           </article>
           <article id="event-driven-basic" class="topic-block">
             <h2>Event Driven Architecture (Basic)</h2>
             <figure class="topic-diagram">
-              <img src="assets/architecture-eda-basic.png" alt="Architecture diagram: Event Driven Architecture — API Gateway to SQS to Lambda with 4 key benefits." />
+              <img src="assets/architecture-eda-basic.png"
+                alt="Architecture diagram: Event Driven Architecture — API Gateway to SQS to Lambda with 4 key benefits." />
             </figure>
             <div class="topic-body">
-              <p>An event-driven architecture decouples the producer and processor. The producer (human) invokes an API and sends information in a JSON payload. API Gateway puts it into an event store (SQS), and the processor (Lambda) picks it up and processes it. API Gateway and Lambda can scale and be managed/deployed independently.</p>
+              <p>An event-driven architecture decouples the producer and processor. The producer (human) invokes an API
+                and sends information in a JSON payload. API Gateway puts it into an event store (SQS), and the
+                processor (Lambda) picks it up and processes it. API Gateway and Lambda can scale and be
+                managed/deployed independently.</p>
               <p><strong>Flow:</strong> API Gateway &rarr; SQS (Event Store) &rarr; Lambda</p>
               <h4>Benefits</h4>
               <ol>
-                <li><strong>Scale and fail independently</strong> — Services are only aware of the event router, not each other. If one service fails, the rest keep running. The event router acts as an elastic buffer that accommodates surges in workloads.</li>
-                <li><strong>Develop with agility</strong> — No need to write custom code to poll, filter, and route events; the event router automatically filters and pushes events to consumers. The router removes the need for heavy coordination between producer and consumer services.</li>
-                <li><strong>Audit with ease</strong> — An event router acts as a centralized location to audit your application and define policies to restrict who can publish/subscribe and control access to your data. Events can be encrypted in transit and at rest.</li>
-                <li><strong>Cut costs</strong> — Event-driven architectures are push-based, so everything happens on-demand. No continuous polling means less network bandwidth, less CPU utilization, less idle fleet capacity, and fewer SSL/TLS handshakes.</li>
+                <li><strong>Scale and fail independently</strong> — Services are only aware of the event router, not
+                  each other. If one service fails, the rest keep running. The event router acts as an elastic buffer
+                  that accommodates surges in workloads.</li>
+                <li><strong>Develop with agility</strong> — No need to write custom code to poll, filter, and route
+                  events; the event router automatically filters and pushes events to consumers. The router removes the
+                  need for heavy coordination between producer and consumer services.</li>
+                <li><strong>Audit with ease</strong> — An event router acts as a centralized location to audit your
+                  application and define policies to restrict who can publish/subscribe and control access to your data.
+                  Events can be encrypted in transit and at rest.</li>
+                <li><strong>Cut costs</strong> — Event-driven architectures are push-based, so everything happens
+                  on-demand. No continuous polling means less network bandwidth, less CPU utilization, less idle fleet
+                  capacity, and fewer SSL/TLS handshakes.</li>
               </ol>
             </div>
           </article>
           <article id="microservice-vs-event" class="topic-block">
             <h2>Microservice Vs Event Driven</h2>
             <figure class="topic-diagram">
-              <img src="assets/architecture-microservice-vs-event.png" alt="Architecture diagram: Microservice (sync) vs Event Driven (async) — comparison of request flow patterns." />
+              <img src="assets/architecture-microservice-vs-event.png"
+                alt="Architecture diagram: Microservice (sync) vs Event Driven (async) — comparison of request flow patterns." />
             </figure>
             <div class="topic-body">
               <p>The main differences between traditional microservices and event-driven architecture:</p>
               <ol>
-                <li><strong>Synchronous vs Asynchronous</strong> — Traditional microservice is synchronous: the request and response happen in the same invocation. With Event Driven, the user gets a confirmation that the message is inserted into SQS, but doesn't get the response from the actual message processing by the Lambda in the same invocation. Instead, the backend Lambda sends a response via websocket APIs, or the user can query the status afterwards.</li>
-                <li><strong>Independent Scaling</strong> — With EDA, API Gateway and Lambda/Database can scale independently. Lambda can consume messages at a rate that doesn't overwhelm the database.</li>
-                <li><strong>Built-in Retries</strong> — With EDA, retries are built in. With microservices, if Lambda fails, the user needs to send the request again. With EDA, once the message is in SQS, even if Lambda fails, SQS will automatically retry.</li>
+                <li><strong>Synchronous vs Asynchronous</strong> — Traditional microservice is synchronous: the request
+                  and response happen in the same invocation. With Event Driven, the user gets a confirmation that the
+                  message is inserted into SQS, but doesn't get the response from the actual message processing by the
+                  Lambda in the same invocation. Instead, the backend Lambda sends a response via websocket APIs, or the
+                  user can query the status afterwards.</li>
+                <li><strong>Independent Scaling</strong> — With EDA, API Gateway and Lambda/Database can scale
+                  independently. Lambda can consume messages at a rate that doesn't overwhelm the database.</li>
+                <li><strong>Built-in Retries</strong> — With EDA, retries are built in. With microservices, if Lambda
+                  fails, the user needs to send the request again. With EDA, once the message is in SQS, even if Lambda
+                  fails, SQS will automatically retry.</li>
               </ol>
-              <p><strong>Microservice with Event Driven Flow:</strong> API Gateway &rarr; SQS &rarr; Lambda &rarr; DynamoDB, with Websocket API for async responses.</p>
+              <p><strong>Microservice with Event Driven Flow:</strong> API Gateway &rarr; SQS &rarr; Lambda &rarr;
+                DynamoDB, with Websocket API for async responses.</p>
             </div>
           </article>
           <article id="event-driven-advanced" class="topic-block">
             <h2>Event Driven Architectures (Advanced)</h2>
             <figure class="topic-diagram">
-              <img src="assets/architecture-eda-advanced.png" alt="Architecture diagram: Advanced EDA with EventBridge rules and SNS fan-out patterns." />
+              <img src="assets/architecture-eda-advanced.png"
+                alt="Architecture diagram: Advanced EDA with EventBridge rules and SNS fan-out patterns." />
             </figure>
             <div class="topic-body">
               <p>Advanced event-driven patterns using multiple AWS services for routing and fan-out:</p>
-              <p><strong>Flow:</strong> API Gateway &rarr; SQS 1 &rarr; Lambda 1 &rarr; EventBridge (Event Store + Router)</p>
+              <p><strong>Flow:</strong> API Gateway &rarr; SQS 1 &rarr; Lambda 1 &rarr; EventBridge (Event Store +
+                Router)</p>
               <h4>EventBridge Rules</h4>
               <p>Based on values in the message, EventBridge can fire different targets via rules:</p>
               <ul>
@@ -303,29 +453,47 @@
           <article id="three-tier" class="topic-block">
             <h2>Three-Tier Architecture</h2>
             <figure class="topic-diagram">
-              <img src="assets/architecture-three-tier.png" alt="Architecture diagram: Three-Tier — Presentation, Application, and Database layers across Availability Zones." />
+              <img src="assets/architecture-three-tier.png"
+                alt="Architecture diagram: Three-Tier — Presentation, Application, and Database layers across Availability Zones." />
             </figure>
             <div class="topic-body">
               <ol>
-                <li><strong>Presentation Layer</strong> — Customers consume the application using this layer. Generally, this is where the front end runs (e.g. amazon.com website). Implemented using an external-facing load balancer distributing traffic to VMs (EC2s) running a webserver, with Auto Scaling Groups across multiple Availability Zones.</li>
-                <li><strong>Application Layer</strong> — This is where the business logic resides. For example, you browse products on amazon.com, find a product you like, and click "add to cart". The flow comes to the application layer, validates the availability, and creates a cart. Implemented with an internal-facing load balancer and VMs running applications.</li>
-                <li><strong>Database Layer</strong> — This is where information is stored: product information, shopping cart, order history, etc. The application layer interacts with this layer for CRUD (Create, Read, Update, Delete) operations. This could be implemented using one or a mix of databases — SQL (e.g. Amazon Aurora) and/or NoSQL (DynamoDB).</li>
+                <li><strong>Presentation Layer</strong> — Customers consume the application using this layer. Generally,
+                  this is where the front end runs (e.g. amazon.com website). Implemented using an external-facing load
+                  balancer distributing traffic to VMs (EC2s) running a webserver, with Auto Scaling Groups across
+                  multiple Availability Zones.</li>
+                <li><strong>Application Layer</strong> — This is where the business logic resides. For example, you
+                  browse products on amazon.com, find a product you like, and click "add to cart". The flow comes to the
+                  application layer, validates the availability, and creates a cart. Implemented with an internal-facing
+                  load balancer and VMs running applications.</li>
+                <li><strong>Database Layer</strong> — This is where information is stored: product information, shopping
+                  cart, order history, etc. The application layer interacts with this layer for CRUD (Create, Read,
+                  Update, Delete) operations. This could be implemented using one or a mix of databases — SQL (e.g.
+                  Amazon Aurora) and/or NoSQL (DynamoDB).</li>
               </ol>
-              <p><strong>Why is this so popular in interviews?</strong> This architecture comprises many critical patterns — microservices, load balancing, scaling, performance optimization, high availability, and more. Based on your answers, the interviewer can dig deep and check your understanding of the core concepts.</p>
+              <p><strong>Why is this so popular in interviews?</strong> This architecture comprises many critical
+                patterns — microservices, load balancing, scaling, performance optimization, high availability, and
+                more. Based on your answers, the interviewer can dig deep and check your understanding of the core
+                concepts.</p>
             </div>
           </article>
           <article id="multi-site-dr" class="topic-block">
             <h2>Multi-site Active Active DR</h2>
             <figure class="topic-diagram">
-              <img src="assets/architecture-multi-site-dr.png" alt="Architecture diagram: Multi-site Active-Active DR with Route 53 routing to two AWS regions." />
+              <img src="assets/architecture-multi-site-dr.png"
+                alt="Architecture diagram: Multi-site Active-Active DR with Route 53 routing to two AWS regions." />
             </figure>
             <div class="topic-body">
-              <p>In a <strong>multi-site active-active</strong> disaster recovery setup, your application runs simultaneously in two or more AWS regions, each serving live production traffic.</p>
+              <p>In a <strong>multi-site active-active</strong> disaster recovery setup, your application runs
+                simultaneously in two or more AWS regions, each serving live production traffic.</p>
               <h4>How It Works</h4>
               <ul>
-                <li><strong>Amazon Route 53</strong> uses latency-based or weighted routing to distribute traffic across regions.</li>
+                <li><strong>Amazon Route 53</strong> uses latency-based or weighted routing to distribute traffic across
+                  regions.</li>
                 <li>Each region has a full stack: Load Balancer, compute (EC2/EKS/Lambda), and database.</li>
-                <li><strong>Amazon DynamoDB Global Tables</strong> or <strong>Amazon Aurora Global Database</strong> provides multi-region, multi-active database replication with low-latency reads and writes in every region.</li>
+                <li><strong>Amazon DynamoDB Global Tables</strong> or <strong>Amazon Aurora Global Database</strong>
+                  provides multi-region, multi-active database replication with low-latency reads and writes in every
+                  region.</li>
                 <li><strong>Amazon S3 Cross-Region Replication</strong> keeps objects in sync across regions.</li>
               </ul>
               <h4>Key Characteristics</h4>
@@ -340,17 +508,25 @@
           <article id="hybrid-cloud" class="topic-block">
             <h2>Hybrid Cloud Architecture</h2>
             <figure class="topic-diagram">
-              <img src="assets/architecture-hybrid-cloud.png" alt="Architecture diagram: Hybrid Cloud connecting on-premises data center to AWS via Direct Connect and VPN." />
+              <img src="assets/architecture-hybrid-cloud.png"
+                alt="Architecture diagram: Hybrid Cloud connecting on-premises data center to AWS via Direct Connect and VPN." />
             </figure>
             <div class="topic-body">
-              <p>Hybrid cloud connects on-premises data centers with AWS cloud, enabling workloads to run across both environments.</p>
+              <p>Hybrid cloud connects on-premises data centers with AWS cloud, enabling workloads to run across both
+                environments.</p>
               <h4>Key AWS Services for Hybrid</h4>
               <ul>
-                <li><strong>AWS Direct Connect</strong> — Dedicated private network connection from on-premises to AWS (bypasses the public internet for consistent performance and lower latency).</li>
-                <li><strong>AWS Site-to-Site VPN</strong> — Encrypted connection over the public internet between on-premises and AWS VPC. Simpler and cheaper than Direct Connect.</li>
-                <li><strong>AWS Outposts</strong> — AWS infrastructure and services delivered to your on-premises data center. Run AWS compute, storage, and databases locally with seamless connection to the AWS region.</li>
-                <li><strong>AWS Storage Gateway</strong> — Bridges on-premises storage with cloud storage (S3, EBS, Glacier). Supports file, volume, and tape gateway modes.</li>
-                <li><strong>Amazon EKS Anywhere</strong> — Run Kubernetes clusters on-premises using the same EKS tooling and APIs as in the cloud.</li>
+                <li><strong>AWS Direct Connect</strong> — Dedicated private network connection from on-premises to AWS
+                  (bypasses the public internet for consistent performance and lower latency).</li>
+                <li><strong>AWS Site-to-Site VPN</strong> — Encrypted connection over the public internet between
+                  on-premises and AWS VPC. Simpler and cheaper than Direct Connect.</li>
+                <li><strong>AWS Outposts</strong> — AWS infrastructure and services delivered to your on-premises data
+                  center. Run AWS compute, storage, and databases locally with seamless connection to the AWS region.
+                </li>
+                <li><strong>AWS Storage Gateway</strong> — Bridges on-premises storage with cloud storage (S3, EBS,
+                  Glacier). Supports file, volume, and tape gateway modes.</li>
+                <li><strong>Amazon EKS Anywhere</strong> — Run Kubernetes clusters on-premises using the same EKS
+                  tooling and APIs as in the cloud.</li>
               </ul>
               <h4>Common Use Cases</h4>
               <ul>
@@ -363,48 +539,79 @@
           <article id="system-design-tradeoffs" class="topic-block">
             <h2>System Design Trade-Offs</h2>
             <figure class="topic-diagram">
-              <img src="assets/architecture-system-design-tradeoffs.png" alt="Infographic: System Design Trade-Offs — CAP theorem and five key trade-off spectrums." />
+              <img src="assets/architecture-system-design-tradeoffs.png"
+                alt="Infographic: System Design Trade-Offs — CAP theorem and five key trade-off spectrums." />
             </figure>
             <div class="topic-body">
               <p>Every system design decision involves trade-offs. Understanding these is critical for interviews:</p>
               <h4>CAP Theorem</h4>
-              <p>A distributed system can only guarantee two of three: <strong>Consistency</strong>, <strong>Availability</strong>, <strong>Partition Tolerance</strong>. Since network partitions are unavoidable, the real choice is between CP (consistent but may be unavailable during partition) and AP (available but may return stale data).</p>
+              <p>A distributed system can only guarantee two of three: <strong>Consistency</strong>,
+                <strong>Availability</strong>, <strong>Partition Tolerance</strong>. Since network partitions are
+                unavoidable, the real choice is between CP (consistent but may be unavailable during partition) and AP
+                (available but may return stale data).
+              </p>
               <h4>Key Trade-Offs</h4>
               <ul>
-                <li><strong>Consistency vs Availability</strong> — Strong consistency (every read gets latest write) costs availability. Eventual consistency improves availability but users may see stale data temporarily.</li>
-                <li><strong>Latency vs Throughput</strong> — Optimizing for low latency (fast individual requests) can reduce overall throughput, and vice versa. Batching improves throughput but increases per-request latency.</li>
-                <li><strong>Cost vs Performance</strong> — Higher performance (more instances, provisioned IOPS, reserved capacity) costs more. Spot instances save money but risk interruption.</li>
-                <li><strong>Simplicity vs Scalability</strong> — Monolithic architectures are simpler but harder to scale. Microservices scale independently but add operational complexity (networking, observability, deployment).</li>
-                <li><strong>SQL vs NoSQL</strong> — SQL provides ACID transactions and strong consistency but harder to scale horizontally. NoSQL scales easily and handles unstructured data but sacrifices joins and complex queries.</li>
+                <li><strong>Consistency vs Availability</strong> — Strong consistency (every read gets latest write)
+                  costs availability. Eventual consistency improves availability but users may see stale data
+                  temporarily.</li>
+                <li><strong>Latency vs Throughput</strong> — Optimizing for low latency (fast individual requests) can
+                  reduce overall throughput, and vice versa. Batching improves throughput but increases per-request
+                  latency.</li>
+                <li><strong>Cost vs Performance</strong> — Higher performance (more instances, provisioned IOPS,
+                  reserved capacity) costs more. Spot instances save money but risk interruption.</li>
+                <li><strong>Simplicity vs Scalability</strong> — Monolithic architectures are simpler but harder to
+                  scale. Microservices scale independently but add operational complexity (networking, observability,
+                  deployment).</li>
+                <li><strong>SQL vs NoSQL</strong> — SQL provides ACID transactions and strong consistency but harder to
+                  scale horizontally. NoSQL scales easily and handles unstructured data but sacrifices joins and complex
+                  queries.</li>
               </ul>
             </div>
           </article>
           <article id="top-designs" class="topic-block">
             <h2>Top 3 Popular Design</h2>
             <figure class="topic-diagram">
-              <img src="assets/architecture-top-3-designs.png" alt="Infographic: Top 3 Popular Designs for Interviews — Three-Tier, Event-Driven Microservices, Real-time Data Pipeline." />
+              <img src="assets/architecture-top-3-designs.png"
+                alt="Infographic: Top 3 Popular Designs for Interviews — Three-Tier, Event-Driven Microservices, Real-time Data Pipeline." />
             </figure>
             <div class="topic-body">
               <p>The three most commonly asked system design patterns in cloud architect interviews:</p>
               <ol>
-                <li><strong>Three-Tier Web Application</strong> — Presentation (ALB + EC2 webservers), Application (internal ALB + EC2 app servers), Database (Aurora/DynamoDB). Covers load balancing, auto scaling, multi-AZ, caching (ElastiCache), and CDN (CloudFront). Almost every interview includes a variant of this.</li>
-                <li><strong>Event-Driven Microservices</strong> — API Gateway &rarr; SQS/SNS/EventBridge &rarr; Lambda/EKS consumers &rarr; DynamoDB. Demonstrates decoupling, async processing, fan-out patterns, retry/DLQ handling, and independent scaling. Shows you understand modern cloud-native design.</li>
-                <li><strong>Real-time Data Pipeline</strong> — Data producers &rarr; Amazon Kinesis Data Streams &rarr; Lambda/KDA (processing) &rarr; S3 (data lake) + DynamoDB (hot data) &rarr; Athena/QuickSight (analytics). Demonstrates streaming data ingestion, transformation, storage tiering, and visualization.</li>
+                <li><strong>Three-Tier Web Application</strong> — Presentation (ALB + EC2 webservers), Application
+                  (internal ALB + EC2 app servers), Database (Aurora/DynamoDB). Covers load balancing, auto scaling,
+                  multi-AZ, caching (ElastiCache), and CDN (CloudFront). Almost every interview includes a variant of
+                  this.</li>
+                <li><strong>Event-Driven Microservices</strong> — API Gateway &rarr; SQS/SNS/EventBridge &rarr;
+                  Lambda/EKS consumers &rarr; DynamoDB. Demonstrates decoupling, async processing, fan-out patterns,
+                  retry/DLQ handling, and independent scaling. Shows you understand modern cloud-native design.</li>
+                <li><strong>Real-time Data Pipeline</strong> — Data producers &rarr; Amazon Kinesis Data Streams &rarr;
+                  Lambda/KDA (processing) &rarr; S3 (data lake) + DynamoDB (hot data) &rarr; Athena/QuickSight
+                  (analytics). Demonstrates streaming data ingestion, transformation, storage tiering, and
+                  visualization.</li>
               </ol>
             </div>
           </article>
           <article id="three-tier-microservice" class="topic-block">
             <h2>Three Tier with Microservice</h2>
             <figure class="topic-diagram">
-              <img src="assets/architecture-three-tier-microservice.png" alt="Architecture diagram: Three-Tier with Microservices — Presentation, EKS Microservices, Database per Service." />
+              <img src="assets/architecture-three-tier-microservice.png"
+                alt="Architecture diagram: Three-Tier with Microservices — Presentation, EKS Microservices, Database per Service." />
             </figure>
             <div class="topic-body">
-              <p>Combining three-tier architecture with microservices gives you the best of both worlds — a familiar layered structure with independent deployability:</p>
+              <p>Combining three-tier architecture with microservices gives you the best of both worlds — a familiar
+                layered structure with independent deployability:</p>
               <h4>How They Combine</h4>
               <ul>
-                <li><strong>Presentation Layer</strong> — Frontend served via CloudFront + S3 (static), or EC2/ECS behind an external ALB. This layer only handles UI rendering and API calls.</li>
-                <li><strong>Application Layer (Microservices)</strong> — Instead of a single monolithic app server, the business logic is split into independent microservices (e.g., Order Service, Payment Service, User Service). Each runs in its own container on EKS or ECS, with its own internal ALB or service mesh routing.</li>
-                <li><strong>Database Layer (Database per Service)</strong> — Each microservice owns its own database (e.g., Order Service uses DynamoDB, User Service uses Aurora). No shared database — this ensures loose coupling.</li>
+                <li><strong>Presentation Layer</strong> — Frontend served via CloudFront + S3 (static), or EC2/ECS
+                  behind an external ALB. This layer only handles UI rendering and API calls.</li>
+                <li><strong>Application Layer (Microservices)</strong> — Instead of a single monolithic app server, the
+                  business logic is split into independent microservices (e.g., Order Service, Payment Service, User
+                  Service). Each runs in its own container on EKS or ECS, with its own internal ALB or service mesh
+                  routing.</li>
+                <li><strong>Database Layer (Database per Service)</strong> — Each microservice owns its own database
+                  (e.g., Order Service uses DynamoDB, User Service uses Aurora). No shared database — this ensures loose
+                  coupling.</li>
               </ul>
               <h4>Key Differences from Traditional Three-Tier</h4>
               <ul>
@@ -418,23 +625,64 @@
           <article id="monolith-vs-microservice" class="topic-block">
             <h2>Monolith Vs Microservice</h2>
             <figure class="topic-diagram">
-              <img src="assets/architecture-monolith-vs-microservice.png" alt="Infographic: Monolith vs Microservice — visual comparison of architecture, deployment, scaling, and trade-offs." />
+              <img src="assets/architecture-monolith-vs-microservice.png"
+                alt="Infographic: Monolith vs Microservice — visual comparison of architecture, deployment, scaling, and trade-offs." />
             </figure>
             <div class="topic-body">
               <table class="topic-table">
-                <thead><tr><th>Aspect</th><th>Monolith</th><th>Microservice</th></tr></thead>
+                <thead>
+                  <tr>
+                    <th>Aspect</th>
+                    <th>Monolith</th>
+                    <th>Microservice</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr><td><strong>Deployment</strong></td><td>Single deployable unit</td><td>Each service deployed independently</td></tr>
-                  <tr><td><strong>Scaling</strong></td><td>Scale the entire application</td><td>Scale individual services as needed</td></tr>
-                  <tr><td><strong>Tech Stack</strong></td><td>Single language/framework</td><td>Polyglot — different languages per service</td></tr>
-                  <tr><td><strong>Database</strong></td><td>Shared database</td><td>Database per service</td></tr>
-                  <tr><td><strong>Team Structure</strong></td><td>One team owns everything</td><td>Small teams own individual services</td></tr>
-                  <tr><td><strong>Complexity</strong></td><td>Simple to develop and debug initially</td><td>Complex distributed system (networking, observability)</td></tr>
-                  <tr><td><strong>Failure Impact</strong></td><td>One bug can bring down entire app</td><td>Failures are isolated to individual services</td></tr>
-                  <tr><td><strong>Best For</strong></td><td>Small teams, MVPs, low complexity</td><td>Large teams, high scalability, independent releases</td></tr>
+                  <tr>
+                    <td><strong>Deployment</strong></td>
+                    <td>Single deployable unit</td>
+                    <td>Each service deployed independently</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scaling</strong></td>
+                    <td>Scale the entire application</td>
+                    <td>Scale individual services as needed</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Tech Stack</strong></td>
+                    <td>Single language/framework</td>
+                    <td>Polyglot — different languages per service</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Database</strong></td>
+                    <td>Shared database</td>
+                    <td>Database per service</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Team Structure</strong></td>
+                    <td>One team owns everything</td>
+                    <td>Small teams own individual services</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Complexity</strong></td>
+                    <td>Simple to develop and debug initially</td>
+                    <td>Complex distributed system (networking, observability)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Failure Impact</strong></td>
+                    <td>One bug can bring down entire app</td>
+                    <td>Failures are isolated to individual services</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Best For</strong></td>
+                    <td>Small teams, MVPs, low complexity</td>
+                    <td>Large teams, high scalability, independent releases</td>
+                  </tr>
                 </tbody>
               </table>
-              <p><strong>Start monolith, evolve to microservices.</strong> Many successful companies (Amazon, Netflix) started as monoliths and migrated to microservices when the team size and scaling requirements justified the operational complexity.</p>
+              <p><strong>Start monolith, evolve to microservices.</strong> Many successful companies (Amazon, Netflix)
+                started as monoliths and migrated to microservices when the team size and scaling requirements justified
+                the operational complexity.</p>
             </div>
           </article>
         </section>
@@ -445,6 +693,11 @@
             <h1>DevOps &amp; CI/CD</h1>
             <p class="lead">Phases, CI vs CD, GitOps, Git workflow, and DevSecOps.</p>
           </header>
+          <!-- Hero overview diagram -->
+          <figure class="topic-diagram" style="margin: 2rem 0;">
+            <img src="assets/devops-architecture.png" alt="DevOps and CI/CD Enterprise Overview Diagram"
+              style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+          </figure>
           <nav class="topic-nav" aria-label="Topics in this category">
             <div class="topic-nav-title">In this section</div>
             <ul class="topic-nav-list">
@@ -457,95 +710,201 @@
           </nav>
           <article id="devops-phases" class="topic-block">
             <h2>DevOps Phases</h2>
+            <figure class="topic-diagram" style="margin: 2rem 0;">
+              <img src="assets/devops-phases.png" alt="Architecture diagram: DevOps Lifecycle Phases."
+                style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+            </figure>
             <div class="topic-body">
               <p>DevOps CI/CD phases with recommended tools:</p>
               <table class="topic-table">
-                <thead><tr><th>Phase</th><th>Description</th><th>Tools</th></tr></thead>
+                <thead>
+                  <tr>
+                    <th>Phase</th>
+                    <th>Description</th>
+                    <th>Tools</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr><td><strong>Author</strong></td><td>Write code</td><td>VS Code</td></tr>
-                  <tr><td><strong>Source</strong></td><td>Check-in source code</td><td>AWS CodeCommit, GitHub</td></tr>
-                  <tr><td><strong>Build</strong></td><td>Compile code, create artifacts</td><td>AWS CodeBuild, Jenkins</td></tr>
-                  <tr><td><strong>Test</strong></td><td>Unit, integration, load, UI, penetration testing</td><td>AWS CodeBuild, Jenkins</td></tr>
-                  <tr><td><strong>Deploy</strong></td><td>Deploy artifacts</td><td>Jenkins, AWS CodeDeploy</td></tr>
-                  <tr><td><strong>Monitor</strong></td><td>Logs, metrics, and traces</td><td>Amazon CloudWatch, AWS X-Ray</td></tr>
+                  <tr>
+                    <td><strong>Author</strong></td>
+                    <td>Write code</td>
+                    <td>VS Code</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Source</strong></td>
+                    <td>Check-in source code</td>
+                    <td>AWS CodeCommit, GitHub</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Build</strong></td>
+                    <td>Compile code, create artifacts</td>
+                    <td>AWS CodeBuild, Jenkins</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Test</strong></td>
+                    <td>Unit, integration, load, UI, penetration testing</td>
+                    <td>AWS CodeBuild, Jenkins</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Deploy</strong></td>
+                    <td>Deploy artifacts</td>
+                    <td>Jenkins, AWS CodeDeploy</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Monitor</strong></td>
+                    <td>Logs, metrics, and traces</td>
+                    <td>Amazon CloudWatch, AWS X-Ray</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </article>
           <article id="ci-cd-cd" class="topic-block">
             <h2>CI Vs CD Vs CD</h2>
+            <figure class="topic-diagram" style="margin: 2rem 0;">
+              <img src="assets/devops-ci-cd.png"
+                alt="Architecture diagram: CI vs Continuous Delivery vs Continuous Deployment."
+                style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+            </figure>
             <div class="topic-body">
               <ul>
-                <li><strong>Continuous Integration (CI)</strong> — Author &rarr; Source &rarr; Build &rarr; Test. Developers frequently merge code changes, which are automatically built and tested.</li>
-                <li><strong>Continuous Deployment (CD)</strong> — Extends CI by automatically deploying every change that passes all stages to production.</li>
-                <li><strong>Continuous Delivery (CD)</strong> — Similar to Continuous Deployment, but includes a <strong>Manual Approval</strong> step before deploying to production.</li>
+                <li><strong>Continuous Integration (CI)</strong> — Author &rarr; Source &rarr; Build &rarr; Test.
+                  Developers frequently merge code changes, which are automatically built and tested.</li>
+                <li><strong>Continuous Deployment (CD)</strong> — Extends CI by automatically deploying every change
+                  that passes all stages to production.</li>
+                <li><strong>Continuous Delivery (CD)</strong> — Similar to Continuous Deployment, but includes a
+                  <strong>Manual Approval</strong> step before deploying to production.
+                </li>
               </ul>
             </div>
           </article>
           <article id="gitops" class="topic-block">
             <h2>Traditional CICD Vs GitOps</h2>
+            <figure class="topic-diagram" style="margin: 2rem 0;">
+              <img src="assets/devops-gitops.png"
+                alt="Architecture diagram: DevOps GitOps Pipeline — Push vs Pull based deployments."
+                style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+            </figure>
             <div class="topic-body">
               <h4>Traditional DevOps (Push-based)</h4>
               <ol>
-                <li>Developers check in Code, Dockerfile, and manifest YAMLs to an application repository. CI tools (e.g. Jenkins) build the container image and save it in a container registry such as Amazon ECR.</li>
-                <li>CD tools (e.g. Jenkins) update the deployment manifest files with the tag of the container image.</li>
-                <li>CD tools execute the command to deploy the manifest files into the cluster, deploying the newly built container in Amazon EKS.</li>
+                <li>Developers check in Code, Dockerfile, and manifest YAMLs to an application repository. CI tools
+                  (e.g. Jenkins) build the container image and save it in a container registry such as Amazon ECR.</li>
+                <li>CD tools (e.g. Jenkins) update the deployment manifest files with the tag of the container image.
+                </li>
+                <li>CD tools execute the command to deploy the manifest files into the cluster, deploying the newly
+                  built container in Amazon EKS.</li>
               </ol>
-              <p><strong>Conclusion:</strong> Traditional CI/CD is a push-based model. If a sneaky SRE changes the YAML file directly in the cluster (e.g. changes number of replicas, or even the container image itself!), the resources running in the cluster will deviate from what's defined in Git. Worse case, this change can break something, and the DevOps team needs to rerun part of the CI/CD process to push the intended YAMLs to the cluster.</p>
+              <p><strong>Conclusion:</strong> Traditional CI/CD is a push-based model. If a sneaky SRE changes the YAML
+                file directly in the cluster (e.g. changes number of replicas, or even the container image itself!), the
+                resources running in the cluster will deviate from what's defined in Git. Worse case, this change can
+                break something, and the DevOps team needs to rerun part of the CI/CD process to push the intended YAMLs
+                to the cluster.</p>
               <h4>GitOps (Pull-based)</h4>
               <ol type="A">
-                <li>Developers check in Code, Dockerfile, and manifest YAMLs. CI tools build the container image and save it in Amazon ECR.</li>
+                <li>Developers check in Code, Dockerfile, and manifest YAMLs. CI tools build the container image and
+                  save it in Amazon ECR.</li>
                 <li>CD tools update the deployment manifest files with the tag of the container image.</li>
-                <li>With GitOps, Git becomes the single source of truth. You install a GitOps tool like Argo inside the cluster and point to a Git repo. It keeps checking if there is a new file, or if the files in the cluster drift from the ones in Git. As soon as YAML is updated, ArgoCD detects the drift and pulls in the updated YAML file to deploy the new container.</li>
+                <li>With GitOps, Git becomes the single source of truth. You install a GitOps tool like Argo inside the
+                  cluster and point to a Git repo. It keeps checking if there is a new file, or if the files in the
+                  cluster drift from the ones in Git. As soon as YAML is updated, ArgoCD detects the drift and pulls in
+                  the updated YAML file to deploy the new container.</li>
               </ol>
-              <p><strong>Conclusion:</strong> GitOps does NOT replace DevOps — it only replaces part of the CD process. If the sneaky SRE directly changes the YAML in the cluster, ArgoCD will detect the mismatch between the changed file vs the one in Git, pull in the file from Git, and bring Kubernetes resources to its intended state. And don't worry, Argo can also send a message to the sneaky SRE's manager ;).</p>
+              <p><strong>Conclusion:</strong> GitOps does NOT replace DevOps — it only replaces part of the CD process.
+                If the sneaky SRE directly changes the YAML in the cluster, ArgoCD will detect the mismatch between the
+                changed file vs the one in Git, pull in the file from Git, and bring Kubernetes resources to its
+                intended state. And don't worry, Argo can also send a message to the sneaky SRE's manager ;).</p>
             </div>
           </article>
           <article id="git-workflow" class="topic-block">
             <h2>Git Workflow</h2>
+            <figure class="topic-diagram" style="margin: 2rem 0;">
+              <img src="assets/devops-git-workflow.png" alt="Git Branching Strategies and Workflow Diagram"
+                style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+            </figure>
             <div class="topic-body">
               <p>Common branching strategies for teams:</p>
               <h4>Git Flow</h4>
               <ul>
-                <li><strong>main</strong> — Production-ready code. Only receives merges from release or hotfix branches.</li>
+                <li><strong>main</strong> — Production-ready code. Only receives merges from release or hotfix branches.
+                </li>
                 <li><strong>develop</strong> — Integration branch for features. All feature branches merge here.</li>
-                <li><strong>feature/*</strong> — One branch per feature. Created from develop, merged back into develop.</li>
-                <li><strong>release/*</strong> — Stabilization branch. Created from develop when ready for release, merged into both main and develop.</li>
+                <li><strong>feature/*</strong> — One branch per feature. Created from develop, merged back into develop.
+                </li>
+                <li><strong>release/*</strong> — Stabilization branch. Created from develop when ready for release,
+                  merged into both main and develop.</li>
                 <li><strong>hotfix/*</strong> — Emergency fixes off main. Merged back into both main and develop.</li>
               </ul>
               <h4>Trunk-Based Development</h4>
               <ul>
-                <li>All developers commit directly to <strong>main</strong> (or via very short-lived feature branches).</li>
+                <li>All developers commit directly to <strong>main</strong> (or via very short-lived feature branches).
+                </li>
                 <li>Relies on feature flags to hide incomplete features in production.</li>
                 <li>Preferred for CI/CD-heavy teams — enables continuous deployment with small, frequent releases.</li>
               </ul>
               <h4>GitHub Flow (Simplified)</h4>
               <ul>
-                <li>Single main branch + feature branches. Pull request &rarr; code review &rarr; merge to main &rarr; deploy.</li>
+                <li>Single main branch + feature branches. Pull request &rarr; code review &rarr; merge to main &rarr;
+                  deploy.</li>
                 <li>Best for smaller teams and SaaS products with continuous delivery.</li>
               </ul>
             </div>
           </article>
           <article id="devsecops" class="topic-block">
             <h2>DevSecOps Workflow</h2>
+            <figure class="topic-diagram" style="margin: 2rem 0;">
+              <img src="assets/devops-devsecops.png" alt="DevSecOps Security Integrated Pipeline Diagram"
+                style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+            </figure>
             <div class="topic-body">
-              <p>DevSecOps integrates security into every phase of the CI/CD pipeline rather than treating it as a final gate:</p>
+              <p>DevSecOps integrates security into every phase of the CI/CD pipeline rather than treating it as a final
+                gate:</p>
               <table class="topic-table">
-                <thead><tr><th>Phase</th><th>Security Activity</th><th>Tools</th></tr></thead>
+                <thead>
+                  <tr>
+                    <th>Phase</th>
+                    <th>Security Activity</th>
+                    <th>Tools</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr><td><strong>Code</strong></td><td>Static Application Security Testing (SAST), secret scanning</td><td>SonarQube, git-secrets, Snyk</td></tr>
-                  <tr><td><strong>Build</strong></td><td>Dependency vulnerability scanning, container image scanning</td><td>Trivy, ECR Scan, Snyk</td></tr>
-                  <tr><td><strong>Test</strong></td><td>Dynamic Application Security Testing (DAST), penetration testing</td><td>OWASP ZAP, Burp Suite</td></tr>
-                  <tr><td><strong>Deploy</strong></td><td>Infrastructure as Code scanning, compliance checks</td><td>Checkov, tfsec, AWS Config</td></tr>
-                  <tr><td><strong>Runtime</strong></td><td>Threat detection, anomaly monitoring, WAF</td><td>GuardDuty, AWS WAF, Shield</td></tr>
+                  <tr>
+                    <td><strong>Code</strong></td>
+                    <td>Static Application Security Testing (SAST), secret scanning</td>
+                    <td>SonarQube, git-secrets, Snyk</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Build</strong></td>
+                    <td>Dependency vulnerability scanning, container image scanning</td>
+                    <td>Trivy, ECR Scan, Snyk</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Test</strong></td>
+                    <td>Dynamic Application Security Testing (DAST), penetration testing</td>
+                    <td>OWASP ZAP, Burp Suite</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Deploy</strong></td>
+                    <td>Infrastructure as Code scanning, compliance checks</td>
+                    <td>Checkov, tfsec, AWS Config</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Runtime</strong></td>
+                    <td>Threat detection, anomaly monitoring, WAF</td>
+                    <td>GuardDuty, AWS WAF, Shield</td>
+                  </tr>
                 </tbody>
               </table>
               <h4>Key Principles</h4>
               <ul>
-                <li><strong>Shift Left</strong> — Find and fix vulnerabilities as early as possible (in code, not in production).</li>
-                <li><strong>Automate Everything</strong> — Security checks run automatically in the pipeline; no manual gates.</li>
-                <li><strong>Shared Responsibility</strong> — Security is everyone's job, not just the security team's.</li>
-                <li><strong>Continuous Monitoring</strong> — Runtime protection with GuardDuty, CloudTrail, and automated remediation.</li>
+                <li><strong>Shift Left</strong> — Find and fix vulnerabilities as early as possible (in code, not in
+                  production).</li>
+                <li><strong>Automate Everything</strong> — Security checks run automatically in the pipeline; no manual
+                  gates.</li>
+                <li><strong>Shared Responsibility</strong> — Security is everyone's job, not just the security team's.
+                </li>
+                <li><strong>Continuous Monitoring</strong> — Runtime protection with GuardDuty, CloudTrail, and
+                  automated remediation.</li>
               </ul>
             </div>
           </article>
@@ -585,8 +944,10 @@
                 <li><strong>Observability:</strong> Prometheus, Grafana, Fluentbit, Jaeger, ADOT, CloudWatch, X-Ray</li>
                 <li><strong>Scaling:</strong> Karpenter, AutoScaling</li>
                 <li><strong>Delivery/Automation:</strong> Argo, Terraform, Jenkins, GitHub Actions, GitLab CI/CD</li>
-                <li><strong>Security:</strong> Gatekeeper, Trivy, ECR Scan, GuardDuty, Kube Bench, Secrets Manager, Istio</li>
-                <li><strong>Cost Optimization:</strong> CloudWatch Container Insights, Cost and Usage Report (Split Cost Allocation), Kubecost</li>
+                <li><strong>Security:</strong> Gatekeeper, Trivy, ECR Scan, GuardDuty, Kube Bench, Secrets Manager,
+                  Istio</li>
+                <li><strong>Cost Optimization:</strong> CloudWatch Container Insights, Cost and Usage Report (Split Cost
+                  Allocation), Kubecost</li>
               </ul>
             </div>
           </article>
@@ -594,14 +955,51 @@
             <h2>Scaling EC2 Vs Lambda Vs EKS</h2>
             <div class="topic-body">
               <table class="topic-table">
-                <thead><tr><th>Aspect</th><th>EC2 + Auto Scaling</th><th>Lambda</th><th>EKS (Kubernetes)</th></tr></thead>
+                <thead>
+                  <tr>
+                    <th>Aspect</th>
+                    <th>EC2 + Auto Scaling</th>
+                    <th>Lambda</th>
+                    <th>EKS (Kubernetes)</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr><td><strong>Scaling Unit</strong></td><td>VM instance</td><td>Function invocation</td><td>Pod (container)</td></tr>
-                  <tr><td><strong>Scaling Speed</strong></td><td>Minutes (launch new EC2)</td><td>Milliseconds (concurrent executions)</td><td>Seconds (new pods) to minutes (new nodes)</td></tr>
-                  <tr><td><strong>Scaling Mechanism</strong></td><td>Auto Scaling Group (target tracking, step, scheduled)</td><td>Automatic concurrency scaling</td><td>HPA (Horizontal Pod Autoscaler), Karpenter/Cluster Autoscaler for nodes</td></tr>
-                  <tr><td><strong>Max Duration</strong></td><td>Unlimited</td><td>15 minutes</td><td>Unlimited</td></tr>
-                  <tr><td><strong>Best For</strong></td><td>Long-running, stateful workloads</td><td>Short, event-driven, bursty workloads</td><td>Containerized microservices at scale</td></tr>
-                  <tr><td><strong>Operational Overhead</strong></td><td>Medium (patch, AMI management)</td><td>Lowest (fully managed)</td><td>Highest (cluster management, networking)</td></tr>
+                  <tr>
+                    <td><strong>Scaling Unit</strong></td>
+                    <td>VM instance</td>
+                    <td>Function invocation</td>
+                    <td>Pod (container)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scaling Speed</strong></td>
+                    <td>Minutes (launch new EC2)</td>
+                    <td>Milliseconds (concurrent executions)</td>
+                    <td>Seconds (new pods) to minutes (new nodes)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scaling Mechanism</strong></td>
+                    <td>Auto Scaling Group (target tracking, step, scheduled)</td>
+                    <td>Automatic concurrency scaling</td>
+                    <td>HPA (Horizontal Pod Autoscaler), Karpenter/Cluster Autoscaler for nodes</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Max Duration</strong></td>
+                    <td>Unlimited</td>
+                    <td>15 minutes</td>
+                    <td>Unlimited</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Best For</strong></td>
+                    <td>Long-running, stateful workloads</td>
+                    <td>Short, event-driven, bursty workloads</td>
+                    <td>Containerized microservices at scale</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Operational Overhead</strong></td>
+                    <td>Medium (patch, AMI management)</td>
+                    <td>Lowest (fully managed)</td>
+                    <td>Highest (cluster management, networking)</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -612,14 +1010,21 @@
               <p>EKS scaling operates at two levels:</p>
               <h4>Pod-Level Scaling</h4>
               <ul>
-                <li><strong>Horizontal Pod Autoscaler (HPA)</strong> — Adds or removes pod replicas based on CPU, memory, or custom metrics. Reacts in seconds.</li>
-                <li><strong>Vertical Pod Autoscaler (VPA)</strong> — Adjusts CPU/memory requests and limits for individual pods. Requires pod restart.</li>
-                <li><strong>KEDA (Kubernetes Event Driven Autoscaling)</strong> — Scales pods based on external event sources (SQS queue depth, Kafka lag, etc.).</li>
+                <li><strong>Horizontal Pod Autoscaler (HPA)</strong> — Adds or removes pod replicas based on CPU,
+                  memory, or custom metrics. Reacts in seconds.</li>
+                <li><strong>Vertical Pod Autoscaler (VPA)</strong> — Adjusts CPU/memory requests and limits for
+                  individual pods. Requires pod restart.</li>
+                <li><strong>KEDA (Kubernetes Event Driven Autoscaling)</strong> — Scales pods based on external event
+                  sources (SQS queue depth, Kafka lag, etc.).</li>
               </ul>
               <h4>Node-Level Scaling</h4>
               <ul>
-                <li><strong>Cluster Autoscaler</strong> — Watches for pods that can't be scheduled due to insufficient resources, then adds nodes from pre-configured Auto Scaling Groups. Limited to predefined instance types.</li>
-                <li><strong>Karpenter</strong> — Next-generation node provisioner. Directly provisions the right-sized EC2 instance for pending pods. No need for pre-configured node groups. Faster, more efficient, and supports consolidation.</li>
+                <li><strong>Cluster Autoscaler</strong> — Watches for pods that can't be scheduled due to insufficient
+                  resources, then adds nodes from pre-configured Auto Scaling Groups. Limited to predefined instance
+                  types.</li>
+                <li><strong>Karpenter</strong> — Next-generation node provisioner. Directly provisions the right-sized
+                  EC2 instance for pending pods. No need for pre-configured node groups. Faster, more efficient, and
+                  supports consolidation.</li>
               </ul>
             </div>
           </article>
@@ -628,11 +1033,17 @@
             <div class="topic-body">
               <p>Karpenter simplifies EKS upgrades by managing node lifecycle automatically:</p>
               <ol>
-                <li><strong>Update the EKS control plane</strong> — Upgrade the Kubernetes version of the EKS cluster (managed by AWS).</li>
-                <li><strong>Update the Karpenter NodePool AMI</strong> — Change the <code>amiFamily</code> or AMI selector in the Karpenter NodePool spec to point to the new Kubernetes version AMI.</li>
-                <li><strong>Karpenter handles the rest</strong> — Karpenter detects nodes running outdated AMIs and uses its <strong>drift detection</strong> feature. It automatically cordons old nodes, gracefully drains pods, launches new nodes with the updated AMI, and schedules pods onto them.</li>
+                <li><strong>Update the EKS control plane</strong> — Upgrade the Kubernetes version of the EKS cluster
+                  (managed by AWS).</li>
+                <li><strong>Update the Karpenter NodePool AMI</strong> — Change the <code>amiFamily</code> or AMI
+                  selector in the Karpenter NodePool spec to point to the new Kubernetes version AMI.</li>
+                <li><strong>Karpenter handles the rest</strong> — Karpenter detects nodes running outdated AMIs and uses
+                  its <strong>drift detection</strong> feature. It automatically cordons old nodes, gracefully drains
+                  pods, launches new nodes with the updated AMI, and schedules pods onto them.</li>
               </ol>
-              <p><strong>Key advantage over Cluster Autoscaler:</strong> No need to manually manage multiple managed node groups, roll out updates ASG-by-ASG, or deal with PodDisruptionBudgets manually. Karpenter handles disruption budgets, pod rescheduling, and node replacement in one workflow.</p>
+              <p><strong>Key advantage over Cluster Autoscaler:</strong> No need to manually manage multiple managed
+                node groups, roll out updates ASG-by-ASG, or deal with PodDisruptionBudgets manually. Karpenter handles
+                disruption budgets, pod rescheduling, and node replacement in one workflow.</p>
             </div>
           </article>
           <article id="eks-karpenter-advanced" class="topic-block">
@@ -640,15 +1051,21 @@
             <div class="topic-body">
               <h4>Disruption Controls</h4>
               <ul>
-                <li><strong>Consolidation</strong> — Karpenter continuously watches for underutilized nodes. It deletes or replaces nodes when pods can be rescheduled on fewer/smaller instances, reducing cost.</li>
-                <li><strong>Expiration (TTL)</strong> — Set <code>expireAfter</code> on NodePool to force node recycling after a time period, ensuring nodes stay fresh and up-to-date.</li>
-                <li><strong>Drift Detection</strong> — Karpenter detects when a node's configuration no longer matches the NodePool spec (AMI, instance type, labels) and replaces it.</li>
+                <li><strong>Consolidation</strong> — Karpenter continuously watches for underutilized nodes. It deletes
+                  or replaces nodes when pods can be rescheduled on fewer/smaller instances, reducing cost.</li>
+                <li><strong>Expiration (TTL)</strong> — Set <code>expireAfter</code> on NodePool to force node recycling
+                  after a time period, ensuring nodes stay fresh and up-to-date.</li>
+                <li><strong>Drift Detection</strong> — Karpenter detects when a node's configuration no longer matches
+                  the NodePool spec (AMI, instance type, labels) and replaces it.</li>
               </ul>
               <h4>NodePool Configuration</h4>
               <ul>
-                <li><strong>Multiple NodePools</strong> — Create separate NodePools for different workload types (e.g., GPU workloads, spot-tolerant batch jobs, on-demand critical services).</li>
-                <li><strong>Instance Type Flexibility</strong> — Specify broad requirements (CPU, memory, architecture) and let Karpenter choose the cheapest matching instance.</li>
-                <li><strong>Spot &amp; On-Demand Mix</strong> — Use <code>capacityType</code> to mix Spot and On-Demand within the same NodePool with weighted priorities.</li>
+                <li><strong>Multiple NodePools</strong> — Create separate NodePools for different workload types (e.g.,
+                  GPU workloads, spot-tolerant batch jobs, on-demand critical services).</li>
+                <li><strong>Instance Type Flexibility</strong> — Specify broad requirements (CPU, memory, architecture)
+                  and let Karpenter choose the cheapest matching instance.</li>
+                <li><strong>Spot &amp; On-Demand Mix</strong> — Use <code>capacityType</code> to mix Spot and On-Demand
+                  within the same NodePool with weighted priorities.</li>
               </ul>
             </div>
           </article>
@@ -657,12 +1074,19 @@
             <div class="topic-body">
               <p>The journey of a containerized application from a developer's laptop to production in the cloud:</p>
               <ol>
-                <li><strong>Write Code + Dockerfile</strong> — Developer writes application code and a Dockerfile that defines the runtime environment, dependencies, and startup command.</li>
-                <li><strong>Build Container Image</strong> — Run <code>docker build</code> locally to create a container image from the Dockerfile.</li>
-                <li><strong>Test Locally</strong> — Run <code>docker run</code> to test the container on the local machine. Verify the application works as expected.</li>
-                <li><strong>Push to Registry</strong> — Push the image to <strong>Amazon ECR</strong> (Elastic Container Registry) so it's available in the cloud.</li>
-                <li><strong>Deploy to Orchestrator</strong> — Deploy the container image to <strong>Amazon EKS</strong> (Kubernetes), <strong>ECS</strong> (Elastic Container Service), or <strong>Fargate</strong> (serverless containers) using manifest YAMLs or task definitions.</li>
-                <li><strong>Run in Production</strong> — The orchestrator manages scheduling, scaling, health checks, rolling updates, and self-healing across multiple nodes and AZs.</li>
+                <li><strong>Write Code + Dockerfile</strong> — Developer writes application code and a Dockerfile that
+                  defines the runtime environment, dependencies, and startup command.</li>
+                <li><strong>Build Container Image</strong> — Run <code>docker build</code> locally to create a container
+                  image from the Dockerfile.</li>
+                <li><strong>Test Locally</strong> — Run <code>docker run</code> to test the container on the local
+                  machine. Verify the application works as expected.</li>
+                <li><strong>Push to Registry</strong> — Push the image to <strong>Amazon ECR</strong> (Elastic Container
+                  Registry) so it's available in the cloud.</li>
+                <li><strong>Deploy to Orchestrator</strong> — Deploy the container image to <strong>Amazon EKS</strong>
+                  (Kubernetes), <strong>ECS</strong> (Elastic Container Service), or <strong>Fargate</strong>
+                  (serverless containers) using manifest YAMLs or task definitions.</li>
+                <li><strong>Run in Production</strong> — The orchestrator manages scheduling, scaling, health checks,
+                  rolling updates, and self-healing across multiple nodes and AZs.</li>
               </ol>
             </div>
           </article>
@@ -671,15 +1095,20 @@
             <div class="topic-body">
               <p>Understanding the hierarchy in Kubernetes:</p>
               <ul>
-                <li><strong>Cluster</strong> — The top-level unit. A cluster is a set of nodes managed by the Kubernetes control plane.</li>
-                <li><strong>Node</strong> — A worker machine (EC2 instance in EKS). Nodes provide compute resources (CPU, memory) for running pods.</li>
-                <li><strong>Pod</strong> — The smallest deployable unit in Kubernetes. A pod wraps one or more containers that share the same network namespace (IP address) and storage volumes.</li>
-                <li><strong>Container</strong> — The actual running application process. A container runs from a container image (e.g., from ECR).</li>
+                <li><strong>Cluster</strong> — The top-level unit. A cluster is a set of nodes managed by the Kubernetes
+                  control plane.</li>
+                <li><strong>Node</strong> — A worker machine (EC2 instance in EKS). Nodes provide compute resources
+                  (CPU, memory) for running pods.</li>
+                <li><strong>Pod</strong> — The smallest deployable unit in Kubernetes. A pod wraps one or more
+                  containers that share the same network namespace (IP address) and storage volumes.</li>
+                <li><strong>Container</strong> — The actual running application process. A container runs from a
+                  container image (e.g., from ECR).</li>
               </ul>
               <h4>Key Relationships</h4>
               <ul>
                 <li>One <strong>Node</strong> runs many <strong>Pods</strong></li>
-                <li>One <strong>Pod</strong> typically runs one <strong>Container</strong> (but can run multiple — see sidecar pattern)</li>
+                <li>One <strong>Pod</strong> typically runs one <strong>Container</strong> (but can run multiple — see
+                  sidecar pattern)</li>
                 <li>All containers in a pod share the same IP address, ports, and volumes</li>
                 <li>Pods are ephemeral — they can be killed and rescheduled on different nodes at any time</li>
               </ul>
@@ -690,25 +1119,37 @@
             <div class="topic-body">
               <p>Karpenter reduces costs through intelligent node provisioning and continuous optimization:</p>
               <ol>
-                <li><strong>Right-Sizing</strong> — Karpenter selects the optimal EC2 instance type for the pending pod's resource requirements. Instead of using a pre-configured m5.xlarge for a pod that needs 0.5 vCPU, Karpenter might launch a smaller t3.medium.</li>
-                <li><strong>Bin Packing</strong> — Karpenter packs pods tightly onto nodes to maximize utilization. Less wasted CPU/memory per node means fewer nodes needed overall.</li>
-                <li><strong>Consolidation</strong> — Karpenter continuously monitors running nodes. If pods can be reshuffled onto fewer or cheaper nodes, it automatically migrates them and terminates the excess nodes.</li>
-                <li><strong>Spot Instance Integration</strong> — Karpenter natively supports Spot instances and can fall back to On-Demand when Spot capacity is unavailable. Spot can save up to 90% vs On-Demand pricing.</li>
-                <li><strong>No Idle Node Groups</strong> — Unlike Cluster Autoscaler (which requires pre-configured ASGs that might sit idle), Karpenter provisions nodes on-demand and removes them when empty.</li>
+                <li><strong>Right-Sizing</strong> — Karpenter selects the optimal EC2 instance type for the pending
+                  pod's resource requirements. Instead of using a pre-configured m5.xlarge for a pod that needs 0.5
+                  vCPU, Karpenter might launch a smaller t3.medium.</li>
+                <li><strong>Bin Packing</strong> — Karpenter packs pods tightly onto nodes to maximize utilization. Less
+                  wasted CPU/memory per node means fewer nodes needed overall.</li>
+                <li><strong>Consolidation</strong> — Karpenter continuously monitors running nodes. If pods can be
+                  reshuffled onto fewer or cheaper nodes, it automatically migrates them and terminates the excess
+                  nodes.</li>
+                <li><strong>Spot Instance Integration</strong> — Karpenter natively supports Spot instances and can fall
+                  back to On-Demand when Spot capacity is unavailable. Spot can save up to 90% vs On-Demand pricing.
+                </li>
+                <li><strong>No Idle Node Groups</strong> — Unlike Cluster Autoscaler (which requires pre-configured ASGs
+                  that might sit idle), Karpenter provisions nodes on-demand and removes them when empty.</li>
               </ol>
             </div>
           </article>
           <article id="eda-kubernetes" class="topic-block">
             <h2>EDA with Kubernetes</h2>
             <div class="topic-body">
-              <p>Running event-driven architectures on Kubernetes combines the decoupling benefits of EDA with the orchestration power of K8s:</p>
+              <p>Running event-driven architectures on Kubernetes combines the decoupling benefits of EDA with the
+                orchestration power of K8s:</p>
               <h4>Pattern</h4>
               <p>Event Producer &rarr; Message Broker (SQS/SNS/Kafka) &rarr; Kubernetes Consumer Pods</p>
               <h4>Key Components</h4>
               <ul>
-                <li><strong>KEDA (Kubernetes Event Driven Autoscaler)</strong> — Scales consumer pods to zero when there are no messages, and scales up based on queue depth or event lag. Prevents idle resource costs.</li>
-                <li><strong>Consumer Pods</strong> — Long-running pods that poll SQS, subscribe to SNS, or consume from Kafka topics. Each pod processes events independently.</li>
-                <li><strong>DLQ (Dead Letter Queue)</strong> — Messages that fail processing after max retries are sent to a DLQ for investigation and replay.</li>
+                <li><strong>KEDA (Kubernetes Event Driven Autoscaler)</strong> — Scales consumer pods to zero when there
+                  are no messages, and scales up based on queue depth or event lag. Prevents idle resource costs.</li>
+                <li><strong>Consumer Pods</strong> — Long-running pods that poll SQS, subscribe to SNS, or consume from
+                  Kafka topics. Each pod processes events independently.</li>
+                <li><strong>DLQ (Dead Letter Queue)</strong> — Messages that fail processing after max retries are sent
+                  to a DLQ for investigation and replay.</li>
               </ul>
               <h4>Why Kubernetes for EDA?</h4>
               <ul>
@@ -725,14 +1166,17 @@
               <h4>Architecture Flow</h4>
               <ol>
                 <li><strong>Producer</strong> publishes events to an <strong>SNS Topic</strong>.</li>
-                <li><strong>SNS</strong> fans out to multiple <strong>SQS Queues</strong> (one per consumer type), with message filtering to route events to the right queue.</li>
+                <li><strong>SNS</strong> fans out to multiple <strong>SQS Queues</strong> (one per consumer type), with
+                  message filtering to route events to the right queue.</li>
                 <li><strong>Kubernetes pods</strong> on EKS poll their respective SQS queues and process messages.</li>
-                <li><strong>KEDA</strong> monitors each SQS queue's <code>ApproximateNumberOfMessages</code> and scales the consumer pods accordingly — scaling to zero when the queue is empty.</li>
+                <li><strong>KEDA</strong> monitors each SQS queue's <code>ApproximateNumberOfMessages</code> and scales
+                  the consumer pods accordingly — scaling to zero when the queue is empty.</li>
               </ol>
               <h4>Why SNS + SQS (not just SQS)?</h4>
               <ul>
                 <li><strong>SNS</strong> provides fan-out — one event goes to multiple subscribers</li>
-                <li><strong>SQS</strong> provides buffering — messages are retained even if the consumer is down, with built-in retry and DLQ</li>
+                <li><strong>SQS</strong> provides buffering — messages are retained even if the consumer is down, with
+                  built-in retry and DLQ</li>
                 <li>Together they decouple producers from consumers and enable independent scaling</li>
               </ul>
             </div>
@@ -740,16 +1184,22 @@
           <article id="eks-auto" class="topic-block">
             <h2>EKS Auto (Re:Invent 2024)</h2>
             <div class="topic-body">
-              <p>EKS Auto Mode, announced at Re:Invent 2024, is a fully managed experience for Amazon EKS that automates cluster infrastructure management:</p>
+              <p>EKS Auto Mode, announced at Re:Invent 2024, is a fully managed experience for Amazon EKS that automates
+                cluster infrastructure management:</p>
               <h4>What EKS Auto Manages</h4>
               <ul>
-                <li><strong>Compute</strong> — Automatically provisions and right-sizes EC2 instances (powered by Karpenter). No need to configure node groups or instance types.</li>
-                <li><strong>Networking</strong> — Automatically configures VPC CNI, load balancers, and DNS for services.</li>
+                <li><strong>Compute</strong> — Automatically provisions and right-sizes EC2 instances (powered by
+                  Karpenter). No need to configure node groups or instance types.</li>
+                <li><strong>Networking</strong> — Automatically configures VPC CNI, load balancers, and DNS for
+                  services.</li>
                 <li><strong>Storage</strong> — Automatically provisions EBS volumes via CSI drivers.</li>
-                <li><strong>Upgrades</strong> — Automatically upgrades the Kubernetes version, AMIs, and add-ons with minimal disruption.</li>
+                <li><strong>Upgrades</strong> — Automatically upgrades the Kubernetes version, AMIs, and add-ons with
+                  minimal disruption.</li>
               </ul>
               <h4>Key Benefit</h4>
-              <p>EKS Auto eliminates the operational burden of managing Kubernetes infrastructure. You focus on deploying applications; AWS handles the cluster. It's the "serverless experience" for Kubernetes — you just deploy pods and EKS Auto handles everything underneath.</p>
+              <p>EKS Auto eliminates the operational burden of managing Kubernetes infrastructure. You focus on
+                deploying applications; AWS handles the cluster. It's the "serverless experience" for Kubernetes — you
+                just deploy pods and EKS Auto handles everything underneath.</p>
             </div>
           </article>
           <article id="docker-vs-k8s" class="topic-block">
@@ -757,56 +1207,109 @@
             <div class="topic-body">
               <p>Docker and Kubernetes solve different problems and work together, not against each other:</p>
               <table class="topic-table">
-                <thead><tr><th>Aspect</th><th>Docker</th><th>Kubernetes</th></tr></thead>
+                <thead>
+                  <tr>
+                    <th>Aspect</th>
+                    <th>Docker</th>
+                    <th>Kubernetes</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr><td><strong>What It Is</strong></td><td>Container runtime — builds and runs containers</td><td>Container orchestrator — manages containers at scale</td></tr>
-                  <tr><td><strong>Scope</strong></td><td>Single host (one machine)</td><td>Multi-host cluster (many machines)</td></tr>
-                  <tr><td><strong>Scaling</strong></td><td>Manual (<code>docker run</code> more containers)</td><td>Automatic (HPA, Karpenter)</td></tr>
-                  <tr><td><strong>Self-Healing</strong></td><td>None — if container crashes, it stays down</td><td>Automatic restart, reschedule to healthy nodes</td></tr>
-                  <tr><td><strong>Load Balancing</strong></td><td>Not built-in</td><td>Built-in Service + Ingress</td></tr>
-                  <tr><td><strong>Rolling Updates</strong></td><td>Manual</td><td>Built-in Deployment strategies (rolling, blue-green)</td></tr>
-                  <tr><td><strong>Use Case</strong></td><td>Development, testing, single-server apps</td><td>Production workloads at scale</td></tr>
+                  <tr>
+                    <td><strong>What It Is</strong></td>
+                    <td>Container runtime — builds and runs containers</td>
+                    <td>Container orchestrator — manages containers at scale</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scope</strong></td>
+                    <td>Single host (one machine)</td>
+                    <td>Multi-host cluster (many machines)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scaling</strong></td>
+                    <td>Manual (<code>docker run</code> more containers)</td>
+                    <td>Automatic (HPA, Karpenter)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Self-Healing</strong></td>
+                    <td>None — if container crashes, it stays down</td>
+                    <td>Automatic restart, reschedule to healthy nodes</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Load Balancing</strong></td>
+                    <td>Not built-in</td>
+                    <td>Built-in Service + Ingress</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Rolling Updates</strong></td>
+                    <td>Manual</td>
+                    <td>Built-in Deployment strategies (rolling, blue-green)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Use Case</strong></td>
+                    <td>Development, testing, single-server apps</td>
+                    <td>Production workloads at scale</td>
+                  </tr>
                 </tbody>
               </table>
-              <p><strong>Think of it this way:</strong> Docker is like a shipping container. Kubernetes is the port that manages thousands of shipping containers — scheduling, routing, stacking, and replacing them automatically.</p>
+              <p><strong>Think of it this way:</strong> Docker is like a shipping container. Kubernetes is the port that
+                manages thousands of shipping containers — scheduling, routing, stacking, and replacing them
+                automatically.</p>
             </div>
           </article>
           <article id="pod-sidecar" class="topic-block">
             <h2>Pod Container Sidecar</h2>
             <div class="topic-body">
-              <p>The sidecar pattern runs a secondary container alongside the main application container within the same pod. Both containers share the same network and storage.</p>
+              <p>The sidecar pattern runs a secondary container alongside the main application container within the same
+                pod. Both containers share the same network and storage.</p>
               <h4>Common Sidecar Use Cases</h4>
               <ul>
-                <li><strong>Logging / Log Forwarding</strong> — Sidecar container (e.g., Fluentbit) reads log files written by the main container and ships them to CloudWatch, Elasticsearch, or Splunk.</li>
-                <li><strong>Service Mesh Proxy</strong> — Envoy proxy sidecar (used by Istio, App Mesh) handles mTLS, traffic routing, retries, and observability without changing application code.</li>
-                <li><strong>Monitoring Agent</strong> — Sidecar collects metrics and traces (e.g., ADOT, Datadog agent) and exports them to monitoring backends.</li>
-                <li><strong>Secret Injection</strong> — Sidecar fetches secrets from AWS Secrets Manager or Vault and mounts them as files for the main container.</li>
+                <li><strong>Logging / Log Forwarding</strong> — Sidecar container (e.g., Fluentbit) reads log files
+                  written by the main container and ships them to CloudWatch, Elasticsearch, or Splunk.</li>
+                <li><strong>Service Mesh Proxy</strong> — Envoy proxy sidecar (used by Istio, App Mesh) handles mTLS,
+                  traffic routing, retries, and observability without changing application code.</li>
+                <li><strong>Monitoring Agent</strong> — Sidecar collects metrics and traces (e.g., ADOT, Datadog agent)
+                  and exports them to monitoring backends.</li>
+                <li><strong>Secret Injection</strong> — Sidecar fetches secrets from AWS Secrets Manager or Vault and
+                  mounts them as files for the main container.</li>
               </ul>
               <h4>Why Sidecar Instead of Building It In?</h4>
               <ul>
-                <li><strong>Separation of concerns</strong> — Application code stays clean; cross-cutting concerns live in the sidecar.</li>
+                <li><strong>Separation of concerns</strong> — Application code stays clean; cross-cutting concerns live
+                  in the sidecar.</li>
                 <li><strong>Reusability</strong> — Same sidecar image works across all microservices.</li>
-                <li><strong>Independent updates</strong> — Update the sidecar without redeploying the main application.</li>
+                <li><strong>Independent updates</strong> — Update the sidecar without redeploying the main application.
+                </li>
               </ul>
             </div>
           </article>
           <article id="karpenter-binpack" class="topic-block">
             <h2>Karpenter Bin Pack Granular Control</h2>
             <div class="topic-body">
-              <p>Karpenter's bin packing decides how tightly pods are packed onto nodes to maximize resource utilization:</p>
+              <p>Karpenter's bin packing decides how tightly pods are packed onto nodes to maximize resource
+                utilization:</p>
               <h4>Consolidation Policies</h4>
               <ul>
-                <li><strong>WhenUnderutilized</strong> — Karpenter replaces nodes when it detects pods can fit on fewer or cheaper nodes. Aggressive cost savings but more pod disruption.</li>
-                <li><strong>WhenEmpty</strong> — Karpenter only removes nodes when all pods have been drained (safest, least disruptive, but less cost-efficient).</li>
+                <li><strong>WhenUnderutilized</strong> — Karpenter replaces nodes when it detects pods can fit on fewer
+                  or cheaper nodes. Aggressive cost savings but more pod disruption.</li>
+                <li><strong>WhenEmpty</strong> — Karpenter only removes nodes when all pods have been drained (safest,
+                  least disruptive, but less cost-efficient).</li>
               </ul>
               <h4>Granular Controls</h4>
               <ul>
-                <li><strong>Pod resource requests</strong> — Set accurate CPU/memory requests so Karpenter can calculate true utilization and choose the right instance size.</li>
-                <li><strong>Topology spread constraints</strong> — Force pods to spread across AZs or nodes for high availability, even if bin packing would prefer a single node.</li>
-                <li><strong>Node affinity / anti-affinity</strong> — Control which pods can or cannot share the same node.</li>
-                <li><strong>Do-not-disrupt annotation</strong> — Mark critical pods with <code>karpenter.sh/do-not-disrupt: "true"</code> to prevent Karpenter from evicting them during consolidation.</li>
+                <li><strong>Pod resource requests</strong> — Set accurate CPU/memory requests so Karpenter can calculate
+                  true utilization and choose the right instance size.</li>
+                <li><strong>Topology spread constraints</strong> — Force pods to spread across AZs or nodes for high
+                  availability, even if bin packing would prefer a single node.</li>
+                <li><strong>Node affinity / anti-affinity</strong> — Control which pods can or cannot share the same
+                  node.</li>
+                <li><strong>Do-not-disrupt annotation</strong> — Mark critical pods with
+                  <code>karpenter.sh/do-not-disrupt: "true"</code> to prevent Karpenter from evicting them during
+                  consolidation.
+                </li>
               </ul>
-              <p><strong>Best practice:</strong> Set accurate resource requests, use topology constraints for HA, and let Karpenter handle the rest. Over-requesting resources defeats the purpose of bin packing.</p>
+              <p><strong>Best practice:</strong> Set accurate resource requests, use topology constraints for HA, and
+                let Karpenter handle the rest. Over-requesting resources defeats the purpose of bin packing.</p>
             </div>
           </article>
           <article id="k8s-tech-stack" class="topic-block">
@@ -814,17 +1317,59 @@
             <div class="topic-body">
               <p>A typical production-ready Kubernetes tech stack on AWS EKS:</p>
               <table class="topic-table">
-                <thead><tr><th>Layer</th><th>Component</th><th>Tools</th></tr></thead>
+                <thead>
+                  <tr>
+                    <th>Layer</th>
+                    <th>Component</th>
+                    <th>Tools</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr><td><strong>Ingress</strong></td><td>External traffic routing</td><td>AWS ALB Ingress Controller, Nginx Ingress, Traefik</td></tr>
-                  <tr><td><strong>Service Mesh</strong></td><td>Service-to-service communication, mTLS, traffic management</td><td>Istio, Linkerd, AWS App Mesh</td></tr>
-                  <tr><td><strong>CI/CD</strong></td><td>Build and deploy pipelines</td><td>ArgoCD (GitOps), Jenkins, GitHub Actions, Flux</td></tr>
-                  <tr><td><strong>Observability</strong></td><td>Metrics, logs, traces</td><td>Prometheus + Grafana, Fluentbit + CloudWatch, Jaeger / X-Ray (ADOT)</td></tr>
-                  <tr><td><strong>Scaling</strong></td><td>Pod and node autoscaling</td><td>HPA, KEDA, Karpenter</td></tr>
-                  <tr><td><strong>Security</strong></td><td>Policy enforcement, scanning</td><td>OPA Gatekeeper, Trivy, Kube-bench, Falco</td></tr>
-                  <tr><td><strong>Secrets</strong></td><td>Secret management</td><td>AWS Secrets Manager CSI Driver, External Secrets Operator</td></tr>
-                  <tr><td><strong>Storage</strong></td><td>Persistent volumes</td><td>EBS CSI Driver, EFS CSI Driver</td></tr>
-                  <tr><td><strong>Networking</strong></td><td>Pod networking</td><td>AWS VPC CNI, Calico (network policies)</td></tr>
+                  <tr>
+                    <td><strong>Ingress</strong></td>
+                    <td>External traffic routing</td>
+                    <td>AWS ALB Ingress Controller, Nginx Ingress, Traefik</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Service Mesh</strong></td>
+                    <td>Service-to-service communication, mTLS, traffic management</td>
+                    <td>Istio, Linkerd, AWS App Mesh</td>
+                  </tr>
+                  <tr>
+                    <td><strong>CI/CD</strong></td>
+                    <td>Build and deploy pipelines</td>
+                    <td>ArgoCD (GitOps), Jenkins, GitHub Actions, Flux</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Observability</strong></td>
+                    <td>Metrics, logs, traces</td>
+                    <td>Prometheus + Grafana, Fluentbit + CloudWatch, Jaeger / X-Ray (ADOT)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scaling</strong></td>
+                    <td>Pod and node autoscaling</td>
+                    <td>HPA, KEDA, Karpenter</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Security</strong></td>
+                    <td>Policy enforcement, scanning</td>
+                    <td>OPA Gatekeeper, Trivy, Kube-bench, Falco</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Secrets</strong></td>
+                    <td>Secret management</td>
+                    <td>AWS Secrets Manager CSI Driver, External Secrets Operator</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Storage</strong></td>
+                    <td>Persistent volumes</td>
+                    <td>EBS CSI Driver, EFS CSI Driver</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Networking</strong></td>
+                    <td>Pod networking</td>
+                    <td>AWS VPC CNI, Calico (network policies)</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -851,11 +1396,19 @@
             <div class="topic-body">
               <p>Generative AI systems are built in three layers:</p>
               <ol>
-                <li><strong>Infrastructure Layer</strong> — The compute foundation that trains and runs models. Includes GPU/accelerator instances (e.g., EC2 P5, Trainium, Inferentia), storage (S3 for training data), and networking. AWS services: Amazon SageMaker, EC2 GPU instances, AWS Trainium chips.</li>
-                <li><strong>Model Layer</strong> — The foundation models (FMs) themselves. These are large pre-trained models (LLMs) like Anthropic Claude, Meta Llama, Amazon Titan, Stability AI. Access via <strong>Amazon Bedrock</strong> (managed, serverless access to multiple FMs) or self-host on SageMaker.</li>
-                <li><strong>Application Layer</strong> — The end-user-facing applications built on top of models. Includes prompt engineering, RAG pipelines, agents, chatbots, and code generators. AWS services: Amazon Q (AI assistant), PartyRock (no-code AI app builder), Bedrock Agents.</li>
+                <li><strong>Infrastructure Layer</strong> — The compute foundation that trains and runs models. Includes
+                  GPU/accelerator instances (e.g., EC2 P5, Trainium, Inferentia), storage (S3 for training data), and
+                  networking. AWS services: Amazon SageMaker, EC2 GPU instances, AWS Trainium chips.</li>
+                <li><strong>Model Layer</strong> — The foundation models (FMs) themselves. These are large pre-trained
+                  models (LLMs) like Anthropic Claude, Meta Llama, Amazon Titan, Stability AI. Access via <strong>Amazon
+                    Bedrock</strong> (managed, serverless access to multiple FMs) or self-host on SageMaker.</li>
+                <li><strong>Application Layer</strong> — The end-user-facing applications built on top of models.
+                  Includes prompt engineering, RAG pipelines, agents, chatbots, and code generators. AWS services:
+                  Amazon Q (AI assistant), PartyRock (no-code AI app builder), Bedrock Agents.</li>
               </ol>
-              <p><strong>Key insight for interviews:</strong> Most companies operate at the Application Layer — consuming pre-trained models via APIs (Bedrock) rather than training their own. Understanding RAG, prompt engineering, and model selection is more relevant than infrastructure for most roles.</p>
+              <p><strong>Key insight for interviews:</strong> Most companies operate at the Application Layer —
+                consuming pre-trained models via APIs (Bedrock) rather than training their own. Understanding RAG,
+                prompt engineering, and model selection is more relevant than infrastructure for most roles.</p>
             </div>
           </article>
           <article id="prompt-rag-finetuning" class="topic-block">
@@ -863,27 +1416,59 @@
             <div class="topic-body">
               <p>Three techniques to customize LLM behavior, each with different trade-offs:</p>
               <table class="topic-table">
-                <thead><tr><th>Technique</th><th>How It Works</th><th>Cost</th><th>Best For</th></tr></thead>
+                <thead>
+                  <tr>
+                    <th>Technique</th>
+                    <th>How It Works</th>
+                    <th>Cost</th>
+                    <th>Best For</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr><td><strong>Prompt Engineering</strong></td><td>Craft instructions, examples, and context in the prompt itself. No model changes.</td><td>Lowest — just API calls</td><td>Quick customization, general tasks, prototyping</td></tr>
-                  <tr><td><strong>RAG (Retrieval Augmented Generation)</strong></td><td>Retrieve relevant documents from a knowledge base (vector DB) and inject them into the prompt as context before the model generates a response.</td><td>Medium — requires vector DB + embedding</td><td>Domain-specific Q&amp;A, up-to-date knowledge, reducing hallucinations</td></tr>
-                  <tr><td><strong>Fine Tuning</strong></td><td>Retrain the model on your custom dataset to permanently change its behavior and knowledge.</td><td>Highest — GPU compute for training</td><td>Specialized tone/style, domain-specific terminology, consistent structured output</td></tr>
+                  <tr>
+                    <td><strong>Prompt Engineering</strong></td>
+                    <td>Craft instructions, examples, and context in the prompt itself. No model changes.</td>
+                    <td>Lowest — just API calls</td>
+                    <td>Quick customization, general tasks, prototyping</td>
+                  </tr>
+                  <tr>
+                    <td><strong>RAG (Retrieval Augmented Generation)</strong></td>
+                    <td>Retrieve relevant documents from a knowledge base (vector DB) and inject them into the prompt as
+                      context before the model generates a response.</td>
+                    <td>Medium — requires vector DB + embedding</td>
+                    <td>Domain-specific Q&amp;A, up-to-date knowledge, reducing hallucinations</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Fine Tuning</strong></td>
+                    <td>Retrain the model on your custom dataset to permanently change its behavior and knowledge.</td>
+                    <td>Highest — GPU compute for training</td>
+                    <td>Specialized tone/style, domain-specific terminology, consistent structured output</td>
+                  </tr>
                 </tbody>
               </table>
-              <p><strong>Decision guide:</strong> Start with Prompt Engineering. If the model lacks domain knowledge, add RAG. Only fine-tune when you need the model to fundamentally change its behavior or learn a specialized skill.</p>
+              <p><strong>Decision guide:</strong> Start with Prompt Engineering. If the model lacks domain knowledge,
+                add RAG. Only fine-tune when you need the model to fundamentally change its behavior or learn a
+                specialized skill.</p>
             </div>
           </article>
           <article id="rag-bedrock" class="topic-block">
             <h2>RAG with Bedrock</h2>
             <div class="topic-body">
-              <p>Retrieval Augmented Generation (RAG) with Amazon Bedrock lets you ground LLM responses in your own data:</p>
+              <p>Retrieval Augmented Generation (RAG) with Amazon Bedrock lets you ground LLM responses in your own
+                data:</p>
               <h4>Architecture Flow</h4>
               <ol>
-                <li><strong>Ingest Documents</strong> — Upload your knowledge base (PDFs, web pages, internal docs) to <strong>Amazon S3</strong>.</li>
-                <li><strong>Chunk &amp; Embed</strong> — Bedrock Knowledge Bases automatically chunks documents and converts them into vector embeddings using an embedding model (e.g., Amazon Titan Embeddings).</li>
-                <li><strong>Store in Vector DB</strong> — Embeddings are stored in a vector database (<strong>Amazon OpenSearch Serverless</strong>, Pinecone, or Amazon Aurora with pgvector).</li>
-                <li><strong>User Query</strong> — When a user asks a question, the query is embedded and a similarity search retrieves the most relevant document chunks from the vector DB.</li>
-                <li><strong>Augmented Prompt</strong> — The retrieved chunks are injected into the prompt as context, and the foundation model (e.g., Claude, Titan) generates a grounded response.</li>
+                <li><strong>Ingest Documents</strong> — Upload your knowledge base (PDFs, web pages, internal docs) to
+                  <strong>Amazon S3</strong>.
+                </li>
+                <li><strong>Chunk &amp; Embed</strong> — Bedrock Knowledge Bases automatically chunks documents and
+                  converts them into vector embeddings using an embedding model (e.g., Amazon Titan Embeddings).</li>
+                <li><strong>Store in Vector DB</strong> — Embeddings are stored in a vector database (<strong>Amazon
+                    OpenSearch Serverless</strong>, Pinecone, or Amazon Aurora with pgvector).</li>
+                <li><strong>User Query</strong> — When a user asks a question, the query is embedded and a similarity
+                  search retrieves the most relevant document chunks from the vector DB.</li>
+                <li><strong>Augmented Prompt</strong> — The retrieved chunks are injected into the prompt as context,
+                  and the foundation model (e.g., Claude, Titan) generates a grounded response.</li>
               </ol>
               <h4>Why RAG?</h4>
               <ul>
@@ -897,16 +1482,24 @@
           <article id="genai-multi-model" class="topic-block">
             <h2>Gen AI Multi Model Invocation</h2>
             <div class="topic-body">
-              <p>Multi-model invocation is the practice of using multiple foundation models in a single application to get the best results:</p>
+              <p>Multi-model invocation is the practice of using multiple foundation models in a single application to
+                get the best results:</p>
               <h4>Strategies</h4>
               <ul>
-                <li><strong>Model Routing</strong> — Route different request types to different models. E.g., simple Q&amp;A goes to a fast/cheap model (Titan Lite), complex reasoning goes to Claude 3.5 Sonnet. Reduces cost while maintaining quality.</li>
-                <li><strong>Model Fallback</strong> — If the primary model is unavailable, rate-limited, or returns an error, automatically fall back to a secondary model. Improves reliability.</li>
-                <li><strong>Ensemble / Consensus</strong> — Send the same prompt to multiple models and aggregate responses (voting, best-of-N). Improves accuracy for critical decisions.</li>
-                <li><strong>Chain of Models</strong> — Pipeline where the output of one model feeds into another. E.g., Model A extracts entities from text, Model B generates a summary using those entities.</li>
+                <li><strong>Model Routing</strong> — Route different request types to different models. E.g., simple
+                  Q&amp;A goes to a fast/cheap model (Titan Lite), complex reasoning goes to Claude 3.5 Sonnet. Reduces
+                  cost while maintaining quality.</li>
+                <li><strong>Model Fallback</strong> — If the primary model is unavailable, rate-limited, or returns an
+                  error, automatically fall back to a secondary model. Improves reliability.</li>
+                <li><strong>Ensemble / Consensus</strong> — Send the same prompt to multiple models and aggregate
+                  responses (voting, best-of-N). Improves accuracy for critical decisions.</li>
+                <li><strong>Chain of Models</strong> — Pipeline where the output of one model feeds into another. E.g.,
+                  Model A extracts entities from text, Model B generates a summary using those entities.</li>
               </ul>
               <h4>AWS Implementation</h4>
-              <p>Amazon Bedrock makes multi-model invocation simple — a single API endpoint gives access to models from Anthropic, Meta, Amazon, Cohere, and others. Use <strong>AWS Step Functions</strong> or <strong>Bedrock Agents</strong> to orchestrate multi-model workflows.</p>
+              <p>Amazon Bedrock makes multi-model invocation simple — a single API endpoint gives access to models from
+                Anthropic, Meta, Amazon, Cohere, and others. Use <strong>AWS Step Functions</strong> or <strong>Bedrock
+                  Agents</strong> to orchestrate multi-model workflows.</p>
             </div>
           </article>
         </section>
@@ -934,7 +1527,11 @@
               </div>
               <div class="answer-block correct">
                 <h4>Correct Answer</h4>
-                <p>It depends on the application. Both Lambda and EC2 have different cost factors. It is possible that, depending on the application, AWS Lambda can have a higher charge than EC2, and vice versa. It is important to consider not just the compute cost but the <strong>TCO (Total Cost of Ownership)</strong>. With AWS Lambda there is no AMI to maintain, patch, and rehydrate, reducing management overhead and hence overall TCO.</p>
+                <p>It depends on the application. Both Lambda and EC2 have different cost factors. It is possible that,
+                  depending on the application, AWS Lambda can have a higher charge than EC2, and vice versa. It is
+                  important to consider not just the compute cost but the <strong>TCO (Total Cost of
+                    Ownership)</strong>. With AWS Lambda there is no AMI to maintain, patch, and rehydrate, reducing
+                  management overhead and hence overall TCO.</p>
               </div>
               <h4>Lambda Cost Factors</h4>
               <ul>
@@ -958,27 +1555,40 @@
               <p>A fully serverless web application on AWS (no servers to manage):</p>
               <h4>Architecture</h4>
               <ol>
-                <li><strong>Amazon S3 + CloudFront</strong> — Host static frontend (React, Angular, Vue) on S3, served globally via CloudFront CDN.</li>
+                <li><strong>Amazon S3 + CloudFront</strong> — Host static frontend (React, Angular, Vue) on S3, served
+                  globally via CloudFront CDN.</li>
                 <li><strong>Amazon Cognito</strong> — User authentication (sign-up, sign-in, social login, MFA).</li>
-                <li><strong>Amazon API Gateway</strong> — REST/WebSocket API layer. Handles request validation, throttling, and auth token verification.</li>
-                <li><strong>AWS Lambda</strong> — Backend business logic. Each API endpoint triggers a Lambda function. Scales automatically from zero to thousands of concurrent executions.</li>
-                <li><strong>Amazon DynamoDB</strong> — NoSQL database for application data. Single-digit-millisecond latency, fully managed, scales on demand.</li>
+                <li><strong>Amazon API Gateway</strong> — REST/WebSocket API layer. Handles request validation,
+                  throttling, and auth token verification.</li>
+                <li><strong>AWS Lambda</strong> — Backend business logic. Each API endpoint triggers a Lambda function.
+                  Scales automatically from zero to thousands of concurrent executions.</li>
+                <li><strong>Amazon DynamoDB</strong> — NoSQL database for application data. Single-digit-millisecond
+                  latency, fully managed, scales on demand.</li>
               </ol>
-              <p><strong>Cost model:</strong> Pay only when the API is called. Zero traffic = zero cost (excluding S3 storage). Ideal for variable or unpredictable workloads.</p>
+              <p><strong>Cost model:</strong> Pay only when the API is called. Zero traffic = zero cost (excluding S3
+                storage). Ideal for variable or unpredictable workloads.</p>
             </div>
           </article>
           <article id="lambda-transform" class="topic-block">
             <h2>Lambda Transform</h2>
             <div class="topic-body">
-              <p>AWS Lambda can be used as a transformation step in data pipelines to modify, enrich, or filter data in transit:</p>
+              <p>AWS Lambda can be used as a transformation step in data pipelines to modify, enrich, or filter data in
+                transit:</p>
               <h4>Common Patterns</h4>
               <ul>
-                <li><strong>Kinesis Data Firehose Transform</strong> — Firehose invokes a Lambda function to transform records before delivering them to S3, Redshift, or Elasticsearch. Use cases: convert formats (CSV to JSON), redact PII, enrich with metadata.</li>
-                <li><strong>S3 Event Transform</strong> — S3 triggers Lambda when a new file is uploaded. Lambda reads the file, transforms it (resize images, transcode video, parse CSV), and writes the result to another S3 bucket or DynamoDB.</li>
-                <li><strong>CloudFormation Macro</strong> — Lambda-backed macros that transform CloudFormation templates at deploy time. Can add custom logic, conditionals, or template generation.</li>
-                <li><strong>API Gateway Request/Response Transform</strong> — Lambda modifies the request before it reaches the backend, or transforms the response before returning it to the client.</li>
+                <li><strong>Kinesis Data Firehose Transform</strong> — Firehose invokes a Lambda function to transform
+                  records before delivering them to S3, Redshift, or Elasticsearch. Use cases: convert formats (CSV to
+                  JSON), redact PII, enrich with metadata.</li>
+                <li><strong>S3 Event Transform</strong> — S3 triggers Lambda when a new file is uploaded. Lambda reads
+                  the file, transforms it (resize images, transcode video, parse CSV), and writes the result to another
+                  S3 bucket or DynamoDB.</li>
+                <li><strong>CloudFormation Macro</strong> — Lambda-backed macros that transform CloudFormation templates
+                  at deploy time. Can add custom logic, conditionals, or template generation.</li>
+                <li><strong>API Gateway Request/Response Transform</strong> — Lambda modifies the request before it
+                  reaches the backend, or transforms the response before returning it to the client.</li>
               </ul>
-              <p><strong>Key benefit:</strong> Serverless transforms eliminate the need for always-on ETL servers. You pay only for the transformation compute time, and Lambda scales automatically with the data volume.</p>
+              <p><strong>Key benefit:</strong> Serverless transforms eliminate the need for always-on ETL servers. You
+                pay only for the transformation compute time, and Lambda scales automatically with the data volume.</p>
             </div>
           </article>
         </section>
@@ -997,7 +1607,8 @@
             </ul>
           </nav>
           <figure class="fundamentals-diagram" aria-label="IP Address vs URL diagram">
-            <img src="assets/fundamentals-ip-vs-url.png" alt="Diagram: IP Address vs URL — how addresses and domain names relate to networking and the web." />
+            <img src="assets/fundamentals-ip-vs-url.png"
+              alt="Diagram: IP Address vs URL — how addresses and domain names relate to networking and the web." />
             <figcaption>IP Address vs URL — core concepts for interviews</figcaption>
           </figure>
           <article id="ip-vs-url" class="topic-block">
@@ -1009,9 +1620,17 @@
               </div>
               <div class="answer-block correct">
                 <h4>Correct Answer</h4>
-                <p>IP Address is a unique number that identifies a device connected to the internet, such as a Virtual Machine running your application. However, accessing a resource using this unique number is cumbersome; moreover, when a VM goes down, a new VM comes up to replace it with a <strong>different IP address</strong>.</p>
-                <p>Hence, in reality, applications running inside VMs are accessed using a <strong>URL (Uniform Resource Locator)</strong>. One URL does generally NOT map to one IP address; rather, the URL (e.g. www.amazon.com) is mapped to a <strong>Load Balancer</strong>, and that Load Balancer distributes traffic to multiple VMs with different IP addresses.</p>
-                <p>Even if one VM goes down and another comes up, the Load Balancer using a URL always works because it appropriately distributes traffic across healthy instances. This way, you (the user) do not need to worry about the underlying IP addresses.</p>
+                <p>IP Address is a unique number that identifies a device connected to the internet, such as a Virtual
+                  Machine running your application. However, accessing a resource using this unique number is
+                  cumbersome; moreover, when a VM goes down, a new VM comes up to replace it with a <strong>different IP
+                    address</strong>.</p>
+                <p>Hence, in reality, applications running inside VMs are accessed using a <strong>URL (Uniform Resource
+                    Locator)</strong>. One URL does generally NOT map to one IP address; rather, the URL (e.g.
+                  www.amazon.com) is mapped to a <strong>Load Balancer</strong>, and that Load Balancer distributes
+                  traffic to multiple VMs with different IP addresses.</p>
+                <p>Even if one VM goes down and another comes up, the Load Balancer using a URL always works because it
+                  appropriately distributes traffic across healthy instances. This way, you (the user) do not need to
+                  worry about the underlying IP addresses.</p>
               </div>
             </div>
           </article>
@@ -1020,15 +1639,26 @@
             <div class="topic-body">
               <p>The complete end-to-end flow when you type <code>www.example.com</code> in your browser:</p>
               <ol>
-                <li><strong>DNS Resolution</strong> — The browser checks its cache, then the OS cache, then queries a DNS resolver (e.g., Route 53) to translate the domain name into an IP address. The resolver may query root servers, TLD servers, and authoritative name servers.</li>
-                <li><strong>TCP Connection</strong> — The browser initiates a TCP three-way handshake (SYN, SYN-ACK, ACK) with the server at the resolved IP address to establish a reliable connection.</li>
-                <li><strong>TLS Handshake</strong> — For HTTPS, a TLS handshake follows. The client and server agree on encryption algorithms, exchange certificates, and establish a shared secret for encrypted communication.</li>
-                <li><strong>HTTP Request</strong> — The browser sends an HTTP GET request (with headers: User-Agent, Accept, cookies, etc.) to the server requesting the page.</li>
-                <li><strong>Server Processing</strong> — The server (or Load Balancer &rarr; application server) processes the request, queries databases if needed, and generates the HTML response.</li>
-                <li><strong>HTTP Response</strong> — The server sends back an HTTP response (status code 200 OK, headers, and the HTML body).</li>
-                <li><strong>Browser Rendering</strong> — The browser parses HTML, builds the DOM tree, fetches additional resources (CSS, JS, images), constructs the render tree, and paints the page on screen.</li>
+                <li><strong>DNS Resolution</strong> — The browser checks its cache, then the OS cache, then queries a
+                  DNS resolver (e.g., Route 53) to translate the domain name into an IP address. The resolver may query
+                  root servers, TLD servers, and authoritative name servers.</li>
+                <li><strong>TCP Connection</strong> — The browser initiates a TCP three-way handshake (SYN, SYN-ACK,
+                  ACK) with the server at the resolved IP address to establish a reliable connection.</li>
+                <li><strong>TLS Handshake</strong> — For HTTPS, a TLS handshake follows. The client and server agree on
+                  encryption algorithms, exchange certificates, and establish a shared secret for encrypted
+                  communication.</li>
+                <li><strong>HTTP Request</strong> — The browser sends an HTTP GET request (with headers: User-Agent,
+                  Accept, cookies, etc.) to the server requesting the page.</li>
+                <li><strong>Server Processing</strong> — The server (or Load Balancer &rarr; application server)
+                  processes the request, queries databases if needed, and generates the HTML response.</li>
+                <li><strong>HTTP Response</strong> — The server sends back an HTTP response (status code 200 OK,
+                  headers, and the HTML body).</li>
+                <li><strong>Browser Rendering</strong> — The browser parses HTML, builds the DOM tree, fetches
+                  additional resources (CSS, JS, images), constructs the render tree, and paints the page on screen.
+                </li>
               </ol>
-              <p><strong>Interview tip:</strong> This question tests your understanding of networking fundamentals, DNS, TLS, HTTP, and how web applications work end-to-end. Be ready to go deep on any step.</p>
+              <p><strong>Interview tip:</strong> This question tests your understanding of networking fundamentals, DNS,
+                TLS, HTTP, and how web applications work end-to-end. Be ready to go deep on any step.</p>
             </div>
           </article>
         </section>
@@ -1050,27 +1680,41 @@
           <article id="eks-auto-reinvent" class="topic-block">
             <h2>EKS Auto (Re:Invent 2024)</h2>
             <div class="topic-body">
-              <p>Amazon EKS Auto Mode was announced at Re:Invent 2024 to deliver a fully managed Kubernetes experience:</p>
+              <p>Amazon EKS Auto Mode was announced at Re:Invent 2024 to deliver a fully managed Kubernetes experience:
+              </p>
               <ul>
-                <li><strong>Automatic Compute</strong> — No node groups to configure. EKS Auto provisions the right EC2 instances (powered by Karpenter) based on pod requirements. Supports Spot, On-Demand, and Graviton automatically.</li>
-                <li><strong>Automatic Networking</strong> — VPC CNI, CoreDNS, and kube-proxy are managed and upgraded automatically. Load balancer integration is built in.</li>
-                <li><strong>Automatic Storage</strong> — EBS CSI driver is pre-installed and managed. PersistentVolumeClaims just work.</li>
-                <li><strong>Automatic Upgrades</strong> — Kubernetes version, AMIs, and add-ons are upgraded automatically with minimal disruption.</li>
+                <li><strong>Automatic Compute</strong> — No node groups to configure. EKS Auto provisions the right EC2
+                  instances (powered by Karpenter) based on pod requirements. Supports Spot, On-Demand, and Graviton
+                  automatically.</li>
+                <li><strong>Automatic Networking</strong> — VPC CNI, CoreDNS, and kube-proxy are managed and upgraded
+                  automatically. Load balancer integration is built in.</li>
+                <li><strong>Automatic Storage</strong> — EBS CSI driver is pre-installed and managed.
+                  PersistentVolumeClaims just work.</li>
+                <li><strong>Automatic Upgrades</strong> — Kubernetes version, AMIs, and add-ons are upgraded
+                  automatically with minimal disruption.</li>
               </ul>
-              <p><strong>Impact:</strong> EKS Auto eliminates the undifferentiated heavy lifting of managing Kubernetes infrastructure, letting teams focus purely on deploying and running applications.</p>
+              <p><strong>Impact:</strong> EKS Auto eliminates the undifferentiated heavy lifting of managing Kubernetes
+                infrastructure, letting teams focus purely on deploying and running applications.</p>
             </div>
           </article>
           <article id="aurora-dsql" class="topic-block">
             <h2>Aurora DSQL (Re:Invent 2024)</h2>
             <div class="topic-body">
-              <p>Amazon Aurora DSQL (Distributed SQL) was announced at Re:Invent 2024 as a serverless, distributed SQL database:</p>
+              <p>Amazon Aurora DSQL (Distributed SQL) was announced at Re:Invent 2024 as a serverless, distributed SQL
+                database:</p>
               <ul>
-                <li><strong>Distributed &amp; Multi-Region</strong> — Active-active writes across multiple AWS regions with strong consistency. No read replicas needed — every region can serve reads and writes.</li>
-                <li><strong>PostgreSQL Compatible</strong> — Standard PostgreSQL interface, so existing applications and tools work without modification.</li>
-                <li><strong>Serverless</strong> — No capacity planning, no instances to manage. Scales automatically based on workload demand.</li>
-                <li><strong>Strong Consistency</strong> — Unlike DynamoDB Global Tables (eventual consistency), Aurora DSQL provides serializable isolation across regions.</li>
+                <li><strong>Distributed &amp; Multi-Region</strong> — Active-active writes across multiple AWS regions
+                  with strong consistency. No read replicas needed — every region can serve reads and writes.</li>
+                <li><strong>PostgreSQL Compatible</strong> — Standard PostgreSQL interface, so existing applications and
+                  tools work without modification.</li>
+                <li><strong>Serverless</strong> — No capacity planning, no instances to manage. Scales automatically
+                  based on workload demand.</li>
+                <li><strong>Strong Consistency</strong> — Unlike DynamoDB Global Tables (eventual consistency), Aurora
+                  DSQL provides serializable isolation across regions.</li>
               </ul>
-              <p><strong>Use cases:</strong> Global applications requiring consistent reads/writes across regions, financial systems needing ACID transactions globally, replacing complex multi-region database replication setups.</p>
+              <p><strong>Use cases:</strong> Global applications requiring consistent reads/writes across regions,
+                financial systems needing ACID transactions globally, replacing complex multi-region database
+                replication setups.</p>
             </div>
           </article>
           <article id="s3-tables" class="topic-block">
@@ -1078,12 +1722,18 @@
             <div class="topic-body">
               <p>Amazon S3 Tables, announced at Re:Invent 2024, brings native Apache Iceberg table support to S3:</p>
               <ul>
-                <li><strong>Structured Data in S3</strong> — Store tabular data (rows and columns) directly in S3 with built-in table format support. No need to manage a separate metastore.</li>
-                <li><strong>Apache Iceberg Format</strong> — Uses the open-source Iceberg table format natively. Supports schema evolution, time travel, partition evolution, and ACID transactions.</li>
-                <li><strong>Query with Standard Tools</strong> — Query S3 Tables directly from Amazon Athena, EMR, Redshift, and third-party tools that support Iceberg.</li>
-                <li><strong>Automatic Optimization</strong> — S3 manages compaction, snapshot management, and unreferenced file cleanup automatically.</li>
+                <li><strong>Structured Data in S3</strong> — Store tabular data (rows and columns) directly in S3 with
+                  built-in table format support. No need to manage a separate metastore.</li>
+                <li><strong>Apache Iceberg Format</strong> — Uses the open-source Iceberg table format natively.
+                  Supports schema evolution, time travel, partition evolution, and ACID transactions.</li>
+                <li><strong>Query with Standard Tools</strong> — Query S3 Tables directly from Amazon Athena, EMR,
+                  Redshift, and third-party tools that support Iceberg.</li>
+                <li><strong>Automatic Optimization</strong> — S3 manages compaction, snapshot management, and
+                  unreferenced file cleanup automatically.</li>
               </ul>
-              <p><strong>Impact:</strong> S3 Tables simplifies the data lakehouse architecture by eliminating the need for separate Glue Catalog, manual Iceberg table maintenance, and complex compaction jobs. It's S3 evolving from an object store into a full-featured data platform.</p>
+              <p><strong>Impact:</strong> S3 Tables simplifies the data lakehouse architecture by eliminating the need
+                for separate Glue Catalog, manual Iceberg table maintenance, and complex compaction jobs. It's S3
+                evolving from an object store into a full-featured data platform.</p>
             </div>
           </article>
         </section>
@@ -1107,32 +1757,50 @@
               <p>AWS architecture for live video streaming at scale:</p>
               <h4>Architecture Flow</h4>
               <ol>
-                <li><strong>Ingest</strong> — Live video source (camera, encoder) sends an RTMP/SRT stream to <strong>AWS Elemental MediaLive</strong> or <strong>Amazon Interactive Video Service (IVS)</strong>.</li>
-                <li><strong>Process</strong> — MediaLive transcodes the stream into multiple bitrates and formats (ABR — Adaptive Bitrate) for different devices and network conditions.</li>
-                <li><strong>Package</strong> — <strong>AWS Elemental MediaPackage</strong> packages the transcoded stream into HLS/DASH formats and provides origin endpoints with DVR/time-shift capabilities.</li>
-                <li><strong>Deliver</strong> — <strong>Amazon CloudFront</strong> (CDN) distributes the live stream globally to millions of viewers with low latency.</li>
-                <li><strong>Play</strong> — Viewers watch on web, mobile, or smart TV using a video player that dynamically switches quality based on bandwidth (ABR).</li>
+                <li><strong>Ingest</strong> — Live video source (camera, encoder) sends an RTMP/SRT stream to
+                  <strong>AWS Elemental MediaLive</strong> or <strong>Amazon Interactive Video Service (IVS)</strong>.
+                </li>
+                <li><strong>Process</strong> — MediaLive transcodes the stream into multiple bitrates and formats (ABR —
+                  Adaptive Bitrate) for different devices and network conditions.</li>
+                <li><strong>Package</strong> — <strong>AWS Elemental MediaPackage</strong> packages the transcoded
+                  stream into HLS/DASH formats and provides origin endpoints with DVR/time-shift capabilities.</li>
+                <li><strong>Deliver</strong> — <strong>Amazon CloudFront</strong> (CDN) distributes the live stream
+                  globally to millions of viewers with low latency.</li>
+                <li><strong>Play</strong> — Viewers watch on web, mobile, or smart TV using a video player that
+                  dynamically switches quality based on bandwidth (ABR).</li>
               </ol>
               <h4>Amazon IVS (Simpler Option)</h4>
-              <p>For simpler use cases, Amazon IVS provides a fully managed, low-latency live streaming service. Send your stream to IVS, and it handles transcoding, packaging, and delivery automatically — no need to configure MediaLive, MediaPackage, or CloudFront separately.</p>
+              <p>For simpler use cases, Amazon IVS provides a fully managed, low-latency live streaming service. Send
+                your stream to IVS, and it handles transcoding, packaging, and delivery automatically — no need to
+                configure MediaLive, MediaPackage, or CloudFront separately.</p>
             </div>
           </article>
           <article id="live-streaming-ads" class="topic-block">
             <h2>Live Streaming with Ads</h2>
             <div class="topic-body">
-              <p>Inserting ads into live streams requires server-side ad insertion (SSAI) to prevent ad blockers and deliver a seamless viewing experience:</p>
+              <p>Inserting ads into live streams requires server-side ad insertion (SSAI) to prevent ad blockers and
+                deliver a seamless viewing experience:</p>
               <h4>Architecture Flow</h4>
               <ol>
-                <li><strong>Live Stream</strong> — MediaLive transcodes the live video and inserts SCTE-35 ad markers (cue points) at designated ad break positions.</li>
-                <li><strong>Ad Decision Server</strong> — When a viewer requests the stream, <strong>AWS Elemental MediaTailor</strong> detects the SCTE-35 markers and calls the Ad Decision Server (ADS) to fetch personalized ads for that viewer.</li>
-                <li><strong>Server-Side Ad Insertion (SSAI)</strong> — MediaTailor stitches the ad content directly into the video stream on the server side. The viewer receives a single, seamless stream with ads built in.</li>
-                <li><strong>Delivery</strong> — CloudFront delivers the personalized stream (with stitched ads) to each viewer.</li>
+                <li><strong>Live Stream</strong> — MediaLive transcodes the live video and inserts SCTE-35 ad markers
+                  (cue points) at designated ad break positions.</li>
+                <li><strong>Ad Decision Server</strong> — When a viewer requests the stream, <strong>AWS Elemental
+                    MediaTailor</strong> detects the SCTE-35 markers and calls the Ad Decision Server (ADS) to fetch
+                  personalized ads for that viewer.</li>
+                <li><strong>Server-Side Ad Insertion (SSAI)</strong> — MediaTailor stitches the ad content directly into
+                  the video stream on the server side. The viewer receives a single, seamless stream with ads built in.
+                </li>
+                <li><strong>Delivery</strong> — CloudFront delivers the personalized stream (with stitched ads) to each
+                  viewer.</li>
               </ol>
               <h4>Why SSAI Over Client-Side Ads?</h4>
               <ul>
-                <li><strong>Ad blocker resistant</strong> — Ads are part of the video stream itself, not loaded from a separate ad server URL.</li>
-                <li><strong>Consistent experience</strong> — No buffering or quality change when transitioning between content and ads.</li>
-                <li><strong>Personalization</strong> — Each viewer can receive different ads based on demographics, location, or behavior.</li>
+                <li><strong>Ad blocker resistant</strong> — Ads are part of the video stream itself, not loaded from a
+                  separate ad server URL.</li>
+                <li><strong>Consistent experience</strong> — No buffering or quality change when transitioning between
+                  content and ads.</li>
+                <li><strong>Personalization</strong> — Each viewer can receive different ads based on demographics,
+                  location, or behavior.</li>
               </ul>
             </div>
           </article>
@@ -1166,14 +1834,22 @@
             <div class="topic-body">
               <p>The STAR method is the gold standard for answering behavioral interview questions:</p>
               <ol>
-                <li><strong>Situation</strong> — Set the context. Describe the project, team, and challenge. Be specific: "At Company X, we had a monolithic application serving 10M users that was experiencing frequent outages during peak hours."</li>
-                <li><strong>Task</strong> — What was your responsibility? "I was tasked with designing a migration plan to decompose the monolith into microservices to improve reliability and scalability."</li>
-                <li><strong>Action</strong> — What did YOU do? (Use "I", not "we"). "I identified the top 3 most failure-prone modules, designed a strangler fig pattern to extract them into independent services on EKS, set up CI/CD pipelines with ArgoCD, and implemented circuit breakers using Istio."</li>
-                <li><strong>Result</strong> — Quantify the outcome. "We reduced outages by 95%, improved deployment frequency from monthly to daily, and reduced P99 latency from 2s to 200ms. The architecture now handles 3x the previous peak traffic."</li>
+                <li><strong>Situation</strong> — Set the context. Describe the project, team, and challenge. Be
+                  specific: "At Company X, we had a monolithic application serving 10M users that was experiencing
+                  frequent outages during peak hours."</li>
+                <li><strong>Task</strong> — What was your responsibility? "I was tasked with designing a migration plan
+                  to decompose the monolith into microservices to improve reliability and scalability."</li>
+                <li><strong>Action</strong> — What did YOU do? (Use "I", not "we"). "I identified the top 3 most
+                  failure-prone modules, designed a strangler fig pattern to extract them into independent services on
+                  EKS, set up CI/CD pipelines with ArgoCD, and implemented circuit breakers using Istio."</li>
+                <li><strong>Result</strong> — Quantify the outcome. "We reduced outages by 95%, improved deployment
+                  frequency from monthly to daily, and reduced P99 latency from 2s to 200ms. The architecture now
+                  handles 3x the previous peak traffic."</li>
               </ol>
               <h4>Tips</h4>
               <ul>
-                <li>Prepare 5–8 STAR stories that cover: technical challenge, leadership, conflict, failure/learning, and cross-team collaboration.</li>
+                <li>Prepare 5–8 STAR stories that cover: technical challenge, leadership, conflict, failure/learning,
+                  and cross-team collaboration.</li>
                 <li>Always quantify results (percentages, dollar amounts, time saved).</li>
                 <li>Keep each STAR answer under 2 minutes unless the interviewer asks to go deeper.</li>
               </ul>
@@ -1182,16 +1858,26 @@
           <article id="platform-vs-developer" class="topic-block">
             <h2>Platform Vs Developer Team</h2>
             <div class="topic-body">
-              <p>Recently, the term "platform team" has been floating around plenty. But what do platform teams do? How are they different from the developer team?</p>
+              <p>Recently, the term "platform team" has been floating around plenty. But what do platform teams do? How
+                are they different from the developer team?</p>
               <ol>
-                <li><strong>Step 1:</strong> The developer team requests the Platform team to provision appropriate AWS resources (e.g. Amazon EKS). This request is typically done via a ticketing system.</li>
+                <li><strong>Step 1:</strong> The developer team requests the Platform team to provision appropriate AWS
+                  resources (e.g. Amazon EKS). This request is typically done via a ticketing system.</li>
                 <li><strong>Step 2:</strong> The platform team receives the request.</li>
-                <li><strong>Step 3:</strong> The platform team uses Infrastructure as Code (IaC) such as Terraform, CDK, etc., to provision the requested AWS resources and share credentials with the developer team.</li>
-                <li><strong>Step 4:</strong> The developer team kicks off the CI/CD process. Developers check in Code, Dockerfile, and manifest YAMLs. CI tools (e.g. Jenkins, GitHub Actions) build the container image and save it in Amazon ECR.</li>
-                <li><strong>Step 5:</strong> CD tools (e.g. Jenkins, Spinnaker) update the deployment manifest files with the tag of the container image.</li>
-                <li><strong>Step 6:</strong> CD tools deploy the manifest files into the cluster, deploying the newly built container in Amazon EKS.</li>
+                <li><strong>Step 3:</strong> The platform team uses Infrastructure as Code (IaC) such as Terraform, CDK,
+                  etc., to provision the requested AWS resources and share credentials with the developer team.</li>
+                <li><strong>Step 4:</strong> The developer team kicks off the CI/CD process. Developers check in Code,
+                  Dockerfile, and manifest YAMLs. CI tools (e.g. Jenkins, GitHub Actions) build the container image and
+                  save it in Amazon ECR.</li>
+                <li><strong>Step 5:</strong> CD tools (e.g. Jenkins, Spinnaker) update the deployment manifest files
+                  with the tag of the container image.</li>
+                <li><strong>Step 6:</strong> CD tools deploy the manifest files into the cluster, deploying the newly
+                  built container in Amazon EKS.</li>
               </ol>
-              <p><strong>Conclusion:</strong> The platform team takes care of the infrastructure (often with guardrails appropriate for the organization), and the developer team uses that infrastructure to deploy their application. The platform team does the upgrade and maintenance of the infrastructure to reduce the burden on the developer team.</p>
+              <p><strong>Conclusion:</strong> The platform team takes care of the infrastructure (often with guardrails
+                appropriate for the organization), and the developer team uses that infrastructure to deploy their
+                application. The platform team does the upgrade and maintenance of the infrastructure to reduce the
+                burden on the developer team.</p>
             </div>
           </article>
           <article id="batch-workloads" class="topic-block">
@@ -1199,16 +1885,49 @@
             <div class="topic-body">
               <p>AWS offers multiple options for running batch workloads depending on complexity and scale:</p>
               <table class="topic-table">
-                <thead><tr><th>Service</th><th>Best For</th><th>Max Duration</th><th>Scaling</th></tr></thead>
+                <thead>
+                  <tr>
+                    <th>Service</th>
+                    <th>Best For</th>
+                    <th>Max Duration</th>
+                    <th>Scaling</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr><td><strong>AWS Lambda</strong></td><td>Simple, short transformations</td><td>15 minutes</td><td>Automatic (1000+ concurrent)</td></tr>
-                  <tr><td><strong>AWS Batch</strong></td><td>Large-scale compute jobs (genomics, rendering, ML training)</td><td>Unlimited</td><td>Automatic (managed compute environments with Spot)</td></tr>
-                  <tr><td><strong>AWS Step Functions</strong></td><td>Complex multi-step workflows with branching, retries, and error handling</td><td>1 year (Standard) / 5 min (Express)</td><td>Automatic</td></tr>
-                  <tr><td><strong>AWS Fargate</strong></td><td>Containerized batch jobs without managing servers</td><td>Unlimited</td><td>Task-based scaling</td></tr>
-                  <tr><td><strong>Amazon EMR</strong></td><td>Big data processing (Spark, Hadoop, Hive)</td><td>Unlimited</td><td>Cluster auto-scaling</td></tr>
+                  <tr>
+                    <td><strong>AWS Lambda</strong></td>
+                    <td>Simple, short transformations</td>
+                    <td>15 minutes</td>
+                    <td>Automatic (1000+ concurrent)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>AWS Batch</strong></td>
+                    <td>Large-scale compute jobs (genomics, rendering, ML training)</td>
+                    <td>Unlimited</td>
+                    <td>Automatic (managed compute environments with Spot)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>AWS Step Functions</strong></td>
+                    <td>Complex multi-step workflows with branching, retries, and error handling</td>
+                    <td>1 year (Standard) / 5 min (Express)</td>
+                    <td>Automatic</td>
+                  </tr>
+                  <tr>
+                    <td><strong>AWS Fargate</strong></td>
+                    <td>Containerized batch jobs without managing servers</td>
+                    <td>Unlimited</td>
+                    <td>Task-based scaling</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Amazon EMR</strong></td>
+                    <td>Big data processing (Spark, Hadoop, Hive)</td>
+                    <td>Unlimited</td>
+                    <td>Cluster auto-scaling</td>
+                  </tr>
                 </tbody>
               </table>
-              <p><strong>Common pattern:</strong> Use Step Functions to orchestrate a batch pipeline — trigger Lambda for lightweight steps, AWS Batch for heavy compute, and DynamoDB/S3 for state and output storage.</p>
+              <p><strong>Common pattern:</strong> Use Step Functions to orchestrate a batch pipeline — trigger Lambda
+                for lightweight steps, AWS Batch for heavy compute, and DynamoDB/S3 for state and output storage.</p>
             </div>
           </article>
           <article id="eventbridge-cross-account" class="topic-block">
@@ -1217,16 +1936,23 @@
               <p>Amazon EventBridge supports routing events across AWS accounts for multi-account architectures:</p>
               <h4>How It Works</h4>
               <ol>
-                <li><strong>Source Account</strong> — An application in Account A publishes events to an EventBridge event bus.</li>
-                <li><strong>Event Rule</strong> — A rule in Account A matches specific events and sets the target as the event bus in Account B.</li>
-                <li><strong>Resource Policy</strong> — Account B's event bus has a resource-based policy that allows Account A to put events onto it.</li>
-                <li><strong>Target Account</strong> — A rule in Account B's event bus matches the received events and triggers targets (Lambda, SQS, Step Functions, etc.).</li>
+                <li><strong>Source Account</strong> — An application in Account A publishes events to an EventBridge
+                  event bus.</li>
+                <li><strong>Event Rule</strong> — A rule in Account A matches specific events and sets the target as the
+                  event bus in Account B.</li>
+                <li><strong>Resource Policy</strong> — Account B's event bus has a resource-based policy that allows
+                  Account A to put events onto it.</li>
+                <li><strong>Target Account</strong> — A rule in Account B's event bus matches the received events and
+                  triggers targets (Lambda, SQS, Step Functions, etc.).</li>
               </ol>
               <h4>Use Cases</h4>
               <ul>
-                <li><strong>Centralized audit</strong> — All accounts send security/compliance events to a central security account.</li>
-                <li><strong>Shared services</strong> — A shared services account processes billing, notifications, or infrastructure events from workload accounts.</li>
-                <li><strong>Microservices across accounts</strong> — Different teams own different accounts; EventBridge enables event-driven communication without tight coupling.</li>
+                <li><strong>Centralized audit</strong> — All accounts send security/compliance events to a central
+                  security account.</li>
+                <li><strong>Shared services</strong> — A shared services account processes billing, notifications, or
+                  infrastructure events from workload accounts.</li>
+                <li><strong>Microservices across accounts</strong> — Different teams own different accounts; EventBridge
+                  enables event-driven communication without tight coupling.</li>
               </ul>
             </div>
           </article>
@@ -1235,16 +1961,54 @@
             <div class="topic-body">
               <p>A typical technology stack for building and operating microservices on AWS:</p>
               <table class="topic-table">
-                <thead><tr><th>Layer</th><th>Purpose</th><th>Technologies</th></tr></thead>
+                <thead>
+                  <tr>
+                    <th>Layer</th>
+                    <th>Purpose</th>
+                    <th>Technologies</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr><td><strong>API Gateway</strong></td><td>External API routing, auth, throttling</td><td>Amazon API Gateway, Kong, Apigee</td></tr>
-                  <tr><td><strong>Compute</strong></td><td>Run microservices</td><td>Amazon EKS, ECS, Fargate, Lambda</td></tr>
-                  <tr><td><strong>Service Discovery</strong></td><td>Find other services</td><td>AWS Cloud Map, Kubernetes DNS, Consul</td></tr>
-                  <tr><td><strong>Communication</strong></td><td>Sync &amp; async messaging</td><td>gRPC, REST, SQS, SNS, EventBridge, Kafka</td></tr>
-                  <tr><td><strong>Database</strong></td><td>Data storage (database per service)</td><td>DynamoDB, Aurora, ElastiCache, S3</td></tr>
-                  <tr><td><strong>Observability</strong></td><td>Metrics, logs, traces</td><td>CloudWatch, Prometheus, Grafana, X-Ray, Jaeger</td></tr>
-                  <tr><td><strong>CI/CD</strong></td><td>Build and deploy</td><td>GitHub Actions, Jenkins, ArgoCD, CodePipeline</td></tr>
-                  <tr><td><strong>Security</strong></td><td>AuthN/AuthZ, encryption</td><td>Cognito, IAM, KMS, Istio (mTLS)</td></tr>
+                  <tr>
+                    <td><strong>API Gateway</strong></td>
+                    <td>External API routing, auth, throttling</td>
+                    <td>Amazon API Gateway, Kong, Apigee</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Compute</strong></td>
+                    <td>Run microservices</td>
+                    <td>Amazon EKS, ECS, Fargate, Lambda</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Service Discovery</strong></td>
+                    <td>Find other services</td>
+                    <td>AWS Cloud Map, Kubernetes DNS, Consul</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Communication</strong></td>
+                    <td>Sync &amp; async messaging</td>
+                    <td>gRPC, REST, SQS, SNS, EventBridge, Kafka</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Database</strong></td>
+                    <td>Data storage (database per service)</td>
+                    <td>DynamoDB, Aurora, ElastiCache, S3</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Observability</strong></td>
+                    <td>Metrics, logs, traces</td>
+                    <td>CloudWatch, Prometheus, Grafana, X-Ray, Jaeger</td>
+                  </tr>
+                  <tr>
+                    <td><strong>CI/CD</strong></td>
+                    <td>Build and deploy</td>
+                    <td>GitHub Actions, Jenkins, ArgoCD, CodePipeline</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Security</strong></td>
+                    <td>AuthN/AuthZ, encryption</td>
+                    <td>Cognito, IAM, KMS, Istio (mTLS)</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -1252,12 +2016,17 @@
           <article id="principal-sa" class="topic-block">
             <h2>Principal SA (6+ Years)</h2>
             <div class="topic-body">
-              <p>A Principal Solutions Architect with 6+ years at this level brings deep expertise across multiple domains:</p>
+              <p>A Principal Solutions Architect with 6+ years at this level brings deep expertise across multiple
+                domains:</p>
               <ul>
-                <li><strong>Technical Leadership</strong> — Defines architecture standards, reviews designs across teams, and drives technology strategy for the organization.</li>
-                <li><strong>Customer-Facing</strong> — Works directly with customers to understand business requirements and translate them into scalable, cost-effective cloud architectures.</li>
-                <li><strong>Cross-Functional Influence</strong> — Bridges engineering, product, and business teams. Influences roadmaps and makes build-vs-buy decisions.</li>
-                <li><strong>Thought Leadership</strong> — Publishes best practices, presents at conferences, mentors junior architects, and contributes to the broader community.</li>
+                <li><strong>Technical Leadership</strong> — Defines architecture standards, reviews designs across
+                  teams, and drives technology strategy for the organization.</li>
+                <li><strong>Customer-Facing</strong> — Works directly with customers to understand business requirements
+                  and translate them into scalable, cost-effective cloud architectures.</li>
+                <li><strong>Cross-Functional Influence</strong> — Bridges engineering, product, and business teams.
+                  Influences roadmaps and makes build-vs-buy decisions.</li>
+                <li><strong>Thought Leadership</strong> — Publishes best practices, presents at conferences, mentors
+                  junior architects, and contributes to the broader community.</li>
               </ul>
             </div>
           </article>
@@ -1266,11 +2035,15 @@
             <div class="topic-body">
               <p>Two decades of IT experience spanning the evolution from on-premises to cloud-native:</p>
               <ul>
-                <li><strong>Data Center Era</strong> — Physical servers, VMware virtualization, traditional networking, and waterfall development.</li>
-                <li><strong>Cloud Migration Era</strong> — Lift-and-shift to AWS, infrastructure as code, CI/CD adoption, and DevOps transformation.</li>
-                <li><strong>Cloud-Native Era</strong> — Microservices, Kubernetes, serverless, event-driven architectures, and GenAI integration.</li>
+                <li><strong>Data Center Era</strong> — Physical servers, VMware virtualization, traditional networking,
+                  and waterfall development.</li>
+                <li><strong>Cloud Migration Era</strong> — Lift-and-shift to AWS, infrastructure as code, CI/CD
+                  adoption, and DevOps transformation.</li>
+                <li><strong>Cloud-Native Era</strong> — Microservices, Kubernetes, serverless, event-driven
+                  architectures, and GenAI integration.</li>
               </ul>
-              <p>This breadth of experience is valuable because it provides perspective on why modern architectures exist — understanding the pain points of legacy systems makes you a better architect of modern ones.</p>
+              <p>This breadth of experience is valuable because it provides perspective on why modern architectures
+                exist — understanding the pain points of legacy systems makes you a better architect of modern ones.</p>
             </div>
           </article>
           <article id="world-scale" class="topic-block">
@@ -1278,23 +2051,36 @@
             <div class="topic-body">
               <p>Designing and implementing systems at global scale requires mastering:</p>
               <ul>
-                <li><strong>Multi-Region Architecture</strong> — Active-active deployments across AWS regions with global load balancing (Route 53), data replication (DynamoDB Global Tables, Aurora Global Database), and regional failover.</li>
-                <li><strong>Scale Numbers</strong> — Millions of users, billions of requests/day, petabytes of data. Requires careful capacity planning, caching strategies (ElastiCache, CloudFront), and database sharding.</li>
-                <li><strong>Operational Excellence</strong> — Automated deployment pipelines, comprehensive observability (metrics, logs, traces across regions), runbooks, and chaos engineering.</li>
-                <li><strong>Lighthouse Projects</strong> — Flagship implementations that become case studies and reference architectures. These projects are often featured in AWS blogs, re:Invent talks, and customer success stories.</li>
+                <li><strong>Multi-Region Architecture</strong> — Active-active deployments across AWS regions with
+                  global load balancing (Route 53), data replication (DynamoDB Global Tables, Aurora Global Database),
+                  and regional failover.</li>
+                <li><strong>Scale Numbers</strong> — Millions of users, billions of requests/day, petabytes of data.
+                  Requires careful capacity planning, caching strategies (ElastiCache, CloudFront), and database
+                  sharding.</li>
+                <li><strong>Operational Excellence</strong> — Automated deployment pipelines, comprehensive
+                  observability (metrics, logs, traces across regions), runbooks, and chaos engineering.</li>
+                <li><strong>Lighthouse Projects</strong> — Flagship implementations that become case studies and
+                  reference architectures. These projects are often featured in AWS blogs, re:Invent talks, and customer
+                  success stories.</li>
               </ul>
             </div>
           </article>
           <article id="bootcamp" class="topic-block">
             <h2>SA Bootcamp</h2>
             <div class="topic-body">
-              <p>A Solutions Architect Bootcamp is an intensive training program designed to prepare candidates for SA roles:</p>
+              <p>A Solutions Architect Bootcamp is an intensive training program designed to prepare candidates for SA
+                roles:</p>
               <ul>
-                <li><strong>Core AWS Services Deep Dive</strong> — Hands-on labs covering compute, storage, networking, databases, and security.</li>
-                <li><strong>Architecture Design Sessions</strong> — Practice designing real-world systems: three-tier apps, event-driven microservices, data pipelines, DR strategies.</li>
-                <li><strong>Well-Architected Reviews</strong> — Learn to evaluate architectures against the six pillars and recommend improvements.</li>
-                <li><strong>Interview Preparation</strong> — STAR format practice, whiteboard design sessions, and mock interviews.</li>
-                <li><strong>Certification Path</strong> — Preparation for AWS Solutions Architect Associate and Professional certifications.</li>
+                <li><strong>Core AWS Services Deep Dive</strong> — Hands-on labs covering compute, storage, networking,
+                  databases, and security.</li>
+                <li><strong>Architecture Design Sessions</strong> — Practice designing real-world systems: three-tier
+                  apps, event-driven microservices, data pipelines, DR strategies.</li>
+                <li><strong>Well-Architected Reviews</strong> — Learn to evaluate architectures against the six pillars
+                  and recommend improvements.</li>
+                <li><strong>Interview Preparation</strong> — STAR format practice, whiteboard design sessions, and mock
+                  interviews.</li>
+                <li><strong>Certification Path</strong> — Preparation for AWS Solutions Architect Associate and
+                  Professional certifications.</li>
               </ul>
             </div>
           </article>
@@ -1303,9 +2089,12 @@
             <div class="topic-body">
               <p>Creating educational content at scale as a bestselling author (60,000+ paid students):</p>
               <ul>
-                <li><strong>Course Design</strong> — Structured learning paths covering cloud architecture, Kubernetes, DevOps, and system design with hands-on labs and real-world scenarios.</li>
-                <li><strong>Visual Learning</strong> — Architecture diagrams and visual explanations that make complex distributed systems concepts accessible.</li>
-                <li><strong>Community Impact</strong> — Students successfully transitioning to Solutions Architect, DevOps Engineer, and Cloud Engineer roles at top companies.</li>
+                <li><strong>Course Design</strong> — Structured learning paths covering cloud architecture, Kubernetes,
+                  DevOps, and system design with hands-on labs and real-world scenarios.</li>
+                <li><strong>Visual Learning</strong> — Architecture diagrams and visual explanations that make complex
+                  distributed systems concepts accessible.</li>
+                <li><strong>Community Impact</strong> — Students successfully transitioning to Solutions Architect,
+                  DevOps Engineer, and Cloud Engineer roles at top companies.</li>
               </ul>
             </div>
           </article>
@@ -1314,9 +2103,12 @@
             <div class="topic-body">
               <p>Presenting highly-rated talks at major technology events:</p>
               <ul>
-                <li><strong>Technical Deep Dives</strong> — Architecture patterns, Kubernetes at scale, event-driven design, and cost optimization strategies.</li>
-                <li><strong>Real-World Case Studies</strong> — Sharing lessons learned from world-scale implementations, including what worked, what failed, and what was learned.</li>
-                <li><strong>Community Engagement</strong> — AWS re:Invent, AWS Summits, KubeCon, and other industry events where practitioners share knowledge and best practices.</li>
+                <li><strong>Technical Deep Dives</strong> — Architecture patterns, Kubernetes at scale, event-driven
+                  design, and cost optimization strategies.</li>
+                <li><strong>Real-World Case Studies</strong> — Sharing lessons learned from world-scale implementations,
+                  including what worked, what failed, and what was learned.</li>
+                <li><strong>Community Engagement</strong> — AWS re:Invent, AWS Summits, KubeCon, and other industry
+                  events where practitioners share knowledge and best practices.</li>
               </ul>
             </div>
           </article>
@@ -1325,9 +2117,12 @@
             <div class="topic-body">
               <p>Recognized as a LinkedIn Top Voice in Systems Design:</p>
               <ul>
-                <li><strong>Thought Leadership</strong> — Regularly publishing architecture diagrams, system design breakdowns, and cloud best practices that resonate with the engineering community.</li>
-                <li><strong>Community Building</strong> — Engaging with thousands of professionals to discuss cloud architecture, interview preparation, and career growth in the cloud space.</li>
-                <li><strong>Knowledge Sharing</strong> — Making complex distributed systems concepts accessible through clear visual explanations and real-world examples.</li>
+                <li><strong>Thought Leadership</strong> — Regularly publishing architecture diagrams, system design
+                  breakdowns, and cloud best practices that resonate with the engineering community.</li>
+                <li><strong>Community Building</strong> — Engaging with thousands of professionals to discuss cloud
+                  architecture, interview preparation, and career growth in the cloud space.</li>
+                <li><strong>Knowledge Sharing</strong> — Making complex distributed systems concepts accessible through
+                  clear visual explanations and real-world examples.</li>
               </ul>
             </div>
           </article>
@@ -1337,7 +2132,10 @@
   </div>
 
   <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18" />
+    </svg>
   </button>
 
   <script>
@@ -1365,28 +2163,41 @@
         return hash && document.getElementById('content-' + hash) ? hash : 'aws';
       }
 
+      // Sidebar links now navigate to individual pages
       links.forEach(function (link) {
         link.addEventListener('click', function (e) {
+          var href = link.getAttribute('href');
+          // If the link has a real page URL, navigate to it
+          if (href && href !== '#' && href.indexOf('.html') !== -1) {
+            // Let the browser handle the navigation naturally
+            return;
+          }
+          // Fallback: switch sections inline (backwards compat)
           e.preventDefault();
           var cat = link.getAttribute('data-category');
           if (cat) showCategory(cat);
         });
       });
 
-      document.querySelector('.sidebar-logo') && document.querySelector('.sidebar-logo').addEventListener('click', function (e) {
-        e.preventDefault();
-        showCategory('aws');
-      });
+      var appLayout = document.querySelector('.app-layout');
+      function isMobile() { return window.innerWidth <= 900; }
+      try { if (localStorage.getItem('sidebar_collapsed') === 'true') appLayout && appLayout.classList.add('sidebar-collapsed'); } catch (e) { }
 
       overlay && overlay.addEventListener('click', function () {
         sidebar.classList.remove('open');
         overlay.classList.remove('visible');
       });
       toggle && toggle.addEventListener('click', function () {
-        sidebar.classList.toggle('open');
-        overlay.classList.toggle('visible');
+        if (isMobile()) {
+          sidebar.classList.toggle('open');
+          overlay.classList.toggle('visible');
+        } else {
+          appLayout.classList.toggle('sidebar-collapsed');
+          try { localStorage.setItem('sidebar_collapsed', appLayout.classList.contains('sidebar-collapsed')); } catch (e) { }
+        }
       });
 
+      // On load, show the correct category based on hash
       showCategory(getCategoryFromHash());
       window.addEventListener('hashchange', function () { showCategory(getCategoryFromHash()); });
 
@@ -1417,4 +2228,5 @@
     })();
   </script>
 </body>
+
 </html>

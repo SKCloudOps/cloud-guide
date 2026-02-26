@@ -4,50 +4,157 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fundamentals | Cloud Interview Guide</title>
+  <meta name="description" content="IP vs URL, what happens when you type a URL, and core concepts." />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/devops.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header-inner container">
-      <a class="logo" href="index.html">Cloud Interview Guide</a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="fundamentals.html">Fundamentals</a>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+      <div class="sidebar-header">
+        <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-label">Categories</div>
+        <a href="aws.html" class="sidebar-link">AWS <span class="count">7</span></a>
+        <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+        <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+        <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+        <a href="fundamentals.html" class="sidebar-link active">Fundamentals <span class="count">2</span></a>
+        <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+        <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
       </nav>
-    </div>
-  </header>
+      <div class="sidebar-footer">
+        <div class="sidebar-progress-label">Study Progress</div>
+        <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progressFill"></div></div>
+        <div class="sidebar-progress-text" id="progressText">0 / 2 reviewed</div>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+    <main class="content-area" role="main">
+      <div class="topbar">
+        <div class="topbar-inner">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+          </div>
+          <div class="difficulty-filters">
+            <button class="filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+            <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+            <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+          </div>
+        </div>
+      </div>
+      <div class="content-split">
+        <aside class="toc-sidebar" id="tocSidebar">
+          <div class="toc-title">In This Section</div>
+          <nav class="toc-nav" id="tocNav">
+            <a href="#ip-vs-url" class="toc-link" data-section="ip-vs-url"><span class="toc-dot"></span>IP Address Vs URL</a>
+            <a href="#what-happens-url" class="toc-link" data-section="what-happens-url"><span class="toc-dot"></span>What Happens When You Type an URL</a>
+          </nav>
+          <div class="toc-keyboard-hint">
+            <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+          </div>
+        </aside>
+        <div class="content-panel">
+          <header class="page-hero">
+            <div class="hero-badge" style="background:linear-gradient(135deg,#14b8a6, #06b6d4)">Fundamentals</div>
+            <h1>Fundamentals Interview Guide</h1>
+            <p class="hero-lead">IP vs URL, what happens when you type a URL, and core concepts.</p>
+            <div class="hero-stats">
+              <div class="stat"><span class="stat-number">2</span><span class="stat-label">Topics</span></div>
+            </div>
+          </header>
+          <figure class="hero-diagram">
+            <img src="assets/fundamentals-ip-vs-url.png"
+              alt="Diagram: IP Address vs URL — how addresses and domain names relate to networking and the web." />
+            <figcaption>IP Address vs URL — core concepts for interviews</figcaption>
+          </figure>
 
-  <main class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Home</a>
-      <span aria-hidden="true">/</span>
-      <span>Fundamentals</span>
-    </nav>
 
-    <header class="page-title">
-      <h1>Fundamentals</h1>
-      <p>IP vs URL, what happens when you type a URL, and core concepts.</p>
-    </header>
+          <article id="ip-vs-url" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>IP Address Vs URL</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark IP Address Vs URL as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <div class="answer-block incorrect">
+                <h4>Bad Answer</h4>
+                <p>URL is a link assigned to an IP address.</p>
+              </div>
+              <div class="answer-block correct">
+                <h4>Correct Answer</h4>
+                <p>IP Address is a unique number that identifies a device connected to the internet, such as a Virtual
+                  Machine running your application. However, accessing a resource using this unique number is
+                  cumbersome; moreover, when a VM goes down, a new VM comes up to replace it with a <strong>different IP
+                    address</strong>.</p>
+                <p>Hence, in reality, applications running inside VMs are accessed using a <strong>URL (Uniform Resource
+                    Locator)</strong>. One URL does generally NOT map to one IP address; rather, the URL (e.g.
+                  www.amazon.com) is mapped to a <strong>Load Balancer</strong>, and that Load Balancer distributes
+                  traffic to multiple VMs with different IP addresses.</p>
+                <p>Even if one VM goes down and another comes up, the Load Balancer using a URL always works because it
+                  appropriately distributes traffic across healthy instances. This way, you (the user) do not need to
+                  worry about the underlying IP addresses.</p>
+              </div>
+            </div>
+            </div>
+          </article>
 
-    <ul class="topic-list">
-      <li><a href="#ip-vs-url">IP Address Vs URL</a></li>
-      <li><a href="#what-happens-url">What Happens When You Type an URL</a></li>
-    </ul>
-
-    <section id="ip-vs-url" class="topic-detail">
-      <h2>IP Address Vs URL</h2>
-      <div class="content">How IP addresses and URLs relate; DNS resolution and addressing.</div>
-    </section>
-    <section id="what-happens-url" class="topic-detail">
-      <h2>What Happens When You Type an URL</h2>
-      <div class="content">End-to-end flow: DNS, TCP, TLS, HTTP, and rendering.</div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <p><a href="index.html">Cloud Interview Guide</a></p>
-    </div>
-  </footer>
+          <article id="what-happens-url" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>What Happens When You Type an URL</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark What Happens When You Type an URL as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>The complete end-to-end flow when you type <code>www.example.com</code> in your browser:</p>
+              <ol>
+                <li><strong>DNS Resolution</strong> — The browser checks its cache, then the OS cache, then queries a
+                  DNS resolver (e.g., Route 53) to translate the domain name into an IP address. The resolver may query
+                  root servers, TLD servers, and authoritative name servers.</li>
+                <li><strong>TCP Connection</strong> — The browser initiates a TCP three-way handshake (SYN, SYN-ACK,
+                  ACK) with the server at the resolved IP address to establish a reliable connection.</li>
+                <li><strong>TLS Handshake</strong> — For HTTPS, a TLS handshake follows. The client and server agree on
+                  encryption algorithms, exchange certificates, and establish a shared secret for encrypted
+                  communication.</li>
+                <li><strong>HTTP Request</strong> — The browser sends an HTTP GET request (with headers: User-Agent,
+                  Accept, cookies, etc.) to the server requesting the page.</li>
+                <li><strong>Server Processing</strong> — The server (or Load Balancer &rarr; application server)
+                  processes the request, queries databases if needed, and generates the HTML response.</li>
+                <li><strong>HTTP Response</strong> — The server sends back an HTTP response (status code 200 OK,
+                  headers, and the HTML body).</li>
+                <li><strong>Browser Rendering</strong> — The browser parses HTML, builds the DOM tree, fetches
+                  additional resources (CSS, JS, images), constructs the render tree, and paints the page on screen.
+                </li>
+              </ol>
+              <p><strong>Interview tip:</strong> This question tests your understanding of networking fundamentals, DNS,
+                TLS, HTTP, and how web applications work end-to-end. Be ready to go deep on any step.</p>
+            </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+  </button>
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+  <script src="js/page.js"></script>
 </body>
 </html>

@@ -4,60 +4,235 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gen AI | Cloud Interview Guide</title>
+  <meta name="description" content="Layers, prompt engineering, RAG, fine-tuning, and multi-model invocation." />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/devops.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header-inner container">
-      <a class="logo" href="index.html">Cloud Interview Guide</a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="genai.html">Gen AI</a>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+      <div class="sidebar-header">
+        <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-label">Categories</div>
+        <a href="aws.html" class="sidebar-link">AWS <span class="count">7</span></a>
+        <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+        <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+        <a href="genai.html" class="sidebar-link active">Gen AI <span class="count">4</span></a>
+        <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+        <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+        <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+        <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
       </nav>
-    </div>
-  </header>
+      <div class="sidebar-footer">
+        <div class="sidebar-progress-label">Study Progress</div>
+        <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progressFill"></div></div>
+        <div class="sidebar-progress-text" id="progressText">0 / 4 reviewed</div>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+    <main class="content-area" role="main">
+      <div class="topbar">
+        <div class="topbar-inner">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+          </div>
+          <div class="difficulty-filters">
+            <button class="filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+            <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+            <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+          </div>
+        </div>
+      </div>
+      <div class="content-split">
+        <aside class="toc-sidebar" id="tocSidebar">
+          <div class="toc-title">In This Section</div>
+          <nav class="toc-nav" id="tocNav">
+            <a href="#genai-layers" class="toc-link" data-section="genai-layers"><span class="toc-dot"></span>Gen AI Layers</a>
+            <a href="#prompt-rag-finetuning" class="toc-link" data-section="prompt-rag-finetuning"><span class="toc-dot"></span>Prompt Engineering Vs RAG Vs Fine Tuning</a>
+            <a href="#rag-bedrock" class="toc-link" data-section="rag-bedrock"><span class="toc-dot"></span>RAG with Bedrock</a>
+            <a href="#genai-multi-model" class="toc-link" data-section="genai-multi-model"><span class="toc-dot"></span>Gen AI Multi Model Invocation</a>
+          </nav>
+          <div class="toc-keyboard-hint">
+            <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+          </div>
+        </aside>
+        <div class="content-panel">
+          <header class="page-hero">
+            <div class="hero-badge" style="background:linear-gradient(135deg,#ec4899, #f43f5e)">Gen AI</div>
+            <h1>Gen AI Interview Guide</h1>
+            <p class="hero-lead">Layers, prompt engineering, RAG, fine-tuning, and multi-model invocation.</p>
+            <div class="hero-stats">
+              <div class="stat"><span class="stat-number">4</span><span class="stat-label">Topics</span></div>
+            </div>
+          </header>
 
-  <main class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Home</a>
-      <span aria-hidden="true">/</span>
-      <span>Gen AI</span>
-    </nav>
 
-    <header class="page-title">
-      <h1>Gen AI</h1>
-      <p>Layers, prompt engineering, RAG, fine-tuning, and multi-model invocation.</p>
-    </header>
+          <article id="genai-layers" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>Gen AI Layers</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Gen AI Layers as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Generative AI systems are built in three layers:</p>
+              <ol>
+                <li><strong>Infrastructure Layer</strong> — The compute foundation that trains and runs models. Includes
+                  GPU/accelerator instances (e.g., EC2 P5, Trainium, Inferentia), storage (S3 for training data), and
+                  networking. AWS services: Amazon SageMaker, EC2 GPU instances, AWS Trainium chips.</li>
+                <li><strong>Model Layer</strong> — The foundation models (FMs) themselves. These are large pre-trained
+                  models (LLMs) like Anthropic Claude, Meta Llama, Amazon Titan, Stability AI. Access via <strong>Amazon
+                    Bedrock</strong> (managed, serverless access to multiple FMs) or self-host on SageMaker.</li>
+                <li><strong>Application Layer</strong> — The end-user-facing applications built on top of models.
+                  Includes prompt engineering, RAG pipelines, agents, chatbots, and code generators. AWS services:
+                  Amazon Q (AI assistant), PartyRock (no-code AI app builder), Bedrock Agents.</li>
+              </ol>
+              <p><strong>Key insight for interviews:</strong> Most companies operate at the Application Layer —
+                consuming pre-trained models via APIs (Bedrock) rather than training their own. Understanding RAG,
+                prompt engineering, and model selection is more relevant than infrastructure for most roles.</p>
+            </div>
+            </div>
+          </article>
 
-    <ul class="topic-list">
-      <li><a href="#genai-layers">Gen AI Layers</a></li>
-      <li><a href="#prompt-rag-finetuning">Prompt Engineering Vs RAG Vs Fine Tuning</a></li>
-      <li><a href="#rag-bedrock">RAG with Bedrock</a></li>
-      <li><a href="#genai-multi-model">Gen AI Multi Model Invocation</a></li>
-    </ul>
+          <article id="prompt-rag-finetuning" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Prompt Engineering Vs RAG Vs Fine Tuning</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Prompt Engineering Vs RAG Vs Fine Tuning as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Three techniques to customize LLM behavior, each with different trade-offs:</p>
+              <table class="topic-table">
+                <thead>
+                  <tr>
+                    <th>Technique</th>
+                    <th>How It Works</th>
+                    <th>Cost</th>
+                    <th>Best For</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Prompt Engineering</strong></td>
+                    <td>Craft instructions, examples, and context in the prompt itself. No model changes.</td>
+                    <td>Lowest — just API calls</td>
+                    <td>Quick customization, general tasks, prototyping</td>
+                  </tr>
+                  <tr>
+                    <td><strong>RAG (Retrieval Augmented Generation)</strong></td>
+                    <td>Retrieve relevant documents from a knowledge base (vector DB) and inject them into the prompt as
+                      context before the model generates a response.</td>
+                    <td>Medium — requires vector DB + embedding</td>
+                    <td>Domain-specific Q&amp;A, up-to-date knowledge, reducing hallucinations</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Fine Tuning</strong></td>
+                    <td>Retrain the model on your custom dataset to permanently change its behavior and knowledge.</td>
+                    <td>Highest — GPU compute for training</td>
+                    <td>Specialized tone/style, domain-specific terminology, consistent structured output</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p><strong>Decision guide:</strong> Start with Prompt Engineering. If the model lacks domain knowledge,
+                add RAG. Only fine-tune when you need the model to fundamentally change its behavior or learn a
+                specialized skill.</p>
+            </div>
+            </div>
+          </article>
 
-    <section id="genai-layers" class="topic-detail">
-      <h2>Gen AI Layers</h2>
-      <div class="content">Infrastructure, model, and application layers in Gen AI systems.</div>
-    </section>
-    <section id="prompt-rag-finetuning" class="topic-detail">
-      <h2>Prompt Engineering Vs RAG Vs Fine Tuning</h2>
-      <div class="content">When to use prompts, retrieval-augmented generation, or fine-tuning.</div>
-    </section>
-    <section id="rag-bedrock" class="topic-detail">
-      <h2>RAG with Bedrock</h2>
-      <div class="content">Building RAG solutions with AWS Bedrock.</div>
-    </section>
-    <section id="genai-multi-model" class="topic-detail">
-      <h2>Gen AI Multi Model Invocation</h2>
-      <div class="content">Orchestrating multiple models and fallbacks.</div>
-    </section>
-  </main>
+          <article id="rag-bedrock" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>RAG with Bedrock</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark RAG with Bedrock as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Retrieval Augmented Generation (RAG) with Amazon Bedrock lets you ground LLM responses in your own
+                data:</p>
+              <h4>Architecture Flow</h4>
+              <ol>
+                <li><strong>Ingest Documents</strong> — Upload your knowledge base (PDFs, web pages, internal docs) to
+                  <strong>Amazon S3</strong>.
+                </li>
+                <li><strong>Chunk &amp; Embed</strong> — Bedrock Knowledge Bases automatically chunks documents and
+                  converts them into vector embeddings using an embedding model (e.g., Amazon Titan Embeddings).</li>
+                <li><strong>Store in Vector DB</strong> — Embeddings are stored in a vector database (<strong>Amazon
+                    OpenSearch Serverless</strong>, Pinecone, or Amazon Aurora with pgvector).</li>
+                <li><strong>User Query</strong> — When a user asks a question, the query is embedded and a similarity
+                  search retrieves the most relevant document chunks from the vector DB.</li>
+                <li><strong>Augmented Prompt</strong> — The retrieved chunks are injected into the prompt as context,
+                  and the foundation model (e.g., Claude, Titan) generates a grounded response.</li>
+              </ol>
+              <h4>Why RAG?</h4>
+              <ul>
+                <li>No fine-tuning required — cheaper and faster to set up</li>
+                <li>Always up-to-date — just update documents in S3</li>
+                <li>Reduces hallucinations by grounding responses in real data</li>
+                <li>Data stays in your AWS account — full control over security and compliance</li>
+              </ul>
+            </div>
+            </div>
+          </article>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p><a href="index.html">Cloud Interview Guide</a></p>
-    </div>
-  </footer>
+          <article id="genai-multi-model" class="topic-card" data-difficulty="advanced">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>Gen AI Multi Model Invocation</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Gen AI Multi Model Invocation as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Multi-model invocation is the practice of using multiple foundation models in a single application to
+                get the best results:</p>
+              <h4>Strategies</h4>
+              <ul>
+                <li><strong>Model Routing</strong> — Route different request types to different models. E.g., simple
+                  Q&amp;A goes to a fast/cheap model (Titan Lite), complex reasoning goes to Claude 3.5 Sonnet. Reduces
+                  cost while maintaining quality.</li>
+                <li><strong>Model Fallback</strong> — If the primary model is unavailable, rate-limited, or returns an
+                  error, automatically fall back to a secondary model. Improves reliability.</li>
+                <li><strong>Ensemble / Consensus</strong> — Send the same prompt to multiple models and aggregate
+                  responses (voting, best-of-N). Improves accuracy for critical decisions.</li>
+                <li><strong>Chain of Models</strong> — Pipeline where the output of one model feeds into another. E.g.,
+                  Model A extracts entities from text, Model B generates a summary using those entities.</li>
+              </ul>
+              <h4>AWS Implementation</h4>
+              <p>Amazon Bedrock makes multi-model invocation simple — a single API endpoint gives access to models from
+                Anthropic, Meta, Amazon, Cohere, and others. Use <strong>AWS Step Functions</strong> or <strong>Bedrock
+                  Agents</strong> to orchestrate multi-model workflows.</p>
+            </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+  </button>
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+  <script src="js/page.js"></script>
 </body>
 </html>

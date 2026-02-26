@@ -4,75 +4,421 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AWS | Cloud Interview Guide</title>
+  <meta name="description" content="Core AWS services, Well-Architected Framework, migration, and solutions architecture topics." />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/devops.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header-inner container">
-      <a class="logo" href="index.html">Cloud Interview Guide</a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="aws.html">AWS</a>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+      <div class="sidebar-header">
+        <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-label">Categories</div>
+        <a href="aws.html" class="sidebar-link active">AWS <span class="count">7</span></a>
+        <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+        <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+        <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+        <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+        <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+        <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
       </nav>
-    </div>
-  </header>
+      <div class="sidebar-footer">
+        <div class="sidebar-progress-label">Study Progress</div>
+        <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progressFill"></div></div>
+        <div class="sidebar-progress-text" id="progressText">0 / 7 reviewed</div>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+    <main class="content-area" role="main">
+      <div class="topbar">
+        <div class="topbar-inner">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+          </div>
+          <div class="difficulty-filters">
+            <button class="filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+            <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+            <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+          </div>
+        </div>
+      </div>
+      <div class="content-split">
+        <aside class="toc-sidebar" id="tocSidebar">
+          <div class="toc-title">In This Section</div>
+          <nav class="toc-nav" id="tocNav">
+            <a href="#aws-services" class="toc-link" data-section="aws-services"><span class="toc-dot"></span>AWS Services for Interviews</a>
+            <a href="#availability-zone" class="toc-link" data-section="availability-zone"><span class="toc-dot"></span>Availability Zone &amp; Data Center</a>
+            <a href="#rpo-rto" class="toc-link" data-section="rpo-rto"><span class="toc-dot"></span>RPO Vs RTO</a>
+            <a href="#well-architected" class="toc-link" data-section="well-architected"><span class="toc-dot"></span>AWS Well Architected Framework</a>
+            <a href="#migration" class="toc-link" data-section="migration"><span class="toc-dot"></span>AWS Migration Tools</a>
+            <a href="#api-gateway-auth" class="toc-link" data-section="api-gateway-auth"><span class="toc-dot"></span>API Gateway Auth</a>
+            <a href="#serverless-webapp" class="toc-link" data-section="serverless-webapp"><span class="toc-dot"></span>Serverless Web Application</a>
+          </nav>
+          <div class="toc-keyboard-hint">
+            <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+          </div>
+        </aside>
+        <div class="content-panel">
+          <header class="page-hero">
+            <div class="hero-badge" style="background:linear-gradient(135deg,#f97316, #ef4444)">AWS</div>
+            <h1>AWS Interview Guide</h1>
+            <p class="hero-lead">Core AWS services, Well-Architected Framework, migration, and solutions architecture topics.</p>
+            <div class="hero-stats">
+              <div class="stat"><span class="stat-number">7</span><span class="stat-label">Topics</span></div>
+            </div>
+          </header>
 
-  <main class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Home</a>
-      <span aria-hidden="true">/</span>
-      <span>AWS</span>
-    </nav>
 
-    <header class="page-title">
-      <h1>AWS</h1>
-      <p>Core AWS services, Well-Architected Framework, migration, and solutions architecture topics.</p>
-    </header>
+          <article id="aws-services" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>AWS Services for Interviews</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark AWS Services for Interviews as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Key AWS services to know for solutions architect and cloud engineer interviews, organized by domain:
+              </p>
+              <div class="service-grid">
+                <div class="service-category">
+                  <h3>Compute</h3>
+                  <ul>
+                    <li>EC2</li>
+                    <li>Auto Scaling</li>
+                    <li>Lambda</li>
+                    <li>Elastic Kubernetes Service (EKS)</li>
+                    <li>ECS</li>
+                  </ul>
+                </div>
+                <div class="service-category">
+                  <h3>Storage</h3>
+                  <ul>
+                    <li>S3</li>
+                    <li>EBS</li>
+                  </ul>
+                </div>
+                <div class="service-category">
+                  <h3>Database</h3>
+                  <ul>
+                    <li>RDS</li>
+                    <li>DynamoDB</li>
+                    <li>ElastiCache</li>
+                  </ul>
+                </div>
+                <div class="service-category">
+                  <h3>Network</h3>
+                  <ul>
+                    <li>VPC</li>
+                    <li>Load Balancer</li>
+                    <li>API Gateway</li>
+                  </ul>
+                </div>
+                <div class="service-category">
+                  <h3>Security</h3>
+                  <ul>
+                    <li>KMS</li>
+                    <li>IAM</li>
+                    <li>WAF</li>
+                    <li>Shield</li>
+                    <li>GuardDuty</li>
+                    <li>Secrets Manager</li>
+                    <li>Config</li>
+                  </ul>
+                </div>
+                <div class="service-category">
+                  <h3>Migration</h3>
+                  <ul>
+                    <li>DMS</li>
+                    <li>Migration Hub</li>
+                    <li>Application Migration Service</li>
+                    <li>Application Discovery Service</li>
+                  </ul>
+                </div>
+                <div class="service-category">
+                  <h3>Gen AI</h3>
+                  <ul>
+                    <li>BedRock</li>
+                    <li>Q</li>
+                    <li>SageMaker</li>
+                    <li>Partyrock</li>
+                  </ul>
+                </div>
+                <div class="service-category">
+                  <h3>Event Driven</h3>
+                  <ul>
+                    <li>SNS</li>
+                    <li>SQS</li>
+                    <li>EventBridge</li>
+                    <li>Step Functions</li>
+                  </ul>
+                </div>
+                <div class="service-category">
+                  <h3>Observability</h3>
+                  <ul>
+                    <li>CloudWatch</li>
+                    <li>CloudTrail</li>
+                    <li>X-Ray</li>
+                  </ul>
+                </div>
+                <div class="service-category">
+                  <h3>Cost Optimization</h3>
+                  <ul>
+                    <li>Compute Optimizer</li>
+                    <li>CloudWatch Insights</li>
+                    <li>Cost Explorer</li>
+                    <li>Budget</li>
+                    <li>Spot Instance</li>
+                    <li>Reserve Instance</li>
+                    <li>Savings Plan</li>
+                  </ul>
+                </div>
+                <div class="service-category">
+                  <h3>Analytics</h3>
+                  <ul>
+                    <li>Glue</li>
+                    <li>EMR</li>
+                    <li>Athena</li>
+                    <li>QuickSight</li>
+                    <li>Kinesis</li>
+                  </ul>
+                </div>
+                <div class="service-category">
+                  <h3>DevOps</h3>
+                  <ul>
+                    <li>CloudFormation</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            </div>
+          </article>
 
-    <ul class="topic-list">
-      <li><a href="#aws-services">AWS Services for Interviews</a></li>
-      <li><a href="#availability-zone">Availability Zone &amp; Data Center</a></li>
-      <li><a href="#rpo-rto">RPO Vs RTO</a></li>
-      <li><a href="#well-architected">AWS Well Architected Framework</a></li>
-      <li><a href="#migration">AWS Migration Tools</a></li>
-      <li><a href="#api-gateway-auth">API Gateway Auth</a></li>
-      <li><a href="#serverless-webapp">Serverless Web Application</a></li>
-    </ul>
+          <article id="availability-zone" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>Availability Zone &amp; Data Center</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Availability Zone &amp; Data Center as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p><strong>How Many Data Centers in One Availability Zone?</strong></p>
+              <div class="answer-block correct">
+                <h4>Correct Answer</h4>
+                <p>An AWS availability zone (AZ) can contain <strong>multiple data centers</strong>. Each zone is
+                  usually backed by one or more physical data centers, with the largest backed by as many as five.</p>
+              </div>
+              <div class="answer-block incorrect">
+                <h4>Incorrect Answer</h4>
+                <p>One Availability Zone means one data center.</p>
+              </div>
+            </div>
+            </div>
+          </article>
 
-    <section id="aws-services" class="topic-detail">
-      <h2>AWS Services for Interviews</h2>
-      <div class="content">Key AWS services to know for solutions architect and cloud engineer interviews. Content from the full guide can be pasted here or loaded from the original source.</div>
-    </section>
-    <section id="availability-zone" class="topic-detail">
-      <h2>Availability Zone &amp; Data Center</h2>
-      <div class="content">How AZs and data centers relate to high availability and region design.</div>
-    </section>
-    <section id="rpo-rto" class="topic-detail">
-      <h2>RPO Vs RTO</h2>
-      <div class="content">Recovery Point Objective and Recovery Time Objective in disaster recovery.</div>
-    </section>
-    <section id="well-architected" class="topic-detail">
-      <h2>AWS Well Architected Framework</h2>
-      <div class="content">The six pillars: operational excellence, security, reliability, performance efficiency, cost optimization, sustainability.</div>
-    </section>
-    <section id="migration" class="topic-detail">
-      <h2>AWS Migration Tools</h2>
-      <div class="content">Migration strategies and tools for moving workloads to AWS.</div>
-    </section>
-    <section id="api-gateway-auth" class="topic-detail">
-      <h2>API Gateway Auth</h2>
-      <div class="content">Authentication and authorization options with API Gateway.</div>
-    </section>
-    <section id="serverless-webapp" class="topic-detail">
-      <h2>Serverless Web Application</h2>
-      <div class="content">Building web applications with serverless services (Lambda, API Gateway, etc.).</div>
-    </section>
-  </main>
+          <article id="rpo-rto" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>RPO Vs RTO</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark RPO Vs RTO as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Candidates are sometimes confused by RPO thinking it's measured in units of data (e.g. gigabyte,
+                petabyte).</p>
+              <div class="answer-block correct">
+                <h4>Correct Answer</h4>
+                <p>Both RPO and RTO are measured in <strong>time</strong>.</p>
+                <ul>
+                  <li><strong>RTO (Recovery Time Objective)</strong> — a measure of how quickly after an outage an
+                    application must be available again.</li>
+                  <li><strong>RPO (Recovery Point Objective)</strong> — refers to how much data loss your application
+                    can tolerate. Another way to think about RPO is how old can the data be when this application is
+                    recovered, i.e. the time between the last backup and the disaster.</li>
+                </ul>
+                <p>With both RTO and RPO, the targets are measured in hours, minutes, or seconds, with lower numbers
+                  representing less downtime or less data loss. RPO and RTO can be — and often have — different values
+                  for an application.</p>
+              </div>
+            </div>
+            </div>
+          </article>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p><a href="index.html">Cloud Interview Guide</a></p>
-    </div>
-  </footer>
+          <article id="well-architected" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>AWS Well Architected Framework</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark AWS Well Architected Framework as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>The AWS Well-Architected Framework helps cloud architects build secure, high-performing, resilient, and
+                efficient infrastructure. It is built around <strong>six pillars</strong>:</p>
+              <ol>
+                <li><strong>Operational Excellence</strong> — Run and monitor systems to deliver business value and
+                  continually improve supporting processes. Key practices: infrastructure as code, frequent small
+                  reversible changes, anticipate failure, and learn from operational events.</li>
+                <li><strong>Security</strong> — Protect information, systems, and assets while delivering business
+                  value. Key practices: implement a strong identity foundation, enable traceability, apply security at
+                  all layers, automate security best practices, protect data in transit and at rest.</li>
+                <li><strong>Reliability</strong> — Ensure a workload performs its intended function correctly and
+                  consistently. Key practices: automatically recover from failure, test recovery procedures, scale
+                  horizontally, stop guessing capacity, manage change through automation.</li>
+                <li><strong>Performance Efficiency</strong> — Use computing resources efficiently to meet system
+                  requirements and maintain that efficiency as demand changes. Key practices: democratize advanced
+                  technologies, go global in minutes, use serverless architectures, experiment more often.</li>
+                <li><strong>Cost Optimization</strong> — Run systems to deliver business value at the lowest price
+                  point. Key practices: implement cloud financial management, adopt a consumption model, measure overall
+                  efficiency, stop spending money on undifferentiated heavy lifting, analyze and attribute expenditure.
+                </li>
+                <li><strong>Sustainability</strong> — Minimize the environmental impacts of running cloud workloads. Key
+                  practices: understand your impact, establish sustainability goals, maximize utilization, anticipate
+                  and adopt more efficient hardware and software offerings, reduce downstream impact.</li>
+              </ol>
+            </div>
+            </div>
+          </article>
+
+          <article id="migration" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>AWS Migration Tools</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark AWS Migration Tools as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <h4>The 7 Rs of Migration</h4>
+              <ol>
+                <li><strong>Rehost (Lift &amp; Shift)</strong> — Move applications as-is to AWS without changes. Use AWS
+                  Application Migration Service (MGN).</li>
+                <li><strong>Replatform (Lift, Tinker &amp; Shift)</strong> — Make a few cloud optimizations without
+                  changing core architecture. E.g., migrate to RDS instead of self-managed database.</li>
+                <li><strong>Repurchase</strong> — Move to a different product, typically SaaS (e.g., migrate CRM to
+                  Salesforce).</li>
+                <li><strong>Refactor / Re-architect</strong> — Re-imagine the application using cloud-native features.
+                  Driven by a strong business need for scalability, performance, or agility.</li>
+                <li><strong>Retire</strong> — Decommission applications that are no longer needed.</li>
+                <li><strong>Retain</strong> — Keep applications in the source environment (not ready to migrate yet).
+                </li>
+                <li><strong>Relocate</strong> — Move infrastructure to AWS without purchasing new hardware (e.g., VMware
+                  Cloud on AWS).</li>
+              </ol>
+              <h4>Key AWS Migration Services</h4>
+              <ul>
+                <li><strong>AWS Migration Hub</strong> — Central place to track migration progress across multiple AWS
+                  and partner solutions.</li>
+                <li><strong>AWS Application Migration Service (MGN)</strong> — Automates lift-and-shift migrations by
+                  continuously replicating source servers to AWS.</li>
+                <li><strong>AWS Application Discovery Service</strong> — Collects information about on-premises data
+                  centers to help plan migration.</li>
+                <li><strong>AWS Database Migration Service (DMS)</strong> — Migrates databases to AWS with minimal
+                  downtime. Supports homogeneous and heterogeneous migrations.</li>
+                <li><strong>AWS Schema Conversion Tool (SCT)</strong> — Converts source database schema to a format
+                  compatible with the target database.</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="api-gateway-auth" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>API Gateway Auth</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark API Gateway Auth as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Amazon API Gateway supports multiple authentication and authorization mechanisms:</p>
+              <ol>
+                <li><strong>IAM Authorization</strong> — Uses AWS Signature Version 4 (SigV4). Best for AWS users and
+                  roles, service-to-service communication. The caller signs the request with AWS credentials, and API
+                  Gateway validates the signature with IAM.</li>
+                <li><strong>Amazon Cognito User Pools</strong> — Best for external users (web/mobile apps). Users
+                  authenticate with Cognito and receive a JWT token. API Gateway validates the token directly with
+                  Cognito. Supports social identity providers (Google, Facebook) and SAML.</li>
+                <li><strong>Lambda Authorizer (Custom Authorizer)</strong> — A Lambda function that implements custom
+                  authorization logic. Receives a bearer token or request parameters, returns an IAM policy. Best for
+                  third-party auth systems, custom business logic, or OAuth/OIDC tokens from external providers.</li>
+                <li><strong>API Keys</strong> — Simple key-based identification (not true authentication). Used with
+                  usage plans to throttle and meter API access per client. Should be combined with another auth method
+                  for security.</li>
+              </ol>
+              <p><strong>When to use which?</strong> IAM for internal AWS-to-AWS calls, Cognito for end-user-facing
+                apps, Lambda Authorizer for custom/third-party auth, API Keys for rate limiting and client
+                identification.</p>
+            </div>
+            </div>
+          </article>
+
+          <article id="serverless-webapp" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>Serverless Web Application</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Serverless Web Application as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>A fully serverless web application architecture on AWS:</p>
+              <h4>Architecture Flow</h4>
+              <ol>
+                <li><strong>Frontend Hosting</strong> — Static assets (HTML, CSS, JS) hosted on <strong>Amazon
+                    S3</strong> and served globally via <strong>Amazon CloudFront</strong> (CDN).</li>
+                <li><strong>Authentication</strong> — <strong>Amazon Cognito</strong> handles user sign-up, sign-in, and
+                  issues JWT tokens.</li>
+                <li><strong>API Layer</strong> — <strong>Amazon API Gateway</strong> exposes RESTful APIs, validates
+                  auth tokens, and routes requests.</li>
+                <li><strong>Business Logic</strong> — <strong>AWS Lambda</strong> functions execute backend logic (no
+                  servers to manage, scales automatically).</li>
+                <li><strong>Data Storage</strong> — <strong>Amazon DynamoDB</strong> provides a fully managed NoSQL
+                  database with single-digit-millisecond latency.</li>
+              </ol>
+              <h4>Key Benefits</h4>
+              <ul>
+                <li>No servers to provision or manage</li>
+                <li>Scales automatically with demand</li>
+                <li>Pay only for what you use (no idle costs)</li>
+                <li>Built-in high availability across multiple AZs</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+  </button>
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+  <script src="js/page.js"></script>
 </body>
 </html>

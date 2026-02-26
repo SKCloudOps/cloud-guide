@@ -4,100 +4,509 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Interview &amp; Career | Cloud Interview Guide</title>
+  <meta name="description" content="STAR format, platform vs developer team, batch workloads, and career topics." />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/devops.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header-inner container">
-      <a class="logo" href="index.html">Cloud Interview Guide</a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="interview.html">Interview &amp; Career</a>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+      <div class="sidebar-header">
+        <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-label">Categories</div>
+        <a href="aws.html" class="sidebar-link">AWS <span class="count">7</span></a>
+        <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+        <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+        <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+        <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+        <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+        <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+        <a href="interview.html" class="sidebar-link active">Interview &amp; Career <span class="count">12</span></a>
       </nav>
-    </div>
-  </header>
+      <div class="sidebar-footer">
+        <div class="sidebar-progress-label">Study Progress</div>
+        <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progressFill"></div></div>
+        <div class="sidebar-progress-text" id="progressText">0 / 12 reviewed</div>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+    <main class="content-area" role="main">
+      <div class="topbar">
+        <div class="topbar-inner">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+          </div>
+          <div class="difficulty-filters">
+            <button class="filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+            <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+            <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+          </div>
+        </div>
+      </div>
+      <div class="content-split">
+        <aside class="toc-sidebar" id="tocSidebar">
+          <div class="toc-title">In This Section</div>
+          <nav class="toc-nav" id="tocNav">
+            <a href="#star-format" class="toc-link" data-section="star-format"><span class="toc-dot"></span>STAR Interview Format</a>
+            <a href="#platform-vs-developer" class="toc-link" data-section="platform-vs-developer"><span class="toc-dot"></span>Platform Vs Developer Team</a>
+            <a href="#batch-workloads" class="toc-link" data-section="batch-workloads"><span class="toc-dot"></span>Running Batch Workloads on AWS</a>
+            <a href="#eventbridge-cross-account" class="toc-link" data-section="eventbridge-cross-account"><span class="toc-dot"></span>EventBridge Cross Account</a>
+            <a href="#microservice-tech-stack" class="toc-link" data-section="microservice-tech-stack"><span class="toc-dot"></span>Microservice Tech Stack</a>
+            <a href="#principal-sa" class="toc-link" data-section="principal-sa"><span class="toc-dot"></span>Principal SA (6+ Years)</a>
+            <a href="#experience" class="toc-link" data-section="experience"><span class="toc-dot"></span>20+ Years of IT Experience</a>
+            <a href="#world-scale" class="toc-link" data-section="world-scale"><span class="toc-dot"></span>World-scale Implementations</a>
+            <a href="#bootcamp" class="toc-link" data-section="bootcamp"><span class="toc-dot"></span>SA Bootcamp</a>
+            <a href="#author" class="toc-link" data-section="author"><span class="toc-dot"></span>Bestselling Author</a>
+            <a href="#talks" class="toc-link" data-section="talks"><span class="toc-dot"></span>Conference Talks</a>
+            <a href="#linkedin" class="toc-link" data-section="linkedin"><span class="toc-dot"></span>LinkedIn Top Voice</a>
+          </nav>
+          <div class="toc-keyboard-hint">
+            <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+          </div>
+        </aside>
+        <div class="content-panel">
+          <header class="page-hero">
+            <div class="hero-badge" style="background:linear-gradient(135deg,#10b981, #059669)">Interview &amp; Career</div>
+            <h1>Interview &amp; Career Interview Guide</h1>
+            <p class="hero-lead">STAR format, platform vs developer team, batch workloads, and career topics.</p>
+            <div class="hero-stats">
+              <div class="stat"><span class="stat-number">12</span><span class="stat-label">Topics</span></div>
+            </div>
+          </header>
 
-  <main class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Home</a>
-      <span aria-hidden="true">/</span>
-      <span>Interview &amp; Career</span>
-    </nav>
 
-    <header class="page-title">
-      <h1>Interview &amp; Career</h1>
-      <p>STAR format, platform vs developer team, batch workloads, EventBridge, tech stacks, and author bio.</p>
-    </header>
+          <article id="star-format" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>STAR Interview Format</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark STAR Interview Format as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>The STAR method is the gold standard for answering behavioral interview questions:</p>
+              <ol>
+                <li><strong>Situation</strong> — Set the context. Describe the project, team, and challenge. Be
+                  specific: "At Company X, we had a monolithic application serving 10M users that was experiencing
+                  frequent outages during peak hours."</li>
+                <li><strong>Task</strong> — What was your responsibility? "I was tasked with designing a migration plan
+                  to decompose the monolith into microservices to improve reliability and scalability."</li>
+                <li><strong>Action</strong> — What did YOU do? (Use "I", not "we"). "I identified the top 3 most
+                  failure-prone modules, designed a strangler fig pattern to extract them into independent services on
+                  EKS, set up CI/CD pipelines with ArgoCD, and implemented circuit breakers using Istio."</li>
+                <li><strong>Result</strong> — Quantify the outcome. "We reduced outages by 95%, improved deployment
+                  frequency from monthly to daily, and reduced P99 latency from 2s to 200ms. The architecture now
+                  handles 3x the previous peak traffic."</li>
+              </ol>
+              <h4>Tips</h4>
+              <ul>
+                <li>Prepare 5–8 STAR stories that cover: technical challenge, leadership, conflict, failure/learning,
+                  and cross-team collaboration.</li>
+                <li>Always quantify results (percentages, dollar amounts, time saved).</li>
+                <li>Keep each STAR answer under 2 minutes unless the interviewer asks to go deeper.</li>
+              </ul>
+            </div>
+            </div>
+          </article>
 
-    <ul class="topic-list">
-      <li><a href="#star-format">STAR Interview Format</a></li>
-      <li><a href="#platform-vs-developer">Platform Vs Developer Team</a></li>
-      <li><a href="#batch-workloads">Running Batch Workloads on AWS</a></li>
-      <li><a href="#eventbridge-cross-account">EventBridge Cross Account</a></li>
-      <li><a href="#microservice-tech-stack">Microservice Tech Stack</a></li>
-      <li><a href="#principal-sa">Principal SA at (6+ Years)</a></li>
-      <li><a href="#experience">20+ Years of IT experience</a></li>
-      <li><a href="#world-scale">Designed and implemented multiple world-scale</a></li>
-      <li><a href="#bootcamp">Trained students get SA jobs via SA Bootcamp</a></li>
-      <li><a href="#author">Bestselling author (60,000+ paid students)</a></li>
-      <li><a href="#talks">Presented highly-rated talks at major events</a></li>
-      <li><a href="#linkedin">LinkedIn Top Systems Design Voice</a></li>
-    </ul>
+          <article id="platform-vs-developer" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Platform Vs Developer Team</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Platform Vs Developer Team as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Recently, the term "platform team" has been floating around plenty. But what do platform teams do? How
+                are they different from the developer team?</p>
+              <ol>
+                <li><strong>Step 1:</strong> The developer team requests the Platform team to provision appropriate AWS
+                  resources (e.g. Amazon EKS). This request is typically done via a ticketing system.</li>
+                <li><strong>Step 2:</strong> The platform team receives the request.</li>
+                <li><strong>Step 3:</strong> The platform team uses Infrastructure as Code (IaC) such as Terraform, CDK,
+                  etc., to provision the requested AWS resources and share credentials with the developer team.</li>
+                <li><strong>Step 4:</strong> The developer team kicks off the CI/CD process. Developers check in Code,
+                  Dockerfile, and manifest YAMLs. CI tools (e.g. Jenkins, GitHub Actions) build the container image and
+                  save it in Amazon ECR.</li>
+                <li><strong>Step 5:</strong> CD tools (e.g. Jenkins, Spinnaker) update the deployment manifest files
+                  with the tag of the container image.</li>
+                <li><strong>Step 6:</strong> CD tools deploy the manifest files into the cluster, deploying the newly
+                  built container in Amazon EKS.</li>
+              </ol>
+              <p><strong>Conclusion:</strong> The platform team takes care of the infrastructure (often with guardrails
+                appropriate for the organization), and the developer team uses that infrastructure to deploy their
+                application. The platform team does the upgrade and maintenance of the infrastructure to reduce the
+                burden on the developer team.</p>
+            </div>
+            </div>
+          </article>
 
-    <section id="star-format" class="topic-detail">
-      <h2>STAR Interview Format</h2>
-      <div class="content">Situation, Task, Action, Result—how to structure behavioral answers.</div>
-    </section>
-    <section id="platform-vs-developer" class="topic-detail">
-      <h2>Platform Vs Developer Team</h2>
-      <div class="content">Responsibilities and collaboration between platform and product teams.</div>
-    </section>
-    <section id="batch-workloads" class="topic-detail">
-      <h2>Running Batch Workloads on AWS</h2>
-      <div class="content">Batch jobs with Step Functions, Lambda, Fargate, and Batch.</div>
-    </section>
-    <section id="eventbridge-cross-account" class="topic-detail">
-      <h2>EventBridge Cross Account</h2>
-      <div class="content">Cross-account event routing with EventBridge.</div>
-    </section>
-    <section id="microservice-tech-stack" class="topic-detail">
-      <h2>Microservice Tech Stack</h2>
-      <div class="content">Typical technologies for building and operating microservices.</div>
-    </section>
-    <section id="principal-sa" class="topic-detail">
-      <h2>Principal SA at (6+ Years)</h2>
-      <div class="content">Principal Solutions Architect experience.</div>
-    </section>
-    <section id="experience" class="topic-detail">
-      <h2>20+ Years of IT experience</h2>
-      <div class="content">Background and expertise.</div>
-    </section>
-    <section id="world-scale" class="topic-detail">
-      <h2>Designed and implemented multiple world-scale</h2>
-      <div class="content">Large-scale system design experience.</div>
-    </section>
-    <section id="bootcamp" class="topic-detail">
-      <h2>Trained students get SA jobs via SA Bootcamp</h2>
-      <div class="content">Solutions Architect Bootcamp and training.</div>
-    </section>
-    <section id="author" class="topic-detail">
-      <h2>Bestselling author (60,000+ paid students)</h2>
-      <div class="content">Courses and learning material.</div>
-    </section>
-    <section id="talks" class="topic-detail">
-      <h2>Presented highly-rated talks at major events</h2>
-      <div class="content">Conference and community speaking.</div>
-    </section>
-    <section id="linkedin" class="topic-detail">
-      <h2>LinkedIn Top Systems Design Voice</h2>
-      <div class="content">Recognition in systems design.</div>
-    </section>
-  </main>
+          <article id="batch-workloads" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Running Batch Workloads on AWS</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Running Batch Workloads on AWS as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>AWS offers multiple options for running batch workloads depending on complexity and scale:</p>
+              <table class="topic-table">
+                <thead>
+                  <tr>
+                    <th>Service</th>
+                    <th>Best For</th>
+                    <th>Max Duration</th>
+                    <th>Scaling</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>AWS Lambda</strong></td>
+                    <td>Simple, short transformations</td>
+                    <td>15 minutes</td>
+                    <td>Automatic (1000+ concurrent)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>AWS Batch</strong></td>
+                    <td>Large-scale compute jobs (genomics, rendering, ML training)</td>
+                    <td>Unlimited</td>
+                    <td>Automatic (managed compute environments with Spot)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>AWS Step Functions</strong></td>
+                    <td>Complex multi-step workflows with branching, retries, and error handling</td>
+                    <td>1 year (Standard) / 5 min (Express)</td>
+                    <td>Automatic</td>
+                  </tr>
+                  <tr>
+                    <td><strong>AWS Fargate</strong></td>
+                    <td>Containerized batch jobs without managing servers</td>
+                    <td>Unlimited</td>
+                    <td>Task-based scaling</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Amazon EMR</strong></td>
+                    <td>Big data processing (Spark, Hadoop, Hive)</td>
+                    <td>Unlimited</td>
+                    <td>Cluster auto-scaling</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p><strong>Common pattern:</strong> Use Step Functions to orchestrate a batch pipeline — trigger Lambda
+                for lightweight steps, AWS Batch for heavy compute, and DynamoDB/S3 for state and output storage.</p>
+            </div>
+            </div>
+          </article>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p><a href="index.html">Cloud Interview Guide</a></p>
-    </div>
-  </footer>
+          <article id="eventbridge-cross-account" class="topic-card" data-difficulty="advanced">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>EventBridge Cross Account</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark EventBridge Cross Account as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Amazon EventBridge supports routing events across AWS accounts for multi-account architectures:</p>
+              <h4>How It Works</h4>
+              <ol>
+                <li><strong>Source Account</strong> — An application in Account A publishes events to an EventBridge
+                  event bus.</li>
+                <li><strong>Event Rule</strong> — A rule in Account A matches specific events and sets the target as the
+                  event bus in Account B.</li>
+                <li><strong>Resource Policy</strong> — Account B's event bus has a resource-based policy that allows
+                  Account A to put events onto it.</li>
+                <li><strong>Target Account</strong> — A rule in Account B's event bus matches the received events and
+                  triggers targets (Lambda, SQS, Step Functions, etc.).</li>
+              </ol>
+              <h4>Use Cases</h4>
+              <ul>
+                <li><strong>Centralized audit</strong> — All accounts send security/compliance events to a central
+                  security account.</li>
+                <li><strong>Shared services</strong> — A shared services account processes billing, notifications, or
+                  infrastructure events from workload accounts.</li>
+                <li><strong>Microservices across accounts</strong> — Different teams own different accounts; EventBridge
+                  enables event-driven communication without tight coupling.</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="microservice-tech-stack" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Microservice Tech Stack</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Microservice Tech Stack as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>A typical technology stack for building and operating microservices on AWS:</p>
+              <table class="topic-table">
+                <thead>
+                  <tr>
+                    <th>Layer</th>
+                    <th>Purpose</th>
+                    <th>Technologies</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>API Gateway</strong></td>
+                    <td>External API routing, auth, throttling</td>
+                    <td>Amazon API Gateway, Kong, Apigee</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Compute</strong></td>
+                    <td>Run microservices</td>
+                    <td>Amazon EKS, ECS, Fargate, Lambda</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Service Discovery</strong></td>
+                    <td>Find other services</td>
+                    <td>AWS Cloud Map, Kubernetes DNS, Consul</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Communication</strong></td>
+                    <td>Sync &amp; async messaging</td>
+                    <td>gRPC, REST, SQS, SNS, EventBridge, Kafka</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Database</strong></td>
+                    <td>Data storage (database per service)</td>
+                    <td>DynamoDB, Aurora, ElastiCache, S3</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Observability</strong></td>
+                    <td>Metrics, logs, traces</td>
+                    <td>CloudWatch, Prometheus, Grafana, X-Ray, Jaeger</td>
+                  </tr>
+                  <tr>
+                    <td><strong>CI/CD</strong></td>
+                    <td>Build and deploy</td>
+                    <td>GitHub Actions, Jenkins, ArgoCD, CodePipeline</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Security</strong></td>
+                    <td>AuthN/AuthZ, encryption</td>
+                    <td>Cognito, IAM, KMS, Istio (mTLS)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            </div>
+          </article>
+
+          <article id="principal-sa" class="topic-card" data-difficulty="advanced">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>Principal SA (6+ Years)</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Principal SA (6+ Years) as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>A Principal Solutions Architect with 6+ years at this level brings deep expertise across multiple
+                domains:</p>
+              <ul>
+                <li><strong>Technical Leadership</strong> — Defines architecture standards, reviews designs across
+                  teams, and drives technology strategy for the organization.</li>
+                <li><strong>Customer-Facing</strong> — Works directly with customers to understand business requirements
+                  and translate them into scalable, cost-effective cloud architectures.</li>
+                <li><strong>Cross-Functional Influence</strong> — Bridges engineering, product, and business teams.
+                  Influences roadmaps and makes build-vs-buy decisions.</li>
+                <li><strong>Thought Leadership</strong> — Publishes best practices, presents at conferences, mentors
+                  junior architects, and contributes to the broader community.</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="experience" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>20+ Years of IT Experience</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark 20+ Years of IT Experience as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Two decades of IT experience spanning the evolution from on-premises to cloud-native:</p>
+              <ul>
+                <li><strong>Data Center Era</strong> — Physical servers, VMware virtualization, traditional networking,
+                  and waterfall development.</li>
+                <li><strong>Cloud Migration Era</strong> — Lift-and-shift to AWS, infrastructure as code, CI/CD
+                  adoption, and DevOps transformation.</li>
+                <li><strong>Cloud-Native Era</strong> — Microservices, Kubernetes, serverless, event-driven
+                  architectures, and GenAI integration.</li>
+              </ul>
+              <p>This breadth of experience is valuable because it provides perspective on why modern architectures
+                exist — understanding the pain points of legacy systems makes you a better architect of modern ones.</p>
+            </div>
+            </div>
+          </article>
+
+          <article id="world-scale" class="topic-card" data-difficulty="advanced">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>World-scale Implementations</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark World-scale Implementations as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Designing and implementing systems at global scale requires mastering:</p>
+              <ul>
+                <li><strong>Multi-Region Architecture</strong> — Active-active deployments across AWS regions with
+                  global load balancing (Route 53), data replication (DynamoDB Global Tables, Aurora Global Database),
+                  and regional failover.</li>
+                <li><strong>Scale Numbers</strong> — Millions of users, billions of requests/day, petabytes of data.
+                  Requires careful capacity planning, caching strategies (ElastiCache, CloudFront), and database
+                  sharding.</li>
+                <li><strong>Operational Excellence</strong> — Automated deployment pipelines, comprehensive
+                  observability (metrics, logs, traces across regions), runbooks, and chaos engineering.</li>
+                <li><strong>Lighthouse Projects</strong> — Flagship implementations that become case studies and
+                  reference architectures. These projects are often featured in AWS blogs, re:Invent talks, and customer
+                  success stories.</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="bootcamp" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>SA Bootcamp</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark SA Bootcamp as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>A Solutions Architect Bootcamp is an intensive training program designed to prepare candidates for SA
+                roles:</p>
+              <ul>
+                <li><strong>Core AWS Services Deep Dive</strong> — Hands-on labs covering compute, storage, networking,
+                  databases, and security.</li>
+                <li><strong>Architecture Design Sessions</strong> — Practice designing real-world systems: three-tier
+                  apps, event-driven microservices, data pipelines, DR strategies.</li>
+                <li><strong>Well-Architected Reviews</strong> — Learn to evaluate architectures against the six pillars
+                  and recommend improvements.</li>
+                <li><strong>Interview Preparation</strong> — STAR format practice, whiteboard design sessions, and mock
+                  interviews.</li>
+                <li><strong>Certification Path</strong> — Preparation for AWS Solutions Architect Associate and
+                  Professional certifications.</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="author" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>Bestselling Author</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Bestselling Author as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Creating educational content at scale as a bestselling author (60,000+ paid students):</p>
+              <ul>
+                <li><strong>Course Design</strong> — Structured learning paths covering cloud architecture, Kubernetes,
+                  DevOps, and system design with hands-on labs and real-world scenarios.</li>
+                <li><strong>Visual Learning</strong> — Architecture diagrams and visual explanations that make complex
+                  distributed systems concepts accessible.</li>
+                <li><strong>Community Impact</strong> — Students successfully transitioning to Solutions Architect,
+                  DevOps Engineer, and Cloud Engineer roles at top companies.</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="talks" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>Conference Talks</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Conference Talks as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Presenting highly-rated talks at major technology events:</p>
+              <ul>
+                <li><strong>Technical Deep Dives</strong> — Architecture patterns, Kubernetes at scale, event-driven
+                  design, and cost optimization strategies.</li>
+                <li><strong>Real-World Case Studies</strong> — Sharing lessons learned from world-scale implementations,
+                  including what worked, what failed, and what was learned.</li>
+                <li><strong>Community Engagement</strong> — AWS re:Invent, AWS Summits, KubeCon, and other industry
+                  events where practitioners share knowledge and best practices.</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="linkedin" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>LinkedIn Top Voice</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark LinkedIn Top Voice as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Recognized as a LinkedIn Top Voice in Systems Design:</p>
+              <ul>
+                <li><strong>Thought Leadership</strong> — Regularly publishing architecture diagrams, system design
+                  breakdowns, and cloud best practices that resonate with the engineering community.</li>
+                <li><strong>Community Building</strong> — Engaging with thousands of professionals to discuss cloud
+                  architecture, interview preparation, and career growth in the cloud space.</li>
+                <li><strong>Knowledge Sharing</strong> — Making complex distributed systems concepts accessible through
+                  clear visual explanations and real-world examples.</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+  </button>
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+  <script src="js/page.js"></script>
 </body>
 </html>

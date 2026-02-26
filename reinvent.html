@@ -4,55 +4,172 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Re:Invent 2024 | Cloud Interview Guide</title>
+  <meta name="description" content="EKS Auto, Aurora DSQL, S3 Tables, and other AWS announcements." />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/devops.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header-inner container">
-      <a class="logo" href="index.html">Cloud Interview Guide</a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="reinvent.html">Re:Invent 2024</a>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+      <div class="sidebar-header">
+        <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-label">Categories</div>
+        <a href="aws.html" class="sidebar-link">AWS <span class="count">7</span></a>
+        <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+        <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+        <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+        <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+        <a href="reinvent.html" class="sidebar-link active">Re:Invent 2024 <span class="count">3</span></a>
+        <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
       </nav>
-    </div>
-  </header>
+      <div class="sidebar-footer">
+        <div class="sidebar-progress-label">Study Progress</div>
+        <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progressFill"></div></div>
+        <div class="sidebar-progress-text" id="progressText">0 / 3 reviewed</div>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+    <main class="content-area" role="main">
+      <div class="topbar">
+        <div class="topbar-inner">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+          </div>
+          <div class="difficulty-filters">
+            <button class="filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+            <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+            <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+          </div>
+        </div>
+      </div>
+      <div class="content-split">
+        <aside class="toc-sidebar" id="tocSidebar">
+          <div class="toc-title">In This Section</div>
+          <nav class="toc-nav" id="tocNav">
+            <a href="#eks-auto-reinvent" class="toc-link" data-section="eks-auto-reinvent"><span class="toc-dot"></span>EKS Auto (Re:Invent 2024)</a>
+            <a href="#aurora-dsql" class="toc-link" data-section="aurora-dsql"><span class="toc-dot"></span>Aurora DSQL (Re:Invent 2024)</a>
+            <a href="#s3-tables" class="toc-link" data-section="s3-tables"><span class="toc-dot"></span>S3 Tables (Re:Invent 2024)</a>
+          </nav>
+          <div class="toc-keyboard-hint">
+            <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+          </div>
+        </aside>
+        <div class="content-panel">
+          <header class="page-hero">
+            <div class="hero-badge" style="background:linear-gradient(135deg,#f43f5e, #fb7185)">Re:Invent 2024</div>
+            <h1>Re:Invent 2024 Interview Guide</h1>
+            <p class="hero-lead">EKS Auto, Aurora DSQL, S3 Tables, and other AWS announcements.</p>
+            <div class="hero-stats">
+              <div class="stat"><span class="stat-number">3</span><span class="stat-label">Topics</span></div>
+            </div>
+          </header>
 
-  <main class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Home</a>
-      <span aria-hidden="true">/</span>
-      <span>Re:Invent 2024</span>
-    </nav>
 
-    <header class="page-title">
-      <h1>Re:Invent 2024</h1>
-      <p>EKS Auto, Aurora DSQL, S3 Tables, and other AWS announcements.</p>
-    </header>
+          <article id="eks-auto-reinvent" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>EKS Auto (Re:Invent 2024)</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark EKS Auto (Re:Invent 2024) as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Amazon EKS Auto Mode was announced at Re:Invent 2024 to deliver a fully managed Kubernetes experience:
+              </p>
+              <ul>
+                <li><strong>Automatic Compute</strong> — No node groups to configure. EKS Auto provisions the right EC2
+                  instances (powered by Karpenter) based on pod requirements. Supports Spot, On-Demand, and Graviton
+                  automatically.</li>
+                <li><strong>Automatic Networking</strong> — VPC CNI, CoreDNS, and kube-proxy are managed and upgraded
+                  automatically. Load balancer integration is built in.</li>
+                <li><strong>Automatic Storage</strong> — EBS CSI driver is pre-installed and managed.
+                  PersistentVolumeClaims just work.</li>
+                <li><strong>Automatic Upgrades</strong> — Kubernetes version, AMIs, and add-ons are upgraded
+                  automatically with minimal disruption.</li>
+              </ul>
+              <p><strong>Impact:</strong> EKS Auto eliminates the undifferentiated heavy lifting of managing Kubernetes
+                infrastructure, letting teams focus purely on deploying and running applications.</p>
+            </div>
+            </div>
+          </article>
 
-    <ul class="topic-list">
-      <li><a href="#eks-auto">EKS Auto (Re:Invent 2024)</a></li>
-      <li><a href="#aurora-dsql">Aurora DSQL (Re:Invent 2024)</a></li>
-      <li><a href="#s3-tables">S3 Tables (Re:Invent 2024)</a></li>
-    </ul>
+          <article id="aurora-dsql" class="topic-card" data-difficulty="advanced">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>Aurora DSQL (Re:Invent 2024)</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Aurora DSQL (Re:Invent 2024) as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Amazon Aurora DSQL (Distributed SQL) was announced at Re:Invent 2024 as a serverless, distributed SQL
+                database:</p>
+              <ul>
+                <li><strong>Distributed &amp; Multi-Region</strong> — Active-active writes across multiple AWS regions
+                  with strong consistency. No read replicas needed — every region can serve reads and writes.</li>
+                <li><strong>PostgreSQL Compatible</strong> — Standard PostgreSQL interface, so existing applications and
+                  tools work without modification.</li>
+                <li><strong>Serverless</strong> — No capacity planning, no instances to manage. Scales automatically
+                  based on workload demand.</li>
+                <li><strong>Strong Consistency</strong> — Unlike DynamoDB Global Tables (eventual consistency), Aurora
+                  DSQL provides serializable isolation across regions.</li>
+              </ul>
+              <p><strong>Use cases:</strong> Global applications requiring consistent reads/writes across regions,
+                financial systems needing ACID transactions globally, replacing complex multi-region database
+                replication setups.</p>
+            </div>
+            </div>
+          </article>
 
-    <section id="eks-auto" class="topic-detail">
-      <h2>EKS Auto (Re:Invent 2024)</h2>
-      <div class="content">Fully managed EKS with automatic node and cluster management.</div>
-    </section>
-    <section id="aurora-dsql" class="topic-detail">
-      <h2>Aurora DSQL (Re:Invent 2024)</h2>
-      <div class="content">Aurora Distributed SQL and global database capabilities.</div>
-    </section>
-    <section id="s3-tables" class="topic-detail">
-      <h2>S3 Tables (Re:Invent 2024)</h2>
-      <div class="content">S3 Tables for structured data and analytics.</div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <p><a href="index.html">Cloud Interview Guide</a></p>
-    </div>
-  </footer>
+          <article id="s3-tables" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>S3 Tables (Re:Invent 2024)</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark S3 Tables (Re:Invent 2024) as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+              <p>Amazon S3 Tables, announced at Re:Invent 2024, brings native Apache Iceberg table support to S3:</p>
+              <ul>
+                <li><strong>Structured Data in S3</strong> — Store tabular data (rows and columns) directly in S3 with
+                  built-in table format support. No need to manage a separate metastore.</li>
+                <li><strong>Apache Iceberg Format</strong> — Uses the open-source Iceberg table format natively.
+                  Supports schema evolution, time travel, partition evolution, and ACID transactions.</li>
+                <li><strong>Query with Standard Tools</strong> — Query S3 Tables directly from Amazon Athena, EMR,
+                  Redshift, and third-party tools that support Iceberg.</li>
+                <li><strong>Automatic Optimization</strong> — S3 manages compaction, snapshot management, and
+                  unreferenced file cleanup automatically.</li>
+              </ul>
+              <p><strong>Impact:</strong> S3 Tables simplifies the data lakehouse architecture by eliminating the need
+                for separate Glue Catalog, manual Iceberg table maintenance, and complex compaction jobs. It's S3
+                evolving from an object store into a full-featured data platform.</p>
+            </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+  </button>
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+  <script src="js/page.js"></script>
 </body>
 </html>

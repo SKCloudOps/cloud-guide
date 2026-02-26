@@ -4,95 +4,537 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Architecture | Cloud Interview Guide</title>
+  <meta name="description" content="Microservices, event-driven systems, three-tier, hybrid cloud, and system design trade-offs." />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/devops.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header-inner container">
-      <a class="logo" href="index.html">Cloud Interview Guide</a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="architecture.html">Architecture</a>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+      <div class="sidebar-header">
+        <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-label">Categories</div>
+        <a href="aws.html" class="sidebar-link">AWS <span class="count">7</span></a>
+        <a href="architecture.html" class="sidebar-link active">Architecture <span class="count">11</span></a>
+        <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+        <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+        <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+        <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+        <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
       </nav>
-    </div>
-  </header>
+      <div class="sidebar-footer">
+        <div class="sidebar-progress-label">Study Progress</div>
+        <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progressFill"></div></div>
+        <div class="sidebar-progress-text" id="progressText">0 / 11 reviewed</div>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+    <main class="content-area" role="main">
+      <div class="topbar">
+        <div class="topbar-inner">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+          </div>
+          <div class="difficulty-filters">
+            <button class="filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+            <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+            <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+          </div>
+        </div>
+      </div>
+      <div class="content-split">
+        <aside class="toc-sidebar" id="tocSidebar">
+          <div class="toc-title">In This Section</div>
+          <nav class="toc-nav" id="tocNav">
+            <a href="#microservice-alb" class="toc-link" data-section="microservice-alb"><span class="toc-dot"></span>Microservice with ALB</a>
+            <a href="#event-driven-basic" class="toc-link" data-section="event-driven-basic"><span class="toc-dot"></span>Event Driven Architecture (Basic)</a>
+            <a href="#microservice-vs-event" class="toc-link" data-section="microservice-vs-event"><span class="toc-dot"></span>Microservice Vs Event Driven</a>
+            <a href="#event-driven-advanced" class="toc-link" data-section="event-driven-advanced"><span class="toc-dot"></span>Event Driven Architectures (Advanced)</a>
+            <a href="#three-tier" class="toc-link" data-section="three-tier"><span class="toc-dot"></span>Three-Tier Architecture</a>
+            <a href="#multi-site-dr" class="toc-link" data-section="multi-site-dr"><span class="toc-dot"></span>Multi-site Active Active DR</a>
+            <a href="#hybrid-cloud" class="toc-link" data-section="hybrid-cloud"><span class="toc-dot"></span>Hybrid Cloud Architecture</a>
+            <a href="#system-design-tradeoffs" class="toc-link" data-section="system-design-tradeoffs"><span class="toc-dot"></span>System Design Trade-Offs</a>
+            <a href="#top-designs" class="toc-link" data-section="top-designs"><span class="toc-dot"></span>Top 3 Popular Design</a>
+            <a href="#three-tier-microservice" class="toc-link" data-section="three-tier-microservice"><span class="toc-dot"></span>Three Tier with Microservice</a>
+            <a href="#monolith-vs-microservice" class="toc-link" data-section="monolith-vs-microservice"><span class="toc-dot"></span>Monolith Vs Microservice</a>
+          </nav>
+          <div class="toc-keyboard-hint">
+            <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+          </div>
+        </aside>
+        <div class="content-panel">
+          <header class="page-hero">
+            <div class="hero-badge" style="background:linear-gradient(135deg,#8b5cf6, #6366f1)">Architecture</div>
+            <h1>Architecture Interview Guide</h1>
+            <p class="hero-lead">Microservices, event-driven systems, three-tier, hybrid cloud, and system design trade-offs.</p>
+            <div class="hero-stats">
+              <div class="stat"><span class="stat-number">11</span><span class="stat-label">Topics</span></div>
+            </div>
+          </header>
 
-  <main class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Home</a>
-      <span aria-hidden="true">/</span>
-      <span>Architecture</span>
-    </nav>
 
-    <header class="page-title">
-      <h1>Architecture</h1>
-      <p>Microservices, event-driven systems, three-tier, hybrid cloud, and system design trade-offs.</p>
-    </header>
+          <article id="microservice-alb" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Microservice with ALB</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Microservice with ALB as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+              <img src="assets/architecture-microservices-alb.png"
+                alt="Architecture diagram: Microservices with ALB — path-based routing to independent microservices on EKS with separate databases." />
+            </figure>
+            <div class="topic-body">
+              <p>Application Load Balancer (ALB) enables <strong>path-based routing</strong> to direct traffic to
+                different microservices:</p>
+              <ul>
+                <li><code>/browse</code> &rarr; <strong>Target Group 1</strong> — handles traffic for browsing (e.g.
+                  cloudwithraj.com/browse)</li>
+                <li><code>/buy</code> &rarr; <strong>Target Group 2</strong> — handles traffic for purchases (e.g.
+                  cloudwithraj.com/buy)</li>
+                <li><code>/*</code> (catch all) &rarr; <strong>Target Group 3</strong> — handles all other traffic</li>
+              </ul>
+              <p>Each microservice can have its own compute (EC2 with Auto Scaling Group or Lambda), and its own
+                database (Amazon Aurora, DynamoDB, etc.). The ALB sits behind a domain (e.g. cloudwithraj.com) and
+                routes requests to the appropriate target group based on the URL path. This allows each microservice to
+                scale independently using an Auto Scaling Group behind Amazon EKS.</p>
+            </div>
+            </div>
+          </article>
 
-    <ul class="topic-list">
-      <li><a href="#microservice-alb">Microservice with ALB</a></li>
-      <li><a href="#event-driven-basic">Event Driven Architecture (Basic)</a></li>
-      <li><a href="#microservice-vs-event">Microservice Vs Event Driven</a></li>
-      <li><a href="#event-driven-advanced">Event Driven Architectures (Advanced)</a></li>
-      <li><a href="#three-tier">Three-Tier Architecture</a></li>
-      <li><a href="#multi-site-dr">Multi-site Active Active DR</a></li>
-      <li><a href="#hybrid-cloud">Hybrid Cloud Architecture</a></li>
-      <li><a href="#system-design-tradeoffs">System Design Trade-Offs</a></li>
-      <li><a href="#top-designs">Top 3 Popular Design</a></li>
-      <li><a href="#three-tier-microservice">Three Tier with Microservice</a></li>
-      <li><a href="#monolith-vs-microservice">Monolith Vs Microservice</a></li>
-    </ul>
+          <article id="event-driven-basic" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>Event Driven Architecture (Basic)</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Event Driven Architecture (Basic) as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+              <img src="assets/architecture-eda-basic.png"
+                alt="Architecture diagram: Event Driven Architecture — API Gateway to SQS to Lambda with 4 key benefits." />
+            </figure>
+            <div class="topic-body">
+              <p>An event-driven architecture decouples the producer and processor. The producer (human) invokes an API
+                and sends information in a JSON payload. API Gateway puts it into an event store (SQS), and the
+                processor (Lambda) picks it up and processes it. API Gateway and Lambda can scale and be
+                managed/deployed independently.</p>
+              <p><strong>Flow:</strong> API Gateway &rarr; SQS (Event Store) &rarr; Lambda</p>
+              <h4>Benefits</h4>
+              <ol>
+                <li><strong>Scale and fail independently</strong> — Services are only aware of the event router, not
+                  each other. If one service fails, the rest keep running. The event router acts as an elastic buffer
+                  that accommodates surges in workloads.</li>
+                <li><strong>Develop with agility</strong> — No need to write custom code to poll, filter, and route
+                  events; the event router automatically filters and pushes events to consumers. The router removes the
+                  need for heavy coordination between producer and consumer services.</li>
+                <li><strong>Audit with ease</strong> — An event router acts as a centralized location to audit your
+                  application and define policies to restrict who can publish/subscribe and control access to your data.
+                  Events can be encrypted in transit and at rest.</li>
+                <li><strong>Cut costs</strong> — Event-driven architectures are push-based, so everything happens
+                  on-demand. No continuous polling means less network bandwidth, less CPU utilization, less idle fleet
+                  capacity, and fewer SSL/TLS handshakes.</li>
+              </ol>
+            </div>
+            </div>
+          </article>
 
-    <section id="microservice-alb" class="topic-detail">
-      <h2>Microservice with ALB</h2>
-      <div class="content">Designing microservices behind Application Load Balancer.</div>
-    </section>
-    <section id="event-driven-basic" class="topic-detail">
-      <h2>Event Driven Architecture (Basic)</h2>
-      <div class="content">Introduction to event-driven patterns and messaging.</div>
-    </section>
-    <section id="microservice-vs-event" class="topic-detail">
-      <h2>Microservice Vs Event Driven</h2>
-      <div class="content">When to use request/response vs event-driven communication.</div>
-    </section>
-    <section id="event-driven-advanced" class="topic-detail">
-      <h2>Event Driven Architectures (Advanced)</h2>
-      <div class="content">Advanced event-driven patterns and fan-out.</div>
-    </section>
-    <section id="three-tier" class="topic-detail">
-      <h2>Three-Tier Architecture</h2>
-      <div class="content">Presentation, business logic, and data tiers on AWS.</div>
-    </section>
-    <section id="multi-site-dr" class="topic-detail">
-      <h2>Multi-site Active Active DR</h2>
-      <div class="content">Disaster recovery with active-active multi-site design.</div>
-    </section>
-    <section id="hybrid-cloud" class="topic-detail">
-      <h2>Hybrid Cloud Architecture</h2>
-      <div class="content">Connecting on-premises and cloud workloads.</div>
-    </section>
-    <section id="system-design-tradeoffs" class="topic-detail">
-      <h2>System Design Trade-Offs</h2>
-      <div class="content">Consistency, availability, latency, and cost trade-offs.</div>
-    </section>
-    <section id="top-designs" class="topic-detail">
-      <h2>Top 3 Popular Design</h2>
-      <div class="content">Common system design patterns asked in interviews.</div>
-    </section>
-    <section id="three-tier-microservice" class="topic-detail">
-      <h2>Three Tier with Microservice</h2>
-      <div class="content">Combining three-tier and microservice patterns.</div>
-    </section>
-    <section id="monolith-vs-microservice" class="topic-detail">
-      <h2>Monolith Vs Microservice</h2>
-      <div class="content">Pros, cons, and when to choose each approach.</div>
-    </section>
-  </main>
+          <article id="microservice-vs-event" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Microservice Vs Event Driven</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Microservice Vs Event Driven as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+              <img src="assets/architecture-microservice-vs-event.png"
+                alt="Architecture diagram: Microservice (sync) vs Event Driven (async) — comparison of request flow patterns." />
+            </figure>
+            <div class="topic-body">
+              <p>The main differences between traditional microservices and event-driven architecture:</p>
+              <ol>
+                <li><strong>Synchronous vs Asynchronous</strong> — Traditional microservice is synchronous: the request
+                  and response happen in the same invocation. With Event Driven, the user gets a confirmation that the
+                  message is inserted into SQS, but doesn't get the response from the actual message processing by the
+                  Lambda in the same invocation. Instead, the backend Lambda sends a response via websocket APIs, or the
+                  user can query the status afterwards.</li>
+                <li><strong>Independent Scaling</strong> — With EDA, API Gateway and Lambda/Database can scale
+                  independently. Lambda can consume messages at a rate that doesn't overwhelm the database.</li>
+                <li><strong>Built-in Retries</strong> — With EDA, retries are built in. With microservices, if Lambda
+                  fails, the user needs to send the request again. With EDA, once the message is in SQS, even if Lambda
+                  fails, SQS will automatically retry.</li>
+              </ol>
+              <p><strong>Microservice with Event Driven Flow:</strong> API Gateway &rarr; SQS &rarr; Lambda &rarr;
+                DynamoDB, with Websocket API for async responses.</p>
+            </div>
+            </div>
+          </article>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p><a href="index.html">Cloud Interview Guide</a></p>
-    </div>
-  </footer>
+          <article id="event-driven-advanced" class="topic-card" data-difficulty="advanced">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>Event Driven Architectures (Advanced)</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Event Driven Architectures (Advanced) as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+              <img src="assets/architecture-eda-advanced.png"
+                alt="Architecture diagram: Advanced EDA with EventBridge rules and SNS fan-out patterns." />
+            </figure>
+            <div class="topic-body">
+              <p>Advanced event-driven patterns using multiple AWS services for routing and fan-out:</p>
+              <p><strong>Flow:</strong> API Gateway &rarr; SQS 1 &rarr; Lambda 1 &rarr; EventBridge (Event Store +
+                Router)</p>
+              <h4>EventBridge Rules</h4>
+              <p>Based on values in the message, EventBridge can fire different targets via rules:</p>
+              <ul>
+                <li><strong>Rule 1</strong> &rarr; Step Function</li>
+                <li><strong>Rule 2</strong> &rarr; Lambda 2</li>
+                <li><strong>Rule 3</strong> &rarr; SQS 2</li>
+              </ul>
+              <h4>SNS Fan-Out</h4>
+              <p>Based on values in the message, SNS can fire different targets using filters:</p>
+              <ul>
+                <li><strong>Filter 1</strong> &rarr; SQS 3</li>
+                <li><strong>Filter 2</strong> &rarr; Lambda 1 / Lambda 2</li>
+                <li><strong>Filter 3</strong> &rarr; EKS Application</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="three-tier" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>Three-Tier Architecture</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Three-Tier Architecture as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+              <img src="assets/architecture-three-tier.png"
+                alt="Architecture diagram: Three-Tier — Presentation, Application, and Database layers across Availability Zones." />
+            </figure>
+            <div class="topic-body">
+              <ol>
+                <li><strong>Presentation Layer</strong> — Customers consume the application using this layer. Generally,
+                  this is where the front end runs (e.g. amazon.com website). Implemented using an external-facing load
+                  balancer distributing traffic to VMs (EC2s) running a webserver, with Auto Scaling Groups across
+                  multiple Availability Zones.</li>
+                <li><strong>Application Layer</strong> — This is where the business logic resides. For example, you
+                  browse products on amazon.com, find a product you like, and click "add to cart". The flow comes to the
+                  application layer, validates the availability, and creates a cart. Implemented with an internal-facing
+                  load balancer and VMs running applications.</li>
+                <li><strong>Database Layer</strong> — This is where information is stored: product information, shopping
+                  cart, order history, etc. The application layer interacts with this layer for CRUD (Create, Read,
+                  Update, Delete) operations. This could be implemented using one or a mix of databases — SQL (e.g.
+                  Amazon Aurora) and/or NoSQL (DynamoDB).</li>
+              </ol>
+              <p><strong>Why is this so popular in interviews?</strong> This architecture comprises many critical
+                patterns — microservices, load balancing, scaling, performance optimization, high availability, and
+                more. Based on your answers, the interviewer can dig deep and check your understanding of the core
+                concepts.</p>
+            </div>
+            </div>
+          </article>
+
+          <article id="multi-site-dr" class="topic-card" data-difficulty="advanced">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>Multi-site Active Active DR</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Multi-site Active Active DR as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+              <img src="assets/architecture-multi-site-dr.png"
+                alt="Architecture diagram: Multi-site Active-Active DR with Route 53 routing to two AWS regions." />
+            </figure>
+            <div class="topic-body">
+              <p>In a <strong>multi-site active-active</strong> disaster recovery setup, your application runs
+                simultaneously in two or more AWS regions, each serving live production traffic.</p>
+              <h4>How It Works</h4>
+              <ul>
+                <li><strong>Amazon Route 53</strong> uses latency-based or weighted routing to distribute traffic across
+                  regions.</li>
+                <li>Each region has a full stack: Load Balancer, compute (EC2/EKS/Lambda), and database.</li>
+                <li><strong>Amazon DynamoDB Global Tables</strong> or <strong>Amazon Aurora Global Database</strong>
+                  provides multi-region, multi-active database replication with low-latency reads and writes in every
+                  region.</li>
+                <li><strong>Amazon S3 Cross-Region Replication</strong> keeps objects in sync across regions.</li>
+              </ul>
+              <h4>Key Characteristics</h4>
+              <ul>
+                <li><strong>RPO &asymp; 0</strong> (near-zero data loss with synchronous/asynchronous replication)</li>
+                <li><strong>RTO &asymp; 0</strong> (no failover needed — both sites are already active)</li>
+                <li>Highest cost among DR strategies, but provides the best availability</li>
+                <li>Each region can handle 100% of total traffic if the other region goes down</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="hybrid-cloud" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Hybrid Cloud Architecture</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Hybrid Cloud Architecture as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+              <img src="assets/architecture-hybrid-cloud.png"
+                alt="Architecture diagram: Hybrid Cloud connecting on-premises data center to AWS via Direct Connect and VPN." />
+            </figure>
+            <div class="topic-body">
+              <p>Hybrid cloud connects on-premises data centers with AWS cloud, enabling workloads to run across both
+                environments.</p>
+              <h4>Key AWS Services for Hybrid</h4>
+              <ul>
+                <li><strong>AWS Direct Connect</strong> — Dedicated private network connection from on-premises to AWS
+                  (bypasses the public internet for consistent performance and lower latency).</li>
+                <li><strong>AWS Site-to-Site VPN</strong> — Encrypted connection over the public internet between
+                  on-premises and AWS VPC. Simpler and cheaper than Direct Connect.</li>
+                <li><strong>AWS Outposts</strong> — AWS infrastructure and services delivered to your on-premises data
+                  center. Run AWS compute, storage, and databases locally with seamless connection to the AWS region.
+                </li>
+                <li><strong>AWS Storage Gateway</strong> — Bridges on-premises storage with cloud storage (S3, EBS,
+                  Glacier). Supports file, volume, and tape gateway modes.</li>
+                <li><strong>Amazon EKS Anywhere</strong> — Run Kubernetes clusters on-premises using the same EKS
+                  tooling and APIs as in the cloud.</li>
+              </ul>
+              <h4>Common Use Cases</h4>
+              <ul>
+                <li>Regulatory requirements that mandate certain data stays on-premises</li>
+                <li>Gradual cloud migration (lift-and-shift over time)</li>
+                <li>Low-latency processing at the edge with cloud bursting for peak demand</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="system-design-tradeoffs" class="topic-card" data-difficulty="advanced">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>System Design Trade-Offs</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark System Design Trade-Offs as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+              <img src="assets/architecture-system-design-tradeoffs.png"
+                alt="Infographic: System Design Trade-Offs — CAP theorem and five key trade-off spectrums." />
+            </figure>
+            <div class="topic-body">
+              <p>Every system design decision involves trade-offs. Understanding these is critical for interviews:</p>
+              <h4>CAP Theorem</h4>
+              <p>A distributed system can only guarantee two of three: <strong>Consistency</strong>,
+                <strong>Availability</strong>, <strong>Partition Tolerance</strong>. Since network partitions are
+                unavoidable, the real choice is between CP (consistent but may be unavailable during partition) and AP
+                (available but may return stale data).
+              </p>
+              <h4>Key Trade-Offs</h4>
+              <ul>
+                <li><strong>Consistency vs Availability</strong> — Strong consistency (every read gets latest write)
+                  costs availability. Eventual consistency improves availability but users may see stale data
+                  temporarily.</li>
+                <li><strong>Latency vs Throughput</strong> — Optimizing for low latency (fast individual requests) can
+                  reduce overall throughput, and vice versa. Batching improves throughput but increases per-request
+                  latency.</li>
+                <li><strong>Cost vs Performance</strong> — Higher performance (more instances, provisioned IOPS,
+                  reserved capacity) costs more. Spot instances save money but risk interruption.</li>
+                <li><strong>Simplicity vs Scalability</strong> — Monolithic architectures are simpler but harder to
+                  scale. Microservices scale independently but add operational complexity (networking, observability,
+                  deployment).</li>
+                <li><strong>SQL vs NoSQL</strong> — SQL provides ACID transactions and strong consistency but harder to
+                  scale horizontally. NoSQL scales easily and handles unstructured data but sacrifices joins and complex
+                  queries.</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="top-designs" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Top 3 Popular Design</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Top 3 Popular Design as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+              <img src="assets/architecture-top-3-designs.png"
+                alt="Infographic: Top 3 Popular Designs for Interviews — Three-Tier, Event-Driven Microservices, Real-time Data Pipeline." />
+            </figure>
+            <div class="topic-body">
+              <p>The three most commonly asked system design patterns in cloud architect interviews:</p>
+              <ol>
+                <li><strong>Three-Tier Web Application</strong> — Presentation (ALB + EC2 webservers), Application
+                  (internal ALB + EC2 app servers), Database (Aurora/DynamoDB). Covers load balancing, auto scaling,
+                  multi-AZ, caching (ElastiCache), and CDN (CloudFront). Almost every interview includes a variant of
+                  this.</li>
+                <li><strong>Event-Driven Microservices</strong> — API Gateway &rarr; SQS/SNS/EventBridge &rarr;
+                  Lambda/EKS consumers &rarr; DynamoDB. Demonstrates decoupling, async processing, fan-out patterns,
+                  retry/DLQ handling, and independent scaling. Shows you understand modern cloud-native design.</li>
+                <li><strong>Real-time Data Pipeline</strong> — Data producers &rarr; Amazon Kinesis Data Streams &rarr;
+                  Lambda/KDA (processing) &rarr; S3 (data lake) + DynamoDB (hot data) &rarr; Athena/QuickSight
+                  (analytics). Demonstrates streaming data ingestion, transformation, storage tiering, and
+                  visualization.</li>
+              </ol>
+            </div>
+            </div>
+          </article>
+
+          <article id="three-tier-microservice" class="topic-card" data-difficulty="intermediate">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Three Tier with Microservice</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Three Tier with Microservice as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+              <img src="assets/architecture-three-tier-microservice.png"
+                alt="Architecture diagram: Three-Tier with Microservices — Presentation, EKS Microservices, Database per Service." />
+            </figure>
+            <div class="topic-body">
+              <p>Combining three-tier architecture with microservices gives you the best of both worlds — a familiar
+                layered structure with independent deployability:</p>
+              <h4>How They Combine</h4>
+              <ul>
+                <li><strong>Presentation Layer</strong> — Frontend served via CloudFront + S3 (static), or EC2/ECS
+                  behind an external ALB. This layer only handles UI rendering and API calls.</li>
+                <li><strong>Application Layer (Microservices)</strong> — Instead of a single monolithic app server, the
+                  business logic is split into independent microservices (e.g., Order Service, Payment Service, User
+                  Service). Each runs in its own container on EKS or ECS, with its own internal ALB or service mesh
+                  routing.</li>
+                <li><strong>Database Layer (Database per Service)</strong> — Each microservice owns its own database
+                  (e.g., Order Service uses DynamoDB, User Service uses Aurora). No shared database — this ensures loose
+                  coupling.</li>
+              </ul>
+              <h4>Key Differences from Traditional Three-Tier</h4>
+              <ul>
+                <li>Each microservice can be deployed, scaled, and updated independently</li>
+                <li>Different technology stacks per service (polyglot architecture)</li>
+                <li>Inter-service communication via APIs, message queues, or event bus</li>
+                <li>More complex operationally but far more scalable and resilient</li>
+              </ul>
+            </div>
+            </div>
+          </article>
+
+          <article id="monolith-vs-microservice" class="topic-card" data-difficulty="beginner">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+              </div>
+              <h2>Monolith Vs Microservice</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Monolith Vs Microservice as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <figure class="topic-diagram">
+              <img src="assets/architecture-monolith-vs-microservice.png"
+                alt="Infographic: Monolith vs Microservice — visual comparison of architecture, deployment, scaling, and trade-offs." />
+            </figure>
+            <div class="topic-body">
+              <table class="topic-table">
+                <thead>
+                  <tr>
+                    <th>Aspect</th>
+                    <th>Monolith</th>
+                    <th>Microservice</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Deployment</strong></td>
+                    <td>Single deployable unit</td>
+                    <td>Each service deployed independently</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scaling</strong></td>
+                    <td>Scale the entire application</td>
+                    <td>Scale individual services as needed</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Tech Stack</strong></td>
+                    <td>Single language/framework</td>
+                    <td>Polyglot — different languages per service</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Database</strong></td>
+                    <td>Shared database</td>
+                    <td>Database per service</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Team Structure</strong></td>
+                    <td>One team owns everything</td>
+                    <td>Small teams own individual services</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Complexity</strong></td>
+                    <td>Simple to develop and debug initially</td>
+                    <td>Complex distributed system (networking, observability)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Failure Impact</strong></td>
+                    <td>One bug can bring down entire app</td>
+                    <td>Failures are isolated to individual services</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Best For</strong></td>
+                    <td>Small teams, MVPs, low complexity</td>
+                    <td>Large teams, high scalability, independent releases</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p><strong>Start monolith, evolve to microservices.</strong> Many successful companies (Amazon, Netflix)
+                started as monoliths and migrated to microservices when the team size and scaling requirements justified
+                the operational complexity.</p>
+            </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+  </button>
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+  <script src="js/page.js"></script>
 </body>
 </html>
