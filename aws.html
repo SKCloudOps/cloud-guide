@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AWS | Cloud Interview Guide</title>
-  <meta name="description" content="Core AWS services, Well-Architected Framework, migration, and solutions architecture topics." />
+  <meta name="description"
+    content="Core AWS services, Well-Architected Framework, migration, and solutions architecture topics." />
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/devops.css" />
 </head>
+
 <body>
   <div class="app-layout">
     <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
@@ -29,7 +32,9 @@
       </nav>
       <div class="sidebar-footer">
         <div class="sidebar-progress-label">Study Progress</div>
-        <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progressFill"></div></div>
+        <div class="sidebar-progress-bar">
+          <div class="sidebar-progress-fill" id="progressFill"></div>
+        </div>
         <div class="sidebar-progress-text" id="progressText">0 / 7 reviewed</div>
       </div>
     </aside>
@@ -38,7 +43,10 @@
       <div class="topbar">
         <div class="topbar-inner">
           <div class="search-box">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" />
+            </svg>
             <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
           </div>
           <div class="difficulty-filters">
@@ -53,13 +61,19 @@
         <aside class="toc-sidebar" id="tocSidebar">
           <div class="toc-title">In This Section</div>
           <nav class="toc-nav" id="tocNav">
-            <a href="#aws-services" class="toc-link" data-section="aws-services"><span class="toc-dot"></span>AWS Services for Interviews</a>
-            <a href="#availability-zone" class="toc-link" data-section="availability-zone"><span class="toc-dot"></span>Availability Zone &amp; Data Center</a>
+            <a href="#aws-services" class="toc-link" data-section="aws-services"><span class="toc-dot"></span>AWS
+              Services for Interviews</a>
+            <a href="#availability-zone" class="toc-link" data-section="availability-zone"><span
+                class="toc-dot"></span>Availability Zone &amp; Data Center</a>
             <a href="#rpo-rto" class="toc-link" data-section="rpo-rto"><span class="toc-dot"></span>RPO Vs RTO</a>
-            <a href="#well-architected" class="toc-link" data-section="well-architected"><span class="toc-dot"></span>AWS Well Architected Framework</a>
-            <a href="#migration" class="toc-link" data-section="migration"><span class="toc-dot"></span>AWS Migration Tools</a>
-            <a href="#api-gateway-auth" class="toc-link" data-section="api-gateway-auth"><span class="toc-dot"></span>API Gateway Auth</a>
-            <a href="#serverless-webapp" class="toc-link" data-section="serverless-webapp"><span class="toc-dot"></span>Serverless Web Application</a>
+            <a href="#well-architected" class="toc-link" data-section="well-architected"><span
+                class="toc-dot"></span>AWS Well Architected Framework</a>
+            <a href="#migration" class="toc-link" data-section="migration"><span class="toc-dot"></span>AWS Migration
+              Tools</a>
+            <a href="#api-gateway-auth" class="toc-link" data-section="api-gateway-auth"><span
+                class="toc-dot"></span>API Gateway Auth</a>
+            <a href="#serverless-webapp" class="toc-link" data-section="serverless-webapp"><span
+                class="toc-dot"></span>Serverless Web Application</a>
           </nav>
           <div class="toc-keyboard-hint">
             <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
@@ -69,344 +83,749 @@
           <header class="page-hero">
             <div class="hero-badge" style="background:linear-gradient(135deg,#f97316, #ef4444)">AWS</div>
             <h1>AWS Interview Guide</h1>
-            <p class="hero-lead">Core AWS services, Well-Architected Framework, migration, and solutions architecture topics.</p>
+            <p class="hero-lead">Core AWS services, Well-Architected Framework, migration, and solutions architecture
+              topics.</p>
             <div class="hero-stats">
               <div class="stat"><span class="stat-number">7</span><span class="stat-label">Topics</span></div>
             </div>
           </header>
 
 
-          <article id="aws-services" class="topic-card" data-difficulty="beginner">
+          <!-- ====== TOPIC 1: AWS Services ====== -->
+          <article id="aws-services" class="topic-card" data-difficulty="beginner"
+            data-keywords="aws services compute storage database network security migration observability analytics genai event driven">
             <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
               <div class="topic-meta">
                 <span class="difficulty-badge beginner">Beginner</span>
               </div>
               <h2>AWS Services for Interviews</h2>
-              <button class="review-btn" title="Mark as reviewed" aria-label="Mark AWS Services for Interviews as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <button class="review-btn" title="Mark as reviewed"
+                aria-label="Mark AWS Services for Interviews as reviewed"><svg width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
               <div class="topic-body">
-              <p>Key AWS services to know for solutions architect and cloud engineer interviews, organized by domain:
-              </p>
-              <div class="service-grid">
-                <div class="service-category">
-                  <h3>Compute</h3>
-                  <ul>
-                    <li>EC2</li>
-                    <li>Auto Scaling</li>
-                    <li>Lambda</li>
-                    <li>Elastic Kubernetes Service (EKS)</li>
-                    <li>ECS</li>
-                  </ul>
+                <p>Key AWS services to know for solutions architect and cloud engineer interviews, organized by domain
+                  with one-liner descriptions:</p>
+                <div class="service-grid">
+                  <div class="service-category">
+                    <h3>Compute</h3>
+                    <ul>
+                      <li><strong>EC2</strong> — Virtual servers with full OS control; choose instance type for
+                        CPU/memory ratio</li>
+                      <li><strong>Auto Scaling</strong> — Automatically adjusts EC2 count based on demand (target
+                        tracking, step, scheduled)</li>
+                      <li><strong>Lambda</strong> — Run code without servers; 15-min max, 10GB memory, pay per
+                        invocation</li>
+                      <li><strong>EKS</strong> — Managed Kubernetes control plane; you manage worker nodes or use
+                        Fargate</li>
+                      <li><strong>ECS</strong> — AWS-native container orchestrator; simpler than K8s, tight AWS
+                        integration</li>
+                      <li><strong>Fargate</strong> — Serverless compute for ECS/EKS; no EC2 to manage, pay per
+                        vCPU+memory</li>
+                    </ul>
+                  </div>
+                  <div class="service-category">
+                    <h3>Storage</h3>
+                    <ul>
+                      <li><strong>S3</strong> — Object storage; 11 9s durability, lifecycle policies, 6 storage classes
+                      </li>
+                      <li><strong>EBS</strong> — Block storage attached to EC2; gp3 (general), io2 (high IOPS), st1/sc1
+                        (throughput)</li>
+                      <li><strong>EFS</strong> — Managed NFS; shared across AZs, auto-scales, good for containers</li>
+                      <li><strong>FSx</strong> — Managed file systems (Lustre for HPC, NetApp ONTAP for enterprise,
+                        Windows)</li>
+                    </ul>
+                  </div>
+                  <div class="service-category">
+                    <h3>Database</h3>
+                    <ul>
+                      <li><strong>RDS</strong> — Managed relational DB (MySQL, PostgreSQL, Oracle, SQL Server); Multi-AZ
+                        for HA</li>
+                      <li><strong>Aurora</strong> — Cloud-native relational; 5x MySQL perf, 6-way replication, Global
+                        Database</li>
+                      <li><strong>DynamoDB</strong> — Serverless NoSQL; single-digit ms latency, auto-scales, Global
+                        Tables</li>
+                      <li><strong>ElastiCache</strong> — In-memory caching (Redis or Memcached); sub-millisecond reads
+                      </li>
+                      <li><strong>Redshift</strong> — Petabyte-scale data warehouse; columnar storage, Spectrum for S3
+                        queries</li>
+                    </ul>
+                  </div>
+                  <div class="service-category">
+                    <h3>Networking</h3>
+                    <ul>
+                      <li><strong>VPC</strong> — Isolated network; subnets, route tables, NACLs, security groups, NAT
+                        Gateway</li>
+                      <li><strong>ALB</strong> — Layer 7 load balancer; path/host routing, WebSocket, gRPC support</li>
+                      <li><strong>NLB</strong> — Layer 4 load balancer; ultra-low latency, static IPs, TCP/UDP</li>
+                      <li><strong>API Gateway</strong> — Managed REST/WebSocket APIs; throttling, caching, auth
+                        integration</li>
+                      <li><strong>CloudFront</strong> — Global CDN; 450+ edge locations, Lambda@Edge, Origin Shield</li>
+                      <li><strong>Route 53</strong> — DNS + health checks; routing policies (weighted, latency,
+                        failover, geolocation)</li>
+                      <li><strong>Direct Connect</strong> — Dedicated private connection from on-prem to AWS; 1/10/100
+                        Gbps</li>
+                    </ul>
+                  </div>
+                  <div class="service-category">
+                    <h3>Security</h3>
+                    <ul>
+                      <li><strong>IAM</strong> — Users, roles, policies; always use least privilege, prefer roles over
+                        keys</li>
+                      <li><strong>KMS</strong> — Managed encryption keys; integrates with S3, EBS, RDS, etc.</li>
+                      <li><strong>WAF</strong> — Web Application Firewall; rate limiting, IP blocking, SQL injection/XSS
+                        protection</li>
+                      <li><strong>Shield</strong> — DDoS protection; Standard (free) vs Advanced ($3k/mo, 24/7 DRT)</li>
+                      <li><strong>GuardDuty</strong> — Threat detection using ML; analyzes CloudTrail, VPC Flow, DNS
+                        logs</li>
+                      <li><strong>Secrets Manager</strong> — Rotate, manage, retrieve secrets; auto-rotation for RDS
+                        credentials</li>
+                      <li><strong>AWS Config</strong> — Tracks resource configuration changes; compliance rules,
+                        remediation</li>
+                      <li><strong>Security Hub</strong> — Centralized security findings from GuardDuty, Inspector,
+                        Macie, Config</li>
+                    </ul>
+                  </div>
+                  <div class="service-category">
+                    <h3>Migration</h3>
+                    <ul>
+                      <li><strong>DMS</strong> — Database Migration Service; supports homogeneous + heterogeneous
+                        migrations</li>
+                      <li><strong>MGN</strong> — Application Migration Service; continuous replication for
+                        lift-and-shift</li>
+                      <li><strong>Migration Hub</strong> — Central dashboard to track migration progress</li>
+                      <li><strong>Snow Family</strong> — Physical devices for offline data transfer (Snowcone, Snowball,
+                        Snowmobile)</li>
+                    </ul>
+                  </div>
+                  <div class="service-category">
+                    <h3>Event Driven</h3>
+                    <ul>
+                      <li><strong>SQS</strong> — Managed message queue; Standard (at-least-once) vs FIFO (exactly-once)
+                      </li>
+                      <li><strong>SNS</strong> — Pub/sub messaging; fan-out to SQS, Lambda, HTTP, email, SMS</li>
+                      <li><strong>EventBridge</strong> — Serverless event bus; content-based filtering, schema registry
+                      </li>
+                      <li><strong>Step Functions</strong> — Visual workflow orchestrator; Standard (long) vs Express
+                        (high-volume)</li>
+                    </ul>
+                  </div>
+                  <div class="service-category">
+                    <h3>Observability</h3>
+                    <ul>
+                      <li><strong>CloudWatch</strong> — Metrics, logs, alarms, dashboards; custom metrics, Log Insights
+                        queries</li>
+                      <li><strong>CloudTrail</strong> — API call audit log; who did what, when, from which IP</li>
+                      <li><strong>X-Ray</strong> — Distributed tracing; trace requests across microservices, find
+                        bottlenecks</li>
+                    </ul>
+                  </div>
+                  <div class="service-category">
+                    <h3>Gen AI</h3>
+                    <ul>
+                      <li><strong>Bedrock</strong> — Managed foundation models (Claude, Llama, Titan); RAG, fine-tuning,
+                        agents</li>
+                      <li><strong>SageMaker</strong> — Full ML platform; build, train, deploy custom models at scale
+                      </li>
+                      <li><strong>Amazon Q</strong> — AI assistant for business (Q Business) and developers (Q
+                        Developer)</li>
+                    </ul>
+                  </div>
+                  <div class="service-category">
+                    <h3>Cost Optimization</h3>
+                    <ul>
+                      <li><strong>Cost Explorer</strong> — Visualize and forecast AWS spending trends</li>
+                      <li><strong>Compute Optimizer</strong> — Right-sizing recommendations for EC2, Lambda, EBS</li>
+                      <li><strong>Savings Plans</strong> — Commit to $/hr for 1-3 yrs; up to 72% savings (flexible
+                        across services)</li>
+                      <li><strong>Reserved Instances</strong> — Commit to specific instance type; up to 75% savings</li>
+                      <li><strong>Spot Instances</strong> — Up to 90% savings; can be interrupted with 2-min warning
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="service-category">
+                    <h3>Analytics</h3>
+                    <ul>
+                      <li><strong>Athena</strong> — Serverless SQL queries on S3; pay per query, great for ad-hoc
+                        analysis</li>
+                      <li><strong>Glue</strong> — Serverless ETL + Data Catalog; crawlers auto-discover schema</li>
+                      <li><strong>EMR</strong> — Managed Spark/Hadoop; big data processing at petabyte scale</li>
+                      <li><strong>Kinesis</strong> — Real-time data streaming; Data Streams, Firehose, Analytics</li>
+                      <li><strong>QuickSight</strong> — Serverless BI dashboards; ML-powered insights, pay per session
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                <div class="service-category">
-                  <h3>Storage</h3>
-                  <ul>
-                    <li>S3</li>
-                    <li>EBS</li>
-                  </ul>
-                </div>
-                <div class="service-category">
-                  <h3>Database</h3>
-                  <ul>
-                    <li>RDS</li>
-                    <li>DynamoDB</li>
-                    <li>ElastiCache</li>
-                  </ul>
-                </div>
-                <div class="service-category">
-                  <h3>Network</h3>
-                  <ul>
-                    <li>VPC</li>
-                    <li>Load Balancer</li>
-                    <li>API Gateway</li>
-                  </ul>
-                </div>
-                <div class="service-category">
-                  <h3>Security</h3>
-                  <ul>
-                    <li>KMS</li>
-                    <li>IAM</li>
-                    <li>WAF</li>
-                    <li>Shield</li>
-                    <li>GuardDuty</li>
-                    <li>Secrets Manager</li>
-                    <li>Config</li>
-                  </ul>
-                </div>
-                <div class="service-category">
-                  <h3>Migration</h3>
-                  <ul>
-                    <li>DMS</li>
-                    <li>Migration Hub</li>
-                    <li>Application Migration Service</li>
-                    <li>Application Discovery Service</li>
-                  </ul>
-                </div>
-                <div class="service-category">
-                  <h3>Gen AI</h3>
-                  <ul>
-                    <li>BedRock</li>
-                    <li>Q</li>
-                    <li>SageMaker</li>
-                    <li>Partyrock</li>
-                  </ul>
-                </div>
-                <div class="service-category">
-                  <h3>Event Driven</h3>
-                  <ul>
-                    <li>SNS</li>
-                    <li>SQS</li>
-                    <li>EventBridge</li>
-                    <li>Step Functions</li>
-                  </ul>
-                </div>
-                <div class="service-category">
-                  <h3>Observability</h3>
-                  <ul>
-                    <li>CloudWatch</li>
-                    <li>CloudTrail</li>
-                    <li>X-Ray</li>
-                  </ul>
-                </div>
-                <div class="service-category">
-                  <h3>Cost Optimization</h3>
-                  <ul>
-                    <li>Compute Optimizer</li>
-                    <li>CloudWatch Insights</li>
-                    <li>Cost Explorer</li>
-                    <li>Budget</li>
-                    <li>Spot Instance</li>
-                    <li>Reserve Instance</li>
-                    <li>Savings Plan</li>
-                  </ul>
-                </div>
-                <div class="service-category">
-                  <h3>Analytics</h3>
-                  <ul>
-                    <li>Glue</li>
-                    <li>EMR</li>
-                    <li>Athena</li>
-                    <li>QuickSight</li>
-                    <li>Kinesis</li>
-                  </ul>
-                </div>
-                <div class="service-category">
-                  <h3>DevOps</h3>
-                  <ul>
-                    <li>CloudFormation</li>
-                  </ul>
+              </div>
+              <div class="key-takeaway">
+                <div class="takeaway-icon">💡</div>
+                <div>
+                  <strong>Key Takeaway for Interviews</strong>
+                  <p>Don't just list services — explain <em>when and why</em> you'd choose one over another. Example:
+                    "I'd use DynamoDB for single-digit ms reads on key-value data, but Aurora for complex joins and
+                    transactions." Interviewers want architectural reasoning, not memorization.</p>
                 </div>
               </div>
             </div>
-            </div>
           </article>
 
-          <article id="availability-zone" class="topic-card" data-difficulty="beginner">
+          <!-- ====== TOPIC 2: Availability Zone ====== -->
+          <article id="availability-zone" class="topic-card" data-difficulty="beginner"
+            data-keywords="availability zone data center AZ high availability region multi-az">
             <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
               <div class="topic-meta">
                 <span class="difficulty-badge beginner">Beginner</span>
               </div>
               <h2>Availability Zone &amp; Data Center</h2>
-              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Availability Zone &amp; Data Center as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark AZ as reviewed"><svg width="20"
+                  height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
               <div class="topic-body">
-              <p><strong>How Many Data Centers in One Availability Zone?</strong></p>
-              <div class="answer-block correct">
-                <h4>Correct Answer</h4>
-                <p>An AWS availability zone (AZ) can contain <strong>multiple data centers</strong>. Each zone is
-                  usually backed by one or more physical data centers, with the largest backed by as many as five.</p>
+                <p><strong>How Many Data Centers in One Availability Zone?</strong></p>
+                <div class="answer-block correct">
+                  <h4>Correct Answer</h4>
+                  <p>An AWS availability zone (AZ) can contain <strong>multiple data centers</strong>. Each zone is
+                    usually backed by one or more physical data centers, with the largest backed by as many as five.</p>
+                </div>
+                <div class="answer-block incorrect">
+                  <h4>Incorrect Answer</h4>
+                  <p>One Availability Zone means one data center.</p>
+                </div>
+                <h4>Architect-Level Detail</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Concept</th>
+                      <th>Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Region</strong></td>
+                      <td>Geographic area (e.g., us-east-1). Contains 2-6+ AZs. Choose based on latency, compliance,
+                        service availability.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Availability Zone</strong></td>
+                      <td>One or more isolated data centers with independent power, cooling, networking. Connected to
+                        other AZs via low-latency (&lt;2ms) private fiber.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Multi-AZ</strong></td>
+                      <td>Deploy across 2+ AZs for HA. RDS Multi-AZ = synchronous standby. ELB distributes across AZs
+                        automatically.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Multi-Region</strong></td>
+                      <td>Deploy across 2+ regions for DR and global latency. Requires data replication strategy (Aurora
+                        Global DB, DynamoDB Global Tables, S3 CRR).</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Local Zones</strong></td>
+                      <td>Extension of a region placed closer to users (e.g., Los Angeles). Run latency-sensitive
+                        workloads (gaming, media, ML inference).</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Wavelength Zones</strong></td>
+                      <td>AWS infrastructure embedded in 5G carrier networks. Ultra-low latency for mobile edge
+                        applications.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Outposts</strong></td>
+                      <td>AWS hardware in your on-premises data center. Same APIs as cloud. For data residency or
+                        ultra-low latency.</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <div class="answer-block incorrect">
-                <h4>Incorrect Answer</h4>
-                <p>One Availability Zone means one data center.</p>
+              <div class="key-takeaway">
+                <div class="takeaway-icon">💡</div>
+                <div>
+                  <strong>Key Takeaway for Interviews</strong>
+                  <p>Always design for <strong>Multi-AZ minimum</strong>. When asked about HA: "I'd deploy across at
+                    least 2 AZs with ALB, Auto Scaling, and Multi-AZ RDS." For global apps: "I'd add multi-region with
+                    Route 53 failover and Aurora Global Database."</p>
+                </div>
               </div>
-            </div>
             </div>
           </article>
 
-          <article id="rpo-rto" class="topic-card" data-difficulty="beginner">
+          <!-- ====== TOPIC 3: RPO vs RTO ====== -->
+          <article id="rpo-rto" class="topic-card" data-difficulty="intermediate"
+            data-keywords="rpo rto recovery point time objective disaster recovery backup restore pilot light warm standby active active">
             <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
               <div class="topic-meta">
-                <span class="difficulty-badge beginner">Beginner</span>
+                <span class="difficulty-badge intermediate">Intermediate</span>
               </div>
-              <h2>RPO Vs RTO</h2>
-              <button class="review-btn" title="Mark as reviewed" aria-label="Mark RPO Vs RTO as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <h2>RPO vs RTO &amp; DR Strategies</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark RPO RTO as reviewed"><svg width="20"
+                  height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
               <div class="topic-body">
-              <p>Candidates are sometimes confused by RPO thinking it's measured in units of data (e.g. gigabyte,
-                petabyte).</p>
-              <div class="answer-block correct">
-                <h4>Correct Answer</h4>
-                <p>Both RPO and RTO are measured in <strong>time</strong>.</p>
+                <div class="answer-block correct">
+                  <h4>Definitions</h4>
+                  <ul>
+                    <li><strong>RTO (Recovery Time Objective)</strong> — How quickly must the application be available
+                      after an outage? Measures maximum acceptable <em>downtime</em>.</li>
+                    <li><strong>RPO (Recovery Point Objective)</strong> — How much data loss is acceptable? Measures the
+                      maximum time between the last backup and the disaster. Both are measured in <strong>time</strong>,
+                      not data volume.</li>
+                  </ul>
+                </div>
+                <h4>AWS DR Strategies (Lowest → Highest Cost)</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Strategy</th>
+                      <th>RTO</th>
+                      <th>RPO</th>
+                      <th>Cost</th>
+                      <th>How It Works</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Backup &amp; Restore</strong></td>
+                      <td>Hours</td>
+                      <td>Hours</td>
+                      <td>💰</td>
+                      <td>Take periodic backups (S3, EBS snapshots). Restore infrastructure from scratch when disaster
+                        hits.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Pilot Light</strong></td>
+                      <td>10s of min</td>
+                      <td>Minutes</td>
+                      <td>💰💰</td>
+                      <td>Core database runs in DR region (replicated). Compute is OFF. On failover: start EC2/ECS,
+                        scale up, switch DNS.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Warm Standby</strong></td>
+                      <td>Minutes</td>
+                      <td>Seconds</td>
+                      <td>💰💰💰</td>
+                      <td>Scaled-down but fully running copy of production in DR region. On failover: scale up and
+                        switch traffic.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Multi-Site Active-Active</strong></td>
+                      <td>Near zero</td>
+                      <td>Near zero</td>
+                      <td>💰💰💰💰</td>
+                      <td>Full production in 2+ regions. Route 53 health checks auto-failover. DynamoDB Global Tables or
+                        Aurora Global DB for data.</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <h4>Key AWS Services for DR</h4>
                 <ul>
-                  <li><strong>RTO (Recovery Time Objective)</strong> — a measure of how quickly after an outage an
-                    application must be available again.</li>
-                  <li><strong>RPO (Recovery Point Objective)</strong> — refers to how much data loss your application
-                    can tolerate. Another way to think about RPO is how old can the data be when this application is
-                    recovered, i.e. the time between the last backup and the disaster.</li>
+                  <li><strong>Route 53</strong> — DNS failover (health checks, weighted/latency routing)</li>
+                  <li><strong>Aurora Global Database</strong> — Cross-region replication with &lt;1 second lag, promote
+                    in &lt;1 min</li>
+                  <li><strong>DynamoDB Global Tables</strong> — Active-active multi-region, eventually consistent</li>
+                  <li><strong>S3 Cross-Region Replication (CRR)</strong> — Automatic object replication to another
+                    region</li>
+                  <li><strong>AWS Backup</strong> — Centralized backup policies across EC2, RDS, EFS, DynamoDB</li>
+                  <li><strong>CloudFormation / Terraform</strong> — Infrastructure as Code to re-create environments
+                    quickly</li>
                 </ul>
-                <p>With both RTO and RPO, the targets are measured in hours, minutes, or seconds, with lower numbers
-                  representing less downtime or less data loss. RPO and RTO can be — and often have — different values
-                  for an application.</p>
               </div>
-            </div>
+              <div class="key-takeaway">
+                <div class="takeaway-icon">💡</div>
+                <div>
+                  <strong>Key Takeaway for Interviews</strong>
+                  <p>Interviewers always ask: "How would you design DR?" Start by asking about RTO/RPO requirements,
+                    then map to the appropriate strategy. <strong>Pilot Light</strong> is the most common answer for
+                    cost-effective DR. Say: "I'd keep Aurora Global DB replicating to us-west-2, with infrastructure
+                    defined in CloudFormation. On failure, I'd launch compute, scale up, and flip Route 53."</p>
+                </div>
+              </div>
             </div>
           </article>
 
-          <article id="well-architected" class="topic-card" data-difficulty="intermediate">
+          <!-- ====== TOPIC 4: Well-Architected ====== -->
+          <article id="well-architected" class="topic-card" data-difficulty="intermediate"
+            data-keywords="well architected framework pillars security reliability operational excellence performance cost sustainability">
             <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
               <div class="topic-meta">
                 <span class="difficulty-badge intermediate">Intermediate</span>
               </div>
-              <h2>AWS Well Architected Framework</h2>
-              <button class="review-btn" title="Mark as reviewed" aria-label="Mark AWS Well Architected Framework as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <h2>AWS Well-Architected Framework</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Well-Architected as reviewed"><svg
+                  width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
               <div class="topic-body">
-              <p>The AWS Well-Architected Framework helps cloud architects build secure, high-performing, resilient, and
-                efficient infrastructure. It is built around <strong>six pillars</strong>:</p>
-              <ol>
-                <li><strong>Operational Excellence</strong> — Run and monitor systems to deliver business value and
-                  continually improve supporting processes. Key practices: infrastructure as code, frequent small
-                  reversible changes, anticipate failure, and learn from operational events.</li>
-                <li><strong>Security</strong> — Protect information, systems, and assets while delivering business
-                  value. Key practices: implement a strong identity foundation, enable traceability, apply security at
-                  all layers, automate security best practices, protect data in transit and at rest.</li>
-                <li><strong>Reliability</strong> — Ensure a workload performs its intended function correctly and
-                  consistently. Key practices: automatically recover from failure, test recovery procedures, scale
-                  horizontally, stop guessing capacity, manage change through automation.</li>
-                <li><strong>Performance Efficiency</strong> — Use computing resources efficiently to meet system
-                  requirements and maintain that efficiency as demand changes. Key practices: democratize advanced
-                  technologies, go global in minutes, use serverless architectures, experiment more often.</li>
-                <li><strong>Cost Optimization</strong> — Run systems to deliver business value at the lowest price
-                  point. Key practices: implement cloud financial management, adopt a consumption model, measure overall
-                  efficiency, stop spending money on undifferentiated heavy lifting, analyze and attribute expenditure.
-                </li>
-                <li><strong>Sustainability</strong> — Minimize the environmental impacts of running cloud workloads. Key
-                  practices: understand your impact, establish sustainability goals, maximize utilization, anticipate
-                  and adopt more efficient hardware and software offerings, reduce downstream impact.</li>
-              </ol>
-            </div>
+                <p>The Well-Architected Framework is AWS's blueprint for building production-grade systems. Built around
+                  <strong>6 pillars</strong>:</p>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Pillar</th>
+                      <th>Focus</th>
+                      <th>Key Practices</th>
+                      <th>Key AWS Services</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Operational Excellence</strong></td>
+                      <td>Run &amp; monitor</td>
+                      <td>IaC, small reversible changes, anticipate failure, learn from events</td>
+                      <td>CloudFormation, CloudWatch, Systems Manager, Config</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Security</strong></td>
+                      <td>Protect</td>
+                      <td>Least privilege, traceability, security at all layers, encrypt everything</td>
+                      <td>IAM, KMS, GuardDuty, WAF, Shield, Security Hub</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Reliability</strong></td>
+                      <td>Recover</td>
+                      <td>Auto-recover, test recovery, scale horizontally, stop guessing capacity</td>
+                      <td>Auto Scaling, Multi-AZ, Route 53, Backup, CloudFormation</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Performance Efficiency</strong></td>
+                      <td>Use resources wisely</td>
+                      <td>Right-size, use managed services, go serverless, go global</td>
+                      <td>Lambda, CloudFront, ElastiCache, Aurora, Compute Optimizer</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Cost Optimization</strong></td>
+                      <td>Eliminate waste</td>
+                      <td>Consumption model, right-sizing, Savings Plans, spot instances</td>
+                      <td>Cost Explorer, Budgets, Spot, Savings Plans, S3 lifecycle</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Sustainability</strong></td>
+                      <td>Minimize impact</td>
+                      <td>Maximize utilization, efficient hardware (Graviton), reduce downstream impact</td>
+                      <td>Graviton instances, S3 Intelligent-Tiering, Compute Optimizer</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <h4>Well-Architected Tool</h4>
+                <p>AWS provides a <strong>Well-Architected Tool</strong> in the console that walks you through a review
+                  of your workload against all 6 pillars. It generates a report with risks and improvement
+                  recommendations. Use it before every major production launch.</p>
+              </div>
+              <div class="key-takeaway">
+                <div class="takeaway-icon">💡</div>
+                <div>
+                  <strong>Key Takeaway for Interviews</strong>
+                  <p>When asked "How do you ensure your architecture is production-ready?", reference the
+                    Well-Architected Framework. The interviewer is looking for you to think across all pillars — not
+                    just reliability and performance but also cost, security, and operations. Mention specific
+                    practices: "I'd use IaC for repeatability, Multi-AZ for reliability, IAM least privilege for
+                    security, and Savings Plans for cost."</p>
+                </div>
+              </div>
             </div>
           </article>
 
-          <article id="migration" class="topic-card" data-difficulty="intermediate">
+          <!-- ====== TOPIC 5: Migration ====== -->
+          <article id="migration" class="topic-card" data-difficulty="intermediate"
+            data-keywords="migration 7rs rehost replatform refactor dms mgn snow family discovery">
             <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
               <div class="topic-meta">
                 <span class="difficulty-badge intermediate">Intermediate</span>
               </div>
-              <h2>AWS Migration Tools</h2>
-              <button class="review-btn" title="Mark as reviewed" aria-label="Mark AWS Migration Tools as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <h2>AWS Migration — The 7 Rs</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Migration as reviewed"><svg
+                  width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
               <div class="topic-body">
-              <h4>The 7 Rs of Migration</h4>
-              <ol>
-                <li><strong>Rehost (Lift &amp; Shift)</strong> — Move applications as-is to AWS without changes. Use AWS
-                  Application Migration Service (MGN).</li>
-                <li><strong>Replatform (Lift, Tinker &amp; Shift)</strong> — Make a few cloud optimizations without
-                  changing core architecture. E.g., migrate to RDS instead of self-managed database.</li>
-                <li><strong>Repurchase</strong> — Move to a different product, typically SaaS (e.g., migrate CRM to
-                  Salesforce).</li>
-                <li><strong>Refactor / Re-architect</strong> — Re-imagine the application using cloud-native features.
-                  Driven by a strong business need for scalability, performance, or agility.</li>
-                <li><strong>Retire</strong> — Decommission applications that are no longer needed.</li>
-                <li><strong>Retain</strong> — Keep applications in the source environment (not ready to migrate yet).
-                </li>
-                <li><strong>Relocate</strong> — Move infrastructure to AWS without purchasing new hardware (e.g., VMware
-                  Cloud on AWS).</li>
-              </ol>
-              <h4>Key AWS Migration Services</h4>
-              <ul>
-                <li><strong>AWS Migration Hub</strong> — Central place to track migration progress across multiple AWS
-                  and partner solutions.</li>
-                <li><strong>AWS Application Migration Service (MGN)</strong> — Automates lift-and-shift migrations by
-                  continuously replicating source servers to AWS.</li>
-                <li><strong>AWS Application Discovery Service</strong> — Collects information about on-premises data
-                  centers to help plan migration.</li>
-                <li><strong>AWS Database Migration Service (DMS)</strong> — Migrates databases to AWS with minimal
-                  downtime. Supports homogeneous and heterogeneous migrations.</li>
-                <li><strong>AWS Schema Conversion Tool (SCT)</strong> — Converts source database schema to a format
-                  compatible with the target database.</li>
-              </ul>
-            </div>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Strategy</th>
+                      <th>What It Means</th>
+                      <th>When to Use</th>
+                      <th>AWS Tool</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Rehost</strong> (Lift &amp; Shift)</td>
+                      <td>Move as-is, no code changes</td>
+                      <td>Quick migration, minimal risk, meeting a deadline</td>
+                      <td>MGN (Application Migration Service)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Replatform</strong> (Lift, Tinker &amp; Shift)</td>
+                      <td>Minor optimizations, no re-architecture</td>
+                      <td>Move to managed DB (RDS) or containers (ECS)</td>
+                      <td>DMS, Elastic Beanstalk</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Repurchase</strong></td>
+                      <td>Move to SaaS</td>
+                      <td>Replace CRM with Salesforce, email with SES</td>
+                      <td>AWS Marketplace</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Refactor</strong> (Re-architect)</td>
+                      <td>Redesign using cloud-native services</td>
+                      <td>Need for scalability, microservices, serverless</td>
+                      <td>Lambda, API Gateway, DynamoDB, EKS</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Retire</strong></td>
+                      <td>Decommission</td>
+                      <td>App no longer needed; reduce portfolio</td>
+                      <td>Application Discovery Service</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Retain</strong></td>
+                      <td>Keep in source (for now)</td>
+                      <td>Complex dependencies, not ready, compliance</td>
+                      <td>N/A</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Relocate</strong></td>
+                      <td>Move infra without new hardware</td>
+                      <td>VMware workloads on AWS</td>
+                      <td>VMware Cloud on AWS</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <h4>Migration Process (3 Phases)</h4>
+                <ol>
+                  <li><strong>Assess</strong> — Use Application Discovery Service to inventory on-prem servers,
+                    dependencies, and utilization. Build a business case with Migration Evaluator.</li>
+                  <li><strong>Mobilize</strong> — Set up landing zone (AWS Control Tower), establish networking (Direct
+                    Connect/VPN), create migration playbooks, train teams.</li>
+                  <li><strong>Migrate &amp; Modernize</strong> — Execute migrations wave-by-wave. Use MGN for servers,
+                    DMS for databases, Snow Family for large datasets. Then optimize (right-size, adopt managed
+                    services).</li>
+                </ol>
+              </div>
+              <div class="key-takeaway">
+                <div class="takeaway-icon">💡</div>
+                <div>
+                  <strong>Key Takeaway for Interviews</strong>
+                  <p>When asked about migration strategy, start with: "I'd first run Application Discovery to understand
+                    the portfolio, then categorize each app using the 7 Rs." Most enterprise migrations start with
+                    <strong>Rehost</strong> for speed, then <strong>Replatform/Refactor</strong> post-migration. Always
+                    mention <strong>Direct Connect</strong> for network and <strong>DMS with CDC</strong> for
+                    near-zero-downtime database migration.</p>
+                </div>
+              </div>
             </div>
           </article>
 
-          <article id="api-gateway-auth" class="topic-card" data-difficulty="intermediate">
+          <!-- ====== TOPIC 6: API Gateway Auth ====== -->
+          <article id="api-gateway-auth" class="topic-card" data-difficulty="advanced"
+            data-keywords="api gateway auth iam cognito lambda authorizer jwt oauth token api key throttle">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>API Gateway Authentication &amp; Authorization</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark API Gateway Auth as reviewed"><svg
+                  width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Method</th>
+                      <th>Best For</th>
+                      <th>How It Works</th>
+                      <th>Token Type</th>
+                      <th>Caching</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>IAM Authorization</strong></td>
+                      <td>AWS-to-AWS, service-to-service</td>
+                      <td>Caller signs request with SigV4. API GW validates with IAM.</td>
+                      <td>AWS Signature</td>
+                      <td>N/A</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Cognito User Pools</strong></td>
+                      <td>Web/mobile apps, external users</td>
+                      <td>User authenticates with Cognito, gets JWT. API GW validates JWT directly.</td>
+                      <td>JWT (ID/Access)</td>
+                      <td>Built-in</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Lambda Authorizer</strong></td>
+                      <td>Custom auth, 3rd-party OAuth/OIDC</td>
+                      <td>Lambda receives token/params, returns IAM policy. Most flexible option.</td>
+                      <td>Bearer / Custom</td>
+                      <td>Up to 1hr</td>
+                    </tr>
+                    <tr>
+                      <td><strong>API Keys</strong></td>
+                      <td>Rate limiting, client tracking</td>
+                      <td>Key sent in <code>x-api-key</code> header. Not true auth — use with another method.</td>
+                      <td>API Key string</td>
+                      <td>N/A</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <h4>Decision Framework</h4>
+                <ul>
+                  <li><strong>Internal AWS services calling your API?</strong> → IAM Authorization (SigV4)</li>
+                  <li><strong>End-users (web/mobile) with sign-up/sign-in?</strong> → Cognito User Pools + Cognito
+                    Identity Pools for AWS resource access</li>
+                  <li><strong>Already using Okta/Auth0/Azure AD?</strong> → Lambda Authorizer to validate their tokens
+                  </li>
+                  <li><strong>Need to track/throttle API consumers?</strong> → API Keys + Usage Plans (always combine
+                    with real auth)</li>
+                  <li><strong>Need fine-grained per-resource permissions?</strong> → Lambda Authorizer returning scoped
+                    IAM policy</li>
+                </ul>
+                <h4>REST API vs HTTP API</h4>
+                <p><strong>HTTP API</strong> (newer) supports JWT authorizers natively and is 70% cheaper, but doesn't
+                  support IAM auth, API keys, or Lambda token authorizers. <strong>REST API</strong> supports all 4
+                  methods. Choose HTTP API for simple JWT-based auth; REST API for full control.</p>
+              </div>
+              <div class="key-takeaway">
+                <div class="takeaway-icon">💡</div>
+                <div>
+                  <strong>Key Takeaway for Interviews</strong>
+                  <p>This is a very common interview question. Know the 4 methods cold and when to use each. The winning
+                    answer: "For a public-facing mobile app I'd use Cognito with JWT validation. For internal
+                    microservice-to-microservice calls I'd use IAM SigV4. For integrating with an existing enterprise
+                    IdP like Okta, I'd use a Lambda Authorizer."</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== TOPIC 7: Serverless Web App ====== -->
+          <article id="serverless-webapp" class="topic-card" data-difficulty="intermediate"
+            data-keywords="serverless web application lambda api gateway s3 cloudfront cognito dynamodb step functions">
             <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
               <div class="topic-meta">
                 <span class="difficulty-badge intermediate">Intermediate</span>
               </div>
-              <h2>API Gateway Auth</h2>
-              <button class="review-btn" title="Mark as reviewed" aria-label="Mark API Gateway Auth as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <h2>Serverless Web Application Architecture</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Serverless Web App as reviewed"><svg
+                  width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
               <div class="topic-body">
-              <p>Amazon API Gateway supports multiple authentication and authorization mechanisms:</p>
-              <ol>
-                <li><strong>IAM Authorization</strong> — Uses AWS Signature Version 4 (SigV4). Best for AWS users and
-                  roles, service-to-service communication. The caller signs the request with AWS credentials, and API
-                  Gateway validates the signature with IAM.</li>
-                <li><strong>Amazon Cognito User Pools</strong> — Best for external users (web/mobile apps). Users
-                  authenticate with Cognito and receive a JWT token. API Gateway validates the token directly with
-                  Cognito. Supports social identity providers (Google, Facebook) and SAML.</li>
-                <li><strong>Lambda Authorizer (Custom Authorizer)</strong> — A Lambda function that implements custom
-                  authorization logic. Receives a bearer token or request parameters, returns an IAM policy. Best for
-                  third-party auth systems, custom business logic, or OAuth/OIDC tokens from external providers.</li>
-                <li><strong>API Keys</strong> — Simple key-based identification (not true authentication). Used with
-                  usage plans to throttle and meter API access per client. Should be combined with another auth method
-                  for security.</li>
-              </ol>
-              <p><strong>When to use which?</strong> IAM for internal AWS-to-AWS calls, Cognito for end-user-facing
-                apps, Lambda Authorizer for custom/third-party auth, API Keys for rate limiting and client
-                identification.</p>
-            </div>
-            </div>
-          </article>
-
-          <article id="serverless-webapp" class="topic-card" data-difficulty="beginner">
-            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
-              <div class="topic-meta">
-                <span class="difficulty-badge beginner">Beginner</span>
+                <h4>Full Architecture (Layer by Layer)</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Layer</th>
+                      <th>Service</th>
+                      <th>Why This Service</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>DNS</strong></td>
+                      <td>Route 53</td>
+                      <td>Custom domain, health checks, SSL cert via ACM</td>
+                    </tr>
+                    <tr>
+                      <td><strong>CDN</strong></td>
+                      <td>CloudFront</td>
+                      <td>Global edge caching, HTTPS termination, Origin Access Control for S3</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Frontend Hosting</strong></td>
+                      <td>S3 (static website)</td>
+                      <td>HTML/CSS/JS/React build. No servers. Costs pennies. 11 9s durability.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Auth</strong></td>
+                      <td>Cognito User Pools</td>
+                      <td>Sign-up, sign-in, MFA, social login. Issues JWT tokens.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>API</strong></td>
+                      <td>API Gateway (HTTP API)</td>
+                      <td>RESTful endpoints, JWT auth, throttling. 70% cheaper than REST API.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Business Logic</strong></td>
+                      <td>Lambda</td>
+                      <td>Stateless functions. Auto-scales to 1000+ concurrent. Pay per invocation.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Orchestration</strong></td>
+                      <td>Step Functions</td>
+                      <td>For multi-step workflows (order processing, onboarding flows).</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Database</strong></td>
+                      <td>DynamoDB</td>
+                      <td>Serverless NoSQL. Single-digit ms. On-demand or provisioned capacity.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>File Storage</strong></td>
+                      <td>S3</td>
+                      <td>User uploads, media files. Pre-signed URLs for secure direct uploads.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Notifications</strong></td>
+                      <td>SNS + SES</td>
+                      <td>Push notifications, email confirmations, alerts.</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <h4>When NOT to Use Serverless</h4>
+                <ul>
+                  <li><strong>Long-running processes</strong> — Lambda has 15-min limit. Use ECS/Fargate or Step
+                    Functions instead.</li>
+                  <li><strong>Consistent high traffic</strong> — At sustained high volume, EC2/ECS with reserved
+                    instances may be cheaper than Lambda.</li>
+                  <li><strong>WebSocket-heavy apps</strong> — API Gateway WebSocket API works but can be expensive at
+                    scale. Consider AppSync or a container-based solution.</li>
+                  <li><strong>Complex state management</strong> — Lambda is stateless. If you need in-memory state, use
+                    ElastiCache or containers.</li>
+                </ul>
+                <h4>Cost Profile</h4>
+                <p>A serverless web app serving <strong>1M requests/month</strong> typically costs
+                  <strong>$5-20/month</strong> total (S3 + CloudFront + API Gateway + Lambda + DynamoDB on-demand). The
+                  same on EC2 would cost $50-100+/month minimum.</p>
               </div>
-              <h2>Serverless Web Application</h2>
-              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Serverless Web Application as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
-              <span class="expand-icon" aria-hidden="true"></span>
-            </div>
-            <div class="topic-card-body">
-              <div class="topic-body">
-              <p>A fully serverless web application architecture on AWS:</p>
-              <h4>Architecture Flow</h4>
-              <ol>
-                <li><strong>Frontend Hosting</strong> — Static assets (HTML, CSS, JS) hosted on <strong>Amazon
-                    S3</strong> and served globally via <strong>Amazon CloudFront</strong> (CDN).</li>
-                <li><strong>Authentication</strong> — <strong>Amazon Cognito</strong> handles user sign-up, sign-in, and
-                  issues JWT tokens.</li>
-                <li><strong>API Layer</strong> — <strong>Amazon API Gateway</strong> exposes RESTful APIs, validates
-                  auth tokens, and routes requests.</li>
-                <li><strong>Business Logic</strong> — <strong>AWS Lambda</strong> functions execute backend logic (no
-                  servers to manage, scales automatically).</li>
-                <li><strong>Data Storage</strong> — <strong>Amazon DynamoDB</strong> provides a fully managed NoSQL
-                  database with single-digit-millisecond latency.</li>
-              </ol>
-              <h4>Key Benefits</h4>
-              <ul>
-                <li>No servers to provision or manage</li>
-                <li>Scales automatically with demand</li>
-                <li>Pay only for what you use (no idle costs)</li>
-                <li>Built-in high availability across multiple AZs</li>
-              </ul>
-            </div>
+              <div class="key-takeaway">
+                <div class="takeaway-icon">💡</div>
+                <div>
+                  <strong>Key Takeaway for Interviews</strong>
+                  <p>This is the #1 whiteboard architecture question. Draw it layer by layer: Route 53 → CloudFront → S3
+                    (frontend) → API Gateway → Lambda → DynamoDB. Add Cognito for auth. The key differentiator is
+                    knowing <em>when serverless is NOT the right choice</em> — that shows real architect maturity.</p>
+                </div>
+              </div>
             </div>
           </article>
         </div>
@@ -414,11 +833,17 @@
     </main>
   </div>
   <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18" />
+    </svg>
   </button>
   <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 15l-6-6-6 6" />
+    </svg>
   </button>
   <script src="js/page.js"></script>
 </body>
+
 </html>
