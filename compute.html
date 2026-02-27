@@ -5,27 +5,33 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AWS Compute Services Guide | EC2, ECS, EKS, Lambda, Auto Scaling - Interview Prep</title>
-    <meta name="description" content="Master AWS compute services for architect interviews. Deep dive into EC2 instance types, ECS vs EKS vs Lambda decision framework, Auto Scaling policies, ALB vs NLB comparison, and placement groups." />
+    <meta name="description"
+        content="Master AWS compute services for architect interviews. Deep dive into EC2 instance types, ECS vs EKS vs Lambda decision framework, Auto Scaling policies, ALB vs NLB comparison, and placement groups." />
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/devops.css" />
 
-    <meta name="keywords" content="AWS EC2 instance types, ECS vs EKS vs Lambda, AWS Auto Scaling, ALB vs NLB, placement groups, AWS compute services, Fargate, App Runner, Graviton" />
+    <meta name="keywords"
+        content="AWS EC2 instance types, ECS vs EKS vs Lambda, AWS Auto Scaling, ALB vs NLB, placement groups, AWS compute services, Fargate, App Runner, Graviton" />
     <meta name="author" content="SKCloudOps" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://skcloudops.github.io/cloud-guide/compute.html" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="AWS Compute Services Guide | EC2, ECS, EKS, Lambda, Auto Scaling - Interview Prep" />
-    <meta property="og:description" content="Master AWS compute services for architect interviews. Deep dive into EC2 instance types, ECS vs EKS vs Lambda decision framework, Auto Scaling policies, ALB vs NLB comparison, and placement groups." />
+    <meta property="og:title"
+        content="AWS Compute Services Guide | EC2, ECS, EKS, Lambda, Auto Scaling - Interview Prep" />
+    <meta property="og:description"
+        content="Master AWS compute services for architect interviews. Deep dive into EC2 instance types, ECS vs EKS vs Lambda decision framework, Auto Scaling policies, ALB vs NLB comparison, and placement groups." />
     <meta property="og:url" content="https://skcloudops.github.io/cloud-guide/compute.html" />
     <meta property="og:site_name" content="Cloud Interview Guide" />
     <meta property="og:image" content="https://skcloudops.github.io/cloud-guide/assets/og-image.png" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="AWS Compute Services Guide | EC2, ECS, EKS, Lambda, Auto Scaling - Interview Prep" />
-    <meta name="twitter:description" content="Master AWS compute services for architect interviews. Deep dive into EC2 instance types, ECS vs EKS vs Lambda decision framework, Auto Scaling policies, ALB vs NLB comparison, and placement groups." />
+    <meta name="twitter:title"
+        content="AWS Compute Services Guide | EC2, ECS, EKS, Lambda, Auto Scaling - Interview Prep" />
+    <meta name="twitter:description"
+        content="Master AWS compute services for architect interviews. Deep dive into EC2 instance types, ECS vs EKS vs Lambda decision framework, Auto Scaling policies, ALB vs NLB comparison, and placement groups." />
     <meta name="twitter:image" content="https://skcloudops.github.io/cloud-guide/assets/og-image.png" />
 </head>
 
@@ -33,11 +39,12 @@
     <div class="app-layout">
         <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
             <div class="sidebar-header"><a class="sidebar-logo" href="index.html">Cloud Interview Guide</a></div>
-                        <nav class="sidebar-nav">
+            <nav class="sidebar-nav">
                 <div class="nav-menu-item">
                     <div class="nav-menu-label">Infrastructure</div>
                     <div class="nav-menu-dropdown">
-                        <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+                        <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span
+                                class="count">6</span></a>
                         <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
                         <a href="compute.html" class="sidebar-link active">Compute <span class="count">5</span></a>
                         <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
@@ -57,7 +64,8 @@
                     <div class="nav-menu-dropdown">
                         <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
                         <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
-                        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+                        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span
+                                class="count">15</span></a>
                         <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
                     </div>
                 </div>
@@ -67,7 +75,8 @@
                         <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
                         <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
                         <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
-                        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
+                        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span
+                                class="count">12</span></a>
                     </div>
                 </div>
             </nav>
@@ -120,8 +129,16 @@
                         <div class="hero-stats">
                             <div class="stat"><span class="stat-number">5</span><span class="stat-label">Topics</span>
                             </div>
+                            <div class="stat"><span class="stat-number">4</span><span class="stat-label">Diagrams</span>
+                            </div>
                         </div>
                     </header>
+
+                    <!-- Hero overview diagram -->
+                    <figure class="hero-diagram">
+                        <img src="assets/compute-overview.png" alt="AWS Compute Services Decision Framework Diagram" />
+                        <figcaption>Compute — Services Decision Framework</figcaption>
+                    </figure>
 
                     <!-- Topic 1: Instance Types -->
                     <article id="instance-types" class="topic-card" data-difficulty="intermediate">
@@ -137,6 +154,9 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/compute-overview.png" alt="EC2 Instance Types and Families Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <p>Know the instance family naming: <strong>m5a.xlarge</strong> = m (family) 5
                                     (generation) a (AMD) . xlarge (size)</p>
@@ -223,6 +243,9 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/compute-overview.png" alt="Compute Decision Framework Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <p>The #1 question: "When would you use EC2 vs ECS vs EKS vs Lambda vs Fargate?"</p>
                                 <table class="topic-table">
@@ -317,6 +340,9 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/compute-auto-scaling.png" alt="Auto Scaling Deep Dive Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <table class="topic-table">
                                     <thead>
@@ -396,6 +422,10 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/compute-load-balancers.png"
+                                    alt="ALB vs NLB vs CLB vs GWLB Comparison Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <table class="topic-table">
                                     <thead>
@@ -490,6 +520,10 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/compute-placement-groups.png"
+                                    alt="Placement Groups and Tenancy Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <table class="topic-table">
                                     <thead>

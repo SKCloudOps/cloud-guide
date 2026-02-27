@@ -5,11 +5,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AWS Security & IAM Guide | Policies, KMS, WAF, GuardDuty - Interview Prep</title>
-    <meta name="description" content="Comprehensive AWS security guide for architect interviews. IAM policies and roles, cross-account access, KMS encryption, WAF & Shield, GuardDuty threat detection, and Zero Trust architecture." />
+    <meta name="description"
+        content="Comprehensive AWS security guide for architect interviews. IAM policies and roles, cross-account access, KMS encryption, WAF & Shield, GuardDuty threat detection, and Zero Trust architecture." />
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/devops.css" />
 
-    <meta name="keywords" content="AWS IAM policies, KMS encryption, AWS WAF Shield, GuardDuty, AWS security interview questions, Zero Trust AWS, cross-account access, AWS security best practices" />
+    <meta name="keywords"
+        content="AWS IAM policies, KMS encryption, AWS WAF Shield, GuardDuty, AWS security interview questions, Zero Trust AWS, cross-account access, AWS security best practices" />
     <meta name="author" content="SKCloudOps" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://skcloudops.github.io/cloud-guide/security.html" />
@@ -17,7 +19,8 @@
     <!-- Open Graph -->
     <meta property="og:type" content="article" />
     <meta property="og:title" content="AWS Security & IAM Guide | Policies, KMS, WAF, GuardDuty - Interview Prep" />
-    <meta property="og:description" content="Comprehensive AWS security guide for architect interviews. IAM policies and roles, cross-account access, KMS encryption, WAF & Shield, GuardDuty threat detection, and Zero Trust architecture." />
+    <meta property="og:description"
+        content="Comprehensive AWS security guide for architect interviews. IAM policies and roles, cross-account access, KMS encryption, WAF & Shield, GuardDuty threat detection, and Zero Trust architecture." />
     <meta property="og:url" content="https://skcloudops.github.io/cloud-guide/security.html" />
     <meta property="og:site_name" content="Cloud Interview Guide" />
     <meta property="og:image" content="https://skcloudops.github.io/cloud-guide/assets/og-image.png" />
@@ -25,7 +28,8 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="AWS Security & IAM Guide | Policies, KMS, WAF, GuardDuty - Interview Prep" />
-    <meta name="twitter:description" content="Comprehensive AWS security guide for architect interviews. IAM policies and roles, cross-account access, KMS encryption, WAF & Shield, GuardDuty threat detection, and Zero Trust architecture." />
+    <meta name="twitter:description"
+        content="Comprehensive AWS security guide for architect interviews. IAM policies and roles, cross-account access, KMS encryption, WAF & Shield, GuardDuty threat detection, and Zero Trust architecture." />
     <meta name="twitter:image" content="https://skcloudops.github.io/cloud-guide/assets/og-image.png" />
 </head>
 
@@ -33,12 +37,14 @@
     <div class="app-layout">
         <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
             <div class="sidebar-header"><a class="sidebar-logo" href="index.html">Cloud Interview Guide</a></div>
-                        <nav class="sidebar-nav">
+            <nav class="sidebar-nav">
                 <div class="nav-menu-item">
                     <div class="nav-menu-label">Infrastructure</div>
                     <div class="nav-menu-dropdown">
-                        <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
-                        <a href="security.html" class="sidebar-link active">Security &amp; IAM <span class="count">6</span></a>
+                        <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span
+                                class="count">6</span></a>
+                        <a href="security.html" class="sidebar-link active">Security &amp; IAM <span
+                                class="count">6</span></a>
                         <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
                         <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
                     </div>
@@ -57,7 +63,8 @@
                     <div class="nav-menu-dropdown">
                         <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
                         <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
-                        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+                        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span
+                                class="count">15</span></a>
                         <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
                     </div>
                 </div>
@@ -67,7 +74,8 @@
                         <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
                         <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
                         <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
-                        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
+                        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span
+                                class="count">12</span></a>
                     </div>
                 </div>
             </nav>
@@ -122,8 +130,17 @@
                         <div class="hero-stats">
                             <div class="stat"><span class="stat-number">6</span><span class="stat-label">Topics</span>
                             </div>
+                            <div class="stat"><span class="stat-number">6</span><span class="stat-label">Diagrams</span>
+                            </div>
                         </div>
                     </header>
+
+                    <!-- Hero overview diagram -->
+                    <figure class="hero-diagram">
+                        <img src="assets/security-iam-overview.png"
+                            alt="AWS Security and IAM Enterprise Architecture Diagram" />
+                        <figcaption>Security &amp; IAM — Enterprise Architecture Overview</figcaption>
+                    </figure>
 
                     <!-- Topic 1: IAM Policies -->
                     <article id="iam-policies" class="topic-card" data-difficulty="intermediate">
@@ -139,6 +156,10 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/security-iam-overview.png"
+                                    alt="IAM Policies and Roles Architecture Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <p>IAM is the backbone of AWS security. Every action in AWS is an API call that IAM
                                     evaluates:</p>
@@ -235,6 +256,10 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/security-cross-account.png"
+                                    alt="Cross-Account Access Patterns Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <p>Cross-account access is fundamental in multi-account AWS environments:</p>
                                 <table class="topic-table">
@@ -274,7 +299,8 @@
                                     <li><strong>Account A</strong> creates role with trust policy: <em>"Account B can
                                             assume this role"</em></li>
                                     <li><strong>Account B</strong> has identity policy allowing
-                                        <code>sts:AssumeRole</code> on Account A's role ARN</li>
+                                        <code>sts:AssumeRole</code> on Account A's role ARN
+                                    </li>
                                     <li><strong>Account B</strong> calls <code>STS AssumeRole</code> → receives
                                         temporary credentials (access key, secret key, session token)</li>
                                     <li>Temporary creds expire in 1-12 hours (configurable) — no long-term keys</li>
@@ -284,7 +310,8 @@
                                 <p>When a third-party service assumes your role, another customer could potentially
                                     trick it into accessing your resources. <strong>Solution:</strong> Use
                                     <code>ExternalId</code> condition in the trust policy — a shared secret between you
-                                    and the third party.</p>
+                                    and the third party.
+                                </p>
 
                                 <div class="answer-block correct">
                                     <h4>🎯 Key Takeaway</h4>
@@ -313,6 +340,10 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/security-encryption-kms.png"
+                                    alt="Encryption and KMS Envelope Encryption Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <p>Encryption is not optional — it's a requirement. Know the differences:</p>
                                 <table class="topic-table">
@@ -413,6 +444,9 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/security-waf-shield.png" alt="WAF Shield DDoS Protection Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <table class="topic-table">
                                     <thead>
@@ -482,6 +516,10 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/security-services-overview.png"
+                                    alt="AWS Security Services Ecosystem Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <p>Know the security service landscape — interviewers test whether you know which tool
                                     does what:</p>
@@ -566,6 +604,10 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/security-zero-trust.png"
+                                    alt="Zero Trust Architecture on AWS Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <p>Zero Trust means <strong>"never trust, always verify"</strong> — every request is
                                     authenticated and authorized regardless of network location:</p>

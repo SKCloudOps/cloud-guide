@@ -5,27 +5,33 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AWS Networking & VPC Guide | Subnets, Security Groups, Route 53 - Interview Prep</title>
-    <meta name="description" content="Expert-level AWS networking guide for architect interviews. VPC design, public vs private subnets, Security Groups vs NACLs, hybrid connectivity with Direct Connect, Route 53 routing, and PrivateLink." />
+    <meta name="description"
+        content="Expert-level AWS networking guide for architect interviews. VPC design, public vs private subnets, Security Groups vs NACLs, hybrid connectivity with Direct Connect, Route 53 routing, and PrivateLink." />
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/devops.css" />
 
-    <meta name="keywords" content="AWS VPC design, Security Groups vs NACLs, AWS Direct Connect, Route 53, AWS PrivateLink, VPC peering, Transit Gateway, hybrid cloud networking" />
+    <meta name="keywords"
+        content="AWS VPC design, Security Groups vs NACLs, AWS Direct Connect, Route 53, AWS PrivateLink, VPC peering, Transit Gateway, hybrid cloud networking" />
     <meta name="author" content="SKCloudOps" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://skcloudops.github.io/cloud-guide/networking.html" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="AWS Networking & VPC Guide | Subnets, Security Groups, Route 53 - Interview Prep" />
-    <meta property="og:description" content="Expert-level AWS networking guide for architect interviews. VPC design, public vs private subnets, Security Groups vs NACLs, hybrid connectivity with Direct Connect, Route 53 routing, and PrivateLink." />
+    <meta property="og:title"
+        content="AWS Networking & VPC Guide | Subnets, Security Groups, Route 53 - Interview Prep" />
+    <meta property="og:description"
+        content="Expert-level AWS networking guide for architect interviews. VPC design, public vs private subnets, Security Groups vs NACLs, hybrid connectivity with Direct Connect, Route 53 routing, and PrivateLink." />
     <meta property="og:url" content="https://skcloudops.github.io/cloud-guide/networking.html" />
     <meta property="og:site_name" content="Cloud Interview Guide" />
     <meta property="og:image" content="https://skcloudops.github.io/cloud-guide/assets/og-image.png" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="AWS Networking & VPC Guide | Subnets, Security Groups, Route 53 - Interview Prep" />
-    <meta name="twitter:description" content="Expert-level AWS networking guide for architect interviews. VPC design, public vs private subnets, Security Groups vs NACLs, hybrid connectivity with Direct Connect, Route 53 routing, and PrivateLink." />
+    <meta name="twitter:title"
+        content="AWS Networking & VPC Guide | Subnets, Security Groups, Route 53 - Interview Prep" />
+    <meta name="twitter:description"
+        content="Expert-level AWS networking guide for architect interviews. VPC design, public vs private subnets, Security Groups vs NACLs, hybrid connectivity with Direct Connect, Route 53 routing, and PrivateLink." />
     <meta name="twitter:image" content="https://skcloudops.github.io/cloud-guide/assets/og-image.png" />
 </head>
 
@@ -35,11 +41,12 @@
             <div class="sidebar-header">
                 <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
             </div>
-                        <nav class="sidebar-nav">
+            <nav class="sidebar-nav">
                 <div class="nav-menu-item">
                     <div class="nav-menu-label">Infrastructure</div>
                     <div class="nav-menu-dropdown">
-                        <a href="networking.html" class="sidebar-link active">Networking &amp; VPC <span class="count">6</span></a>
+                        <a href="networking.html" class="sidebar-link active">Networking &amp; VPC <span
+                                class="count">6</span></a>
                         <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
                         <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
                         <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
@@ -59,7 +66,8 @@
                     <div class="nav-menu-dropdown">
                         <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
                         <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
-                        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+                        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span
+                                class="count">15</span></a>
                         <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
                     </div>
                 </div>
@@ -69,7 +77,8 @@
                         <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
                         <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
                         <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
-                        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
+                        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span
+                                class="count">12</span></a>
                     </div>
                 </div>
             </nav>
@@ -125,8 +134,17 @@
                         <div class="hero-stats">
                             <div class="stat"><span class="stat-number">6</span><span class="stat-label">Topics</span>
                             </div>
+                            <div class="stat"><span class="stat-number">6</span><span class="stat-label">Diagrams</span>
+                            </div>
                         </div>
                     </header>
+
+                    <!-- Hero overview diagram -->
+                    <figure class="hero-diagram">
+                        <img src="assets/networking-vpc-design.png"
+                            alt="AWS VPC Enterprise Architecture Design Diagram" />
+                        <figcaption>Networking &amp; VPC — Enterprise Architecture Overview</figcaption>
+                    </figure>
 
                     <!-- Topic 1: VPC Design -->
                     <article id="vpc-design" class="topic-card" data-difficulty="intermediate">
@@ -142,6 +160,9 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/networking-vpc-design.png" alt="VPC Design Patterns Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <p>VPC design is the foundation of every AWS architecture. Get this wrong, and
                                     everything else fails:</p>
@@ -261,6 +282,10 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/networking-subnets-routing.png"
+                                    alt="Public vs Private vs Isolated Subnets Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <div class="answer-block incorrect">
                                     <h4>Bad Answer</h4>
@@ -272,7 +297,8 @@
                                         <strong>Internet Gateway (IGW)</strong>. A subnet is <strong>private</strong> if
                                         it does NOT have a route to an IGW. The presence of a public IP is separate — it
                                         enables the instance to communicate via the IGW, but without the IGW route,
-                                        traffic goes nowhere.</p>
+                                        traffic goes nowhere.
+                                    </p>
                                 </div>
 
                                 <h4>Public vs Private vs Isolated Subnets</h4>
@@ -348,6 +374,10 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/networking-sg-vs-nacl.png"
+                                    alt="Security Groups vs NACLs Defense in Depth Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <p>This is asked in almost every SA interview — know this table cold:</p>
                                 <table class="topic-table">
@@ -438,6 +468,10 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/networking-hybrid-connectivity.png"
+                                    alt="Hybrid Connectivity VPN vs Direct Connect vs Transit Gateway Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <p>Hybrid connectivity is asked in every enterprise SA interview:</p>
                                 <table class="topic-table">
@@ -570,6 +604,9 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/networking-route53.png" alt="Route 53 Routing Policies Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <p>Route 53 routing policies — know when to use each one:</p>
                                 <table class="topic-table">
@@ -660,6 +697,10 @@
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
+                            <figure class="topic-diagram">
+                                <img src="assets/networking-vpc-endpoints.png"
+                                    alt="VPC Endpoints and PrivateLink Architecture Diagram" />
+                            </figure>
                             <div class="topic-body">
                                 <p>VPC Endpoints keep traffic private (never leaves the AWS network) and reduce NAT
                                     Gateway costs:</p>
