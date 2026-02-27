@@ -490,7 +490,7 @@
                         <div class="topic-card-body">
                             <div class="topic-body">
                                 <p>Cost optimization shows business acumen — a trait that distinguishes senior architects. These questions test your ability to think about money, not just technology.</p>
-                                <div class="iq-controls">
+                                                                                                                                <div class="iq-controls">
                                     <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.add('open'))">Show All Answers</button>
                                     <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.remove('open'))">Hide All</button>
                                 </div>
@@ -498,69 +498,7 @@
                                     <li class="iq-item">
                                         <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
                                             <span class="iq-num"></span>
-                                            <span class="iq-text">Your company's AWS bill jumped from 
-                                    <li>Your company's AWS bill jumped from $100K to $180K last month. Walk me through your investigation process to find and fix the cost increase.
-                                        <span class="iq-hint">Hint: Cost Explorer (group by service, filter by tag, compare month-over-month). Check: new services launched, data transfer spikes, NAT Gateway processing, DynamoDB on-demand scaling, unattached EBS volumes/EIPs. Set up Cost Anomaly Detection for proactive alerts. Tag everything for attribution.</span>
-                                    </li>
-                                    <li>A team runs 200 m5.xlarge instances 24/7. They're all on-demand. Design a purchasing strategy to reduce costs by 50% or more.
-                                        <span class="iq-hint">Hint: Analyze steady-state vs variable usage. Base load → Compute Savings Plans (1yr partial upfront, ~40% savings). Variable → Spot for fault-tolerant workloads. Consider Graviton (m7g.xlarge) for additional 20% savings. Dev/test → scheduled scaling (stop nights/weekends = 65% time reduction). Target: 50-60% total savings.</span>
-                                    </li>
-                                    <li>Explain the difference between Compute Savings Plans, EC2 Instance Savings Plans, and Reserved Instances. When would you choose each?
-                                        <span class="iq-hint">Hint: Compute SP — most flexible (any instance family, size, OS, region, including Fargate/Lambda), ~66% savings. EC2 Instance SP — locked to instance family + region, ~72% savings. RI — most restrictive (specific instance type + AZ), similar savings to EC2 SP, but better for RDS/ElastiCache where SPs don't apply.</span>
-                                    </li>
-                                    <li>Your data transfer bill is $25,000/month. Where is the money going and what architectural changes would you make?
-                                        <span class="iq-hint">Hint: Common culprits: NAT Gateway processing ($0.045/GB), inter-AZ traffic ($0.01/GB), inter-region replication, CloudFront to origin. Fixes: S3/DynamoDB gateway endpoints (free), VPC endpoints for other services, AZ-aware routing, CloudFront caching (reduce origin fetches), compress data before transfer.</span>
-                                    </li>
-                                    <li>Design a FinOps practice for an organization with 50 AWS accounts and 10 engineering teams. How do you implement cost accountability?
-                                        <span class="iq-hint">Hint: AWS Organizations with consolidated billing. Mandatory tagging policy (team, project, environment) enforced by SCPs. Shared Reserved Capacity across accounts. Per-team cost dashboards using CUR + Athena/QuickSight. Monthly cost review meetings. Set budgets with alerts per team. Chargeback or showback model.</span>
-                                    </li>
-                                    <li>A startup is choosing between serverless (Lambda + DynamoDB) and container-based (EKS + RDS) for their new application. Expected traffic: 10,000 requests/day initially, growing to 1M/day in 12 months. Which is more cost-effective?
-                                        <span class="iq-hint">Hint: At 10K/day: serverless wins dramatically (pay-per-use, near-zero idle cost). At 1M/day: depends on request duration and compute needs. Lambda breaks even with containers around 1-2M requests/hour (not per day). At 1M/day serverless is still cheaper. Crossover typically happens at sustained millions of requests per hour. Start serverless, re-evaluate when costs exceed container alternative.</span>
-                                    </li>
-                                    <li>Your team uses DynamoDB on-demand capacity. The monthly bill is $20,000. Traffic is predictable (peaks at 10AM-6PM, low overnight). How do you optimize?
-                                        <span class="iq-hint">Hint: Switch to provisioned capacity with auto-scaling (set min/max based on traffic patterns). Provisioned is 20-40% cheaper for predictable workloads. Use DynamoDB Infrequent Access table class for cold data. Consider Reserved Capacity for baseline. Enable DAX caching to reduce consumed RCUs.</span>
-                                    </li>
-                                    <li>A CTO asks: "We spend $500K/year on AWS. Should we negotiate an Enterprise Discount Program (EDP)?" What factors would you consider?
-                                        <span class="iq-hint">Hint: EDP requires a commit (typically $500K-$1M+ annual). Benefits: blanket discount on all services (typically 5-15%), credits, dedicated TAM. Considerations: growth trajectory (don't overcommit), existing SPs/RIs (EDP stacks with them), flexibility to reduce spend, negotiation leverage based on workload migration plans.</span>
-                                    </li>
-                                    <li>Estimate the monthly cost of running a three-tier web application: ALB, 4 EC2 instances (m5.xlarge), Aurora PostgreSQL (db.r5.xlarge with 1 read replica), and 500GB S3. Show your math.
-                                        <span class="iq-hint">Hint: ALB: ~$25/month (fixed) + LCU charges. EC2: 4 × m5.xlarge on-demand × $0.192/hr × 730 hrs = ~$560. Aurora: 2 × db.r5.xlarge × $0.48/hr × 730 = ~$700 + I/O + storage. S3: 500GB × $0.023 = ~$11.50 + requests. Approximate total: ~$1,300-1,500/month. Interviewers want to see you can do napkin math, not exact numbers.</span>
-                                    </li>
-                                    <li>Your Kubernetes cluster has 30% average CPU utilization across nodes, meaning 70% of compute capacity is wasted. How would you improve utilization without impacting reliability?
-                                        <span class="iq-hint">Hint: Karpenter for right-sized node provisioning (picks optimal instance type per pod spec). Pod resource requests/limits tuning with VPA recommendations. Consolidation policy (Karpenter bin-packs pods onto fewer nodes). Spot instances for non-critical workloads. Use Kubecost for per-namespace cost visibility. Target: 60-70% utilization.</span>
-                                    </li>
-                                00K to 
-                                    <li>Your company's AWS bill jumped from $100K to $180K last month. Walk me through your investigation process to find and fix the cost increase.
-                                        <span class="iq-hint">Hint: Cost Explorer (group by service, filter by tag, compare month-over-month). Check: new services launched, data transfer spikes, NAT Gateway processing, DynamoDB on-demand scaling, unattached EBS volumes/EIPs. Set up Cost Anomaly Detection for proactive alerts. Tag everything for attribution.</span>
-                                    </li>
-                                    <li>A team runs 200 m5.xlarge instances 24/7. They're all on-demand. Design a purchasing strategy to reduce costs by 50% or more.
-                                        <span class="iq-hint">Hint: Analyze steady-state vs variable usage. Base load → Compute Savings Plans (1yr partial upfront, ~40% savings). Variable → Spot for fault-tolerant workloads. Consider Graviton (m7g.xlarge) for additional 20% savings. Dev/test → scheduled scaling (stop nights/weekends = 65% time reduction). Target: 50-60% total savings.</span>
-                                    </li>
-                                    <li>Explain the difference between Compute Savings Plans, EC2 Instance Savings Plans, and Reserved Instances. When would you choose each?
-                                        <span class="iq-hint">Hint: Compute SP — most flexible (any instance family, size, OS, region, including Fargate/Lambda), ~66% savings. EC2 Instance SP — locked to instance family + region, ~72% savings. RI — most restrictive (specific instance type + AZ), similar savings to EC2 SP, but better for RDS/ElastiCache where SPs don't apply.</span>
-                                    </li>
-                                    <li>Your data transfer bill is $25,000/month. Where is the money going and what architectural changes would you make?
-                                        <span class="iq-hint">Hint: Common culprits: NAT Gateway processing ($0.045/GB), inter-AZ traffic ($0.01/GB), inter-region replication, CloudFront to origin. Fixes: S3/DynamoDB gateway endpoints (free), VPC endpoints for other services, AZ-aware routing, CloudFront caching (reduce origin fetches), compress data before transfer.</span>
-                                    </li>
-                                    <li>Design a FinOps practice for an organization with 50 AWS accounts and 10 engineering teams. How do you implement cost accountability?
-                                        <span class="iq-hint">Hint: AWS Organizations with consolidated billing. Mandatory tagging policy (team, project, environment) enforced by SCPs. Shared Reserved Capacity across accounts. Per-team cost dashboards using CUR + Athena/QuickSight. Monthly cost review meetings. Set budgets with alerts per team. Chargeback or showback model.</span>
-                                    </li>
-                                    <li>A startup is choosing between serverless (Lambda + DynamoDB) and container-based (EKS + RDS) for their new application. Expected traffic: 10,000 requests/day initially, growing to 1M/day in 12 months. Which is more cost-effective?
-                                        <span class="iq-hint">Hint: At 10K/day: serverless wins dramatically (pay-per-use, near-zero idle cost). At 1M/day: depends on request duration and compute needs. Lambda breaks even with containers around 1-2M requests/hour (not per day). At 1M/day serverless is still cheaper. Crossover typically happens at sustained millions of requests per hour. Start serverless, re-evaluate when costs exceed container alternative.</span>
-                                    </li>
-                                    <li>Your team uses DynamoDB on-demand capacity. The monthly bill is $20,000. Traffic is predictable (peaks at 10AM-6PM, low overnight). How do you optimize?
-                                        <span class="iq-hint">Hint: Switch to provisioned capacity with auto-scaling (set min/max based on traffic patterns). Provisioned is 20-40% cheaper for predictable workloads. Use DynamoDB Infrequent Access table class for cold data. Consider Reserved Capacity for baseline. Enable DAX caching to reduce consumed RCUs.</span>
-                                    </li>
-                                    <li>A CTO asks: "We spend $500K/year on AWS. Should we negotiate an Enterprise Discount Program (EDP)?" What factors would you consider?
-                                        <span class="iq-hint">Hint: EDP requires a commit (typically $500K-$1M+ annual). Benefits: blanket discount on all services (typically 5-15%), credits, dedicated TAM. Considerations: growth trajectory (don't overcommit), existing SPs/RIs (EDP stacks with them), flexibility to reduce spend, negotiation leverage based on workload migration plans.</span>
-                                    </li>
-                                    <li>Estimate the monthly cost of running a three-tier web application: ALB, 4 EC2 instances (m5.xlarge), Aurora PostgreSQL (db.r5.xlarge with 1 read replica), and 500GB S3. Show your math.
-                                        <span class="iq-hint">Hint: ALB: ~$25/month (fixed) + LCU charges. EC2: 4 × m5.xlarge on-demand × $0.192/hr × 730 hrs = ~$560. Aurora: 2 × db.r5.xlarge × $0.48/hr × 730 = ~$700 + I/O + storage. S3: 500GB × $0.023 = ~$11.50 + requests. Approximate total: ~$1,300-1,500/month. Interviewers want to see you can do napkin math, not exact numbers.</span>
-                                    </li>
-                                    <li>Your Kubernetes cluster has 30% average CPU utilization across nodes, meaning 70% of compute capacity is wasted. How would you improve utilization without impacting reliability?
-                                        <span class="iq-hint">Hint: Karpenter for right-sized node provisioning (picks optimal instance type per pod spec). Pod resource requests/limits tuning with VPA recommendations. Consolidation policy (Karpenter bin-packs pods onto fewer nodes). Spot instances for non-critical workloads. Use Kubecost for per-namespace cost visibility. Target: 60-70% utilization.</span>
-                                    </li>
-                                80K last month. Walk me through your investigation process to find and fix the cost increase.</span>
+                                            <span class="iq-text">Your company's AWS bill jumped from $100K to $180K last month. Walk me through your investigation process to find and fix the cost increase.</span>
                                             <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
                                         </div>
                                         <div class="iq-answer">
@@ -651,44 +589,13 @@
                                     <li class="iq-item">
                                         <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
                                             <span class="iq-num"></span>
-                                            <span class="iq-text">A CTO asks: "We spend $500K/year on AWS. Should we negotiate an Enterprise Discount Program (EDP)?" What factors would you consider?</span>
+                                            <span class="iq-text">A CTO asks: &quot;We spend $500K/year on AWS. Should we negotiate an Enterprise Discount Program (EDP)?&quot; What factors would you consider?</span>
                                             <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
                                         </div>
                                         <div class="iq-answer">
                                             <div class="iq-answer-inner">
                                                 <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
-                                                <div class="iq-answer-text">EDP requires a commit (typically $500K-
-                                    <li>Your company's AWS bill jumped from $100K to $180K last month. Walk me through your investigation process to find and fix the cost increase.
-                                        <span class="iq-hint">Hint: Cost Explorer (group by service, filter by tag, compare month-over-month). Check: new services launched, data transfer spikes, NAT Gateway processing, DynamoDB on-demand scaling, unattached EBS volumes/EIPs. Set up Cost Anomaly Detection for proactive alerts. Tag everything for attribution.</span>
-                                    </li>
-                                    <li>A team runs 200 m5.xlarge instances 24/7. They're all on-demand. Design a purchasing strategy to reduce costs by 50% or more.
-                                        <span class="iq-hint">Hint: Analyze steady-state vs variable usage. Base load → Compute Savings Plans (1yr partial upfront, ~40% savings). Variable → Spot for fault-tolerant workloads. Consider Graviton (m7g.xlarge) for additional 20% savings. Dev/test → scheduled scaling (stop nights/weekends = 65% time reduction). Target: 50-60% total savings.</span>
-                                    </li>
-                                    <li>Explain the difference between Compute Savings Plans, EC2 Instance Savings Plans, and Reserved Instances. When would you choose each?
-                                        <span class="iq-hint">Hint: Compute SP — most flexible (any instance family, size, OS, region, including Fargate/Lambda), ~66% savings. EC2 Instance SP — locked to instance family + region, ~72% savings. RI — most restrictive (specific instance type + AZ), similar savings to EC2 SP, but better for RDS/ElastiCache where SPs don't apply.</span>
-                                    </li>
-                                    <li>Your data transfer bill is $25,000/month. Where is the money going and what architectural changes would you make?
-                                        <span class="iq-hint">Hint: Common culprits: NAT Gateway processing ($0.045/GB), inter-AZ traffic ($0.01/GB), inter-region replication, CloudFront to origin. Fixes: S3/DynamoDB gateway endpoints (free), VPC endpoints for other services, AZ-aware routing, CloudFront caching (reduce origin fetches), compress data before transfer.</span>
-                                    </li>
-                                    <li>Design a FinOps practice for an organization with 50 AWS accounts and 10 engineering teams. How do you implement cost accountability?
-                                        <span class="iq-hint">Hint: AWS Organizations with consolidated billing. Mandatory tagging policy (team, project, environment) enforced by SCPs. Shared Reserved Capacity across accounts. Per-team cost dashboards using CUR + Athena/QuickSight. Monthly cost review meetings. Set budgets with alerts per team. Chargeback or showback model.</span>
-                                    </li>
-                                    <li>A startup is choosing between serverless (Lambda + DynamoDB) and container-based (EKS + RDS) for their new application. Expected traffic: 10,000 requests/day initially, growing to 1M/day in 12 months. Which is more cost-effective?
-                                        <span class="iq-hint">Hint: At 10K/day: serverless wins dramatically (pay-per-use, near-zero idle cost). At 1M/day: depends on request duration and compute needs. Lambda breaks even with containers around 1-2M requests/hour (not per day). At 1M/day serverless is still cheaper. Crossover typically happens at sustained millions of requests per hour. Start serverless, re-evaluate when costs exceed container alternative.</span>
-                                    </li>
-                                    <li>Your team uses DynamoDB on-demand capacity. The monthly bill is $20,000. Traffic is predictable (peaks at 10AM-6PM, low overnight). How do you optimize?
-                                        <span class="iq-hint">Hint: Switch to provisioned capacity with auto-scaling (set min/max based on traffic patterns). Provisioned is 20-40% cheaper for predictable workloads. Use DynamoDB Infrequent Access table class for cold data. Consider Reserved Capacity for baseline. Enable DAX caching to reduce consumed RCUs.</span>
-                                    </li>
-                                    <li>A CTO asks: "We spend $500K/year on AWS. Should we negotiate an Enterprise Discount Program (EDP)?" What factors would you consider?
-                                        <span class="iq-hint">Hint: EDP requires a commit (typically $500K-$1M+ annual). Benefits: blanket discount on all services (typically 5-15%), credits, dedicated TAM. Considerations: growth trajectory (don't overcommit), existing SPs/RIs (EDP stacks with them), flexibility to reduce spend, negotiation leverage based on workload migration plans.</span>
-                                    </li>
-                                    <li>Estimate the monthly cost of running a three-tier web application: ALB, 4 EC2 instances (m5.xlarge), Aurora PostgreSQL (db.r5.xlarge with 1 read replica), and 500GB S3. Show your math.
-                                        <span class="iq-hint">Hint: ALB: ~$25/month (fixed) + LCU charges. EC2: 4 × m5.xlarge on-demand × $0.192/hr × 730 hrs = ~$560. Aurora: 2 × db.r5.xlarge × $0.48/hr × 730 = ~$700 + I/O + storage. S3: 500GB × $0.023 = ~$11.50 + requests. Approximate total: ~$1,300-1,500/month. Interviewers want to see you can do napkin math, not exact numbers.</span>
-                                    </li>
-                                    <li>Your Kubernetes cluster has 30% average CPU utilization across nodes, meaning 70% of compute capacity is wasted. How would you improve utilization without impacting reliability?
-                                        <span class="iq-hint">Hint: Karpenter for right-sized node provisioning (picks optimal instance type per pod spec). Pod resource requests/limits tuning with VPA recommendations. Consolidation policy (Karpenter bin-packs pods onto fewer nodes). Spot instances for non-critical workloads. Use Kubecost for per-namespace cost visibility. Target: 60-70% utilization.</span>
-                                    </li>
-                                M+ annual). Benefits: blanket discount on all services (typically 5-15%), credits, dedicated TAM. Considerations: growth trajectory (don't overcommit), existing SPs/RIs (EDP stacks with them), flexibility to reduce spend, negotiation leverage based on workload migration plans.</div>
+                                                <div class="iq-answer-text">EDP requires a commit (typically $500K-$1M+ annual). Benefits: blanket discount on all services (typically 5-15%), credits, dedicated TAM. Considerations: growth trajectory (don't overcommit), existing SPs/RIs (EDP stacks with them), flexibility to reduce spend, negotiation leverage based on workload migration plans.</div>
                                             </div>
                                         </div>
                                     </li>
@@ -701,69 +608,7 @@
                                         <div class="iq-answer">
                                             <div class="iq-answer-inner">
                                                 <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
-                                                <div class="iq-answer-text">ALB: ~$25/month (fixed) + LCU charges. EC2: 4 × m5.xlarge on-demand × $0.192/hr × 730 hrs = ~$560. Aurora: 2 × db.r5.xlarge × $0.48/hr × 730 = ~$700 + I/O + storage. S3: 500GB × $0.023 = ~
-                                    <li>Your company's AWS bill jumped from $100K to $180K last month. Walk me through your investigation process to find and fix the cost increase.
-                                        <span class="iq-hint">Hint: Cost Explorer (group by service, filter by tag, compare month-over-month). Check: new services launched, data transfer spikes, NAT Gateway processing, DynamoDB on-demand scaling, unattached EBS volumes/EIPs. Set up Cost Anomaly Detection for proactive alerts. Tag everything for attribution.</span>
-                                    </li>
-                                    <li>A team runs 200 m5.xlarge instances 24/7. They're all on-demand. Design a purchasing strategy to reduce costs by 50% or more.
-                                        <span class="iq-hint">Hint: Analyze steady-state vs variable usage. Base load → Compute Savings Plans (1yr partial upfront, ~40% savings). Variable → Spot for fault-tolerant workloads. Consider Graviton (m7g.xlarge) for additional 20% savings. Dev/test → scheduled scaling (stop nights/weekends = 65% time reduction). Target: 50-60% total savings.</span>
-                                    </li>
-                                    <li>Explain the difference between Compute Savings Plans, EC2 Instance Savings Plans, and Reserved Instances. When would you choose each?
-                                        <span class="iq-hint">Hint: Compute SP — most flexible (any instance family, size, OS, region, including Fargate/Lambda), ~66% savings. EC2 Instance SP — locked to instance family + region, ~72% savings. RI — most restrictive (specific instance type + AZ), similar savings to EC2 SP, but better for RDS/ElastiCache where SPs don't apply.</span>
-                                    </li>
-                                    <li>Your data transfer bill is $25,000/month. Where is the money going and what architectural changes would you make?
-                                        <span class="iq-hint">Hint: Common culprits: NAT Gateway processing ($0.045/GB), inter-AZ traffic ($0.01/GB), inter-region replication, CloudFront to origin. Fixes: S3/DynamoDB gateway endpoints (free), VPC endpoints for other services, AZ-aware routing, CloudFront caching (reduce origin fetches), compress data before transfer.</span>
-                                    </li>
-                                    <li>Design a FinOps practice for an organization with 50 AWS accounts and 10 engineering teams. How do you implement cost accountability?
-                                        <span class="iq-hint">Hint: AWS Organizations with consolidated billing. Mandatory tagging policy (team, project, environment) enforced by SCPs. Shared Reserved Capacity across accounts. Per-team cost dashboards using CUR + Athena/QuickSight. Monthly cost review meetings. Set budgets with alerts per team. Chargeback or showback model.</span>
-                                    </li>
-                                    <li>A startup is choosing between serverless (Lambda + DynamoDB) and container-based (EKS + RDS) for their new application. Expected traffic: 10,000 requests/day initially, growing to 1M/day in 12 months. Which is more cost-effective?
-                                        <span class="iq-hint">Hint: At 10K/day: serverless wins dramatically (pay-per-use, near-zero idle cost). At 1M/day: depends on request duration and compute needs. Lambda breaks even with containers around 1-2M requests/hour (not per day). At 1M/day serverless is still cheaper. Crossover typically happens at sustained millions of requests per hour. Start serverless, re-evaluate when costs exceed container alternative.</span>
-                                    </li>
-                                    <li>Your team uses DynamoDB on-demand capacity. The monthly bill is $20,000. Traffic is predictable (peaks at 10AM-6PM, low overnight). How do you optimize?
-                                        <span class="iq-hint">Hint: Switch to provisioned capacity with auto-scaling (set min/max based on traffic patterns). Provisioned is 20-40% cheaper for predictable workloads. Use DynamoDB Infrequent Access table class for cold data. Consider Reserved Capacity for baseline. Enable DAX caching to reduce consumed RCUs.</span>
-                                    </li>
-                                    <li>A CTO asks: "We spend $500K/year on AWS. Should we negotiate an Enterprise Discount Program (EDP)?" What factors would you consider?
-                                        <span class="iq-hint">Hint: EDP requires a commit (typically $500K-$1M+ annual). Benefits: blanket discount on all services (typically 5-15%), credits, dedicated TAM. Considerations: growth trajectory (don't overcommit), existing SPs/RIs (EDP stacks with them), flexibility to reduce spend, negotiation leverage based on workload migration plans.</span>
-                                    </li>
-                                    <li>Estimate the monthly cost of running a three-tier web application: ALB, 4 EC2 instances (m5.xlarge), Aurora PostgreSQL (db.r5.xlarge with 1 read replica), and 500GB S3. Show your math.
-                                        <span class="iq-hint">Hint: ALB: ~$25/month (fixed) + LCU charges. EC2: 4 × m5.xlarge on-demand × $0.192/hr × 730 hrs = ~$560. Aurora: 2 × db.r5.xlarge × $0.48/hr × 730 = ~$700 + I/O + storage. S3: 500GB × $0.023 = ~$11.50 + requests. Approximate total: ~$1,300-1,500/month. Interviewers want to see you can do napkin math, not exact numbers.</span>
-                                    </li>
-                                    <li>Your Kubernetes cluster has 30% average CPU utilization across nodes, meaning 70% of compute capacity is wasted. How would you improve utilization without impacting reliability?
-                                        <span class="iq-hint">Hint: Karpenter for right-sized node provisioning (picks optimal instance type per pod spec). Pod resource requests/limits tuning with VPA recommendations. Consolidation policy (Karpenter bin-packs pods onto fewer nodes). Spot instances for non-critical workloads. Use Kubecost for per-namespace cost visibility. Target: 60-70% utilization.</span>
-                                    </li>
-                                1.50 + requests. Approximate total: ~
-                                    <li>Your company's AWS bill jumped from $100K to $180K last month. Walk me through your investigation process to find and fix the cost increase.
-                                        <span class="iq-hint">Hint: Cost Explorer (group by service, filter by tag, compare month-over-month). Check: new services launched, data transfer spikes, NAT Gateway processing, DynamoDB on-demand scaling, unattached EBS volumes/EIPs. Set up Cost Anomaly Detection for proactive alerts. Tag everything for attribution.</span>
-                                    </li>
-                                    <li>A team runs 200 m5.xlarge instances 24/7. They're all on-demand. Design a purchasing strategy to reduce costs by 50% or more.
-                                        <span class="iq-hint">Hint: Analyze steady-state vs variable usage. Base load → Compute Savings Plans (1yr partial upfront, ~40% savings). Variable → Spot for fault-tolerant workloads. Consider Graviton (m7g.xlarge) for additional 20% savings. Dev/test → scheduled scaling (stop nights/weekends = 65% time reduction). Target: 50-60% total savings.</span>
-                                    </li>
-                                    <li>Explain the difference between Compute Savings Plans, EC2 Instance Savings Plans, and Reserved Instances. When would you choose each?
-                                        <span class="iq-hint">Hint: Compute SP — most flexible (any instance family, size, OS, region, including Fargate/Lambda), ~66% savings. EC2 Instance SP — locked to instance family + region, ~72% savings. RI — most restrictive (specific instance type + AZ), similar savings to EC2 SP, but better for RDS/ElastiCache where SPs don't apply.</span>
-                                    </li>
-                                    <li>Your data transfer bill is $25,000/month. Where is the money going and what architectural changes would you make?
-                                        <span class="iq-hint">Hint: Common culprits: NAT Gateway processing ($0.045/GB), inter-AZ traffic ($0.01/GB), inter-region replication, CloudFront to origin. Fixes: S3/DynamoDB gateway endpoints (free), VPC endpoints for other services, AZ-aware routing, CloudFront caching (reduce origin fetches), compress data before transfer.</span>
-                                    </li>
-                                    <li>Design a FinOps practice for an organization with 50 AWS accounts and 10 engineering teams. How do you implement cost accountability?
-                                        <span class="iq-hint">Hint: AWS Organizations with consolidated billing. Mandatory tagging policy (team, project, environment) enforced by SCPs. Shared Reserved Capacity across accounts. Per-team cost dashboards using CUR + Athena/QuickSight. Monthly cost review meetings. Set budgets with alerts per team. Chargeback or showback model.</span>
-                                    </li>
-                                    <li>A startup is choosing between serverless (Lambda + DynamoDB) and container-based (EKS + RDS) for their new application. Expected traffic: 10,000 requests/day initially, growing to 1M/day in 12 months. Which is more cost-effective?
-                                        <span class="iq-hint">Hint: At 10K/day: serverless wins dramatically (pay-per-use, near-zero idle cost). At 1M/day: depends on request duration and compute needs. Lambda breaks even with containers around 1-2M requests/hour (not per day). At 1M/day serverless is still cheaper. Crossover typically happens at sustained millions of requests per hour. Start serverless, re-evaluate when costs exceed container alternative.</span>
-                                    </li>
-                                    <li>Your team uses DynamoDB on-demand capacity. The monthly bill is $20,000. Traffic is predictable (peaks at 10AM-6PM, low overnight). How do you optimize?
-                                        <span class="iq-hint">Hint: Switch to provisioned capacity with auto-scaling (set min/max based on traffic patterns). Provisioned is 20-40% cheaper for predictable workloads. Use DynamoDB Infrequent Access table class for cold data. Consider Reserved Capacity for baseline. Enable DAX caching to reduce consumed RCUs.</span>
-                                    </li>
-                                    <li>A CTO asks: "We spend $500K/year on AWS. Should we negotiate an Enterprise Discount Program (EDP)?" What factors would you consider?
-                                        <span class="iq-hint">Hint: EDP requires a commit (typically $500K-$1M+ annual). Benefits: blanket discount on all services (typically 5-15%), credits, dedicated TAM. Considerations: growth trajectory (don't overcommit), existing SPs/RIs (EDP stacks with them), flexibility to reduce spend, negotiation leverage based on workload migration plans.</span>
-                                    </li>
-                                    <li>Estimate the monthly cost of running a three-tier web application: ALB, 4 EC2 instances (m5.xlarge), Aurora PostgreSQL (db.r5.xlarge with 1 read replica), and 500GB S3. Show your math.
-                                        <span class="iq-hint">Hint: ALB: ~$25/month (fixed) + LCU charges. EC2: 4 × m5.xlarge on-demand × $0.192/hr × 730 hrs = ~$560. Aurora: 2 × db.r5.xlarge × $0.48/hr × 730 = ~$700 + I/O + storage. S3: 500GB × $0.023 = ~$11.50 + requests. Approximate total: ~$1,300-1,500/month. Interviewers want to see you can do napkin math, not exact numbers.</span>
-                                    </li>
-                                    <li>Your Kubernetes cluster has 30% average CPU utilization across nodes, meaning 70% of compute capacity is wasted. How would you improve utilization without impacting reliability?
-                                        <span class="iq-hint">Hint: Karpenter for right-sized node provisioning (picks optimal instance type per pod spec). Pod resource requests/limits tuning with VPA recommendations. Consolidation policy (Karpenter bin-packs pods onto fewer nodes). Spot instances for non-critical workloads. Use Kubecost for per-namespace cost visibility. Target: 60-70% utilization.</span>
-                                    </li>
-                                ,300-1,500/month. Interviewers want to see you can do napkin math, not exact numbers.</div>
+                                                <div class="iq-answer-text">ALB: ~$25/month (fixed) + LCU charges. EC2: 4 × m5.xlarge on-demand × $0.192/hr × 730 hrs = ~$560. Aurora: 2 × db.r5.xlarge × $0.48/hr × 730 = ~$700 + I/O + storage. S3: 500GB × $0.023 = ~$11.50 + requests. Approximate total: ~$1,300-1,500/month. Interviewers want to see you can do napkin math, not exact numbers.</div>
                                             </div>
                                         </div>
                                     </li>

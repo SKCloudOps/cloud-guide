@@ -782,7 +782,7 @@
                         <div class="topic-card-body">
                             <div class="topic-body">
                                 <p>Networking questions separate strong architects from the rest. These test real VPC design thinking.</p>
-                                <div class="iq-controls">
+                                                                                                <div class="iq-controls">
                                     <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.add('open'))">Show All Answers</button>
                                     <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.remove('open'))">Hide All</button>
                                 </div>
@@ -868,38 +868,7 @@
                                     <li class="iq-item">
                                         <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
                                             <span class="iq-num"></span>
-                                            <span class="iq-text">Your application runs in 3 AZs. You notice that inter-AZ data transfer is costing 
-                                    <li>Design a VPC architecture for a company with 500 microservices across 3 environments (dev, staging, prod). How would you plan CIDR blocks to avoid conflicts and allow peering?
-                                        <span class="iq-hint">Hint: Use non-overlapping CIDRs (e.g., 10.0.0.0/16 prod, 10.1.0.0/16 staging, 10.2.0.0/16 dev). Consider Transit Gateway for hub-and-spoke vs full mesh peering. Plan for IP exhaustion.</span>
-                                    </li>
-                                    <li>A Lambda function in a private subnet needs to call the S3 API. It's currently routing through a NAT Gateway, costing $5,000/month in data transfer. How do you fix this?
-                                        <span class="iq-hint">Hint: S3 Gateway Endpoint — free, no data processing charges. This is the #1 hidden cost savings in AWS networking. Also consider Interface Endpoints for DynamoDB and other services.</span>
-                                    </li>
-                                    <li>Explain the difference between Security Groups and NACLs. A junior engineer put an allow rule in a Security Group and a deny rule in the NACL for the same port. Which wins?
-                                        <span class="iq-hint">Hint: NACLs are evaluated first (subnet level). If NACL denies, traffic never reaches the SG. NACLs are stateless (need inbound + outbound rules). SGs are stateful (return traffic auto-allowed).</span>
-                                    </li>
-                                    <li>Your company needs a reliable, low-latency connection between on-premises and AWS for a real-time trading application. VPN latency is too high. What do you recommend and how do you design for redundancy?
-                                        <span class="iq-hint">Hint: AWS Direct Connect with two connections at different DX locations for resilience. Add VPN as backup over the internet. Discuss BGP failover, LAG groups, and the 1-3 month provisioning time.</span>
-                                    </li>
-                                    <li>An EC2 instance in a private subnet can't reach the internet. Walk me through your troubleshooting steps.
-                                        <span class="iq-hint">Hint: Check route table (0.0.0.0/0 → NAT GW?), NAT Gateway in public subnet with IGW route, Security Group outbound rules, NACL rules (both inbound and outbound — it's stateless), and DNS resolution (VPC DNS settings).</span>
-                                    </li>
-                                    <li>You need to set up DNS for a hybrid environment where on-premises applications need to resolve AWS private hosted zone records, and AWS services need to resolve on-premises DNS. Design the solution.
-                                        <span class="iq-hint">Hint: Route 53 Resolver with Inbound Endpoints (on-prem → AWS) and Outbound Endpoints (AWS → on-prem). Resolver rules forward specific domains. Discuss conditional forwarding.</span>
-                                    </li>
-                                    <li>Your application runs in 3 AZs. You notice that inter-AZ data transfer is costing $10,000/month. What architectural changes would you consider to reduce this?
-                                        <span class="iq-hint">Hint: Use AZ-aware routing (ALB with AZ affinity), deploy caches per AZ, consider same-AZ read replicas. Trade-off: reducing cross-AZ traffic can reduce availability if an AZ goes down.</span>
-                                    </li>
-                                    <li>When would you choose Transit Gateway over VPC Peering? A team has 15 VPCs that all need to communicate. They've set up 105 peering connections. What's the problem?
-                                        <span class="iq-hint">Hint: VPC Peering isn't transitive — 15 VPCs need n(n-1)/2 = 105 connections. Transit Gateway provides hub-and-spoke with transitive routing. Discuss cost trade-off: TGW charges per attachment + per GB.</span>
-                                    </li>
-                                    <li>What is the difference between a Gateway VPC Endpoint and an Interface VPC Endpoint? When would you use each?
-                                        <span class="iq-hint">Hint: Gateway endpoints (S3, DynamoDB only) — free, route table entry. Interface endpoints (all other services) — ENI in subnet, cost per hour + per GB. Gateway is always preferred when available.</span>
-                                    </li>
-                                    <li>Design the Route 53 routing policy for a global application deployed in us-east-1 and eu-west-1. Users should hit the closest region, but if a region goes down, all traffic should failover automatically.
-                                        <span class="iq-hint">Hint: Latency-based routing with health checks. When a health check fails, Route 53 removes that region. Discuss TTL implications, health check intervals (10s vs 30s), and fast failover vs DNS caching.</span>
-                                    </li>
-                                0,000/month. What architectural changes would you consider to reduce this?</span>
+                                            <span class="iq-text">Your application runs in 3 AZs. You notice that inter-AZ data transfer is costing $10,000/month. What architectural changes would you consider to reduce this?</span>
                                             <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
                                         </div>
                                         <div class="iq-answer">

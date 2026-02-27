@@ -208,6 +208,17 @@
         if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); if (searchInput) searchInput.focus(); }
     });
 
+    // === Interview Question Accordion (keyboard) ===
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            var el = document.activeElement;
+            if (el && el.classList.contains('iq-question')) {
+                e.preventDefault();
+                el.click();
+            }
+        }
+    });
+
     updateProgress();
     setTimeout(updateTocHighlight, 100);
 })();

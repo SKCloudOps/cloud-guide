@@ -917,7 +917,7 @@
             <div class="topic-card-body">
               <div class="topic-body">
                 <p>Practice these questions to validate your understanding of AWS core concepts. Each question targets what interviewers actually ask at the Solutions Architect level.</p>
-                <div class="iq-controls">
+                                                <div class="iq-controls">
                                     <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.add('open'))">Show All Answers</button>
                                     <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.remove('open'))">Hide All</button>
                                 </div>
@@ -964,7 +964,7 @@
                                     <li class="iq-item">
                                         <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
                                             <span class="iq-num"></span>
-                                            <span class="iq-text">Your CEO asks: "What happens if an entire AWS region goes down?" Design a multi-region DR strategy with an RPO of 1 minute and RTO of 5 minutes. What AWS services would you use?</span>
+                                            <span class="iq-text">Your CEO asks: &quot;What happens if an entire AWS region goes down?&quot; Design a multi-region DR strategy with an RPO of 1 minute and RTO of 5 minutes. What AWS services would you use?</span>
                                             <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
                                         </div>
                                         <div class="iq-answer">
@@ -990,7 +990,7 @@
                                     <li class="iq-item">
                                         <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
                                             <span class="iq-num"></span>
-                                            <span class="iq-text">Explain the difference between an Availability Zone and a Data Center. A teammate says "we're highly available because we deploy to two AZs." Is that sufficient? When is it not?</span>
+                                            <span class="iq-text">Explain the difference between an Availability Zone and a Data Center. A teammate says &quot;we're highly available because we deploy to two AZs.&quot; Is that sufficient? When is it not?</span>
                                             <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
                                         </div>
                                         <div class="iq-answer">
@@ -1022,38 +1022,7 @@
                                         <div class="iq-answer">
                                             <div class="iq-answer-inner">
                                                 <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
-                                                <div class="iq-answer-text">Since Feb 2024, ALL public IPv4 addresses cost $0.005/hr whether attached or not. 50 EIPs = ~
-                  <li>Your company needs to migrate 200 microservices from on-premises to AWS. Walk me through your migration strategy using the 7 Rs framework. How do you decide which R applies to which service?
-                    <span class="iq-hint">Hint: Discuss assessment criteria — business criticality, technical debt, dependencies, licensing. Explain why you wouldn't apply the same R to every service.</span>
-                  </li>
-                  <li>Explain the six pillars of the AWS Well-Architected Framework. If you had to prioritize only two for a startup versus an enterprise, which would you choose and why?
-                    <span class="iq-hint">Hint: Startups often prioritize Cost Optimization + Operational Excellence. Enterprises lean toward Security + Reliability. Justify your reasoning.</span>
-                  </li>
-                  <li>You're designing an API that needs to handle 50,000 requests per second with sub-10ms latency. Would you use REST API or HTTP API on API Gateway? What authentication method would you choose and why?
-                    <span class="iq-hint">Hint: HTTP API has lower latency and is 70% cheaper but lacks some features. Consider Lambda authorizers vs Cognito vs IAM depending on the client type.</span>
-                  </li>
-                  <li>Your CEO asks: "What happens if an entire AWS region goes down?" Design a multi-region DR strategy with an RPO of 1 minute and RTO of 5 minutes. What AWS services would you use?
-                    <span class="iq-hint">Hint: This requires multi-site active-active or warm standby. Discuss Route 53 health checks, Aurora Global Database, S3 CRR, and DynamoDB Global Tables.</span>
-                  </li>
-                  <li>A developer wants to expose an internal microservice to a partner company. They suggest making it public with an API key. What's wrong with this approach and what would you recommend instead?
-                    <span class="iq-hint">Hint: API keys are not a security mechanism — they're for throttling. Discuss private API Gateway + VPC endpoint, or mutual TLS, or OAuth 2.0 with Cognito.</span>
-                  </li>
-                  <li>Explain the difference between an Availability Zone and a Data Center. A teammate says "we're highly available because we deploy to two AZs." Is that sufficient? When is it not?
-                    <span class="iq-hint">Hint: One AZ = multiple data centers. Two AZs is good for most workloads, but consider regional failures, compliance requirements, and data sovereignty.</span>
-                  </li>
-                  <li>You have a serverless web application (S3 + CloudFront + API Gateway + Lambda + DynamoDB). Performance is great, but costs have tripled in three months. Walk me through how you'd diagnose and fix the cost issue.
-                    <span class="iq-hint">Hint: Check Lambda duration/memory over-provisioning, DynamoDB capacity mode (on-demand vs provisioned), CloudFront cache hit ratio, and API Gateway request volume.</span>
-                  </li>
-                  <li>Compare AWS Elastic IP pricing before and after the 2024 change. A team has 50 unused EIPs across 10 accounts. What's the monthly cost, and how would you implement governance to prevent this?
-                    <span class="iq-hint">Hint: Since Feb 2024, ALL public IPv4 addresses cost $0.005/hr whether attached or not. 50 EIPs = ~$180/month wasted. Use AWS Config rules and SCPs.</span>
-                  </li>
-                  <li>Your application uses API Gateway with a Lambda authorizer. Users report intermittent 403 errors that resolve after a few minutes. What's the likely cause and how do you fix it?
-                    <span class="iq-hint">Hint: Lambda authorizer responses are cached (TTL up to 3600s by default). If a user's permissions change, stale cached policies cause 403s. Adjust cache TTL or invalidate.</span>
-                  </li>
-                  <li>A compliance team requires that all data at rest and in transit must be encrypted, with keys managed by the company (not AWS). Design the encryption strategy across S3, RDS, EBS, and Lambda.
-                    <span class="iq-hint">Hint: Use KMS with customer-managed CMKs for at-rest encryption. Discuss envelope encryption, key rotation policies, cross-account key sharing, and TLS 1.2+ for in-transit.</span>
-                  </li>
-                80/month wasted. Use AWS Config rules and SCPs.</div>
+                                                <div class="iq-answer-text">Since Feb 2024, ALL public IPv4 addresses cost $0.005/hr whether attached or not. 50 EIPs = ~$180/month wasted. Use AWS Config rules and SCPs.</div>
                                             </div>
                                         </div>
                                     </li>
