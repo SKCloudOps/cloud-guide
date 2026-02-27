@@ -80,27 +80,23 @@
                     </div>
                 </div>
             </nav>
+            <div class="header-search">
+                <div class="search-box">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+                </div>
+            </div>
+            <div class="header-filters difficulty-filters">
+                <button class="filter-chip active" data-filter="all">All</button>
+                <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+                <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+                <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+            </div>
         </aside>
         <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
         <main class="content-area" role="main">
-            <div class="topbar">
-                <div class="topbar-inner">
-                    <div class="search-box">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <circle cx="11" cy="11" r="8" />
-                            <path d="M21 21l-4.35-4.35" />
-                        </svg>
-                        <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
-                    </div>
-                    <div class="difficulty-filters">
-                        <button class="filter-chip active" data-filter="all">All</button>
-                        <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
-                        <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
-                        <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
-                    </div>
-                </div>
-            </div>
             <div class="content-split">
                 <aside class="toc-sidebar" id="tocSidebar">
                     <div class="toc-title">In This Section</div>

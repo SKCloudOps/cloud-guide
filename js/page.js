@@ -21,34 +21,6 @@
         if (e.key === 'Escape') menuItems.forEach(function (m) { m.classList.remove('open'); });
     });
 
-    // === Move search box into header ===
-    var headerEl = document.getElementById('sidebar');
-    var searchBox = document.querySelector('.topbar .search-box');
-    var sidebarFooter = headerEl ? headerEl.querySelector('.sidebar-footer') : null;
-    if (headerEl && searchBox) {
-        var wrapper = document.createElement('div');
-        wrapper.className = 'header-search';
-        wrapper.appendChild(searchBox);
-        if (sidebarFooter) {
-            headerEl.insertBefore(wrapper, sidebarFooter);
-        } else {
-            headerEl.appendChild(wrapper);
-        }
-    }
-
-    // === Move difficulty filters into header ===
-    var filters = document.querySelector('.topbar .difficulty-filters');
-    if (headerEl && filters) {
-        var fWrapper = document.createElement('div');
-        fWrapper.className = 'header-filters';
-        while (filters.firstChild) fWrapper.appendChild(filters.firstChild);
-        if (sidebarFooter) {
-            headerEl.insertBefore(fWrapper, sidebarFooter);
-        } else {
-            headerEl.appendChild(fWrapper);
-        }
-    }
-
     // === DOM Elements ===
     var sidebar = document.getElementById('sidebar');
     var overlay = document.getElementById('sidebarOverlay');
