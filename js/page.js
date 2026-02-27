@@ -19,12 +19,6 @@
         if (document.getElementById('sidebar') && document.getElementById('sidebar').contains(e.target)) return;
         menuItems.forEach(function (m) { m.classList.remove('open'); });
     });
-    // Auto-expand section containing active page link
-    var activeLink = document.querySelector('.sidebar-link.active');
-    if (activeLink) {
-        var parentItem = activeLink.closest('.nav-menu-item');
-        if (parentItem) parentItem.classList.add('open');
-    }
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') menuItems.forEach(function (m) { m.classList.remove('open'); });
     });
