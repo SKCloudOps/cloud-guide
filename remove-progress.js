@@ -10,16 +10,18 @@ files.forEach(file => {
     const filePath = path.join(__dirname, file);
     let content = fs.readFileSync(filePath, 'utf8');
 
-    // Remove the entire sidebar-footer div block
-    const footerRegex = /\s*<div class="sidebar-footer">[\s\S]*?<\/div>\s*<\/div>\s*<\/div>\s*(?=\s*<\/aside>)/;
-    const match = content.match(footerRegex);
-    if (match) {
-        content = content.replace(footerRegex, '\n        ');
-        fs.writeFileSync(filePath, content, 'utf8');
-        console.log(`REMOVED: ${file}`);
-    } else {
-        console.log(`SKIP: ${file} - no sidebar-footer found`);
+    if (!content.includes('sidebar-footer')) {
+        console.log(`SKIP: ${file}`);
+        return;
     }
+
+    // Remove sidebar-footer block (handles nested divs)
+    // Match: <div class="sidebar-footer">...progressFill...</div></div></div>
+    const regex = /\s*<div class="sidebar-footer">[\s\S]*?<div class="sidebar-progress-text"[^>]*>[^<]*<\/div>\s*<\/div>/g;
+    content = content.replace(regex, '');
+
+    fs.writeFileSync(filePath, content, 'utf8');
+    console.log(`REMOVED: ${file}`);
 });
 
 console.log('Done!');
