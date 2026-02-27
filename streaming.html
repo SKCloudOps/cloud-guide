@@ -50,7 +50,7 @@
                     <div class="nav-menu-dropdown">
                         <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
                         <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
-                        <a href="streaming.html" class="sidebar-link active">Streaming <span class="count">2</span></a>
+                        <a href="streaming.html" class="sidebar-link active">Streaming <span class="count">6</span></a>
                         <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
                     </div>
                 </div>
@@ -97,8 +97,11 @@
         <aside class="toc-sidebar" id="tocSidebar">
           <div class="toc-title">In This Section</div>
           <nav class="toc-nav" id="tocNav">
-            <a href="#live-streaming" class="toc-link" data-section="live-streaming"><span class="toc-dot"></span>Live
-              Streaming</a>
+            <a href="#messaging-decision" class="toc-link" data-section="messaging-decision"><span class="toc-dot"></span>SQS vs SNS vs Kinesis vs EventBridge</a>
+            <a href="#kinesis-deep-dive" class="toc-link" data-section="kinesis-deep-dive"><span class="toc-dot"></span>Kinesis Data Streams & Firehose</a>
+            <a href="#msk-kafka" class="toc-link" data-section="msk-kafka"><span class="toc-dot"></span>Amazon MSK (Managed Kafka)</a>
+            <a href="#stream-processing" class="toc-link" data-section="stream-processing"><span class="toc-dot"></span>Stream Processing Patterns</a>
+            <a href="#live-streaming" class="toc-link" data-section="live-streaming"><span class="toc-dot"></span>Live Video Streaming</a>
             <a href="#live-streaming-ads" class="toc-link" data-section="live-streaming-ads"><span
                 class="toc-dot"></span>Live Streaming with Ads</a>
             <a href="#streaming-interview-questions" class="toc-link" data-section="streaming-interview-questions"><span class="toc-dot"></span>Interview Questions</a>
@@ -111,12 +114,176 @@
           <header class="page-hero">
             <div class="hero-badge" style="background:linear-gradient(135deg,#a855f7, #7c3aed)">Streaming</div>
             <h1>Streaming Interview Guide</h1>
-            <p class="hero-lead">Live streaming and live streaming with ads.</p>
+            <p class="hero-lead">Data streaming with Kinesis and MSK, the messaging decision framework, real-time analytics pipelines, and video streaming architectures.</p>
             <div class="hero-stats">
-              <div class="stat"><span class="stat-number">2</span><span class="stat-label">Topics</span></div>
+              <div class="stat"><span class="stat-number">6</span><span class="stat-label">Topics</span></div>
             </div>
           </header>
 
+
+          <!-- ====== MESSAGING DECISION FRAMEWORK ====== -->
+          <article id="messaging-decision" class="topic-card" data-difficulty="intermediate"
+            data-keywords="sqs sns kinesis eventbridge messaging decision framework comparison">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span></div>
+              <h2>SQS vs SNS vs Kinesis vs EventBridge</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>The #1 most-asked messaging question in architect interviews — knowing when to use which service:</p>
+                <table class="topic-table">
+                  <thead><tr><th>Aspect</th><th>SQS</th><th>SNS</th><th>Kinesis Data Streams</th><th>EventBridge</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Pattern</strong></td><td>Queue (point-to-point)</td><td>Pub/Sub (fan-out)</td><td>Ordered streaming</td><td>Event routing</td></tr>
+                    <tr><td><strong>Ordering</strong></td><td>FIFO only (3,000 msg/s)</td><td>No</td><td>Yes (per shard)</td><td>No</td></tr>
+                    <tr><td><strong>Retention</strong></td><td>Up to 14 days</td><td>None (fire and forget)</td><td>1–365 days</td><td>Archive up to unlimited</td></tr>
+                    <tr><td><strong>Replay</strong></td><td>No</td><td>No</td><td>Yes (any position)</td><td>Yes (archive replay)</td></tr>
+                    <tr><td><strong>Consumers</strong></td><td>Single consumer (or fan-out via SQS per consumer)</td><td>Multiple subscribers</td><td>Multiple consumers (KCL, Lambda, Flink)</td><td>Multiple targets per rule</td></tr>
+                    <tr><td><strong>Throughput</strong></td><td>Unlimited (standard)</td><td>Millions/sec</td><td>1 MB/s per shard write, 2 MB/s read</td><td>2,400 events/sec default</td></tr>
+                    <tr><td><strong>Best For</strong></td><td>Work queues, decoupling, buffering</td><td>Simple fan-out, notifications</td><td>Real-time analytics, clickstream, IoT, log aggregation</td><td>Microservice events, SaaS integration, AWS service events</td></tr>
+                  </tbody>
+                </table>
+                <h4>Decision Framework</h4>
+                <ul>
+                  <li><strong>"I need to decouple two services"</strong> → SQS</li>
+                  <li><strong>"One event, multiple consumers"</strong> → SNS (simple) or EventBridge (with content filtering)</li>
+                  <li><strong>"I need ordering + replay + high throughput"</strong> → Kinesis Data Streams</li>
+                  <li><strong>"I need smart event routing with filtering"</strong> → EventBridge</li>
+                  <li><strong>"I need the Kafka ecosystem"</strong> → Amazon MSK</li>
+                </ul>
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> <em>"I choose the messaging service based on the pattern: SQS for work queues and decoupling, SNS for simple fan-out, Kinesis for ordered high-throughput streaming with replay, and EventBridge for smart event routing between microservices. The key differentiator is whether you need ordering (Kinesis), content-based filtering (EventBridge), or simple queue semantics (SQS)."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== KINESIS DEEP DIVE ====== -->
+          <article id="kinesis-deep-dive" class="topic-card" data-difficulty="intermediate"
+            data-keywords="kinesis data streams firehose shards partition key enhanced fan-out">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span></div>
+              <h2>Kinesis Data Streams & Firehose</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>Kinesis is the core data streaming service on AWS — understand the difference between Streams and Firehose:</p>
+                <h4>Kinesis Data Streams vs Firehose</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Aspect</th><th>Kinesis Data Streams</th><th>Kinesis Data Firehose</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Purpose</strong></td><td>Real-time data streaming with custom consumers</td><td>Managed data delivery to destinations</td></tr>
+                    <tr><td><strong>Latency</strong></td><td>~200ms (real-time)</td><td>60 seconds minimum (near-real-time)</td></tr>
+                    <tr><td><strong>Consumers</strong></td><td>Custom (KCL, Lambda, Flink) — you write processing logic</td><td>Auto-delivers to S3, Redshift, OpenSearch, Splunk</td></tr>
+                    <tr><td><strong>Scaling</strong></td><td>Manual shard management (or on-demand mode)</td><td>Fully automatic</td></tr>
+                    <tr><td><strong>Replay</strong></td><td>Yes (1–365 day retention, seek to any position)</td><td>No replay capability</td></tr>
+                    <tr><td><strong>Transform</strong></td><td>You build consumers</td><td>Built-in Lambda transform, format conversion (JSON→Parquet), compression</td></tr>
+                    <tr><td><strong>Pricing</strong></td><td>Per shard-hour ($0.015/hr) + PUT payload</td><td>Per GB ingested ($0.029/GB)</td></tr>
+                  </tbody>
+                </table>
+                <h4>Shard Architecture</h4>
+                <ul>
+                  <li>Each shard: <strong>1 MB/s write</strong>, <strong>2 MB/s read</strong> (or 5 reads/sec)</li>
+                  <li><strong>Enhanced Fan-Out:</strong> 2 MB/s per consumer per shard (dedicated throughput). Use when you have 3+ consumers.</li>
+                  <li><strong>Partition Key:</strong> Determines which shard gets the record. Use high-cardinality keys (user_id) to avoid hot shards.</li>
+                  <li><strong>On-Demand Mode (2021):</strong> Auto-scales shards, no capacity planning. Pay per GB. Best for unpredictable traffic.</li>
+                </ul>
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> <em>"Kinesis Data Streams and Firehose solve different problems. Streams is for real-time processing where I need custom consumers, ordering, and replay — like processing clickstream data with Flink. Firehose is for managed delivery — like landing log data in S3 as compressed Parquet files with automatic format conversion. I often use both: Streams for real-time processing, feeding into Firehose for the batch/archive path."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== MSK ====== -->
+          <article id="msk-kafka" class="topic-card" data-difficulty="advanced"
+            data-keywords="msk kafka managed streaming topics partitions consumer groups connect">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+              <h2>Amazon MSK (Managed Kafka)</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>Amazon MSK is managed Apache Kafka on AWS — choose it when you need the Kafka ecosystem:</p>
+                <h4>MSK vs Kinesis — Decision Framework</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Factor</th><th>Choose MSK When</th><th>Choose Kinesis When</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Existing Expertise</strong></td><td>Team already knows Kafka</td><td>Team prefers AWS-native, simpler APIs</td></tr>
+                    <tr><td><strong>Ecosystem</strong></td><td>Need Kafka Connect, Kafka Streams, ksqlDB, Schema Registry</td><td>Need tight Lambda/Firehose integration</td></tr>
+                    <tr><td><strong>Retention</strong></td><td>Unlimited (tiered storage to S3)</td><td>1–365 days</td></tr>
+                    <tr><td><strong>Operations</strong></td><td>More operational control (broker config, partition tuning)</td><td>Serverless, minimal operations</td></tr>
+                    <tr><td><strong>Multi-Cloud</strong></td><td>Kafka API is portable to any cloud</td><td>AWS-only (lock-in)</td></tr>
+                    <tr><td><strong>Consumer Model</strong></td><td>Consumer groups with offset management</td><td>KCL checkpointing or Lambda ESM</td></tr>
+                  </tbody>
+                </table>
+                <h4>MSK Serverless vs Provisioned</h4>
+                <ul>
+                  <li><strong>MSK Serverless:</strong> Auto-scales, no broker management, pay per data. Best for variable workloads and teams that don't want to manage Kafka infrastructure.</li>
+                  <li><strong>MSK Provisioned:</strong> Choose broker instances and config. Better price at sustained high throughput. Needed for advanced Kafka features.</li>
+                </ul>
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> <em>"I choose MSK over Kinesis when the team has Kafka expertise and needs the ecosystem — Kafka Connect for CDC from databases, Kafka Streams for stateful stream processing, or Schema Registry for event contracts. For teams without Kafka experience who want a fully managed serverless experience, Kinesis Data Streams with Lambda consumers is simpler and cheaper to operate."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== STREAM PROCESSING ====== -->
+          <article id="stream-processing" class="topic-card" data-difficulty="advanced"
+            data-keywords="stream processing flink lambda architecture kappa windowing real-time batch">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+              <h2>Stream Processing Patterns</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>Architecture patterns for processing streaming data at scale:</p>
+                <h4>Lambda Architecture vs Kappa Architecture</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Aspect</th><th>Lambda Architecture</th><th>Kappa Architecture</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Paths</strong></td><td>Two: speed layer (real-time) + batch layer (historical)</td><td>One: stream processing only</td></tr>
+                    <tr><td><strong>Speed Layer</strong></td><td>Kinesis → Flink → Redis</td><td>Kinesis → Flink → store</td></tr>
+                    <tr><td><strong>Batch Layer</strong></td><td>S3 → Glue/EMR → data warehouse</td><td>Replay stream for reprocessing</td></tr>
+                    <tr><td><strong>Complexity</strong></td><td>Higher (maintain 2 codepaths)</td><td>Lower (single processing path)</td></tr>
+                    <tr><td><strong>Best For</strong></td><td>When batch and real-time views need different computation</td><td>When the same processing logic works for both real-time and historical</td></tr>
+                  </tbody>
+                </table>
+                <h4>Processing Options on AWS</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Service</th><th>When to Use</th><th>Throughput</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Lambda (ESM)</strong></td><td>Simple per-record transforms, enrichment, filtering</td><td>Up to 10 concurrent batches per shard</td></tr>
+                    <tr><td><strong>Managed Apache Flink</strong></td><td>Windowed aggregations, complex event processing, stream joins</td><td>Parallel processing with managed scaling</td></tr>
+                    <tr><td><strong>ECS/EKS + KCL</strong></td><td>Custom consumer logic, team prefers containers, long-running stateful processors</td><td>1 worker per shard (KCL), custom scaling</td></tr>
+                    <tr><td><strong>Firehose + Lambda</strong></td><td>Simple transform before delivery to S3/Redshift/OpenSearch</td><td>Auto-scaling, 60s–900s buffer</td></tr>
+                  </tbody>
+                </table>
+                <h4>Windowing Strategies (For Flink)</h4>
+                <ul>
+                  <li><strong>Tumbling Window:</strong> Fixed size, non-overlapping (e.g., "count per 5-minute block"). Simplest.</li>
+                  <li><strong>Sliding Window:</strong> Overlapping (e.g., "trending in last 15 min, updated every 1 min"). Most common for real-time dashboards.</li>
+                  <li><strong>Session Window:</strong> Activity-based (e.g., "user session ends after 30 min of inactivity"). Used for user behavior analytics.</li>
+                </ul>
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> <em>"For stream processing, I match the tool to the complexity. Lambda for simple per-event transforms (filter, enrich, format). Managed Apache Flink for stateful processing — windowed aggregations, stream joins, complex event processing. For delivery to S3 or data warehouses, Kinesis Firehose with a Lambda transform handles batching, compression, and format conversion automatically."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
 
           <article id="live-streaming" class="topic-card" data-difficulty="intermediate">
             <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">

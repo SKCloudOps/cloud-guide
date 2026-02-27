@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AWS Serverless Guide | Lambda, API Gateway, Step Functions - Interview Prep</title>
-  <meta name="description" content="Serverless architecture guide for AWS architect interviews. Lambda best practices, API Gateway authentication, Step Functions orchestration, and serverless design patterns." />
+  <meta name="description" content="Serverless architecture guide for AWS architect interviews. Lambda internals, Step Functions orchestration, EventBridge event routing, cold starts, concurrency, VPC, and serverless design patterns." />
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/devops.css" />
 
@@ -17,7 +17,7 @@
     <!-- Open Graph -->
     <meta property="og:type" content="article" />
     <meta property="og:title" content="AWS Serverless Guide | Lambda, API Gateway, Step Functions - Interview Prep" />
-    <meta property="og:description" content="Serverless architecture guide for AWS architect interviews. Lambda best practices, API Gateway authentication, Step Functions orchestration, and serverless design patterns." />
+    <meta property="og:description" content="Serverless architecture guide for AWS architect interviews. Lambda internals, Step Functions orchestration, EventBridge event routing, cold starts, concurrency, VPC, and serverless design patterns." />
     <meta property="og:url" content="https://skcloudops.github.io/cloud-guide/serverless.html" />
     <meta property="og:site_name" content="Cloud Interview Guide" />
     <meta property="og:image" content="https://skcloudops.github.io/cloud-guide/assets/og-image.png" />
@@ -25,7 +25,7 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="AWS Serverless Guide | Lambda, API Gateway, Step Functions - Interview Prep" />
-    <meta name="twitter:description" content="Serverless architecture guide for AWS architect interviews. Lambda best practices, API Gateway authentication, Step Functions orchestration, and serverless design patterns." />
+    <meta name="twitter:description" content="Serverless architecture guide for AWS architect interviews. Lambda internals, Step Functions orchestration, EventBridge event routing, cold starts, concurrency, VPC, and serverless design patterns." />
     <meta name="twitter:image" content="https://skcloudops.github.io/cloud-guide/assets/og-image.png" />
 </head>
 
@@ -49,7 +49,7 @@
                     <div class="nav-menu-label">Data &amp; Apps</div>
                     <div class="nav-menu-dropdown">
                         <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
-                        <a href="serverless.html" class="sidebar-link active">Serverless <span class="count">3</span></a>
+                        <a href="serverless.html" class="sidebar-link active">Serverless <span class="count">8</span></a>
                         <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
                         <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
                     </div>
@@ -103,6 +103,11 @@
                 class="toc-dot"></span>Serverless Web Application</a>
             <a href="#lambda-transform" class="toc-link" data-section="lambda-transform"><span
                 class="toc-dot"></span>Lambda Transform</a>
+            <a href="#step-functions" class="toc-link" data-section="step-functions"><span class="toc-dot"></span>Step Functions Orchestration</a>
+            <a href="#eventbridge" class="toc-link" data-section="eventbridge"><span class="toc-dot"></span>EventBridge Event Routing</a>
+            <a href="#cold-starts" class="toc-link" data-section="cold-starts"><span class="toc-dot"></span>Lambda Cold Starts</a>
+            <a href="#lambda-concurrency" class="toc-link" data-section="lambda-concurrency"><span class="toc-dot"></span>Lambda Concurrency</a>
+            <a href="#lambda-vpc" class="toc-link" data-section="lambda-vpc"><span class="toc-dot"></span>Lambda in VPC</a>
             <a href="#serverless-interview-questions" class="toc-link" data-section="serverless-interview-questions"><span class="toc-dot"></span>Interview Questions</a>
           </nav>
           <div class="toc-keyboard-hint">
@@ -113,9 +118,9 @@
           <header class="page-hero">
             <div class="hero-badge" style="background:linear-gradient(135deg,#f59e0b, #f97316)">Serverless</div>
             <h1>Serverless Interview Guide</h1>
-            <p class="hero-lead">Lambda vs EC2, serverless web apps, and transforms.</p>
+            <p class="hero-lead">Lambda internals, Step Functions orchestration, EventBridge event routing, cold starts, concurrency, and serverless design patterns.</p>
             <div class="hero-stats">
-              <div class="stat"><span class="stat-number">3</span><span class="stat-label">Topics</span></div>
+              <div class="stat"><span class="stat-number">8</span><span class="stat-label">Topics</span></div>
             </div>
           </header>
 
@@ -426,6 +431,210 @@
                       eliminate always-on ETL servers. For streaming data, I'd use Firehose with a Lambda transform to
                       convert format and redact PII before landing in S3. For file-based, I'd trigger Lambda from S3
                       events. Both scale automatically with data volume."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== STEP FUNCTIONS ====== -->
+          <article id="step-functions" class="topic-card" data-difficulty="intermediate"
+            data-keywords="step functions orchestration saga workflow state machine error handling">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span></div>
+              <h2>Step Functions Orchestration</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>AWS Step Functions is the orchestration service for serverless workflows — essential for any multi-step process:</p>
+                <h4>Standard vs Express Workflows</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Aspect</th><th>Standard</th><th>Express</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Duration</strong></td><td>Up to 1 year</td><td>Up to 5 minutes</td></tr>
+                    <tr><td><strong>Pricing</strong></td><td>$0.025 per state transition</td><td>$0.000001 per state transition</td></tr>
+                    <tr><td><strong>Execution</strong></td><td>Exactly-once</td><td>At-least-once</td></tr>
+                    <tr><td><strong>History</strong></td><td>Full visual execution history</td><td>CloudWatch Logs only</td></tr>
+                    <tr><td><strong>Best For</strong></td><td>Order processing, ETL, long-running workflows</td><td>IoT data processing, high-volume transforms</td></tr>
+                  </tbody>
+                </table>
+                <h4>Common Patterns</h4>
+                <ul>
+                  <li><strong>Saga Pattern:</strong> Orchestrate distributed transactions with compensating actions. If step 3 fails, Step Functions automatically calls undo functions for steps 1 and 2.</li>
+                  <li><strong>Fan-out/Fan-in:</strong> Map state processes items in parallel (e.g., process 1,000 images concurrently), then collect results.</li>
+                  <li><strong>Human Approval:</strong> Pause workflow with a task token, resume when a human approves via callback (e.g., expense approvals, content moderation).</li>
+                  <li><strong>Error Handling:</strong> Built-in Retry (with exponential backoff) and Catch (route errors to fallback states) at every step.</li>
+                </ul>
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> <em>"Step Functions replaces the need for custom orchestration code. I use Standard workflows for order processing with the Saga pattern — each step has a compensating action so failures trigger automatic rollback. For high-volume event processing (10K+ events/min), I use Express workflows at 1000x lower cost. The built-in visual debugger is invaluable for troubleshooting multi-step failures in production."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== EVENTBRIDGE ====== -->
+          <article id="eventbridge" class="topic-card" data-difficulty="intermediate"
+            data-keywords="eventbridge event bus rules routing schema registry cross account">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span></div>
+              <h2>EventBridge Event Routing</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>Amazon EventBridge is the central nervous system of modern serverless architectures — a serverless event bus for building event-driven systems:</p>
+                <h4>EventBridge vs SNS vs SQS — Decision Framework</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Aspect</th><th>EventBridge</th><th>SNS</th><th>SQS</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Pattern</strong></td><td>Event routing with content-based filtering</td><td>Pub/sub fan-out</td><td>Point-to-point queue</td></tr>
+                    <tr><td><strong>Filtering</strong></td><td>Rich content-based rules (match on any JSON field)</td><td>Message attribute filtering (limited)</td><td>No filtering (consumer processes all)</td></tr>
+                    <tr><td><strong>Targets</strong></td><td>20+ AWS services directly</td><td>Lambda, SQS, HTTP, Email, SMS</td><td>Single consumer (or with Lambda trigger)</td></tr>
+                    <tr><td><strong>Replay</strong></td><td>Archive &amp; Replay (up to unlimited retention)</td><td>No replay</td><td>DLQ for failed messages</td></tr>
+                    <tr><td><strong>Schema</strong></td><td>Schema Registry with discovery</td><td>No schema</td><td>No schema</td></tr>
+                    <tr><td><strong>Cross-Account</strong></td><td>Native (resource policies)</td><td>Native (topic policies)</td><td>Native (queue policies)</td></tr>
+                    <tr><td><strong>Throughput</strong></td><td>2,400 events/sec default (soft limit)</td><td>Millions/sec</td><td>Unlimited (standard), 3,000/sec (FIFO)</td></tr>
+                    <tr><td><strong>Best For</strong></td><td>Event-driven microservices, SaaS integrations, AWS service events</td><td>Simple fan-out, mobile push</td><td>Decoupling, work queues, buffering</td></tr>
+                  </tbody>
+                </table>
+                <h4>Key Features for Architects</h4>
+                <ul>
+                  <li><strong>Archive &amp; Replay:</strong> Replay past events for debugging, testing, or backfilling — unique to EventBridge.</li>
+                  <li><strong>Schema Registry:</strong> Auto-discovers event schemas from your bus. Generates code bindings (TypeScript, Python, Java).</li>
+                  <li><strong>Pipes:</strong> Point-to-point integrations between sources (SQS, Kinesis, DynamoDB Streams) and targets with optional enrichment Lambda.</li>
+                  <li><strong>Scheduler:</strong> Cron and rate-based scheduling with one-time or recurring events. Replaces CloudWatch Events for scheduled tasks.</li>
+                </ul>
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> <em>"I use EventBridge as the default event router for new serverless architectures. Its content-based filtering lets me route 'order.placed' events to 5 different consumers using rules that match on event fields — without the consumers knowing about each other. The archive and replay feature is a game-changer for debugging production issues and testing new consumers against historical events."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== COLD STARTS ====== -->
+          <article id="cold-starts" class="topic-card" data-difficulty="advanced"
+            data-keywords="lambda cold start provisioned concurrency snapstart warm pool optimization">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+              <h2>Lambda Cold Starts</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>Cold starts are the most-asked Lambda question in architect interviews. Know every mitigation strategy:</p>
+                <h4>What Causes Cold Starts</h4>
+                <p>When Lambda has no warm execution environment available, it must: 1) Download your code, 2) Start the runtime, 3) Run your initialization code (SDK clients, DB connections). This adds 100ms–10s depending on runtime, package size, and VPC configuration.</p>
+                <h4>Cold Start Duration by Runtime</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Runtime</th><th>Typical Cold Start</th><th>Notes</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Python</strong></td><td>100–300ms</td><td>Lightweight, fastest cold starts</td></tr>
+                    <tr><td><strong>Node.js</strong></td><td>100–300ms</td><td>Similar to Python, fast V8 startup</td></tr>
+                    <tr><td><strong>Go / Rust</strong></td><td>50–100ms</td><td>Compiled, smallest cold start possible</td></tr>
+                    <tr><td><strong>Java</strong></td><td>3–10 seconds</td><td>JVM startup + class loading. Use SnapStart to reduce to ~200ms</td></tr>
+                    <tr><td><strong>.NET</strong></td><td>1–3 seconds</td><td>CLR initialization. Use Native AOT to reduce significantly</td></tr>
+                  </tbody>
+                </table>
+                <h4>Mitigation Strategies (Most to Least Impactful)</h4>
+                <ol>
+                  <li><strong>Provisioned Concurrency</strong> — Pre-warms N execution environments. Eliminates cold starts completely but costs money (~$0.015/GB-hour). Use for latency-sensitive APIs.</li>
+                  <li><strong>SnapStart (Java)</strong> — Snapshots the initialized JVM after init. Restores from snapshot on cold start (~200ms vs 6s). Free. Only for Java 11+.</li>
+                  <li><strong>Smaller packages</strong> — Remove unused dependencies. Use Lambda Layers for shared code. Use tree-shaking (webpack for Node.js). Smaller package = faster download.</li>
+                  <li><strong>Lazy initialization</strong> — Initialize SDK clients and DB connections outside the handler (global scope) so they persist across warm invocations. But initialize lazily (only when first needed, not at module load).</li>
+                  <li><strong>Choose lighter runtimes</strong> — Python/Node.js over Java unless you need the JVM. Consider Go/Rust for performance-critical functions.</li>
+                  <li><strong>Avoid VPC unless necessary</strong> — VPC Lambda used to add 10s of cold start. Since Hyperplane (2019), penalty is minimal (~1s), but only put Lambda in VPC if it accesses VPC resources.</li>
+                </ol>
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> <em>"Cold starts are a solvable problem, not a blocker. For latency-sensitive APIs, I use Provisioned Concurrency with Application Auto Scaling to pre-warm based on traffic patterns. For Java, SnapStart reduces cold starts from 6 seconds to 200ms at zero additional cost. For everything else, I keep packages small, use Python/Node.js, and initialize SDK clients in the global scope."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== LAMBDA CONCURRENCY ====== -->
+          <article id="lambda-concurrency" class="topic-card" data-difficulty="advanced"
+            data-keywords="lambda concurrency reserved provisioned throttling scaling account limits">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+              <h2>Lambda Concurrency</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>Understanding Lambda concurrency is critical for production architectures — it's the #1 cause of unexpected throttling:</p>
+                <h4>Concurrency Types</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Type</th><th>What It Does</th><th>Cost</th><th>Use Case</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Unreserved (default)</strong></td><td>Shared pool across all functions. Account default: 1,000.</td><td>Free</td><td>Most functions — fine for low-traffic workloads</td></tr>
+                    <tr><td><strong>Reserved</strong></td><td>Guarantees N concurrent executions for one function. Also CAPS that function at N.</td><td>Free</td><td>Critical functions that must not be throttled, or to limit a function's blast radius</td></tr>
+                    <tr><td><strong>Provisioned</strong></td><td>Pre-initializes N execution environments (no cold starts).</td><td>~$0.015/GB-hour</td><td>Latency-sensitive APIs, consistent sub-100ms response needed</td></tr>
+                  </tbody>
+                </table>
+                <h4>Concurrency Formula</h4>
+                <p><strong>Concurrent executions = Invocations/second × Average duration (seconds)</strong></p>
+                <p>Example: 100 requests/sec × 0.5 sec duration = 50 concurrent executions. If your function takes 2 seconds, the same 100 req/sec needs 200 concurrent executions.</p>
+                <h4>Throttling Behavior</h4>
+                <ul>
+                  <li><strong>Synchronous (API Gateway):</strong> Returns 429 Too Many Requests immediately. Client must retry.</li>
+                  <li><strong>Asynchronous (S3, SNS):</strong> Lambda retries automatically (2 retries with backoff), then sends to DLQ/destination.</li>
+                  <li><strong>Stream (Kinesis, DynamoDB):</strong> Blocks the shard until capacity available. Records accumulate but aren't lost.</li>
+                </ul>
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> <em>"I always set Reserved Concurrency on critical functions to guarantee they can't be starved by other functions in the account. For a rogue function that might consume all 1,000 concurrent executions, I'd cap it with Reserved Concurrency at 200. The key insight: Reserved Concurrency both guarantees AND limits — it's a floor and a ceiling."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== LAMBDA IN VPC ====== -->
+          <article id="lambda-vpc" class="topic-card" data-difficulty="intermediate"
+            data-keywords="lambda vpc eni hyperplane nat gateway private subnet rds elasticache">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span></div>
+              <h2>Lambda in VPC</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>When to put Lambda in a VPC and what to watch out for — a frequently tested topic:</p>
+                <h4>When You NEED Lambda in VPC</h4>
+                <ul>
+                  <li>Accessing <strong>RDS / Aurora</strong> databases in private subnets</li>
+                  <li>Accessing <strong>ElastiCache</strong> (Redis / Memcached)</li>
+                  <li>Accessing <strong>OpenSearch</strong> clusters in VPC</li>
+                  <li>Connecting to <strong>on-premises resources</strong> via VPN / Direct Connect</li>
+                  <li>Compliance requirements mandating <strong>private network traffic only</strong></li>
+                </ul>
+                <h4>When You DON'T Need Lambda in VPC</h4>
+                <ul>
+                  <li>Calling AWS APIs (S3, DynamoDB, SQS) — use VPC Endpoints or public endpoints</li>
+                  <li>Calling external APIs over the internet</li>
+                  <li>Simple event processing without VPC resource access</li>
+                </ul>
+                <h4>VPC Lambda — Before and After Hyperplane (2019)</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Aspect</th><th>Before 2019</th><th>After 2019 (Hyperplane)</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Cold Start</strong></td><td>10–30 seconds (creating ENI per invocation)</td><td>~1 second (shared ENIs via Hyperplane)</td></tr>
+                    <tr><td><strong>ENI Management</strong></td><td>1 ENI per concurrent execution (IP exhaustion risk)</td><td>Shared ENIs managed by AWS, minimal IP consumption</td></tr>
+                    <tr><td><strong>Internet Access</strong></td><td>Required NAT Gateway ($0.045/GB)</td><td>Still requires NAT Gateway for internet access</td></tr>
+                  </tbody>
+                </table>
+                <h4>Cost Trap: NAT Gateway</h4>
+                <p>VPC Lambda needs a NAT Gateway for internet access and for calling AWS services without VPC Endpoints. At $0.045/GB data processing + $0.045/hr, this can cost <strong>$500+/month</strong> even for moderate traffic. Mitigation: add VPC Endpoints for S3 (Gateway, free) and DynamoDB (Gateway, free).</p>
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> <em>"Only put Lambda in a VPC if it needs to access VPC resources like RDS or ElastiCache. The 2019 Hyperplane update eliminated the 10-second cold start penalty, but you still pay for NAT Gateway if Lambda needs internet access. My standard practice: VPC Lambda + VPC Endpoints for S3/DynamoDB (free) + NAT Gateway only if truly needed for external APIs."</em></p>
                 </div>
               </div>
             </div>
