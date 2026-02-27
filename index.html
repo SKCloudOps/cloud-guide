@@ -14,44 +14,44 @@
       <div class="sidebar-header">
         <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
       </div>
-                  <nav class="sidebar-nav">
-                <div class="nav-menu-item">
-                    <div class="nav-menu-label">Infrastructure</div>
-                    <div class="nav-menu-dropdown">
-                        <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
-                        <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
-                        <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
-                        <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
-                    </div>
-                </div>
-                <div class="nav-menu-item">
-                    <div class="nav-menu-label">Data &amp; Apps</div>
-                    <div class="nav-menu-dropdown">
-                        <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
-                        <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
-                        <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
-                        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
-                    </div>
-                </div>
-                <div class="nav-menu-item">
-                    <div class="nav-menu-label">Design &amp; Ops</div>
-                    <div class="nav-menu-dropdown">
-                        <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
-                        <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
-                        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
-                        <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
-                    </div>
-                </div>
-                <div class="nav-menu-item">
-                    <div class="nav-menu-label">Foundations</div>
-                    <div class="nav-menu-dropdown">
-                        <a href="aws.html" class="sidebar-link active">AWS Core <span class="count">7</span></a>
-                        <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
-                        <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
-                        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
-                    </div>
-                </div>
-            </nav>
+      <nav class="sidebar-nav">
+        <div class="nav-menu-item">
+          <div class="nav-menu-label">Infrastructure</div>
+          <div class="nav-menu-dropdown">
+            <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+            <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
+            <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
+            <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
+          </div>
+        </div>
+        <div class="nav-menu-item">
+          <div class="nav-menu-label">Data &amp; Apps</div>
+          <div class="nav-menu-dropdown">
+            <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
+            <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+            <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+            <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+          </div>
+        </div>
+        <div class="nav-menu-item">
+          <div class="nav-menu-label">Design &amp; Ops</div>
+          <div class="nav-menu-dropdown">
+            <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+            <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+            <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+            <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
+          </div>
+        </div>
+        <div class="nav-menu-item">
+          <div class="nav-menu-label">Foundations</div>
+          <div class="nav-menu-dropdown">
+            <a href="aws.html" class="sidebar-link active">AWS Core <span class="count">7</span></a>
+            <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+            <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+            <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
+          </div>
+        </div>
+      </nav>
     </aside>
 
     <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
@@ -2157,21 +2157,24 @@
 
   <script>
     (function () {
-      // === Dropdown Menu ===
-      var navEl = document.querySelector('.sidebar-nav');
-      var navLabel = document.querySelector('.sidebar-nav-label');
-      if (navEl && navLabel) {
-        navLabel.addEventListener('click', function (e) {
+      // === Multi-menu Dropdowns ===
+      var menuItems = document.querySelectorAll('.nav-menu-item');
+      menuItems.forEach(function (item) {
+        var label = item.querySelector('.nav-menu-label');
+        if (!label) return;
+        label.addEventListener('click', function (e) {
           e.stopPropagation();
-          navEl.classList.toggle('open');
+          var wasOpen = item.classList.contains('open');
+          menuItems.forEach(function (m) { m.classList.remove('open'); });
+          if (!wasOpen) item.classList.add('open');
         });
-        document.addEventListener('click', function (e) {
-          if (!navEl.contains(e.target)) navEl.classList.remove('open');
-        });
-        document.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape') navEl.classList.remove('open');
-        });
-      }
+      });
+      document.addEventListener('click', function () {
+        menuItems.forEach(function (m) { m.classList.remove('open'); });
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') menuItems.forEach(function (m) { m.classList.remove('open'); });
+      });
 
       var sidebar = document.getElementById('sidebar');
       var overlay = document.getElementById('sidebarOverlay');
@@ -2240,8 +2243,7 @@
         if (!activeContent) return;
         var navLinks = activeContent.querySelectorAll('.topic-nav-list a');
         var blocks = activeContent.querySelectorAll('.topic-block');
-        var first = null;
-        blocks.forEach(function (block) {
+        var first = null   ocks.forEach(function (block) {
           var rect = block.getBoundingClientRect();
           if (rect.top <= 120 && (first === null || block.getBoundingClientRect().top > first.getBoundingClientRect().t))
      first = block;

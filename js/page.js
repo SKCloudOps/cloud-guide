@@ -1,21 +1,25 @@
 (function () {
     'use strict';
 
-    // === Dropdown Menu ===
-    var navEl = document.querySelector('.sidebar-nav');
-    var navLabel = document.querySelector('.sidebar-nav-label');
-    if (navEl && navLabel) {
-        navLabel.addEventListener('click', function (e) {
+    // === Multi-menu Dropdowns ===
+    var menuItems = document.querySelectorAll('.nav-menu-item');
+    menuItems.forEach(function (item) {
+        var label = item.querySelector('.nav-menu-label');
+        if (!label) return;
+        label.addEventListener('click', function (e) {
             e.stopPropagation();
-            navEl.classList.toggle('open');
+            var wasOpen = item.classList.contains('open');
+            // Close all menus first
+            menuItems.forEach(function (m) { m.classList.remove('open'); });
+            if (!wasOpen) item.classList.add('open');
         });
-        document.addEventListener('click', function (e) {
-            if (!navEl.contains(e.target)) navEl.classList.remove('open');
-        });
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') navEl.classList.remove('open');
-        });
-    }
+    });
+    document.addEventListener('click', function () {
+        menuItems.forEach(function (m) { m.classList.remove('open'); });
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') menuItems.forEach(function (m) { m.classList.remove('open'); });
+    });
 
     // === Move search box into header ===
     var headerEl = document.getElementById('sidebar');
@@ -29,6 +33,19 @@
             headerEl.insertBefore(wrapper, sidebarFooter);
         } else {
             headerEl.appendChild(wrapper);
+        }
+    }
+
+    // === Move difficulty filters into header ===
+    var filters = document.querySelector('.topbar .difficulty-filters');
+    if (headerEl && filters) {
+        var fWrapper = document.createElement('div');
+        fWrapper.className = 'header-filters';
+        while (filters.firstChild) fWrapper.appendChild(filters.firstChild);
+        if (sidebarFooter) {
+            headerEl.insertBefore(fWrapper, sidebarFooter);
+        } else {
+            headerEl.appendChild(fWrapper);
         }
     }
 
