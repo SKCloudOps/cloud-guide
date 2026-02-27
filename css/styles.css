@@ -507,21 +507,37 @@ a:hover {
 @media (max-width: 900px) {
   .sidebar {
     padding: 0 1rem;
-    min-height: 52px;
+    min-height: 48px;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 
   .sidebar-logo {
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
   }
 
-  .sidebar-nav .nav-dropdown {
-    min-width: auto;
-    width: calc(100vw - 2rem);
-    left: -1rem;
-    right: auto;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-    padding: 0.75rem 1rem;
+  .sidebar-nav {
+    gap: 0;
+  }
+
+  .nav-menu-label {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .nav-menu-dropdown {
+    min-width: 180px;
+  }
+
+  .header-search {
+    order: 10;
+    max-width: 100%;
+    flex-basis: 100%;
+    margin: 0 0 0.375rem;
+  }
+
+  .header-filters {
+    display: none;
   }
 
   .sidebar-link {
@@ -535,8 +551,9 @@ a:hover {
 }
 
 @media (max-width: 480px) {
-  .sidebar-nav .nav-dropdown {
-    grid-template-columns: 1fr;
+  .nav-menu-label {
+    font-size: 0.6875rem;
+    padding: 0.3125rem 0.375rem;
   }
 }
 
