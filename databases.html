@@ -106,6 +106,7 @@
                             — ElastiCache & DAX</a>
                         <a href="#migration" class="toc-link" data-section="migration"><span
                                 class="toc-dot"></span>Database Migration (DMS/SCT)</a>
+                        <a href="#databases-interview-questions" class="toc-link" data-section="databases-interview-questions"><span class="toc-dot"></span>Interview Questions</a>
                     </nav>
                     <div class="toc-keyboard-hint"><kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
                     </div>
@@ -197,8 +198,8 @@
                                         </tr>
                                         <tr>
                                             <td><strong>Ledger / immutable</strong></td>
-                                            <td>QLDB</td>
-                                            <td>Cryptographically verifiable transaction log</td>
+                                            <td>Aurora PostgreSQL + pgcrypto</td>
+                                            <td>Verifiable transaction log (QLDB deprecated July 2025 — migrate to Aurora with audit tables)</td>
                                         </tr>
                                         <tr>
                                             <td><strong>In-memory + durability</strong></td>
@@ -301,7 +302,7 @@
                                             <td><strong>Global</strong></td>
                                             <td>Cross-region read replicas (minutes lag)</td>
                                             <td>Global Database (&lt;1 second lag, 5 secondary regions)</td>
-                                            <td>Not supported yet</td>
+                                            <td>Supported (since 2024)</td>
                                         </tr>
                                         <tr>
                                             <td><strong>Best For</strong></td>
@@ -622,6 +623,64 @@
                                             run SCT first to convert the schema, then DMS for data migration. During
                                             CDC, the source stays live — we cut over only when the replication lag is
                                             zero."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- ====== INTERVIEW QUESTIONS ====== -->
+                    <article id="databases-interview-questions" class="topic-card" data-difficulty="advanced"
+                        data-keywords="interview questions databases rds aurora dynamodb elasticache migration caching">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta">
+                                <span class="difficulty-badge advanced">Advanced</span>
+                            </div>
+                            <h2>Interview Questions — Databases</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Interview Questions as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Database selection and design is a core architect competency. These questions test your ability to choose the right database and handle data at scale.</p>
+                                <ol class="interview-questions-list">
+                                    <li>Your application has complex SQL queries with JOINs across 20 tables, needs ACID compliance, and handles 50,000 reads/second with 5,000 writes/second. Would you choose RDS PostgreSQL or Aurora PostgreSQL? Why?
+                                        <span class="iq-hint">Hint: Aurora — 5x throughput over standard PostgreSQL, 6 copies across 3 AZs, auto-scaling storage to 128TB, up to 15 read replicas. The storage architecture (shared distributed volume) eliminates replication lag for read replicas.</span>
+                                    </li>
+                                    <li>Design a DynamoDB table for an e-commerce application. You need to query by customer_id (all their orders), by order_id (single order lookup), and by date range (orders in last 30 days). What's your key design?
+                                        <span class="iq-hint">Hint: PK = customer_id, SK = order_date#order_id (enables range queries). GSI1: PK = order_id (single lookup). Consider single-table design vs multiple tables. Discuss hot partition risk if one customer has millions of orders.</span>
+                                    </li>
+                                    <li>Your DynamoDB table has a hot partition problem — one partition key receives 80% of all traffic. What are three strategies to fix it?
+                                        <span class="iq-hint">Hint: 1) Write sharding — add random suffix to partition key (e.g., customer_123#1, customer_123#2). 2) Composite keys — add a time-based prefix. 3) Caching — DAX in front of DynamoDB for read-heavy patterns. Also: re-evaluate the data model itself.</span>
+                                    </li>
+                                    <li>When would you use ElastiCache Redis vs DynamoDB DAX? A team is adding caching to their application and isn't sure which to choose.
+                                        <span class="iq-hint">Hint: DAX is specifically for DynamoDB — microsecond read latency, API-compatible (drop-in). ElastiCache Redis is general-purpose — supports complex data structures (sorted sets, pub/sub, Lua scripting), works with any backend. Use DAX for DynamoDB-only caching, Redis for everything else.</span>
+                                    </li>
+                                    <li>You need to migrate a 2TB Oracle database to Aurora PostgreSQL with near-zero downtime. Walk me through the complete migration process.
+                                        <span class="iq-hint">Hint: 1) SCT to convert schema. 2) Fix incompatibilities manually (Oracle-specific PL/SQL, sequences, synonyms). 3) DMS Full Load to seed data. 4) DMS CDC for ongoing replication. 5) Validate data consistency. 6) Cut over when replication lag = 0. Test rollback plan before cutover.</span>
+                                    </li>
+                                    <li>Explain the caching strategies: lazy loading, write-through, and write-behind. Which would you use for a leaderboard that updates every second and is read by millions of users?
+                                        <span class="iq-hint">Hint: Write-behind (write to cache immediately, async persist to DB) for real-time updates. Redis Sorted Sets are perfect for leaderboards (ZADD, ZRANGE). Lazy loading risks stale data. Write-through adds latency on every write. Discuss TTL as a safety net.</span>
+                                    </li>
+                                    <li>Design a multi-region database strategy for a global chat application. Users in US, Europe, and Asia need sub-100ms read and write latency from their region.
+                                        <span class="iq-hint">Hint: DynamoDB Global Tables — active-active in all 3 regions with eventual consistency (typically sub-second replication). For SQL: Aurora Global Database gives low-latency reads in secondary regions, but writes go to one primary region. Trade-off: DynamoDB has eventual consistency, Aurora has single-writer.</span>
+                                    </li>
+                                    <li>A Lambda function connecting to an Aurora database is hitting connection limits during traffic spikes (1,000 concurrent Lambda executions). How do you solve this?
+                                        <span class="iq-hint">Hint: RDS Proxy — connection pooling and multiplexing. Lambda creates a new connection per invocation; RDS Proxy pools them (e.g., 1,000 Lambda connections → 100 DB connections). Also supports IAM authentication and automatic failover. Without RDS Proxy, you'll exhaust max_connections.</span>
+                                    </li>
+                                    <li>Your team uses DynamoDB with On-Demand capacity mode. The monthly bill is $15,000. Reads are 80% of the cost and traffic is predictable. How would you optimize?
+                                        <span class="iq-hint">Hint: Switch to Provisioned capacity with auto-scaling (20-40% cheaper for predictable traffic). Add DAX for read-heavy patterns (reduces consumed RCUs dramatically). Enable DynamoDB Reserved Capacity for baseline. Consider DynamoDB Infrequent Access table class for cold data.</span>
+                                    </li>
+                                    <li>What's the difference between DynamoDB strongly consistent reads and eventually consistent reads? When would you explicitly need strong consistency?
+                                        <span class="iq-hint">Hint: Eventually consistent (default) — may return stale data (replication takes ~ms). Strongly consistent — always returns latest, but 2x the cost and only works against the leader node. Use strong consistency for: financial transactions, inventory counts, anything where reading stale data causes business errors.</span>
+                                    </li>
+                                </ol>
+                                <div class="answer-block correct">
+                                    <h4>Preparation Strategy</h4>
+                                    <p>Database questions test <strong>your decision framework</strong>: SQL vs NoSQL, consistency vs availability, cost vs performance. For every answer, explain the trade-off: <em>"I chose Aurora over DynamoDB because [requirement] outweighs [trade-off]."</em> Interviewers want to see you think through options, not jump to a favorite.</p>
                                 </div>
                             </div>
                         </div>

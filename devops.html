@@ -118,6 +118,9 @@
             <a href="#devsecops" class="toc-link" data-section="devsecops">
               <span class="toc-dot"></span>DevSecOps Workflow
             </a>
+            <a href="#devops-interview-questions" class="toc-link" data-section="devops-interview-questions">
+              <span class="toc-dot"></span>Interview Questions
+            </a>
           </nav>
           <div class="toc-keyboard-hint">
             <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Enter</kbd> Expand
@@ -450,6 +453,64 @@
                   <strong>Key Takeaway for Interviews</strong>
                   <p>"Shift Left" is the buzzword interviewers love. Know SAST vs DAST, and name at least one tool per
                     pipeline phase. DevSecOps ≠ a separate team — it's security baked into DevOps.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== INTERVIEW QUESTIONS ====== -->
+          <article id="devops-interview-questions" class="topic-card" data-difficulty="advanced"
+            data-keywords="interview questions devops cicd gitops deployment strategies infrastructure as code">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>Interview Questions — DevOps & CI/CD</h2>
+              <button class="review-btn" title="Mark as reviewed"
+                aria-label="Mark Interview Questions as reviewed"><svg width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>DevOps questions test your understanding of CI/CD pipelines, deployment strategies, and operational excellence at scale.</p>
+                <ol class="interview-questions-list">
+                  <li>Design a CI/CD pipeline for a microservices application deployed across 3 AWS accounts (dev, staging, prod). How do you handle cross-account deployments securely?
+                    <span class="iq-hint">Hint: Pipeline in a shared tooling account. Cross-account IAM roles assumed by the pipeline. Artifact stored in S3/ECR with cross-account policies. Stage gates between environments. Use OIDC federation (no long-term keys) for GitHub Actions or CodePipeline cross-account.</span>
+                  </li>
+                  <li>Compare blue/green, canary, and rolling deployment strategies. Your application has a database schema change in the release. Which strategy would you choose and why?
+                    <span class="iq-hint">Hint: Blue/green for zero-downtime with instant rollback. Canary for gradual risk reduction (5% → 25% → 100%). With DB schema changes, you MUST ensure backward compatibility — both old and new code versions must work with the new schema. This rules out big-bang blue/green without careful planning.</span>
+                  </li>
+                  <li>A developer pushes a commit and the deployment reaches production in 8 minutes with no human intervention. Your security team says this is too risky. How do you balance speed with safety?
+                    <span class="iq-hint">Hint: Automated quality gates: unit tests, integration tests, SAST/DAST, container image scanning, approval gates for prod. Canary deployments with automatic rollback on error rate thresholds. Discuss DORA metrics: deployment frequency, lead time, MTTR, change failure rate.</span>
+                  </li>
+                  <li>Explain GitOps. How does ArgoCD differ from a traditional push-based CI/CD pipeline? When would you NOT use GitOps?
+                    <span class="iq-hint">Hint: GitOps: Git is the source of truth for desired state. ArgoCD (pull-based) watches the repo and reconciles. Push-based: pipeline pushes changes directly. GitOps NOT ideal for: database migrations, one-time scripts, secret rotation (secrets shouldn't be in Git).</span>
+                  </li>
+                  <li>Your team uses trunk-based development. A feature takes 3 weeks to build and isn't ready for production, but other developers need to merge to main daily. How do you handle this?
+                    <span class="iq-hint">Hint: Feature flags (LaunchDarkly, AWS AppConfig). The incomplete feature is merged to main but hidden behind a flag. This avoids long-lived branches while keeping main deployable. Discuss: branch by abstraction pattern for larger refactors.</span>
+                  </li>
+                  <li>A production deployment failed at 3 AM. The on-call engineer can't rollback because the deployment modified a DynamoDB table schema. How should you have designed this to allow safe rollback?
+                    <span class="iq-hint">Hint: Schema changes must be backward-compatible and decoupled from code deployments. Expand-contract pattern: 1) Add new column, 2) Deploy code that writes to both old and new, 3) Migrate data, 4) Deploy code that reads only from new, 5) Remove old column. Never deploy schema + code together.</span>
+                  </li>
+                  <li>Your CI pipeline takes 45 minutes to run. Developers are merging 3 times per day each, and the pipeline is always backed up. How do you reduce the build time?
+                    <span class="iq-hint">Hint: Parallelize test suites, cache dependencies (npm, Docker layers), run only affected tests (test impact analysis), split unit/integration/e2e into stages with fast-fail. Consider: monorepo tools (Turborepo, Nx) that build only changed packages. Target: under 10 minutes for the critical path.</span>
+                  </li>
+                  <li>Design a shift-left security strategy for a containerized application. Which security checks would you add at each stage of the pipeline?
+                    <span class="iq-hint">Hint: Pre-commit: secrets scanning (gitleaks). Build: SAST (Snyk, SonarQube), dependency scanning (npm audit). Container: image scanning (Trivy, ECR scanning), base image policy. Deploy: OPA/Kyverno admission policies. Runtime: GuardDuty for EKS, Falco for container anomalies.</span>
+                  </li>
+                  <li>Compare Terraform and AWS CDK for infrastructure as code. A team with strong Python skills asks which to use for a new project. What's your recommendation?
+                    <span class="iq-hint">Hint: CDK — generates CloudFormation, uses familiar languages (Python, TypeScript), great for teams already in AWS. Terraform — provider-agnostic, mature state management, large community. CDK for AWS-only shops; Terraform for multi-cloud or teams needing explicit state control. Discuss state management trade-offs.</span>
+                  </li>
+                  <li>What are the four DORA metrics and why do they matter? Your team has a deployment frequency of once per month and MTTR of 24 hours. What would you prioritize improving?
+                    <span class="iq-hint">Hint: DORA: Deployment Frequency, Lead Time for Changes, MTTR (Mean Time to Recover), Change Failure Rate. Priority: MTTR first — 24 hours is too long. Implement automated rollback, better monitoring/alerting, and runbooks. Then increase deployment frequency (smaller, safer changes).</span>
+                  </li>
+                </ol>
+                <div class="answer-block correct">
+                  <h4>Preparation Strategy</h4>
+                  <p>DevOps interviews test <strong>operational maturity</strong>. Don't just describe tools — explain your pipeline design principles: fast feedback, automated quality gates, immutable artifacts, infrastructure as code, and the ability to rollback any change within minutes.</p>
                 </div>
               </div>
             </div>

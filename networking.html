@@ -119,6 +119,7 @@
                             Routing Policies</a>
                         <a href="#privatelink" class="toc-link" data-section="privatelink"><span
                                 class="toc-dot"></span>VPC Endpoints & PrivateLink</a>
+                        <a href="#networking-interview-questions" class="toc-link" data-section="networking-interview-questions"><span class="toc-dot"></span>Interview Questions</a>
                     </nav>
                     <div class="toc-keyboard-hint">
                         <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
@@ -758,6 +759,64 @@
                                             For services like SQS, KMS, and CloudWatch, I add Interface Endpoints. For
                                             cross-account service sharing, I use PrivateLink so traffic never crosses
                                             the public internet."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- ====== INTERVIEW QUESTIONS ====== -->
+                    <article id="networking-interview-questions" class="topic-card" data-difficulty="advanced"
+                        data-keywords="interview questions networking vpc subnets route tables security groups nacl vpn direct connect">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta">
+                                <span class="difficulty-badge advanced">Advanced</span>
+                            </div>
+                            <h2>Interview Questions — Networking & VPC</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Interview Questions as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Networking questions separate strong architects from the rest. These test real VPC design thinking.</p>
+                                <ol class="interview-questions-list">
+                                    <li>Design a VPC architecture for a company with 500 microservices across 3 environments (dev, staging, prod). How would you plan CIDR blocks to avoid conflicts and allow peering?
+                                        <span class="iq-hint">Hint: Use non-overlapping CIDRs (e.g., 10.0.0.0/16 prod, 10.1.0.0/16 staging, 10.2.0.0/16 dev). Consider Transit Gateway for hub-and-spoke vs full mesh peering. Plan for IP exhaustion.</span>
+                                    </li>
+                                    <li>A Lambda function in a private subnet needs to call the S3 API. It's currently routing through a NAT Gateway, costing $5,000/month in data transfer. How do you fix this?
+                                        <span class="iq-hint">Hint: S3 Gateway Endpoint — free, no data processing charges. This is the #1 hidden cost savings in AWS networking. Also consider Interface Endpoints for DynamoDB and other services.</span>
+                                    </li>
+                                    <li>Explain the difference between Security Groups and NACLs. A junior engineer put an allow rule in a Security Group and a deny rule in the NACL for the same port. Which wins?
+                                        <span class="iq-hint">Hint: NACLs are evaluated first (subnet level). If NACL denies, traffic never reaches the SG. NACLs are stateless (need inbound + outbound rules). SGs are stateful (return traffic auto-allowed).</span>
+                                    </li>
+                                    <li>Your company needs a reliable, low-latency connection between on-premises and AWS for a real-time trading application. VPN latency is too high. What do you recommend and how do you design for redundancy?
+                                        <span class="iq-hint">Hint: AWS Direct Connect with two connections at different DX locations for resilience. Add VPN as backup over the internet. Discuss BGP failover, LAG groups, and the 1-3 month provisioning time.</span>
+                                    </li>
+                                    <li>An EC2 instance in a private subnet can't reach the internet. Walk me through your troubleshooting steps.
+                                        <span class="iq-hint">Hint: Check route table (0.0.0.0/0 → NAT GW?), NAT Gateway in public subnet with IGW route, Security Group outbound rules, NACL rules (both inbound and outbound — it's stateless), and DNS resolution (VPC DNS settings).</span>
+                                    </li>
+                                    <li>You need to set up DNS for a hybrid environment where on-premises applications need to resolve AWS private hosted zone records, and AWS services need to resolve on-premises DNS. Design the solution.
+                                        <span class="iq-hint">Hint: Route 53 Resolver with Inbound Endpoints (on-prem → AWS) and Outbound Endpoints (AWS → on-prem). Resolver rules forward specific domains. Discuss conditional forwarding.</span>
+                                    </li>
+                                    <li>Your application runs in 3 AZs. You notice that inter-AZ data transfer is costing $10,000/month. What architectural changes would you consider to reduce this?
+                                        <span class="iq-hint">Hint: Use AZ-aware routing (ALB with AZ affinity), deploy caches per AZ, consider same-AZ read replicas. Trade-off: reducing cross-AZ traffic can reduce availability if an AZ goes down.</span>
+                                    </li>
+                                    <li>When would you choose Transit Gateway over VPC Peering? A team has 15 VPCs that all need to communicate. They've set up 105 peering connections. What's the problem?
+                                        <span class="iq-hint">Hint: VPC Peering isn't transitive — 15 VPCs need n(n-1)/2 = 105 connections. Transit Gateway provides hub-and-spoke with transitive routing. Discuss cost trade-off: TGW charges per attachment + per GB.</span>
+                                    </li>
+                                    <li>What is the difference between a Gateway VPC Endpoint and an Interface VPC Endpoint? When would you use each?
+                                        <span class="iq-hint">Hint: Gateway endpoints (S3, DynamoDB only) — free, route table entry. Interface endpoints (all other services) — ENI in subnet, cost per hour + per GB. Gateway is always preferred when available.</span>
+                                    </li>
+                                    <li>Design the Route 53 routing policy for a global application deployed in us-east-1 and eu-west-1. Users should hit the closest region, but if a region goes down, all traffic should failover automatically.
+                                        <span class="iq-hint">Hint: Latency-based routing with health checks. When a health check fails, Route 53 removes that region. Discuss TTL implications, health check intervals (10s vs 30s), and fast failover vs DNS caching.</span>
+                                    </li>
+                                </ol>
+                                <div class="answer-block correct">
+                                    <h4>Preparation Strategy</h4>
+                                    <p>Networking questions often start simple but go deep quickly. Practice <strong>drawing VPC diagrams</strong> on a whiteboard — subnets, route tables, gateways, and security boundaries. The ability to diagram while explaining shows confidence.</p>
                                 </div>
                             </div>
                         </div>

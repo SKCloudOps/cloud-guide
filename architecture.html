@@ -55,7 +55,7 @@
                 <div class="nav-menu-item">
                     <div class="nav-menu-label">Design &amp; Ops</div>
                     <div class="nav-menu-dropdown">
-                        <a href="architecture.html" class="sidebar-link active">Architecture <span class="count">11</span></a>
+                        <a href="architecture.html" class="sidebar-link active">Architecture <span class="count">15</span></a>
                         <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
                         <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
                         <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
@@ -103,6 +103,11 @@
             <a href="#top-designs" class="toc-link" data-section="top-designs"><span class="toc-dot"></span>Top 3 Popular Design</a>
             <a href="#three-tier-microservice" class="toc-link" data-section="three-tier-microservice"><span class="toc-dot"></span>Three Tier with Microservice</a>
             <a href="#monolith-vs-microservice" class="toc-link" data-section="monolith-vs-microservice"><span class="toc-dot"></span>Monolith Vs Microservice</a>
+            <a href="#design-ecommerce" class="toc-link" data-section="design-ecommerce"><span class="toc-dot"></span>Design: Global E-Commerce</a>
+            <a href="#design-analytics" class="toc-link" data-section="design-analytics"><span class="toc-dot"></span>Design: Real-Time Analytics</a>
+            <a href="#design-chat" class="toc-link" data-section="design-chat"><span class="toc-dot"></span>Design: Chat Application</a>
+            <a href="#design-saas" class="toc-link" data-section="design-saas"><span class="toc-dot"></span>Design: Multi-Tenant SaaS</a>
+            <a href="#architecture-interview-questions" class="toc-link" data-section="architecture-interview-questions"><span class="toc-dot"></span>Interview Questions</a>
           </nav>
           <div class="toc-keyboard-hint">
             <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
@@ -114,7 +119,7 @@
             <h1>Architecture Interview Guide</h1>
             <p class="hero-lead">Microservices, event-driven systems, three-tier, hybrid cloud, and system design trade-offs.</p>
             <div class="hero-stats">
-              <div class="stat"><span class="stat-number">11</span><span class="stat-label">Topics</span></div>
+              <div class="stat"><span class="stat-number">15</span><span class="stat-label">Topics</span></div>
             </div>
           </header>
 
@@ -562,6 +567,277 @@
                 started as monoliths and migrated to microservices when the team size and scaling requirements justified
                 the operational complexity.</p>
             </div>
+            </div>
+          </article>
+
+          <!-- ====== SYSTEM DESIGN WALKTHROUGHS ====== -->
+          <article id="design-ecommerce" class="topic-card" data-difficulty="advanced"
+            data-keywords="system design e-commerce global platform microservices checkout inventory">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+              <h2>System Design: Global E-Commerce Platform</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p><strong>Prompt:</strong> <em>"Design a global e-commerce platform like Amazon that handles 100K orders/day, serves users in US, Europe, and Asia, and survives a full region failure."</em></p>
+
+                <h4>Step 1 — Clarify Requirements</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Requirement</th><th>Decision</th></tr></thead>
+                  <tbody>
+                    <tr><td>Users</td><td>10M registered, 500K DAU, 100K orders/day</td></tr>
+                    <tr><td>Regions</td><td>US (primary), EU, Asia (secondary)</td></tr>
+                    <tr><td>Availability</td><td>99.99% — multi-region active-active</td></tr>
+                    <tr><td>Consistency</td><td>Strong for orders/inventory, eventual for catalog/reviews</td></tr>
+                    <tr><td>Latency</td><td>&lt;200ms for page loads, &lt;500ms for checkout</td></tr>
+                  </tbody>
+                </table>
+
+                <h4>Step 2 — High-Level Architecture</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Layer</th><th>Service</th><th>Why This Choice</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Global DNS</strong></td><td>Route 53 (latency-based routing)</td><td>Routes users to nearest region automatically</td></tr>
+                    <tr><td><strong>CDN</strong></td><td>CloudFront</td><td>Static assets + product images (reduces origin load by 80%+)</td></tr>
+                    <tr><td><strong>Frontend</strong></td><td>S3 + CloudFront (React SPA)</td><td>Global edge distribution, zero server management</td></tr>
+                    <tr><td><strong>API Layer</strong></td><td>ALB + EKS (Kubernetes)</td><td>Microservices need independent scaling and deployment</td></tr>
+                    <tr><td><strong>Product Catalog</strong></td><td>DynamoDB Global Tables</td><td>Multi-region reads, eventually consistent catalog is acceptable</td></tr>
+                    <tr><td><strong>Orders &amp; Inventory</strong></td><td>Aurora Global Database</td><td>Strong consistency for financial transactions, single writer + fast read replicas</td></tr>
+                    <tr><td><strong>Search</strong></td><td>OpenSearch</td><td>Full-text product search with faceted filtering</td></tr>
+                    <tr><td><strong>Cart &amp; Sessions</strong></td><td>ElastiCache Redis (Global Datastore)</td><td>Sub-ms latency for session/cart, replicated across regions</td></tr>
+                    <tr><td><strong>Order Events</strong></td><td>EventBridge + SQS</td><td>Order placed → fan-out to inventory, payment, notification, shipping services</td></tr>
+                    <tr><td><strong>Payments</strong></td><td>Step Functions + Lambda</td><td>Saga pattern: charge → reserve → confirm (with compensating rollback)</td></tr>
+                  </tbody>
+                </table>
+
+                <h4>Step 3 — Key Trade-Offs to Discuss</h4>
+                <ul>
+                  <li><strong>DynamoDB vs Aurora for orders:</strong> Aurora gives SQL joins for complex order queries and strong consistency. DynamoDB Global Tables would give multi-region writes but only eventual consistency — risky for inventory counts.</li>
+                  <li><strong>Inventory race conditions:</strong> Use Aurora's SELECT FOR UPDATE or DynamoDB conditional writes to prevent overselling. Discuss: at 100K orders/day, hot product contention is real.</li>
+                  <li><strong>Region failover:</strong> Route 53 health checks detect region failure (30-60s). Aurora Global Database promotes secondary to primary (~1 min). Cart data in Redis Global Datastore is already replicated.</li>
+                </ul>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> <em>"I'd design this with a microservices architecture on EKS, using DynamoDB Global Tables for the product catalog (eventual consistency is fine for reads) and Aurora Global Database for orders/inventory (strong consistency is critical for financial data). The checkout flow uses Step Functions with a Saga pattern so if payment fails after inventory is reserved, compensating transactions release it automatically."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article id="design-analytics" class="topic-card" data-difficulty="advanced"
+            data-keywords="system design analytics real-time pipeline kinesis flink dashboard">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+              <h2>System Design: Real-Time Analytics Pipeline</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p><strong>Prompt:</strong> <em>"Design a real-time analytics system that processes 1 million events/second from a mobile app, computes trending content every 5 minutes, and powers a live dashboard."</em></p>
+
+                <h4>Step 1 — Requirements</h4>
+                <ul>
+                  <li><strong>Throughput:</strong> 1M events/second peak (~86B events/day)</li>
+                  <li><strong>Latency:</strong> Dashboard updates within 30 seconds of event generation</li>
+                  <li><strong>Analytics:</strong> Trending content (5-min window), user engagement metrics, real-time anomaly detection</li>
+                  <li><strong>Retention:</strong> Hot data (7 days real-time), warm (90 days queryable), cold (archive)</li>
+                </ul>
+
+                <h4>Step 2 — Architecture Layers</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Layer</th><th>Service</th><th>Rationale</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Ingestion</strong></td><td>Kinesis Data Streams (100+ shards)</td><td>Ordered within partition, handles 1M+ events/s, 7-day retention</td></tr>
+                    <tr><td><strong>Stream Processing</strong></td><td>Managed Apache Flink</td><td>Sliding window aggregations (5-min trending), CEP for anomaly detection</td></tr>
+                    <tr><td><strong>Real-Time Store</strong></td><td>ElastiCache Redis (Sorted Sets)</td><td>Trending leaderboard with ZADD/ZRANGE, sub-ms reads for dashboard</td></tr>
+                    <tr><td><strong>Batch Landing</strong></td><td>Kinesis Data Firehose → S3 (Parquet)</td><td>Auto-batching, compression, format conversion for analytics</td></tr>
+                    <tr><td><strong>Batch Analytics</strong></td><td>Athena + Glue Catalog</td><td>SQL on S3 for ad-hoc historical queries, $5/TB scanned</td></tr>
+                    <tr><td><strong>Dashboard API</strong></td><td>API Gateway + Lambda</td><td>Reads from Redis (real-time) and Athena (historical)</td></tr>
+                    <tr><td><strong>Visualization</strong></td><td>Amazon Managed Grafana</td><td>Real-time dashboards with auto-refresh, alerting</td></tr>
+                  </tbody>
+                </table>
+
+                <h4>Step 3 — Key Design Decisions</h4>
+                <ul>
+                  <li><strong>Kinesis vs MSK:</strong> Kinesis for tight AWS integration and serverless consumer (Flink). MSK if team has Kafka expertise or needs Kafka Connect ecosystem.</li>
+                  <li><strong>Lambda vs Flink for processing:</strong> Lambda for simple event-by-event transforms. Flink for windowed aggregations, joins between streams, and complex event processing. At 1M events/s, Flink is the right choice.</li>
+                  <li><strong>Hot shard prevention:</strong> Partition by user_id (high cardinality). If a viral event causes skew, use random partition key suffix with application-level aggregation.</li>
+                </ul>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> <em>"I'd build a Lambda architecture with two paths: a speed layer (Kinesis → Flink → Redis for real-time trending) and a batch layer (Kinesis → Firehose → S3 → Athena for historical queries). Flink's sliding window aggregation computes trending content every 5 minutes, writing results to Redis Sorted Sets that the dashboard API reads with sub-millisecond latency."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article id="design-chat" class="topic-card" data-difficulty="advanced"
+            data-keywords="system design chat application websocket global messaging">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+              <h2>System Design: Global Chat Application</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p><strong>Prompt:</strong> <em>"Design a real-time chat system like Slack or WhatsApp for 10M users with group chats, message delivery guarantees, and read receipts."</em></p>
+
+                <h4>Step 1 — Requirements</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Requirement</th><th>Decision</th></tr></thead>
+                  <tbody>
+                    <tr><td>Users</td><td>10M registered, 1M concurrent connections</td></tr>
+                    <tr><td>Message delivery</td><td>At-least-once with deduplication, ordered per conversation</td></tr>
+                    <tr><td>Latency</td><td>&lt;100ms for message delivery to online users</td></tr>
+                    <tr><td>Features</td><td>1:1 chat, group chat (up to 500 members), read receipts, typing indicators, file sharing</td></tr>
+                    <tr><td>Storage</td><td>Messages stored forever, searchable</td></tr>
+                  </tbody>
+                </table>
+
+                <h4>Step 2 — Architecture</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Component</th><th>Service</th><th>Rationale</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>WebSocket Gateway</strong></td><td>NLB + EKS (custom WebSocket server)</td><td>1M persistent connections. NLB for Layer 4 TCP passthrough. API Gateway WebSocket has 500 connection limit/API.</td></tr>
+                    <tr><td><strong>Connection Registry</strong></td><td>ElastiCache Redis</td><td>Maps user_id → server_id for message routing. Sub-ms lookups.</td></tr>
+                    <tr><td><strong>Message Queue</strong></td><td>SQS FIFO</td><td>Ordered delivery per conversation (MessageGroupId = conversation_id). Deduplication built-in.</td></tr>
+                    <tr><td><strong>Message Store</strong></td><td>DynamoDB</td><td>PK = conversation_id, SK = timestamp#message_id. Single-digit ms writes at any scale.</td></tr>
+                    <tr><td><strong>Search</strong></td><td>OpenSearch</td><td>Full-text message search. DynamoDB Streams → Lambda → OpenSearch for indexing.</td></tr>
+                    <tr><td><strong>File Storage</strong></td><td>S3 + pre-signed URLs</td><td>Client uploads directly to S3 (never through the API). CloudFront for image/file delivery.</td></tr>
+                    <tr><td><strong>Push Notifications</strong></td><td>SNS (Mobile Push)</td><td>For offline users. APNs (iOS), FCM (Android).</td></tr>
+                    <tr><td><strong>Presence &amp; Typing</strong></td><td>ElastiCache Redis Pub/Sub</td><td>Ephemeral signals — no need to persist. Redis Pub/Sub broadcasts to subscribed servers.</td></tr>
+                  </tbody>
+                </table>
+
+                <h4>Step 3 — Message Delivery Flow</h4>
+                <ol>
+                  <li>User A sends message via WebSocket → WebSocket server receives it</li>
+                  <li>Write to DynamoDB (persist) + publish to SQS FIFO (delivery)</li>
+                  <li>Lookup User B's WebSocket server in Redis → route message to that server</li>
+                  <li>If User B is online → deliver via WebSocket. If offline → send push notification via SNS</li>
+                  <li>User B's client sends read receipt → update DynamoDB → notify User A</li>
+                </ol>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> <em>"The key challenge is routing messages to the right WebSocket server among thousands. I'd use a Redis-based connection registry that maps each online user to their server. For group chats with 500 members, I'd fan-out through SQS FIFO with MessageGroupId per conversation to maintain ordering. Offline users get SNS push notifications. DynamoDB stores all messages with conversation_id as partition key and timestamp as sort key for efficient range queries."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article id="design-saas" class="topic-card" data-difficulty="advanced"
+            data-keywords="system design multi-tenant saas platform isolation data partitioning">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+              <h2>System Design: Multi-Tenant SaaS Platform</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p><strong>Prompt:</strong> <em>"Design a multi-tenant SaaS platform where enterprise customers demand data isolation, custom domains, and guaranteed performance SLAs."</em></p>
+
+                <h4>Tenant Isolation Models</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Model</th><th>Isolation</th><th>Cost</th><th>Complexity</th><th>Best For</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Silo</strong></td><td>Separate account/VPC per tenant</td><td>Highest</td><td>High (per-tenant infra)</td><td>Regulated enterprises, healthcare, finance</td></tr>
+                    <tr><td><strong>Bridge</strong></td><td>Shared compute, separate databases</td><td>Medium</td><td>Medium</td><td>Mid-market B2B SaaS</td></tr>
+                    <tr><td><strong>Pool</strong></td><td>Shared everything, data partitioned by tenant_id</td><td>Lowest</td><td>Low (but need row-level security)</td><td>SMB, high-volume low-margin</td></tr>
+                  </tbody>
+                </table>
+
+                <h4>Architecture (Bridge Model — Most Common)</h4>
+                <table class="topic-table">
+                  <thead><tr><th>Component</th><th>Service</th><th>Tenant Strategy</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>DNS</strong></td><td>Route 53</td><td>Custom domain per tenant (CNAME → shared ALB)</td></tr>
+                    <tr><td><strong>API</strong></td><td>ALB + EKS</td><td>Shared compute. JWT contains tenant_id. Middleware extracts and scopes all queries.</td></tr>
+                    <tr><td><strong>Auth</strong></td><td>Cognito (User Pool per tenant)</td><td>Separate user pools for data isolation. Or shared pool with custom:tenant_id attribute.</td></tr>
+                    <tr><td><strong>Database</strong></td><td>Aurora PostgreSQL</td><td>Schema-per-tenant (CREATE SCHEMA tenant_123) with Row Level Security policies as defense-in-depth.</td></tr>
+                    <tr><td><strong>Storage</strong></td><td>S3</td><td>Prefix-per-tenant (s3://bucket/tenant_123/files/). Bucket policy restricts cross-tenant access.</td></tr>
+                    <tr><td><strong>Queues</strong></td><td>SQS</td><td>Tenant_id in message attributes. Consumers filter or route by tenant.</td></tr>
+                    <tr><td><strong>Monitoring</strong></td><td>CloudWatch</td><td>Custom metrics dimensioned by tenant_id. Per-tenant dashboards and alarms.</td></tr>
+                  </tbody>
+                </table>
+
+                <h4>Key Design Challenges</h4>
+                <ul>
+                  <li><strong>Noisy neighbor:</strong> One tenant's heavy usage impacts others. Solution: per-tenant rate limiting at ALB/API Gateway, resource quotas, and tenant-aware auto-scaling.</li>
+                  <li><strong>Data migration:</strong> Moving a growing tenant from Pool to Bridge (or Bridge to Silo). Design the data model to support promotion without downtime.</li>
+                  <li><strong>Cost attribution:</strong> Track per-tenant resource consumption for usage-based billing. Tag all resources, use CloudWatch metrics with tenant dimension, and generate per-tenant invoices from the CUR.</li>
+                </ul>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> <em>"I'd use the Bridge model — shared EKS compute with schema-per-tenant in Aurora PostgreSQL. Every API request extracts tenant_id from the JWT and scopes database queries to that tenant's schema. Row Level Security in PostgreSQL provides defense-in-depth. For enterprise customers who demand full isolation, I'd promote them to the Silo model with a dedicated Aurora cluster and VPC, managed via AWS Organizations."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== INTERVIEW QUESTIONS ====== -->
+          <article id="architecture-interview-questions" class="topic-card" data-difficulty="advanced"
+            data-keywords="interview questions architecture design patterns microservices event driven system design">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>Interview Questions — Architecture Patterns</h2>
+              <button class="review-btn" title="Mark as reviewed"
+                aria-label="Mark Interview Questions as reviewed"><svg width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>Scenario-based architecture questions that test your ability to think through trade-offs, not just name services.</p>
+                <ol class="interview-questions-list">
+                  <li>You're building an e-commerce platform that needs to process orders, send notifications, update inventory, and trigger shipping — all when a customer clicks "Buy." Would you use synchronous microservices or event-driven architecture? Design the flow.
+                    <span class="iq-hint">Hint: EDA with SNS/SQS fan-out. Order placed → SNS topic → SQS queues for each downstream service. Discuss idempotency, dead-letter queues, and how to handle partial failures.</span>
+                  </li>
+                  <li>Your monolithic application is deployed on a single EC2 instance. The team wants to move to microservices. What migration strategy would you recommend — big bang rewrite or incremental? Name the specific pattern you'd use.
+                    <span class="iq-hint">Hint: Strangler Fig pattern. Route traffic through an ALB, gradually extracting services behind new paths. Never rewrite from scratch — it's the riskiest approach.</span>
+                  </li>
+                  <li>Design a three-tier architecture for a healthcare application that processes 10,000 transactions/second. The data must stay in a single country due to regulations. Walk through each tier and the security boundaries between them.
+                    <span class="iq-hint">Hint: Web tier (ALB + CloudFront with geo-restriction), App tier (ECS/EKS in private subnet), Data tier (Aurora with encryption). Discuss SGs between tiers, NACLs, and data residency.</span>
+                  </li>
+                  <li>Explain the CAP theorem. A teammate says "we need strong consistency AND high availability." How do you respond? Give a real-world AWS example of a CP system and an AP system.
+                    <span class="iq-hint">Hint: You can't have both during a partition. CP example: Aurora (favors consistency, may reject writes during failures). AP example: DynamoDB (eventual consistency, always available).</span>
+                  </li>
+                  <li>You have a microservice making synchronous REST calls to 5 downstream services. If one downstream service is slow (3-second response), the entire request takes 15 seconds. How do you fix this?
+                    <span class="iq-hint">Hint: Circuit breaker pattern for failing services, async processing via SQS for non-critical calls, parallel calls where possible, and timeout limits on each call.</span>
+                  </li>
+                  <li>Design a multi-site active-active architecture for a global SaaS platform serving users in US, Europe, and Asia. How do you handle data consistency across regions?
+                    <span class="iq-hint">Hint: DynamoDB Global Tables for active-active with eventual consistency, Aurora Global Database for SQL with read replicas per region. Route 53 latency-based routing. Discuss conflict resolution.</span>
+                  </li>
+                  <li>Your event-driven system is processing 1 million events per day through EventBridge. Some events are being processed out of order and duplicates are appearing. How do you solve both problems?
+                    <span class="iq-hint">Hint: SQS FIFO for ordering (MessageGroupId), idempotency keys in DynamoDB for deduplication. Discuss the trade-off: FIFO queues have lower throughput (3,000 msg/s with batching).</span>
+                  </li>
+                  <li>A team proposes using microservices for a 3-person startup building an MVP. What's your recommendation and why?
+                    <span class="iq-hint">Hint: Start with a well-structured monolith. Microservices add operational complexity (service mesh, distributed tracing, CI/CD per service) that a 3-person team can't sustain. Evolve when team and scale justify it.</span>
+                  </li>
+                  <li>You need to design a system where reads outnumber writes 100:1 and the data model for reads is very different from writes. What pattern would you recommend?
+                    <span class="iq-hint">Hint: CQRS (Command Query Responsibility Segregation). Write to Aurora/DynamoDB, project into read-optimized views (ElastiCache, OpenSearch). Events synchronize the two sides.</span>
+                  </li>
+                  <li>Your distributed order processing system spans 4 microservices. An order requires all 4 to succeed — but if the third one fails after the first two committed, how do you handle the rollback?
+                    <span class="iq-hint">Hint: Saga pattern with compensating transactions. Each service publishes events — if step 3 fails, trigger compensating actions for steps 1 and 2. Orchestrated (Step Functions) vs choreographed (events).</span>
+                  </li>
+                </ol>
+                <div class="answer-block correct">
+                  <h4>Preparation Strategy</h4>
+                  <p>Architecture interviews test your <strong>trade-off reasoning</strong>, not your ability to name services. For every design, articulate: <em>"This approach gives us [benefit] at the cost of [trade-off]. I chose it because [constraint makes this trade-off acceptable]."</em></p>
+                </div>
+              </div>
             </div>
           </article>
         </div>

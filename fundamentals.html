@@ -101,6 +101,7 @@
               URL</a>
             <a href="#what-happens-url" class="toc-link" data-section="what-happens-url"><span
                 class="toc-dot"></span>What Happens When You Type an URL</a>
+            <a href="#fundamentals-interview-questions" class="toc-link" data-section="fundamentals-interview-questions"><span class="toc-dot"></span>Interview Questions</a>
           </nav>
           <div class="toc-keyboard-hint">
             <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
@@ -328,6 +329,64 @@
                       cached content, ALB distributes to healthy targets across AZs, the app queries DynamoDB/RDS with
                       ElastiCache in front for hot data. Total time: sub-100ms for cached content, 200-500ms for
                       dynamic."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== INTERVIEW QUESTIONS ====== -->
+          <article id="fundamentals-interview-questions" class="topic-card" data-difficulty="intermediate"
+            data-keywords="interview questions fundamentals networking dns http tcp udp cidr osi model cloud basics">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+              </div>
+              <h2>Interview Questions — Cloud Fundamentals</h2>
+              <button class="review-btn" title="Mark as reviewed"
+                aria-label="Mark Interview Questions as reviewed"><svg width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>Fundamental questions often warm up an interview. Getting these wrong early can set a negative tone. These cover networking basics, protocols, and cloud concepts.</p>
+                <ol class="interview-questions-list">
+                  <li>Explain the OSI model. Which layer does an ALB operate at vs an NLB? Why does this distinction matter for your architecture?
+                    <span class="iq-hint">Hint: ALB = Layer 7 (HTTP/HTTPS) — can route based on URL path, host header, HTTP methods. NLB = Layer 4 (TCP/UDP) — routes based on IP/port, ultra-low latency. This matters because: ALB can do content-based routing to microservices, NLB is needed for non-HTTP protocols (gRPC, WebSocket passthrough, gaming).</span>
+                  </li>
+                  <li>What's the difference between TCP and UDP? Give an AWS use case where you'd specifically choose UDP over TCP.
+                    <span class="iq-hint">Hint: TCP — reliable, ordered, connection-oriented (HTTP, database connections). UDP — unreliable but fast, connectionless (video streaming, DNS, IoT telemetry, gaming). AWS use case: NLB with UDP listeners for real-time gaming servers, or Route 53 DNS queries (UDP by default, TCP for large responses).</span>
+                  </li>
+                  <li>Explain CIDR notation. Your company gives you a /16 VPC. How many /24 subnets can you create? How many usable IP addresses per /24 subnet in AWS?
+                    <span class="iq-hint">Hint: /16 = 65,536 IPs. /24 = 256 IPs. So /16 contains 256 possible /24 subnets. AWS reserves 5 IPs per subnet (network, VPC router, DNS, future, broadcast), so a /24 has 251 usable IPs. Know this math — interviewers will ask you to design VPC CIDR allocation on the spot.</span>
+                  </li>
+                  <li>What's the difference between latency, bandwidth, and throughput? A user says "the network is slow." How do you diagnose whether it's a latency problem or a bandwidth problem?
+                    <span class="iq-hint">Hint: Latency = time for a packet to travel (ms). Bandwidth = max capacity of the pipe (Gbps). Throughput = actual data transferred (affected by both). Diagnosis: high latency + normal throughput = distance/routing issue. Normal latency + low throughput = bandwidth saturation. Use CloudWatch, VPC Flow Logs, and traceroute.</span>
+                  </li>
+                  <li>Explain the AWS Shared Responsibility Model. A customer's RDS database gets hacked because they used the default admin password. Whose fault is it — AWS or the customer?
+                    <span class="iq-hint">Hint: Customer's fault. AWS is responsible for security OF the cloud (hardware, network, hypervisor). Customer is responsible for security IN the cloud (IAM, SG rules, passwords, encryption, patching OS on EC2). RDS: AWS patches the engine, customer manages access credentials, SGs, and encryption settings.</span>
+                  </li>
+                  <li>What HTTP status codes should every architect know? A user gets a 502 error from your ALB. What does this mean and how do you troubleshoot it?
+                    <span class="iq-hint">Hint: Key codes: 200 (OK), 301/302 (redirect), 400 (bad request), 401 (unauthenticated), 403 (forbidden), 404 (not found), 429 (throttled), 500 (server error), 502 (bad gateway), 503 (service unavailable), 504 (timeout). 502 from ALB = backend target returned invalid response or connection refused. Check target health, security groups, and application logs.</span>
+                  </li>
+                  <li>Compare REST, GraphQL, and gRPC. You're designing APIs for a mobile app that needs to minimize data transfer and battery usage. Which would you recommend?
+                    <span class="iq-hint">Hint: GraphQL — client requests exactly the fields it needs (no over-fetching/under-fetching). REST — fixed response shapes, over-fetching common. gRPC — binary protocol (Protobuf), most efficient but complex on mobile. For mobile: GraphQL for flexible queries, or REST with field selection. gRPC for backend-to-backend microservice communication.</span>
+                  </li>
+                  <li>Explain stateless vs stateful applications. Why is statelessness important for cloud architecture? Your application stores user sessions in local server memory. What happens when you scale to 5 instances behind a load balancer?
+                    <span class="iq-hint">Hint: Stateful: session data on the server. If user hits a different instance, session is lost. Solutions: sticky sessions (ALB, but reduces load balancing effectiveness), externalize state to ElastiCache Redis or DynamoDB (best practice). Statelessness enables horizontal scaling, auto-scaling, and graceful instance replacement.</span>
+                  </li>
+                  <li>What is the difference between encryption at rest and encryption in transit? Name the AWS service or feature you'd use for each across S3, RDS, EBS, and API communication.
+                    <span class="iq-hint">Hint: At rest — data stored on disk is encrypted. S3: SSE-S3/SSE-KMS. RDS: encrypted volumes (enable at creation). EBS: encrypted snapshots/volumes. In transit — data moving over the network. TLS 1.2+ (ALB terminates TLS), ACM for certificates. End-to-end: TLS from client → ALB → re-encrypt to backend.</span>
+                  </li>
+                  <li>Explain IaaS, PaaS, and SaaS with AWS examples. Where does a container service like ECS fit in this model? What about a managed Kubernetes service like EKS?
+                    <span class="iq-hint">Hint: IaaS = EC2 (you manage OS up). PaaS = Elastic Beanstalk, App Runner (you manage code, platform handles infra). SaaS = S3, DynamoDB (fully managed, just use the API). ECS on Fargate = between PaaS and IaaS (you manage containers, not servers). EKS = closer to IaaS (you manage K8s workloads, potentially nodes too).</span>
+                  </li>
+                </ol>
+                <div class="answer-block correct">
+                  <h4>Preparation Strategy</h4>
+                  <p>Fundamentals seem "easy" but wrong answers here create doubt early in the interview. Practice explaining <strong>basic concepts clearly and concisely</strong> — if you can't explain CIDR notation or the OSI model in 30 seconds, the interviewer will question your depth on harder topics.</p>
                 </div>
               </div>
             </div>

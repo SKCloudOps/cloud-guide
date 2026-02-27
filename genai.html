@@ -105,6 +105,7 @@
               Bedrock</a>
             <a href="#genai-multi-model" class="toc-link" data-section="genai-multi-model"><span
                 class="toc-dot"></span>Gen AI Multi Model Invocation</a>
+            <a href="#genai-interview-questions" class="toc-link" data-section="genai-interview-questions"><span class="toc-dot"></span>Interview Questions</a>
           </nav>
           <div class="toc-keyboard-hint">
             <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
@@ -456,6 +457,64 @@
                       use model routing with a classifier Lambda in front of Bedrock. Simple requests go to Titan Lite
                       for cost savings, complex reasoning goes to Claude Sonnet. Step Functions handles the
                       orchestration with built-in error handling and fallback to alternative models."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== INTERVIEW QUESTIONS ====== -->
+          <article id="genai-interview-questions" class="topic-card" data-difficulty="advanced"
+            data-keywords="interview questions gen ai bedrock sagemaker rag prompt engineering fine tuning agents">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>Interview Questions — Gen AI</h2>
+              <button class="review-btn" title="Mark as reviewed"
+                aria-label="Mark Interview Questions as reviewed"><svg width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>Gen AI is the hottest interview topic in 2025-2026. These questions test your ability to architect AI-powered applications, not just use APIs.</p>
+                <ol class="interview-questions-list">
+                  <li>When would you use prompt engineering vs RAG vs fine-tuning? A legal team wants to build a chatbot that answers questions about their 50,000 internal legal documents. Which approach do you recommend?
+                    <span class="iq-hint">Hint: RAG — the documents change frequently (new cases, updated contracts), fine-tuning would require constant retraining. RAG retrieves relevant document chunks at query time. Prompt engineering alone can't inject 50K documents into context. Fine-tuning is for changing model behavior/style, not adding knowledge.</span>
+                  </li>
+                  <li>Design a RAG architecture on AWS. Walk through the complete flow from document ingestion to user query response. Which vector database would you choose and why?
+                    <span class="iq-hint">Hint: Ingestion: S3 → Bedrock Knowledge Base (auto-chunks, embeds, indexes). Query: user prompt → embedding → vector search → top-K chunks → LLM with context. Vector DB options: OpenSearch Serverless (managed, scales), Aurora pgvector (existing PostgreSQL), Pinecone (purpose-built). Choice depends on existing infrastructure and scale.</span>
+                  </li>
+                  <li>Your RAG chatbot is returning inaccurate answers. Users report it "hallucinates" facts that aren't in the source documents. What are three strategies to improve accuracy?
+                    <span class="iq-hint">Hint: 1) Better chunking strategy (smaller chunks, overlap, semantic chunking). 2) Metadata filtering (restrict search to relevant document categories). 3) Bedrock Guardrails (ground truth checks, citation requirements). Also: hybrid search (keyword + semantic), re-ranking retrieved chunks, and prompt engineering to instruct "only answer from provided context."</span>
+                  </li>
+                  <li>Compare Bedrock vs SageMaker for deploying a Gen AI application. A startup with 2 ML engineers wants to build a customer support chatbot. Which platform and why?
+                    <span class="iq-hint">Hint: Bedrock — fully managed, API-based, no infrastructure. Perfect for a small team that wants to focus on the application, not model hosting. SageMaker for: custom model training, fine-tuning at scale, full control over inference infrastructure, teams with deep ML expertise. Bedrock for application builders, SageMaker for model builders.</span>
+                  </li>
+                  <li>How would you implement guardrails for a Gen AI application in a regulated industry (banking/healthcare)? What specific risks do you need to mitigate?
+                    <span class="iq-hint">Hint: Bedrock Guardrails: content filtering (block harmful content), PII detection/redaction, topic denial (prevent off-topic responses), word filters, grounding checks. Additional: input/output logging to S3 (audit trail), VPC endpoints for Bedrock (no public internet), IAM for model access control. Risks: hallucinations, data leakage, prompt injection.</span>
+                  </li>
+                  <li>A customer wants their Gen AI app to take actions — book meetings, query databases, send emails — not just answer questions. Design the architecture using Bedrock Agents.
+                    <span class="iq-hint">Hint: Bedrock Agents with Action Groups. Define tools (Lambda functions for each action: book_meeting, query_db, send_email). Agent uses ReAct pattern: reason about user intent → select tool → execute → return result. Include: OpenAPI schema for each action, session management for multi-turn conversations, guardrails to limit which actions are allowed.</span>
+                  </li>
+                  <li>Your Gen AI application uses Claude on Bedrock. The API costs are $10,000/month with 100,000 requests/day. The CEO asks you to cut costs by 60%. What strategies would you use?
+                    <span class="iq-hint">Hint: 1) Prompt caching (cache common prefixes). 2) Model routing — use a smaller/cheaper model (Haiku) for simple queries, Sonnet for complex ones. 3) Response caching (cache identical queries in ElastiCache). 4) Prompt optimization (shorter prompts = fewer tokens). 5) Batch API for non-real-time workloads (50% cheaper).</span>
+                  </li>
+                  <li>Explain the difference between embedding models and generation models. Why does a RAG system need both? What happens if you use a poor-quality embedding model?
+                    <span class="iq-hint">Hint: Embedding models convert text to vectors (for search/retrieval). Generation models produce text (answers). RAG needs embeddings to find relevant chunks, then a generator to compose the answer. Poor embeddings → wrong chunks retrieved → irrelevant or wrong answers regardless of how good the generator is. Embedding quality is the foundation of RAG accuracy.</span>
+                  </li>
+                  <li>How do you evaluate the quality of a Gen AI application? A product manager asks "how do we know if our chatbot is getting better?" Define the metrics and evaluation approach.
+                    <span class="iq-hint">Hint: Metrics: relevance (does the answer address the question?), groundedness (is it supported by source documents?), coherence, completeness, toxicity. Approaches: human evaluation (gold standard), LLM-as-judge (use a model to evaluate another model), RAGAS framework for RAG-specific metrics. A/B testing in production with user feedback.</span>
+                  </li>
+                  <li>Design a multi-model architecture where different LLMs handle different types of queries. How do you route requests to the right model and handle fallback if a model is unavailable?
+                    <span class="iq-hint">Hint: Router Lambda classifies intent → routes to appropriate model (Haiku for FAQ, Sonnet for complex reasoning, Claude for code generation). Step Functions orchestrates with fallback: primary model timeout → retry → fallback model. Cost optimization: cheapest model that meets quality threshold. Use Bedrock's multi-model endpoints or custom routing logic.</span>
+                  </li>
+                </ol>
+                <div class="answer-block correct">
+                  <h4>Preparation Strategy</h4>
+                  <p>Gen AI interviews in 2025-2026 focus on <strong>architectural decisions, not model theory</strong>. Know when to use RAG vs fine-tuning, understand the cost implications of model selection, and be ready to discuss guardrails and responsible AI. Show that you can build production-grade AI applications, not just prototype demos.</p>
                 </div>
               </div>
             </div>

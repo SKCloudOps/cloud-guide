@@ -104,6 +104,7 @@
                                 class="toc-dot"></span>Cost Governance & Allocation</a>
                         <a href="#cost-patterns" class="toc-link" data-section="cost-patterns"><span
                                 class="toc-dot"></span>Architecture Cost Patterns</a>
+                        <a href="#cost-interview-questions" class="toc-link" data-section="cost-interview-questions"><span class="toc-dot"></span>Interview Questions</a>
                     </nav>
                     <div class="toc-keyboard-hint"><kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
                     </div>
@@ -452,7 +453,7 @@
                                         VPC endpoints + same-AZ where possible.</li>
                                     <li><strong>CloudWatch Logs</strong> — $0.50/GB ingestion. Use log levels wisely.
                                         Set retention policies.</li>
-                                    <li><strong>Elastic IP</strong> — $0.005/hr when NOT attached. Delete unused EIPs.
+                                    <li><strong>Elastic IP</strong> — Since Feb 2024, ALL public IPv4 addresses cost $0.005/hr whether attached or not. Delete unused EIPs and audit all public IPs.
                                     </li>
                                     <li><strong>EBS Snapshots</strong> — $0.05/GB. Old snapshots accumulate silently.
                                         Use lifecycle policies.</li>
@@ -466,6 +467,64 @@
                                             Gateway data processing, inter-AZ transfer, and CloudWatch log ingestion. I
                                             set VPC endpoints for S3/DynamoDB and log retention policies as standard
                                             practice."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- ====== INTERVIEW QUESTIONS ====== -->
+                    <article id="cost-interview-questions" class="topic-card" data-difficulty="advanced"
+                        data-keywords="interview questions cost optimization pricing finops savings plans spot reserved instances">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta">
+                                <span class="difficulty-badge advanced">Advanced</span>
+                            </div>
+                            <h2>Interview Questions — Cost Optimization</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Interview Questions as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Cost optimization shows business acumen — a trait that distinguishes senior architects. These questions test your ability to think about money, not just technology.</p>
+                                <ol class="interview-questions-list">
+                                    <li>Your company's AWS bill jumped from $100K to $180K last month. Walk me through your investigation process to find and fix the cost increase.
+                                        <span class="iq-hint">Hint: Cost Explorer (group by service, filter by tag, compare month-over-month). Check: new services launched, data transfer spikes, NAT Gateway processing, DynamoDB on-demand scaling, unattached EBS volumes/EIPs. Set up Cost Anomaly Detection for proactive alerts. Tag everything for attribution.</span>
+                                    </li>
+                                    <li>A team runs 200 m5.xlarge instances 24/7. They're all on-demand. Design a purchasing strategy to reduce costs by 50% or more.
+                                        <span class="iq-hint">Hint: Analyze steady-state vs variable usage. Base load → Compute Savings Plans (1yr partial upfront, ~40% savings). Variable → Spot for fault-tolerant workloads. Consider Graviton (m7g.xlarge) for additional 20% savings. Dev/test → scheduled scaling (stop nights/weekends = 65% time reduction). Target: 50-60% total savings.</span>
+                                    </li>
+                                    <li>Explain the difference between Compute Savings Plans, EC2 Instance Savings Plans, and Reserved Instances. When would you choose each?
+                                        <span class="iq-hint">Hint: Compute SP — most flexible (any instance family, size, OS, region, including Fargate/Lambda), ~66% savings. EC2 Instance SP — locked to instance family + region, ~72% savings. RI — most restrictive (specific instance type + AZ), similar savings to EC2 SP, but better for RDS/ElastiCache where SPs don't apply.</span>
+                                    </li>
+                                    <li>Your data transfer bill is $25,000/month. Where is the money going and what architectural changes would you make?
+                                        <span class="iq-hint">Hint: Common culprits: NAT Gateway processing ($0.045/GB), inter-AZ traffic ($0.01/GB), inter-region replication, CloudFront to origin. Fixes: S3/DynamoDB gateway endpoints (free), VPC endpoints for other services, AZ-aware routing, CloudFront caching (reduce origin fetches), compress data before transfer.</span>
+                                    </li>
+                                    <li>Design a FinOps practice for an organization with 50 AWS accounts and 10 engineering teams. How do you implement cost accountability?
+                                        <span class="iq-hint">Hint: AWS Organizations with consolidated billing. Mandatory tagging policy (team, project, environment) enforced by SCPs. Shared Reserved Capacity across accounts. Per-team cost dashboards using CUR + Athena/QuickSight. Monthly cost review meetings. Set budgets with alerts per team. Chargeback or showback model.</span>
+                                    </li>
+                                    <li>A startup is choosing between serverless (Lambda + DynamoDB) and container-based (EKS + RDS) for their new application. Expected traffic: 10,000 requests/day initially, growing to 1M/day in 12 months. Which is more cost-effective?
+                                        <span class="iq-hint">Hint: At 10K/day: serverless wins dramatically (pay-per-use, near-zero idle cost). At 1M/day: depends on request duration and compute needs. Lambda breaks even with containers around 1-2M requests/hour (not per day). At 1M/day serverless is still cheaper. Crossover typically happens at sustained millions of requests per hour. Start serverless, re-evaluate when costs exceed container alternative.</span>
+                                    </li>
+                                    <li>Your team uses DynamoDB on-demand capacity. The monthly bill is $20,000. Traffic is predictable (peaks at 10AM-6PM, low overnight). How do you optimize?
+                                        <span class="iq-hint">Hint: Switch to provisioned capacity with auto-scaling (set min/max based on traffic patterns). Provisioned is 20-40% cheaper for predictable workloads. Use DynamoDB Infrequent Access table class for cold data. Consider Reserved Capacity for baseline. Enable DAX caching to reduce consumed RCUs.</span>
+                                    </li>
+                                    <li>A CTO asks: "We spend $500K/year on AWS. Should we negotiate an Enterprise Discount Program (EDP)?" What factors would you consider?
+                                        <span class="iq-hint">Hint: EDP requires a commit (typically $500K-$1M+ annual). Benefits: blanket discount on all services (typically 5-15%), credits, dedicated TAM. Considerations: growth trajectory (don't overcommit), existing SPs/RIs (EDP stacks with them), flexibility to reduce spend, negotiation leverage based on workload migration plans.</span>
+                                    </li>
+                                    <li>Estimate the monthly cost of running a three-tier web application: ALB, 4 EC2 instances (m5.xlarge), Aurora PostgreSQL (db.r5.xlarge with 1 read replica), and 500GB S3. Show your math.
+                                        <span class="iq-hint">Hint: ALB: ~$25/month (fixed) + LCU charges. EC2: 4 × m5.xlarge on-demand × $0.192/hr × 730 hrs = ~$560. Aurora: 2 × db.r5.xlarge × $0.48/hr × 730 = ~$700 + I/O + storage. S3: 500GB × $0.023 = ~$11.50 + requests. Approximate total: ~$1,300-1,500/month. Interviewers want to see you can do napkin math, not exact numbers.</span>
+                                    </li>
+                                    <li>Your Kubernetes cluster has 30% average CPU utilization across nodes, meaning 70% of compute capacity is wasted. How would you improve utilization without impacting reliability?
+                                        <span class="iq-hint">Hint: Karpenter for right-sized node provisioning (picks optimal instance type per pod spec). Pod resource requests/limits tuning with VPA recommendations. Consolidation policy (Karpenter bin-packs pods onto fewer nodes). Spot instances for non-critical workloads. Use Kubecost for per-namespace cost visibility. Target: 60-70% utilization.</span>
+                                    </li>
+                                </ol>
+                                <div class="answer-block correct">
+                                    <h4>Preparation Strategy</h4>
+                                    <p>Cost questions test <strong>business awareness</strong>. Practice doing quick mental math: hourly EC2 pricing × 730 hours/month, data transfer volumes, and break-even calculations between pricing models. The ability to estimate costs on a whiteboard is a powerful differentiator in architect interviews.</p>
                                 </div>
                             </div>
                         </div>

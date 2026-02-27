@@ -116,6 +116,7 @@
                                 class="toc-dot"></span>GuardDuty, Config & SecurityHub</a>
                         <a href="#zero-trust" class="toc-link" data-section="zero-trust"><span
                                 class="toc-dot"></span>Zero Trust on AWS</a>
+                        <a href="#security-interview-questions" class="toc-link" data-section="security-interview-questions"><span class="toc-dot"></span>Interview Questions</a>
                     </nav>
                     <div class="toc-keyboard-hint"><kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
                     </div>
@@ -665,6 +666,64 @@
                                             mTLS between services, short-lived session tokens via STS, and continuous
                                             verification via GuardDuty and Config. AWS Verified Access replaces
                                             traditional VPN with per-request identity + device verification."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- ====== INTERVIEW QUESTIONS ====== -->
+                    <article id="security-interview-questions" class="topic-card" data-difficulty="advanced"
+                        data-keywords="interview questions security iam policies encryption kms waf shield guardduty zero trust">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta">
+                                <span class="difficulty-badge advanced">Advanced</span>
+                            </div>
+                            <h2>Interview Questions — Security & IAM</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Interview Questions as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Security is tested in every architect interview. These questions cover IAM, encryption, incident response, and governance scenarios.</p>
+                                <ol class="interview-questions-list">
+                                    <li>Walk me through the IAM policy evaluation logic. A user has an identity policy that allows s3:GetObject, but there's an SCP that denies all S3 actions. What happens and why?
+                                        <span class="iq-hint">Hint: SCPs are evaluated first and act as a guardrail. Even if the identity policy allows it, the SCP deny wins. The evaluation order is: SCP → Resource policy → Permission boundary → Identity policy.</span>
+                                    </li>
+                                    <li>A third-party vendor needs read access to your S3 bucket in a different AWS account. Design the most secure cross-account access pattern. What's the "confused deputy" problem and how do you prevent it?
+                                        <span class="iq-hint">Hint: IAM Role with trust policy + ExternalId condition. The ExternalId prevents confused deputy attacks where another customer could assume the role. Never use long-term access keys.</span>
+                                    </li>
+                                    <li>Where would you store database credentials for a Lambda function — environment variables, SSM Parameter Store, or Secrets Manager? Justify your choice.
+                                        <span class="iq-hint">Hint: Secrets Manager for automatic rotation and cross-account sharing. Parameter Store (SecureString) for simpler secrets without rotation. Never plaintext env vars — they appear in console and logs.</span>
+                                    </li>
+                                    <li>GuardDuty alerts that an EC2 instance is communicating with a known cryptocurrency mining pool. Walk me through your incident response procedure.
+                                        <span class="iq-hint">Hint: Isolate (change SG to deny all), preserve (snapshot EBS for forensics), investigate (VPC Flow Logs, CloudTrail, GuardDuty findings), remediate (terminate instance, rotate all credentials on it), post-mortem.</span>
+                                    </li>
+                                    <li>Design an encryption strategy for a HIPAA-compliant application. Data must be encrypted at rest and in transit, with customer-managed keys and annual key rotation.
+                                        <span class="iq-hint">Hint: KMS CMKs with automatic rotation (now configurable 90-2560 days). Envelope encryption for large data. TLS 1.2+ enforced via security policies. Discuss S3 SSE-KMS, RDS encryption, EBS encryption, and ACM for certificates.</span>
+                                    </li>
+                                    <li>Your organization has 50 AWS accounts. How do you implement guardrails so that no account can launch resources outside of us-east-1 and eu-west-1?
+                                        <span class="iq-hint">Hint: AWS Organizations with SCPs. Create a deny policy for all regions except the allowed ones. Apply at the OU level. Discuss the "deny all + allow list" vs "allow all + deny list" approach.</span>
+                                    </li>
+                                    <li>Explain the difference between AWS WAF and AWS Shield. A customer is experiencing a Layer 7 DDoS attack (HTTP flood). Which service handles this and how would you configure it?
+                                        <span class="iq-hint">Hint: WAF handles Layer 7 (rate-based rules, IP reputation, SQL injection). Shield Standard (free, Layer 3/4 DDoS). Shield Advanced ($3K/month) adds DRT support, cost protection, and advanced metrics.</span>
+                                    </li>
+                                    <li>A developer created an IAM user with AdministratorAccess for a CI/CD pipeline and stored the access keys in a GitHub repository. What are the immediate risks and how do you remediate?
+                                        <span class="iq-hint">Hint: Immediate: rotate/delete the keys, audit CloudTrail for unauthorized usage. Long-term: use OIDC federation (GitHub Actions → IAM role) instead of keys. Implement permission boundaries and SCP to prevent admin access.</span>
+                                    </li>
+                                    <li>What is a Permission Boundary and how does it differ from a regular IAM policy? Give a scenario where you'd use one.
+                                        <span class="iq-hint">Hint: Permission boundary sets the maximum permissions a role/user can have. Use case: allow developers to create IAM roles but limit what those roles can do (prevent privilege escalation). Effective permissions = intersection of boundary and identity policy.</span>
+                                    </li>
+                                    <li>Design a Zero Trust architecture for an enterprise replacing their traditional VPN-based access. Which AWS services would you use?
+                                        <span class="iq-hint">Hint: AWS Verified Access (per-request verification, no VPN), IAM Identity Center for SSO, IAM Roles Anywhere for on-prem workloads, mTLS between services, microsegmented Security Groups, short-lived STS tokens.</span>
+                                    </li>
+                                </ol>
+                                <div class="answer-block correct">
+                                    <h4>Preparation Strategy</h4>
+                                    <p>Security questions are non-negotiable — a wrong answer here can end an interview. Focus on <strong>the "why" behind each control</strong>: Why IAM roles over users? Why SCPs at the OU level? Why envelope encryption? The reasoning matters more than the implementation.</p>
                                 </div>
                             </div>
                         </div>

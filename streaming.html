@@ -101,6 +101,7 @@
               Streaming</a>
             <a href="#live-streaming-ads" class="toc-link" data-section="live-streaming-ads"><span
                 class="toc-dot"></span>Live Streaming with Ads</a>
+            <a href="#streaming-interview-questions" class="toc-link" data-section="streaming-interview-questions"><span class="toc-dot"></span>Interview Questions</a>
           </nav>
           <div class="toc-keyboard-hint">
             <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
@@ -302,6 +303,64 @@
                       inserts SCTE-35 markers, MediaTailor detects them and fetches personalized ads from the ADS, then
                       stitches them into the stream before CloudFront delivers it. Each viewer gets a unique, seamless
                       experience."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== INTERVIEW QUESTIONS ====== -->
+          <article id="streaming-interview-questions" class="topic-card" data-difficulty="advanced"
+            data-keywords="interview questions streaming kinesis kafka msk video medialive ivs data pipeline">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>Interview Questions — Streaming & Analytics</h2>
+              <button class="review-btn" title="Mark as reviewed"
+                aria-label="Mark Interview Questions as reviewed"><svg width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>Streaming questions cover both data streaming (Kinesis, MSK) and video streaming architecture. These test real-time data pipeline design.</p>
+                <ol class="interview-questions-list">
+                  <li>Compare SQS, SNS, Kinesis Data Streams, and EventBridge. You need to process clickstream data from a website at 50,000 events/second with ordering guarantees. Which do you choose and why?
+                    <span class="iq-hint">Hint: Kinesis Data Streams — ordered within shard (by partition key), handles massive throughput, 7-day retention. SQS has no ordering (unless FIFO, which caps at 3,000 msg/s). SNS is pub/sub (no retention). EventBridge is for event routing, not high-throughput data streaming.</span>
+                  </li>
+                  <li>When would you choose Amazon MSK (Managed Kafka) over Kinesis Data Streams? A team already using open-source Kafka on-prem wants to migrate to AWS.
+                    <span class="iq-hint">Hint: MSK if: existing Kafka expertise, need Kafka ecosystem (Kafka Connect, Kafka Streams, ksqlDB), complex consumer group patterns, longer retention (unlimited). Kinesis if: fully serverless, tight AWS integration (Lambda, Firehose), simpler operations. Migration path: MSK preserves Kafka APIs, no code changes.</span>
+                  </li>
+                  <li>Design a real-time analytics pipeline for an e-commerce platform. You need to: track user behavior, calculate trending products (last 15 minutes), and populate a real-time dashboard.
+                    <span class="iq-hint">Hint: Clickstream → Kinesis Data Streams (partitioned by user_id) → Managed Apache Flink (sliding window aggregation over 15 min) → DynamoDB/ElastiCache for trending products → API Gateway + Lambda for dashboard API. Alternative: Kinesis → Firehose → S3 for batch analytics with Athena.</span>
+                  </li>
+                  <li>Your Kinesis stream has 10 shards. One shard is receiving 80% of all traffic because events are partitioned by a single popular product_id. How do you fix this hot shard problem?
+                    <span class="iq-hint">Hint: Use a composite partition key (product_id + random_suffix) to distribute across shards. Or use a hash-based partition key. Trade-off: you lose strict ordering for that product_id. Alternative: re-shard (split the hot shard), but this is temporary if the key distribution doesn't change.</span>
+                  </li>
+                  <li>A financial services company needs exactly-once processing semantics for their transaction stream. Can Kinesis provide this? How would you guarantee no duplicates and no data loss?
+                    <span class="iq-hint">Hint: Kinesis provides at-least-once delivery. For exactly-once: use KCL (Kinesis Client Library) with checkpointing + DynamoDB for deduplication (idempotency key per record). Use enhanced fan-out for dedicated throughput per consumer. Discuss: Kafka with transactions can provide exactly-once semantics natively — trade-off consideration.</span>
+                  </li>
+                  <li>You need to deliver live video to 100,000 concurrent viewers with sub-5-second latency. Would you use MediaLive + MediaPackage + CloudFront, or Amazon IVS? Justify your choice.
+                    <span class="iq-hint">Hint: IVS for simplicity (managed, sub-3s latency out-of-the-box, WebRTC-based). MediaLive stack for control (custom encoding profiles, DVR, DRM, SSAI ads, multi-CDN). At 100K viewers, IVS is simpler but less customizable. If you need ad insertion or premium features, go MediaLive stack.</span>
+                  </li>
+                  <li>Design a log aggregation pipeline for an application generating 10GB of logs per hour across 200 EC2 instances. Logs need to be searchable within 30 seconds of generation.
+                    <span class="iq-hint">Hint: CloudWatch Agent on instances → CloudWatch Logs → Subscription Filter → Kinesis Data Firehose → OpenSearch (near-real-time indexing, ~30s). Alternative: Fluent Bit → Kinesis Data Streams → Lambda/Flink → OpenSearch. Discuss: Firehose buffers (60-900 seconds), so tune buffer interval to 60s for near-real-time.</span>
+                  </li>
+                  <li>Explain Kinesis Data Firehose vs Kinesis Data Streams. A team asks: "Why would I use Firehose when Streams does the same thing?"
+                    <span class="iq-hint">Hint: They solve different problems. Streams: real-time processing, custom consumers, replay, ordering. Firehose: fully managed delivery to S3/Redshift/OpenSearch with built-in transformation (Lambda), batching, compression, and format conversion (Parquet). Use Streams for real-time processing, Firehose for data delivery/ETL.</span>
+                  </li>
+                  <li>Your streaming pipeline experiences a 2-hour outage. When it recovers, how do you reprocess the missed data without duplicating records that were already processed?
+                    <span class="iq-hint">Hint: Kinesis retains data for 24-365 hours. Use TRIM_HORIZON or AT_TIMESTAMP to replay from before the outage. Idempotent consumers (dedup using DynamoDB conditional writes) ensure no duplicates. For Firehose: check S3 for already-delivered files. For Kafka/MSK: reset consumer group offset to the outage timestamp.</span>
+                  </li>
+                  <li>A media company wants to monetize their live stream with personalized ads. Each viewer should see different ads based on their profile. How does server-side ad insertion (SSAI) work and why is it preferred over client-side?
+                    <span class="iq-hint">Hint: SSAI (MediaTailor) stitches ads into the video stream server-side — ad blockers can't detect them, seamless quality matching, frame-accurate insertion. CSAI relies on client player to fetch ads — blocked by ad blockers, buffering during transitions. SSAI uses SCTE-35 markers in the manifest to identify ad break positions.</span>
+                  </li>
+                </ol>
+                <div class="answer-block correct">
+                  <h4>Preparation Strategy</h4>
+                  <p>Streaming questions test <strong>real-time data architecture</strong>. Know the decision framework: SQS (decoupling) vs SNS (fan-out) vs Kinesis (ordered streaming) vs EventBridge (event routing). For each, know throughput limits, retention periods, and ordering guarantees — interviewers will probe these specifics.</p>
                 </div>
               </div>
             </div>

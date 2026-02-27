@@ -110,6 +110,7 @@
                 class="toc-dot"></span>API Gateway Auth</a>
             <a href="#serverless-webapp" class="toc-link" data-section="serverless-webapp"><span
                 class="toc-dot"></span>Serverless Web Application</a>
+            <a href="#aws-interview-questions" class="toc-link" data-section="aws-interview-questions"><span class="toc-dot"></span>Interview Questions</a>
           </nav>
           <div class="toc-keyboard-hint">
             <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
@@ -234,8 +235,7 @@
                       <li><strong>MGN</strong> — Application Migration Service; continuous replication for
                         lift-and-shift</li>
                       <li><strong>Migration Hub</strong> — Central dashboard to track migration progress</li>
-                      <li><strong>Snow Family</strong> — Physical devices for offline data transfer (Snowcone, Snowball,
-                        Snowmobile)</li>
+                      <li><strong>Snow Family</strong> — Physical devices for offline data transfer (Snowcone, Snowball Edge). Note: Snowmobile has been discontinued.</li>
                     </ul>
                   </div>
                   <div class="service-category">
@@ -894,6 +894,64 @@
                   <p>This is the #1 whiteboard architecture question. Draw it layer by layer: Route 53 → CloudFront → S3
                     (frontend) → API Gateway → Lambda → DynamoDB. Add Cognito for auth. The key differentiator is
                     knowing <em>when serverless is NOT the right choice</em> — that shows real architect maturity.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== INTERVIEW QUESTIONS ====== -->
+          <article id="aws-interview-questions" class="topic-card" data-difficulty="advanced"
+            data-keywords="interview questions aws core services well-architected migration api gateway">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>Interview Questions — AWS Core</h2>
+              <button class="review-btn" title="Mark as reviewed"
+                aria-label="Mark Interview Questions as reviewed"><svg width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>Practice these questions to validate your understanding of AWS core concepts. Each question targets what interviewers actually ask at the Solutions Architect level.</p>
+                <ol class="interview-questions-list">
+                  <li>Your company needs to migrate 200 microservices from on-premises to AWS. Walk me through your migration strategy using the 7 Rs framework. How do you decide which R applies to which service?
+                    <span class="iq-hint">Hint: Discuss assessment criteria — business criticality, technical debt, dependencies, licensing. Explain why you wouldn't apply the same R to every service.</span>
+                  </li>
+                  <li>Explain the six pillars of the AWS Well-Architected Framework. If you had to prioritize only two for a startup versus an enterprise, which would you choose and why?
+                    <span class="iq-hint">Hint: Startups often prioritize Cost Optimization + Operational Excellence. Enterprises lean toward Security + Reliability. Justify your reasoning.</span>
+                  </li>
+                  <li>You're designing an API that needs to handle 50,000 requests per second with sub-10ms latency. Would you use REST API or HTTP API on API Gateway? What authentication method would you choose and why?
+                    <span class="iq-hint">Hint: HTTP API has lower latency and is 70% cheaper but lacks some features. Consider Lambda authorizers vs Cognito vs IAM depending on the client type.</span>
+                  </li>
+                  <li>Your CEO asks: "What happens if an entire AWS region goes down?" Design a multi-region DR strategy with an RPO of 1 minute and RTO of 5 minutes. What AWS services would you use?
+                    <span class="iq-hint">Hint: This requires multi-site active-active or warm standby. Discuss Route 53 health checks, Aurora Global Database, S3 CRR, and DynamoDB Global Tables.</span>
+                  </li>
+                  <li>A developer wants to expose an internal microservice to a partner company. They suggest making it public with an API key. What's wrong with this approach and what would you recommend instead?
+                    <span class="iq-hint">Hint: API keys are not a security mechanism — they're for throttling. Discuss private API Gateway + VPC endpoint, or mutual TLS, or OAuth 2.0 with Cognito.</span>
+                  </li>
+                  <li>Explain the difference between an Availability Zone and a Data Center. A teammate says "we're highly available because we deploy to two AZs." Is that sufficient? When is it not?
+                    <span class="iq-hint">Hint: One AZ = multiple data centers. Two AZs is good for most workloads, but consider regional failures, compliance requirements, and data sovereignty.</span>
+                  </li>
+                  <li>You have a serverless web application (S3 + CloudFront + API Gateway + Lambda + DynamoDB). Performance is great, but costs have tripled in three months. Walk me through how you'd diagnose and fix the cost issue.
+                    <span class="iq-hint">Hint: Check Lambda duration/memory over-provisioning, DynamoDB capacity mode (on-demand vs provisioned), CloudFront cache hit ratio, and API Gateway request volume.</span>
+                  </li>
+                  <li>Compare AWS Elastic IP pricing before and after the 2024 change. A team has 50 unused EIPs across 10 accounts. What's the monthly cost, and how would you implement governance to prevent this?
+                    <span class="iq-hint">Hint: Since Feb 2024, ALL public IPv4 addresses cost $0.005/hr whether attached or not. 50 EIPs = ~$180/month wasted. Use AWS Config rules and SCPs.</span>
+                  </li>
+                  <li>Your application uses API Gateway with a Lambda authorizer. Users report intermittent 403 errors that resolve after a few minutes. What's the likely cause and how do you fix it?
+                    <span class="iq-hint">Hint: Lambda authorizer responses are cached (TTL up to 3600s by default). If a user's permissions change, stale cached policies cause 403s. Adjust cache TTL or invalidate.</span>
+                  </li>
+                  <li>A compliance team requires that all data at rest and in transit must be encrypted, with keys managed by the company (not AWS). Design the encryption strategy across S3, RDS, EBS, and Lambda.
+                    <span class="iq-hint">Hint: Use KMS with customer-managed CMKs for at-rest encryption. Discuss envelope encryption, key rotation policies, cross-account key sharing, and TLS 1.2+ for in-transit.</span>
+                  </li>
+                </ol>
+                <div class="answer-block correct">
+                  <h4>Preparation Strategy</h4>
+                  <p>Don't just memorize answers — practice explaining your <strong>decision-making process</strong>. Interviewers want to hear trade-offs, constraints you considered, and why you chose one approach over alternatives. Use the format: <em>"I'd evaluate X vs Y based on [criteria]. Given [constraints], I'd choose Y because [reason]."</em></p>
                 </div>
               </div>
             </div>

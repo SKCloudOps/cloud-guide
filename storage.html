@@ -106,6 +106,7 @@
                                 class="toc-dot"></span>Data Transfer Strategies</a>
                         <a href="#backup-strategy" class="toc-link" data-section="backup-strategy"><span
                                 class="toc-dot"></span>Backup & Recovery</a>
+                        <a href="#storage-interview-questions" class="toc-link" data-section="storage-interview-questions"><span class="toc-dot"></span>Interview Questions</a>
                     </nav>
                     <div class="toc-keyboard-hint"><kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
                     </div>
@@ -497,8 +498,8 @@
                                             <td>Large migration when network too slow</td>
                                         </tr>
                                         <tr>
-                                            <td><strong>AWS Snowmobile</strong></td>
-                                            <td>Up to 100 PB</td>
+                                            <td><strong>AWS Snowmobile</strong> <em>(Discontinued)</em></td>
+                                            <td>Up to 100 PB (no longer available)</td>
                                             <td>Shipping container truck</td>
                                             <td>Datacenter-scale migration</td>
                                         </tr>
@@ -603,6 +604,64 @@
                                             cross-account vault for ransomware protection, with Vault Lock for
                                             immutability. For RDS/Aurora, I enable PITR so I can restore to any second.
                                             For critical S3 data, versioning + CRR to a secondary region."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- ====== INTERVIEW QUESTIONS ====== -->
+                    <article id="storage-interview-questions" class="topic-card" data-difficulty="advanced"
+                        data-keywords="interview questions storage s3 ebs efs fsx data transfer backup recovery">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta">
+                                <span class="difficulty-badge advanced">Advanced</span>
+                            </div>
+                            <h2>Interview Questions — Storage</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Interview Questions as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Storage decisions impact cost, performance, and durability. These questions test real-world storage architecture thinking.</p>
+                                <ol class="interview-questions-list">
+                                    <li>Your S3 bucket costs $50,000/month. Walk me through how you'd analyze and reduce the bill without losing data.
+                                        <span class="iq-hint">Hint: S3 Storage Lens + S3 Analytics for access patterns. Implement lifecycle policies (Standard → IA after 30 days → Glacier after 90 days). Enable Intelligent-Tiering for unpredictable access. Clean up incomplete multipart uploads and expired delete markers.</span>
+                                    </li>
+                                    <li>When would you choose EBS vs EFS vs FSx for Lustre? A machine learning team needs shared storage for a training dataset accessed by 100 GPU instances simultaneously.
+                                        <span class="iq-hint">Hint: FSx for Lustre — purpose-built for HPC/ML workloads, sub-millisecond latency, integrates with S3. EFS works but has higher latency. EBS can't be shared across instances (except io2 Multi-Attach, limited). Consider FSx for Lustre with S3 data repository for lazy loading.</span>
+                                    </li>
+                                    <li>You need to transfer 80TB of data from on-premises to AWS. Your internet connection is 1 Gbps. Should you transfer over the network or use Snowball? Calculate the time.
+                                        <span class="iq-hint">Hint: 80TB over 1 Gbps = ~7.4 days (80,000 GB × 8 bits / 1 Gbps / 86,400 sec). With protocol overhead, ~10 days. Snowball Edge (80TB capacity) takes 2-3 days shipping + 1 day load. For one-time transfers over 10TB, Snowball is usually faster and cheaper.</span>
+                                    </li>
+                                    <li>Explain S3 Object Lock and how you'd use it to protect against ransomware. What's the difference between Governance mode and Compliance mode?
+                                        <span class="iq-hint">Hint: Governance mode — users with special permissions (s3:BypassGovernanceRetention) can delete/overwrite. Compliance mode — nobody can delete, not even the root account, until retention expires. For ransomware: Compliance mode + versioning + cross-account replication.</span>
+                                    </li>
+                                    <li>Your application writes 10,000 objects per second to S3. Users report intermittent 503 Slow Down errors. What's happening and how do you fix it?
+                                        <span class="iq-hint">Hint: S3 supports 5,500 GET and 3,500 PUT per second per prefix. Use prefix distribution strategy — add date-based or hash-based prefixes to spread load. S3 automatically partitions, but sudden spikes hit limits before auto-scaling kicks in.</span>
+                                    </li>
+                                    <li>Design a backup and recovery strategy for a regulated financial application. Requirements: RPO of 1 hour, RTO of 15 minutes, immutable backups, cross-account isolation.
+                                        <span class="iq-hint">Hint: AWS Backup with hourly backup schedules, cross-account vault copy, Vault Lock for immutability. For RDS: PITR for point-in-time recovery (5-minute RPO). S3: versioning + CRR. Test restore procedures regularly — untested backups are not backups.</span>
+                                    </li>
+                                    <li>A team stores user-uploaded images in S3 and serves them through CloudFront. They want to add real-time image resizing (thumbnails, WebP conversion). Design the solution.
+                                        <span class="iq-hint">Hint: CloudFront + Lambda@Edge (on origin-request). Check if resized version exists in S3 → if not, invoke Lambda to resize, store in S3, and return. Alternative: S3 Object Lambda for on-the-fly transformation. Discuss cache strategy to avoid redundant Lambda invocations.</span>
+                                    </li>
+                                    <li>What's the difference between S3 Standard, S3 Standard-IA, S3 One Zone-IA, and S3 Glacier? A customer says "just put everything in Glacier to save money." Why is this potentially wrong?
+                                        <span class="iq-hint">Hint: Glacier has retrieval costs ($0.01-$0.03/GB) and minimum 90/180-day storage charges. If you access data within the minimum period, it's MORE expensive. Glacier retrieval can take minutes to hours. Use S3 Intelligent-Tiering for unpredictable access patterns instead.</span>
+                                    </li>
+                                    <li>You need to migrate a 500TB data lake from on-premises HDFS to S3. The data grows by 2TB daily. Describe your migration strategy for both the initial bulk load and ongoing synchronization.
+                                        <span class="iq-hint">Hint: Initial: AWS Snowball Edge devices (multiple in parallel). Ongoing: AWS DataSync for daily delta sync over Direct Connect. Target S3 layout: use Hive-compatible partitioning (year/month/day) for query performance with Athena/Glue.</span>
+                                    </li>
+                                    <li>Explain S3 consistency model. A colleague says "S3 is eventually consistent so we might read stale data after a write." Is this still true?
+                                        <span class="iq-hint">Hint: Since December 2020, S3 delivers strong read-after-write consistency for all operations (PUT, DELETE, LIST). This is a common gotcha — many interview prep materials are outdated. You will always read the latest version immediately after writing.</span>
+                                    </li>
+                                </ol>
+                                <div class="answer-block correct">
+                                    <h4>Preparation Strategy</h4>
+                                    <p>Storage questions often involve <strong>cost calculations and data volume math</strong>. Practice converting TB to transfer times, calculating monthly storage costs across tiers, and explaining lifecycle policy economics. Interviewers love candidates who can do quick napkin math.</p>
                                 </div>
                             </div>
                         </div>
