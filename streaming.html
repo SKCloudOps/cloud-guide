@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/devops.css" />
 </head>
+
 <body>
   <div class="app-layout">
     <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
@@ -16,20 +18,31 @@
       </div>
       <nav class="sidebar-nav">
         <div class="sidebar-nav-label">Categories</div>
-        <a href="aws.html" class="sidebar-link">AWS <span class="count">7</span></a>
+        
+        <div class="nav-dropdown">
+        <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+        <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
+        <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
+        <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
+        <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
         <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+        <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
         <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
         <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
-        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
         <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+        <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
         <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
         <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
         <a href="streaming.html" class="sidebar-link active">Streaming <span class="count">2</span></a>
         <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
+        </div>
       </nav>
       <div class="sidebar-footer">
         <div class="sidebar-progress-label">Study Progress</div>
-        <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progressFill"></div></div>
+        <div class="sidebar-progress-bar">
+          <div class="sidebar-progress-fill" id="progressFill"></div>
+        </div>
         <div class="sidebar-progress-text" id="progressText">0 / 2 reviewed</div>
       </div>
     </aside>
@@ -38,7 +51,10 @@
       <div class="topbar">
         <div class="topbar-inner">
           <div class="search-box">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" />
+            </svg>
             <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
           </div>
           <div class="difficulty-filters">
@@ -53,8 +69,10 @@
         <aside class="toc-sidebar" id="tocSidebar">
           <div class="toc-title">In This Section</div>
           <nav class="toc-nav" id="tocNav">
-            <a href="#live-streaming" class="toc-link" data-section="live-streaming"><span class="toc-dot"></span>Live Streaming</a>
-            <a href="#live-streaming-ads" class="toc-link" data-section="live-streaming-ads"><span class="toc-dot"></span>Live Streaming with Ads</a>
+            <a href="#live-streaming" class="toc-link" data-section="live-streaming"><span class="toc-dot"></span>Live
+              Streaming</a>
+            <a href="#live-streaming-ads" class="toc-link" data-section="live-streaming-ads"><span
+                class="toc-dot"></span>Live Streaming with Ads</a>
           </nav>
           <div class="toc-keyboard-hint">
             <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
@@ -77,31 +95,95 @@
                 <span class="difficulty-badge intermediate">Intermediate</span>
               </div>
               <h2>Live Streaming</h2>
-              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Live Streaming as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Live Streaming as reviewed"><svg
+                  width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
               <div class="topic-body">
-              <p>AWS architecture for live video streaming at scale:</p>
-              <h4>Architecture Flow</h4>
-              <ol>
-                <li><strong>Ingest</strong> — Live video source (camera, encoder) sends an RTMP/SRT stream to
-                  <strong>AWS Elemental MediaLive</strong> or <strong>Amazon Interactive Video Service (IVS)</strong>.
-                </li>
-                <li><strong>Process</strong> — MediaLive transcodes the stream into multiple bitrates and formats (ABR —
-                  Adaptive Bitrate) for different devices and network conditions.</li>
-                <li><strong>Package</strong> — <strong>AWS Elemental MediaPackage</strong> packages the transcoded
-                  stream into HLS/DASH formats and provides origin endpoints with DVR/time-shift capabilities.</li>
-                <li><strong>Deliver</strong> — <strong>Amazon CloudFront</strong> (CDN) distributes the live stream
-                  globally to millions of viewers with low latency.</li>
-                <li><strong>Play</strong> — Viewers watch on web, mobile, or smart TV using a video player that
-                  dynamically switches quality based on bandwidth (ABR).</li>
-              </ol>
-              <h4>Amazon IVS (Simpler Option)</h4>
-              <p>For simpler use cases, Amazon IVS provides a fully managed, low-latency live streaming service. Send
-                your stream to IVS, and it handles transcoding, packaging, and delivery automatically — no need to
-                configure MediaLive, MediaPackage, or CloudFront separately.</p>
-            </div>
+                <p>AWS architecture for live video streaming at scale — understanding this shows you can design
+                  media-heavy systems:</p>
+                <h4>Architecture Flow (5 Steps)</h4>
+                <ol>
+                  <li><strong>Ingest</strong> — Live video source (camera, encoder) sends an RTMP/SRT stream to
+                    <strong>AWS Elemental MediaLive</strong>.
+                  </li>
+                  <li><strong>Transcode</strong> — MediaLive transcodes the stream into multiple bitrates and
+                    resolutions (ABR —
+                    Adaptive Bitrate): e.g., 1080p, 720p, 480p, 240p for different devices and network conditions.</li>
+                  <li><strong>Package</strong> — <strong>AWS Elemental MediaPackage</strong> packages the transcoded
+                    stream into HLS/DASH formats and provides origin endpoints with DVR/time-shift/catch-up TV
+                    capabilities.</li>
+                  <li><strong>Deliver</strong> — <strong>Amazon CloudFront</strong> (CDN) distributes the live stream
+                    globally to millions of viewers with low latency via 450+ edge locations.</li>
+                  <li><strong>Play</strong> — Viewers watch on web, mobile, or smart TV using a video player that
+                    dynamically switches quality based on bandwidth (ABR).</li>
+                </ol>
+
+                <h4>MediaLive vs IVS — When to Use Which</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Aspect</th>
+                      <th>MediaLive + MediaPackage + CloudFront</th>
+                      <th>Amazon IVS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Complexity</strong></td>
+                      <td>Full control, 10+ services to configure</td>
+                      <td>Fully managed, single API call</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Latency</strong></td>
+                      <td>~10-30 seconds (standard HLS)</td>
+                      <td>~2-5 seconds (low-latency)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Customization</strong></td>
+                      <td>Full control over transcoding, packaging, DRM</td>
+                      <td>Limited, opinionated defaults</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Best For</strong></td>
+                      <td>Broadcast TV, large-scale OTT (Netflix-like)</td>
+                      <td>Interactive streams (Twitch-like), quick prototypes</td>
+                    </tr>
+                    <tr>
+                      <td><strong>DRM Support</strong></td>
+                      <td>Yes (Widevine, FairPlay, PlayReady via MediaPackage)</td>
+                      <td>No native DRM</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Cost</strong></td>
+                      <td>Higher, pay per channel-hour + egress</td>
+                      <td>Lower, pay per hour + viewer-hours</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h4>Streaming Protocols (Quick Reference)</h4>
+                <ul>
+                  <li><strong>HLS (HTTP Live Streaming)</strong> — Apple standard. Works everywhere. 10-30s latency. Use
+                    for broad compatibility.</li>
+                  <li><strong>DASH (Dynamic Adaptive Streaming over HTTP)</strong> — Open standard. Similar to HLS. Used
+                    by YouTube, Netflix.</li>
+                  <li><strong>LL-HLS (Low Latency HLS)</strong> — Apple's low-latency extension. 2-4 seconds. Use for
+                    near-real-time.</li>
+                  <li><strong>WebRTC</strong> — Sub-second latency. Use for video conferencing, not broadcast.</li>
+                </ul>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> Know the full pipeline and when to simplify. Say: <em>"For a
+                      broadcast-quality OTT platform, I'd use MediaLive → MediaPackage → CloudFront with ABR
+                      transcoding. For a quick interactive streaming feature (like in-app live video), Amazon IVS gives
+                      you 2-5 second latency with a single API call and no infrastructure to manage."</em></p>
+                </div>
+              </div>
             </div>
           </article>
 
@@ -111,36 +193,89 @@
                 <span class="difficulty-badge advanced">Advanced</span>
               </div>
               <h2>Live Streaming with Ads</h2>
-              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Live Streaming with Ads as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <button class="review-btn" title="Mark as reviewed"
+                aria-label="Mark Live Streaming with Ads as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
               <div class="topic-body">
-              <p>Inserting ads into live streams requires server-side ad insertion (SSAI) to prevent ad blockers and
-                deliver a seamless viewing experience:</p>
-              <h4>Architecture Flow</h4>
-              <ol>
-                <li><strong>Live Stream</strong> — MediaLive transcodes the live video and inserts SCTE-35 ad markers
-                  (cue points) at designated ad break positions.</li>
-                <li><strong>Ad Decision Server</strong> — When a viewer requests the stream, <strong>AWS Elemental
-                    MediaTailor</strong> detects the SCTE-35 markers and calls the Ad Decision Server (ADS) to fetch
-                  personalized ads for that viewer.</li>
-                <li><strong>Server-Side Ad Insertion (SSAI)</strong> — MediaTailor stitches the ad content directly into
-                  the video stream on the server side. The viewer receives a single, seamless stream with ads built in.
-                </li>
-                <li><strong>Delivery</strong> — CloudFront delivers the personalized stream (with stitched ads) to each
-                  viewer.</li>
-              </ol>
-              <h4>Why SSAI Over Client-Side Ads?</h4>
-              <ul>
-                <li><strong>Ad blocker resistant</strong> — Ads are part of the video stream itself, not loaded from a
-                  separate ad server URL.</li>
-                <li><strong>Consistent experience</strong> — No buffering or quality change when transitioning between
-                  content and ads.</li>
-                <li><strong>Personalization</strong> — Each viewer can receive different ads based on demographics,
-                  location, or behavior.</li>
-              </ul>
-            </div>
+                <p>Server-side ad insertion (SSAI) is the enterprise approach to monetizing live streams while defeating
+                  ad blockers:</p>
+                <h4>SSAI Architecture Flow</h4>
+                <ol>
+                  <li><strong>Live Stream + Ad Markers</strong> — MediaLive inserts SCTE-35 markers (cue points) into
+                    the video stream at designated ad break positions.</li>
+                  <li><strong>Ad Decision Server (ADS)</strong> — When a viewer requests the stream, <strong>AWS
+                      Elemental
+                      MediaTailor</strong> detects SCTE-35 markers and calls the Ad Decision Server to fetch
+                    personalized ads for that specific viewer.</li>
+                  <li><strong>Server-Side Stitching</strong> — MediaTailor transcodes the ad to match the stream's
+                    bitrate/format and stitches it directly into the video stream server-side. The viewer receives a
+                    single, seamless stream.</li>
+                  <li><strong>Content Delivery</strong> — CloudFront delivers the personalized stream (with stitched
+                    ads) to each viewer. Each viewer may see different ads.</li>
+                </ol>
+
+                <h4>SSAI vs Client-Side Ads (CSAI)</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Aspect</th>
+                      <th>SSAI (Server-Side)</th>
+                      <th>CSAI (Client-Side)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Ad Blockers</strong></td>
+                      <td>✅ Immune — ads are in the video stream</td>
+                      <td>❌ Easily blocked</td>
+                    </tr>
+                    <tr>
+                      <td><strong>User Experience</strong></td>
+                      <td>Seamless, no buffering between content and ads</td>
+                      <td>May see loading, quality changes</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Personalization</strong></td>
+                      <td>Per-viewer personalized ads</td>
+                      <td>Per-viewer personalized ads</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Measurement</strong></td>
+                      <td>Server-side tracking (more accurate)</td>
+                      <td>Client-side pixels (can be blocked)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Complexity</strong></td>
+                      <td>Higher (MediaTailor + ADS integration)</td>
+                      <td>Lower (JS SDK in player)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Use Case</strong></td>
+                      <td>Premium OTT, broadcast, sports</td>
+                      <td>Web-only, short-form content</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h4>SCTE-35 Markers — What They Are</h4>
+                <p>SCTE-35 is the industry standard for signaling ad breaks in video streams. MediaLive can insert them
+                  automatically on a timer, or your automation system can trigger them via the MediaLive API at specific
+                  moments (e.g., between game quarters).</p>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> Say: <em>"For ad monetization of live streams, I'd use SSAI with
+                      MediaTailor because ads are stitched server-side, making them ad-blocker resistant. MediaLive
+                      inserts SCTE-35 markers, MediaTailor detects them and fetches personalized ads from the ADS, then
+                      stitches them into the stream before CloudFront delivers it. Each viewer gets a unique, seamless
+                      experience."</em></p>
+                </div>
+              </div>
             </div>
           </article>
         </div>
@@ -148,11 +283,17 @@
     </main>
   </div>
   <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18" />
+    </svg>
   </button>
   <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 15l-6-6-6 6" />
+    </svg>
   </button>
   <script src="js/page.js"></script>
 </body>
+
 </html>

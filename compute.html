@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Compute | Cloud Interview Guide</title>
+    <meta name="description"
+        content="EC2 instance types, ECS vs EKS vs Lambda vs Fargate, Auto Scaling, placement groups, and compute decision framework." />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/devops.css" />
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+            <div class="sidebar-header"><a class="sidebar-logo" href="index.html">Cloud Interview Guide</a></div>
+            <nav class="sidebar-nav">
+                <div class="sidebar-nav-label">Categories</div>
+        <div class="nav-dropdown">
+                <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+                <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
+                <a href="compute.html" class="sidebar-link active">Compute <span class="count">5</span></a>
+                <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
+                <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
+                <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+                <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
+                <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+                <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+                <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+                <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+                <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
+                <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
+        </div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-progress-label">Study Progress</div>
+                <div class="sidebar-progress-bar">
+                    <div class="sidebar-progress-fill" id="progressFill"></div>
+                </div>
+                <div class="sidebar-progress-text" id="progressText">0 / 5 reviewed</div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+        <main class="content-area" role="main">
+            <div class="topbar">
+                <div class="topbar-inner">
+                    <div class="search-box">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="M21 21l-4.35-4.35" />
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+                    </div>
+                    <div class="difficulty-filters">
+                        <button class="filter-chip active" data-filter="all">All</button>
+                        <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+                        <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+                        <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+                    </div>
+                </div>
+            </div>
+            <div class="content-split">
+                <aside class="toc-sidebar" id="tocSidebar">
+                    <div class="toc-title">In This Section</div>
+                    <nav class="toc-nav" id="tocNav">
+                        <a href="#instance-types" class="toc-link" data-section="instance-types"><span
+                                class="toc-dot"></span>EC2 Instance Types</a>
+                        <a href="#compute-decision" class="toc-link" data-section="compute-decision"><span
+                                class="toc-dot"></span>Compute Decision Framework</a>
+                        <a href="#auto-scaling" class="toc-link" data-section="auto-scaling"><span
+                                class="toc-dot"></span>Auto Scaling Deep Dive</a>
+                        <a href="#load-balancers" class="toc-link" data-section="load-balancers"><span
+                                class="toc-dot"></span>ALB vs NLB vs CLB vs GWLB</a>
+                        <a href="#placement-groups" class="toc-link" data-section="placement-groups"><span
+                                class="toc-dot"></span>Placement Groups & Tenancy</a>
+                    </nav>
+                    <div class="toc-keyboard-hint"><kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+                    </div>
+                </aside>
+                <div class="content-panel">
+                    <header class="page-hero">
+                        <div class="hero-badge" style="background:linear-gradient(135deg,#ec4899, #be185d)">Compute
+                        </div>
+                        <h1>Compute Interview Guide</h1>
+                        <p class="hero-lead">EC2 instance families, ECS vs EKS vs Lambda, Auto Scaling, load balancers,
+                            and placement groups.</p>
+                        <div class="hero-stats">
+                            <div class="stat"><span class="stat-number">5</span><span class="stat-label">Topics</span>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- Topic 1: Instance Types -->
+                    <article id="instance-types" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>EC2 Instance Types</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Instance Types as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Know the instance family naming: <strong>m5a.xlarge</strong> = m (family) 5
+                                    (generation) a (AMD) . xlarge (size)</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Family</th>
+                                            <th>Optimized For</th>
+                                            <th>Examples</th>
+                                            <th>Use Cases</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>M (General Purpose)</strong></td>
+                                            <td>Balanced compute/memory</td>
+                                            <td>m7g, m6i, m5</td>
+                                            <td>Web servers, app servers, small DBs</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>C (Compute)</strong></td>
+                                            <td>High CPU performance</td>
+                                            <td>c7g, c6i, c5</td>
+                                            <td>Batch processing, ML inference, gaming servers</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>R (Memory)</strong></td>
+                                            <td>High memory-to-CPU ratio</td>
+                                            <td>r7g, r6i, r5</td>
+                                            <td>In-memory caches, real-time analytics, SAP HANA</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>I (Storage)</strong></td>
+                                            <td>High sequential read/write</td>
+                                            <td>i4i, i3</td>
+                                            <td>Data warehouses, distributed file systems</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>P/G (Accelerated)</strong></td>
+                                            <td>GPU compute</td>
+                                            <td>p5, g5, inf2</td>
+                                            <td>ML training, video encoding, 3D rendering</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>T (Burstable)</strong></td>
+                                            <td>Burst CPU when needed</td>
+                                            <td>t3, t4g</td>
+                                            <td>Dev/test, low-traffic web servers, micro-services</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Graviton (ARM) — The Cost Optimizer</h4>
+                                <ul>
+                                    <li><strong>20% cheaper</strong> than x86 equivalent (m7g vs m7i)</li>
+                                    <li><strong>40% better price-performance</strong> — most workloads run faster AND
+                                        cheaper</li>
+                                    <li><strong>Suffix "g"</strong> — m7g, c7g, r7g are Graviton-based</li>
+                                    <li><strong>Compatibility:</strong> Linux, containers (Docker/EKS), most languages
+                                        work out of the box. Not for Windows workloads.</li>
+                                </ul>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I default to Graviton instances (m7g, c7g)
+                                            for 20% cost savings. For burstable workloads like dev/test, T3 instances
+                                            with CPU credits. For memory-intensive like ElastiCache, R-family. I always
+                                            check Compute Optimizer for right-sizing recommendations."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 2: Compute Decision -->
+                    <article id="compute-decision" class="topic-card" data-difficulty="advanced">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+                            <h2>Compute Decision Framework</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Compute Decision as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>The #1 question: "When would you use EC2 vs ECS vs EKS vs Lambda vs Fargate?"</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Service</th>
+                                            <th>You Manage</th>
+                                            <th>AWS Manages</th>
+                                            <th>Best For</th>
+                                            <th>Max Duration</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>EC2</strong></td>
+                                            <td>OS, runtime, scaling, patching</td>
+                                            <td>Hardware</td>
+                                            <td>Full control, GPU, Windows, stateful</td>
+                                            <td>Unlimited</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ECS on EC2</strong></td>
+                                            <td>EC2 instances, capacity</td>
+                                            <td>Container orchestration</td>
+                                            <td>Teams comfortable with Docker, not K8s</td>
+                                            <td>Unlimited</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ECS on Fargate</strong></td>
+                                            <td>Container definition only</td>
+                                            <td>Infrastructure, scaling</td>
+                                            <td>Serverless containers, predictable tasks</td>
+                                            <td>Unlimited</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>EKS</strong></td>
+                                            <td>K8s config, nodes (or Auto Mode)</td>
+                                            <td>K8s control plane</td>
+                                            <td>Multi-cloud portability, K8s ecosystem</td>
+                                            <td>Unlimited</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Lambda</strong></td>
+                                            <td>Function code only</td>
+                                            <td>Everything</td>
+                                            <td>Event-driven, short tasks, APIs</td>
+                                            <td>15 minutes</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>App Runner</strong></td>
+                                            <td>Container image or source code</td>
+                                            <td>Build, deploy, scale, LB</td>
+                                            <td>Simple web apps, fastest path to production</td>
+                                            <td>Unlimited</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Decision Tree</h4>
+                                <ol>
+                                    <li><strong>Short-lived event processing (&lt;15 min)?</strong> → Lambda</li>
+                                    <li><strong>Simple web app, minimal ops?</strong> → App Runner</li>
+                                    <li><strong>Containers, no Kubernetes expertise?</strong> → ECS on Fargate</li>
+                                    <li><strong>Containers, need K8s or multi-cloud?</strong> → EKS (Auto Mode for
+                                        managed)</li>
+                                    <li><strong>Full OS control, GPU, Windows?</strong> → EC2</li>
+                                </ol>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I start from serverless and work down:
+                                            Lambda for event-driven, Fargate for containerized workloads without
+                                            managing infrastructure, EKS for teams already invested in Kubernetes. EC2
+                                            only when I need full OS control, specific instance types (GPU), or Windows.
+                                            The trend is moving UP the stack — less infra management."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 3: Auto Scaling -->
+                    <article id="auto-scaling" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>Auto Scaling Deep Dive</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Auto Scaling as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Policy Type</th>
+                                            <th>How It Works</th>
+                                            <th>Best For</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Target Tracking</strong></td>
+                                            <td>Set target (e.g., CPU = 50%), ASG adjusts to maintain</td>
+                                            <td>Default — simplest, handles most cases</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Step Scaling</strong></td>
+                                            <td>Different actions at different thresholds (CPU &gt;60: +1, &gt;80: +3)
+                                            </td>
+                                            <td>Fine-grained control, gradual responses</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Simple Scaling</strong></td>
+                                            <td>Add/remove fixed number on alarm</td>
+                                            <td>Legacy — use step or target tracking instead</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Scheduled Scaling</strong></td>
+                                            <td>Set min/max at specific times</td>
+                                            <td>Predictable patterns (business hours, events)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Predictive Scaling</strong></td>
+                                            <td>ML forecasts demand, pre-scales</td>
+                                            <td>Recurring patterns (daily traffic spikes)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Scaling Best Practices</h4>
+                                <ul>
+                                    <li><strong>Scale on the right metric</strong> — CPU is not always best. Use custom
+                                        metrics: request count per target, queue depth (SQS), custom latency.</li>
+                                    <li><strong>Cooldown periods</strong> — Default 300 seconds. Prevents thrashing. Set
+                                        shorter for fast-scaling apps.</li>
+                                    <li><strong>Health checks</strong> — Use ELB health checks (not just EC2 status). An
+                                        instance can be "running" but app is crashed.</li>
+                                    <li><strong>Launch templates &gt; Launch configs</strong> — Templates support
+                                        versioning, mixed instances, Spot integration.</li>
+                                    <li><strong>Warm pools</strong> — Pre-initialize instances for faster scaling
+                                        (useful for apps with long startup times).</li>
+                                </ul>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I use Target Tracking as my default scaling
+                                            policy (e.g., CPU at 50%), combined with Predictive Scaling for apps with
+                                            daily patterns. For SQS-driven workloads, I scale on
+                                            ApproximateNumberOfMessagesVisible. I always use ELB health checks over EC2
+                                            status checks — and warm pools if the app takes minutes to start."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 4: Load Balancers -->
+                    <article id="load-balancers" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>ALB vs NLB vs CLB vs GWLB</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Load Balancers as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Feature</th>
+                                            <th>ALB</th>
+                                            <th>NLB</th>
+                                            <th>CLB (Legacy)</th>
+                                            <th>GWLB</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Layer</strong></td>
+                                            <td>Layer 7 (HTTP/HTTPS)</td>
+                                            <td>Layer 4 (TCP/UDP/TLS)</td>
+                                            <td>Layer 4 & 7</td>
+                                            <td>Layer 3 (IP)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Protocol</strong></td>
+                                            <td>HTTP, HTTPS, gRPC, WebSocket</td>
+                                            <td>TCP, UDP, TLS</td>
+                                            <td>HTTP, TCP</td>
+                                            <td>All IP traffic</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Performance</strong></td>
+                                            <td>Millions of req/sec</td>
+                                            <td>Millions of packets/sec, static IP</td>
+                                            <td>Limited</td>
+                                            <td>Transparent</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Routing</strong></td>
+                                            <td>Path, host, header, query string, source IP</td>
+                                            <td>Port-based only</td>
+                                            <td>Basic</td>
+                                            <td>N/A</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Static IP</strong></td>
+                                            <td>❌ (use Global Accelerator)</td>
+                                            <td>✅ Elastic IP per AZ</td>
+                                            <td>❌</td>
+                                            <td>❌</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Best For</strong></td>
+                                            <td>Web apps, microservices, API routing</td>
+                                            <td>Ultra-low latency, IoT, gaming, static IP</td>
+                                            <td>Avoid (legacy)</td>
+                                            <td>Third-party firewalls (Palo Alto)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>When to Use What</h4>
+                                <ul>
+                                    <li><strong>Web application?</strong> → ALB (path-based routing to different
+                                        services)</li>
+                                    <li><strong>Need static IP / whitelisting?</strong> → NLB (Elastic IP per AZ)</li>
+                                    <li><strong>Non-HTTP protocol (gaming, IoT)?</strong> → NLB (TCP/UDP)</li>
+                                    <li><strong>Third-party security appliance?</strong> → GWLB (transparent inspection)
+                                    </li>
+                                    <li><strong>ALB + static IP?</strong> → NLB in front of ALB, or use Global
+                                        Accelerator</li>
+                                </ul>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"ALB for 95% of web workloads — it does
+                                            path-based routing, host-based routing, and integrates with WAF. NLB for
+                                            TCP/UDP workloads or when I need static IPs (firewall whitelisting). Never
+                                            CLB for new projects. If I need ALB features + static IP, I put a NLB in
+                                            front of ALB."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 5: Placement Groups -->
+                    <article id="placement-groups" class="topic-card" data-difficulty="advanced">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+                            <h2>Placement Groups & Tenancy</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Placement Groups as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>How</th>
+                                            <th>Use Case</th>
+                                            <th>Trade-off</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Cluster</strong></td>
+                                            <td>All instances on same rack (same AZ)</td>
+                                            <td>HPC, ML training, low-latency inter-node communication</td>
+                                            <td>If rack fails, all fail</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Spread</strong></td>
+                                            <td>Each instance on different hardware (max 7/AZ)</td>
+                                            <td>Critical instances that must be isolated</td>
+                                            <td>Limited to 7 per AZ</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Partition</strong></td>
+                                            <td>Instances grouped into partitions on separate racks</td>
+                                            <td>HDFS, HBase, Cassandra (partition-aware)</td>
+                                            <td>Must configure partition awareness</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Tenancy Options</h4>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tenancy</th>
+                                            <th>What</th>
+                                            <th>Cost</th>
+                                            <th>Use Case</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Shared (default)</strong></td>
+                                            <td>Hardware shared with other customers</td>
+                                            <td>Baseline</td>
+                                            <td>99% of workloads</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Dedicated Instance</strong></td>
+                                            <td>Your instances on dedicated hardware (may share with your other
+                                                instances)</td>
+                                            <td>~2x</td>
+                                            <td>Compliance requiring physical isolation</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Dedicated Host</strong></td>
+                                            <td>Entire physical server is yours</td>
+                                            <td>Highest</td>
+                                            <td>License compliance (per-socket, per-core licenses like Oracle, Windows
+                                                Server)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"Cluster placement for low-latency HPC (all
+                                            on same rack), Spread placement for critical instances that need hardware
+                                            isolation (max 7/AZ), Partition for distributed systems like Cassandra that
+                                            are partition-aware. Dedicated Hosts specifically for bring-your-own-license
+                                            scenarios."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </main>
+    </div>
+    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu"><svg width="24" height="24"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg></button>
+    <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top"><svg
+            width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6" />
+        </svg></button>
+    <script src="js/page.js"></script>
+</body>
+
+</html>

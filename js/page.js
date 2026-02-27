@@ -1,6 +1,22 @@
 (function () {
     'use strict';
 
+    // === Dropdown Menu ===
+    var navEl = document.querySelector('.sidebar-nav');
+    var navLabel = document.querySelector('.sidebar-nav-label');
+    if (navEl && navLabel) {
+        navLabel.addEventListener('click', function (e) {
+            e.stopPropagation();
+            navEl.classList.toggle('open');
+        });
+        document.addEventListener('click', function (e) {
+            if (!navEl.contains(e.target)) navEl.classList.remove('open');
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') navEl.classList.remove('open');
+        });
+    }
+
     // === DOM Elements ===
     var sidebar = document.getElementById('sidebar');
     var overlay = document.getElementById('sidebarOverlay');

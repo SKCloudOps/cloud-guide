@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Networking & VPC | Cloud Interview Guide</title>
+    <meta name="description"
+        content="VPC design, subnets, security groups, NACLs, Transit Gateway, VPN, Direct Connect, Route 53, and PrivateLink." />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/devops.css" />
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+            <div class="sidebar-header">
+                <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="sidebar-nav-label">Categories</div>
+        <div class="nav-dropdown">
+                <a href="networking.html" class="sidebar-link active">Networking &amp; VPC <span
+                        class="count">6</span></a>
+                <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
+                <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
+                <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
+                <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
+                <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+                <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
+                <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+                <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+                <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+                <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+                <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
+                <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
+        </div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-progress-label">Study Progress</div>
+                <div class="sidebar-progress-bar">
+                    <div class="sidebar-progress-fill" id="progressFill"></div>
+                </div>
+                <div class="sidebar-progress-text" id="progressText">0 / 6 reviewed</div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+        <main class="content-area" role="main">
+            <div class="topbar">
+                <div class="topbar-inner">
+                    <div class="search-box">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="M21 21l-4.35-4.35" />
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+                    </div>
+                    <div class="difficulty-filters">
+                        <button class="filter-chip active" data-filter="all">All</button>
+                        <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+                        <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+                        <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+                    </div>
+                </div>
+            </div>
+            <div class="content-split">
+                <aside class="toc-sidebar" id="tocSidebar">
+                    <div class="toc-title">In This Section</div>
+                    <nav class="toc-nav" id="tocNav">
+                        <a href="#vpc-design" class="toc-link" data-section="vpc-design"><span
+                                class="toc-dot"></span>VPC Design Patterns</a>
+                        <a href="#subnets-routing" class="toc-link" data-section="subnets-routing"><span
+                                class="toc-dot"></span>Subnets & Route Tables</a>
+                        <a href="#sg-vs-nacl" class="toc-link" data-section="sg-vs-nacl"><span
+                                class="toc-dot"></span>Security Groups vs NACLs</a>
+                        <a href="#connectivity" class="toc-link" data-section="connectivity"><span
+                                class="toc-dot"></span>VPN vs Direct Connect vs TGW</a>
+                        <a href="#route53" class="toc-link" data-section="route53"><span class="toc-dot"></span>Route 53
+                            Routing Policies</a>
+                        <a href="#privatelink" class="toc-link" data-section="privatelink"><span
+                                class="toc-dot"></span>VPC Endpoints & PrivateLink</a>
+                    </nav>
+                    <div class="toc-keyboard-hint">
+                        <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+                    </div>
+                </aside>
+                <div class="content-panel">
+                    <header class="page-hero">
+                        <div class="hero-badge" style="background:linear-gradient(135deg,#3b82f6, #1d4ed8)">Networking &
+                            VPC</div>
+                        <h1>Networking & VPC Interview Guide</h1>
+                        <p class="hero-lead">VPC design, subnets, security, hybrid connectivity, DNS, and private
+                            networking — the #1 SA interview topic.</p>
+                        <div class="hero-stats">
+                            <div class="stat"><span class="stat-number">6</span><span class="stat-label">Topics</span>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- Topic 1: VPC Design -->
+                    <article id="vpc-design" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>VPC Design Patterns</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark VPC Design as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>VPC design is the foundation of every AWS architecture. Get this wrong, and
+                                    everything else fails:</p>
+
+                                <h4>VPC CIDR Planning (Interview Must-Know)</h4>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>CIDR Block</th>
+                                            <th>Total IPs</th>
+                                            <th>Usable IPs</th>
+                                            <th>Best For</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>/16</strong></td>
+                                            <td>65,536</td>
+                                            <td>65,531</td>
+                                            <td>Large production VPC (recommended default)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>/20</strong></td>
+                                            <td>4,096</td>
+                                            <td>4,091</td>
+                                            <td>Medium workload, dev/staging</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>/24</strong></td>
+                                            <td>256</td>
+                                            <td>251</td>
+                                            <td>Small subnet, single-purpose</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>/28</strong></td>
+                                            <td>16</td>
+                                            <td>11</td>
+                                            <td>Smallest subnet allowed (AWS reserves 5 IPs per subnet)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p><strong>AWS reserves 5 IPs per subnet:</strong> network address, VPC router (.1), DNS
+                                    (.2), future use (.3), broadcast.</p>
+
+                                <h4>Enterprise VPC Architecture</h4>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tier</th>
+                                            <th>Subnet Type</th>
+                                            <th>Contains</th>
+                                            <th>Internet Access</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Public</strong></td>
+                                            <td>Public subnet</td>
+                                            <td>ALB, NAT Gateway, Bastion (if any)</td>
+                                            <td>Direct via Internet Gateway</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Private App</strong></td>
+                                            <td>Private subnet</td>
+                                            <td>EC2, ECS, Lambda (VPC), EKS nodes</td>
+                                            <td>Outbound only via NAT Gateway</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Private Data</strong></td>
+                                            <td>Private subnet</td>
+                                            <td>RDS, ElastiCache, OpenSearch</td>
+                                            <td>No internet access (most secure)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Transit</strong></td>
+                                            <td>Private subnet</td>
+                                            <td>Transit Gateway attachments, VPN</td>
+                                            <td>Routes to on-premises</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Multi-Account VPC Strategy (Enterprise)</h4>
+                                <ul>
+                                    <li><strong>Hub-and-Spoke</strong> — Central "shared services" VPC (DNS, logging,
+                                        security) connected to workload VPCs via Transit Gateway. Each team gets
+                                        isolated VPCs.</li>
+                                    <li><strong>Non-overlapping CIDRs</strong> — Plan CIDR blocks upfront using IPAM
+                                        (VPC IP Address Manager). Overlapping CIDRs = impossible to peer or route.</li>
+                                    <li><strong>AWS Organizations + RAM</strong> — Share subnets across accounts using
+                                        Resource Access Manager. One networking team manages VPCs, app teams deploy into
+                                        shared subnets.</li>
+                                </ul>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> Say: <em>"I design VPCs with a /16 CIDR, 3 tiers
+                                            of subnets across 3 AZs (public, private-app, private-data), non-overlapping
+                                            ranges planned with IPAM. For multi-account, I use Transit Gateway as a hub
+                                            with spoke VPCs per workload, shared via RAM. This gives network isolation
+                                            with centralized control."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 2: Subnets & Routing -->
+                    <article id="subnets-routing" class="topic-card" data-difficulty="beginner">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge beginner">Beginner</span></div>
+                            <h2>Subnets & Route Tables</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Subnets as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <div class="answer-block incorrect">
+                                    <h4>Bad Answer</h4>
+                                    <p>"A public subnet has a public IP and a private subnet doesn't."</p>
+                                </div>
+                                <div class="answer-block correct">
+                                    <h4>Correct Answer</h4>
+                                    <p>A subnet is <strong>public</strong> if its route table has a route to an
+                                        <strong>Internet Gateway (IGW)</strong>. A subnet is <strong>private</strong> if
+                                        it does NOT have a route to an IGW. The presence of a public IP is separate — it
+                                        enables the instance to communicate via the IGW, but without the IGW route,
+                                        traffic goes nowhere.</p>
+                                </div>
+
+                                <h4>Public vs Private vs Isolated Subnets</h4>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Subnet Type</th>
+                                            <th>Route to IGW</th>
+                                            <th>Outbound Internet</th>
+                                            <th>Inbound from Internet</th>
+                                            <th>Use Case</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Public</strong></td>
+                                            <td>✅ Yes (0.0.0.0/0 → IGW)</td>
+                                            <td>✅ Yes</td>
+                                            <td>✅ Yes (if SG allows)</td>
+                                            <td>ALB, NAT Gateway, bastion</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Private</strong></td>
+                                            <td>❌ No IGW route</td>
+                                            <td>✅ Via NAT Gateway</td>
+                                            <td>❌ No</td>
+                                            <td>Application servers, containers</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Isolated</strong></td>
+                                            <td>❌ No IGW route</td>
+                                            <td>❌ No (no NAT)</td>
+                                            <td>❌ No</td>
+                                            <td>Databases, sensitive data</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>NAT Gateway — Key Details</h4>
+                                <ul>
+                                    <li><strong>Cost:</strong> $0.045/hr + $0.045/GB processed (~$32/month just for
+                                        running)</li>
+                                    <li><strong>Deploy per AZ</strong> — For HA, place one NAT Gateway in each AZ's
+                                        public subnet</li>
+                                    <li><strong>Alternative:</strong> NAT instances (cheaper for dev, but you manage
+                                        patching/HA)</li>
+                                    <li><strong>Cost savings:</strong> Use VPC endpoints for S3/DynamoDB to avoid NAT
+                                        Gateway data processing charges</li>
+                                </ul>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"What makes a subnet public is the route
+                                            table entry to the IGW, not the IP. I always deploy NAT Gateways per AZ for
+                                            HA, and use S3/DynamoDB gateway endpoints to reduce NAT costs — which can be
+                                            the #1 surprise cost in AWS."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 3: SG vs NACL -->
+                    <article id="sg-vs-nacl" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>Security Groups vs NACLs</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark SG vs NACL as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>This is asked in almost every SA interview — know this table cold:</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Feature</th>
+                                            <th>Security Group (SG)</th>
+                                            <th>Network ACL (NACL)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Level</strong></td>
+                                            <td>Instance / ENI level</td>
+                                            <td>Subnet level</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>State</strong></td>
+                                            <td>Stateful (return traffic auto-allowed)</td>
+                                            <td>Stateless (must allow return traffic explicitly)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Rules</strong></td>
+                                            <td>Allow rules only</td>
+                                            <td>Allow AND Deny rules</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Evaluation</strong></td>
+                                            <td>All rules evaluated together</td>
+                                            <td>Rules evaluated in order (lowest number first)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Default</strong></td>
+                                            <td>Deny all inbound, allow all outbound</td>
+                                            <td>Allow all inbound and outbound</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Reference SGs</strong></td>
+                                            <td>✅ Can reference other SGs by ID</td>
+                                            <td>❌ IP/CIDR ranges only</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Use Case</strong></td>
+                                            <td>Primary defense — control app-level access</td>
+                                            <td>Subnet-wide deny rules, compliance requirements</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Defense in Depth Pattern</h4>
+                                <ul>
+                                    <li><strong>Layer 1 — NACL:</strong> Block known bad IP ranges, deny specific ports
+                                        at the subnet boundary</li>
+                                    <li><strong>Layer 2 — SG:</strong> Allow only required ports from specific sources
+                                        (other SGs, CIDRs)</li>
+                                    <li><strong>Layer 3 — Application:</strong> Validate auth tokens, rate limiting in
+                                        the app</li>
+                                </ul>
+
+                                <h4>SG Best Practice: Reference Other SGs</h4>
+                                <p>Instead of hardcoding IPs, reference security groups: <em>"Allow inbound port 3306
+                                        from sg-webapp"</em>. This way, any instance in the webapp SG can reach the
+                                    database — no IP management needed. This is a key architectural pattern interviewers
+                                    look for.</p>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"Security Groups are stateful and my primary
+                                            defense — I reference other SGs to avoid IP management. NACLs are stateless
+                                            and subnet-wide — I use them for deny rules and compliance. Together they
+                                            provide defense in depth. The most common mistake is relying on NACLs
+                                            instead of SGs."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 4: Connectivity -->
+                    <article id="connectivity" class="topic-card" data-difficulty="advanced">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+                            <h2>VPN vs Direct Connect vs Transit Gateway</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Connectivity as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Hybrid connectivity is asked in every enterprise SA interview:</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Feature</th>
+                                            <th>Site-to-Site VPN</th>
+                                            <th>Direct Connect (DX)</th>
+                                            <th>Transit Gateway (TGW)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Connection</strong></td>
+                                            <td>Encrypted over public internet</td>
+                                            <td>Dedicated private fiber</td>
+                                            <td>Hub that connects VPCs, VPNs, DX</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Bandwidth</strong></td>
+                                            <td>Up to 1.25 Gbps per tunnel</td>
+                                            <td>1 Gbps, 10 Gbps, or 100 Gbps</td>
+                                            <td>Up to 50 Gbps per attachment</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Latency</strong></td>
+                                            <td>Variable (internet-dependent)</td>
+                                            <td>Consistent, low latency</td>
+                                            <td>Adds ~1ms hop</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Setup Time</strong></td>
+                                            <td>Minutes (software-defined)</td>
+                                            <td>Weeks to months (physical fiber)</td>
+                                            <td>Minutes (attach existing connections)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Redundancy</strong></td>
+                                            <td>2 tunnels per connection</td>
+                                            <td>Need 2 DX connections at different locations</td>
+                                            <td>Built-in HA across AZs</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cost</strong></td>
+                                            <td>~$36/month per connection</td>
+                                            <td>$0.30/GB + port fee ($220-$14,400/mo)</td>
+                                            <td>$0.05/hr + data processing</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Encryption</strong></td>
+                                            <td>✅ IPSec built-in</td>
+                                            <td>❌ Not encrypted (add VPN over DX for encryption)</td>
+                                            <td>Supports VPN attachments</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Decision Framework</h4>
+                                <ul>
+                                    <li><strong>Quick POC / backup</strong> → Site-to-Site VPN (minutes to set up)</li>
+                                    <li><strong>Production hybrid &gt;1 Gbps</strong> → Direct Connect with VPN backup
+                                    </li>
+                                    <li><strong>Multiple VPCs + on-prem</strong> → Transit Gateway as hub (avoid VPC
+                                        peering mesh)</li>
+                                    <li><strong>Encryption required on DX</strong> → VPN over Direct Connect (IPSec
+                                        tunnel over private link)</li>
+                                </ul>
+
+                                <h4>VPC Peering vs Transit Gateway</h4>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Aspect</th>
+                                            <th>VPC Peering</th>
+                                            <th>Transit Gateway</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Topology</strong></td>
+                                            <td>Point-to-point (1:1)</td>
+                                            <td>Hub-and-spoke (1:many)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Transitive Routing</strong></td>
+                                            <td>❌ Not supported</td>
+                                            <td>✅ Supported</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Scale</strong></td>
+                                            <td>Max 125 peering connections</td>
+                                            <td>5,000 attachments</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cost</strong></td>
+                                            <td>Free (pay for data transfer)</td>
+                                            <td>$0.05/hr per attachment + data</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Use When</strong></td>
+                                            <td>2-3 VPCs, simple setup</td>
+                                            <td>&gt;3 VPCs, on-prem, centralized routing</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"For enterprise hybrid, I'd use Direct
+                                            Connect for primary connectivity (consistent latency, high bandwidth) with
+                                            Site-to-Site VPN as backup. Transit Gateway acts as the central hub
+                                            connecting all VPCs, the DX, and VPN. For encryption over DX, I'd run a VPN
+                                            tunnel over the Direct Connect connection."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 5: Route 53 -->
+                    <article id="route53" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>Route 53 Routing Policies</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Route 53 as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Route 53 routing policies — know when to use each one:</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Policy</th>
+                                            <th>How It Works</th>
+                                            <th>Use Case</th>
+                                            <th>Health Checks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Simple</strong></td>
+                                            <td>Returns one or more IPs randomly</td>
+                                            <td>Single resource, no special routing needed</td>
+                                            <td>❌ No</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Weighted</strong></td>
+                                            <td>Distributes traffic by percentage (e.g., 70/30)</td>
+                                            <td>Blue/green deployment, A/B testing, gradual migration</td>
+                                            <td>✅ Optional</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Latency-Based</strong></td>
+                                            <td>Routes to the region with lowest latency</td>
+                                            <td>Multi-region apps — users get fastest response</td>
+                                            <td>✅ Yes</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Failover</strong></td>
+                                            <td>Primary/secondary — switches on health check failure</td>
+                                            <td>Active-passive DR, S3 static site as fallback</td>
+                                            <td>✅ Required</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Geolocation</strong></td>
+                                            <td>Routes based on user's geographic location</td>
+                                            <td>Content localization, regulatory compliance (EU data stays in EU)</td>
+                                            <td>✅ Optional</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Geoproximity</strong></td>
+                                            <td>Routes based on distance + bias values</td>
+                                            <td>Shift traffic between regions using bias</td>
+                                            <td>✅ Optional</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Multi-Value</strong></td>
+                                            <td>Returns up to 8 healthy records randomly</td>
+                                            <td>Client-side load balancing across multiple IPs</td>
+                                            <td>✅ Yes</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Route 53 + Health Checks Architecture</h4>
+                                <p><strong>Pattern:</strong> Failover routing with health checks → Primary region
+                                    (us-east-1) serves traffic. If health check fails, Route 53 switches to secondary
+                                    region (us-west-2) automatically. Combine with latency-based routing for
+                                    multi-region active-active.</p>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"For multi-region, I'd combine latency-based
+                                            routing (users get the nearest region) with failover (unhealthy regions are
+                                            automatically bypassed). For compliance (e.g., EU data residency),
+                                            geolocation routing ensures EU users always hit eu-west-1. For gradual
+                                            migrations, weighted routing lets me shift 10% → 50% → 100% to the new
+                                            stack."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 6: VPC Endpoints -->
+                    <article id="privatelink" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>VPC Endpoints & PrivateLink</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark PrivateLink as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>VPC Endpoints keep traffic private (never leaves the AWS network) and reduce NAT
+                                    Gateway costs:</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>How It Works</th>
+                                            <th>Supported Services</th>
+                                            <th>Cost</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Gateway Endpoint</strong></td>
+                                            <td>Route table entry pointing to AWS service</td>
+                                            <td>S3, DynamoDB only</td>
+                                            <td>✅ Free</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Interface Endpoint</strong></td>
+                                            <td>ENI with private IP in your subnet (powered by PrivateLink)</td>
+                                            <td>100+ AWS services (CloudWatch, SQS, SNS, KMS, etc.)</td>
+                                            <td>~$7.30/month + $0.01/GB</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Gateway Load Balancer Endpoint</strong></td>
+                                            <td>Routes traffic through third-party appliances</td>
+                                            <td>Firewalls, IDS/IPS (Palo Alto, Fortinet)</td>
+                                            <td>$0.0035/GB processed</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>PrivateLink — Expose Services Privately</h4>
+                                <ul>
+                                    <li><strong>What:</strong> Share your service (behind NLB) privately with other VPCs
+                                        or AWS accounts — no VPC peering, no public internet</li>
+                                    <li><strong>How:</strong> Producer creates NLB + VPC Endpoint Service. Consumer
+                                        creates Interface Endpoint. Traffic flows over AWS backbone.</li>
+                                    <li><strong>Use case:</strong> SaaS providers sharing API with customers,
+                                        cross-account microservice communication</li>
+                                </ul>
+
+                                <h4>Cost Savings Strategy</h4>
+                                <p><strong>NAT Gateway costs $0.045/GB.</strong> If your Lambda/ECS in private subnets
+                                    talk to S3 or DynamoDB frequently, a free Gateway Endpoint saves potentially
+                                    hundreds of dollars/month. For other AWS services, Interface Endpoints cost
+                                    ~$7/month but eliminate the $0.045/GB NAT charge.</p>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I always create Gateway Endpoints for S3 and
+                                            DynamoDB — they're free and eliminate NAT Gateway data processing charges.
+                                            For services like SQS, KMS, and CloudWatch, I add Interface Endpoints. For
+                                            cross-account service sharing, I use PrivateLink so traffic never crosses
+                                            the public internet."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </main>
+    </div>
+    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg>
+    </button>
+    <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6" />
+        </svg>
+    </button>
+    <script src="js/page.js"></script>
+</body>
+
+</html>

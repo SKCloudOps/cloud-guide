@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Security & IAM | Cloud Interview Guide</title>
+    <meta name="description"
+        content="IAM policies, roles, cross-account access, encryption, KMS, WAF, Shield, GuardDuty, and Zero Trust architecture." />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/devops.css" />
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+            <div class="sidebar-header"><a class="sidebar-logo" href="index.html">Cloud Interview Guide</a></div>
+            <nav class="sidebar-nav">
+                <div class="sidebar-nav-label">Categories</div>
+        <div class="nav-dropdown">
+                <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+                <a href="security.html" class="sidebar-link active">Security &amp; IAM <span class="count">6</span></a>
+                <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
+                <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
+                <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
+                <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+                <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
+                <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+                <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+                <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+                <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+                <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
+                <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
+        </div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-progress-label">Study Progress</div>
+                <div class="sidebar-progress-bar">
+                    <div class="sidebar-progress-fill" id="progressFill"></div>
+                </div>
+                <div class="sidebar-progress-text" id="progressText">0 / 6 reviewed</div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+        <main class="content-area" role="main">
+            <div class="topbar">
+                <div class="topbar-inner">
+                    <div class="search-box">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="M21 21l-4.35-4.35" />
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+                    </div>
+                    <div class="difficulty-filters">
+                        <button class="filter-chip active" data-filter="all">All</button>
+                        <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+                        <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+                        <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+                    </div>
+                </div>
+            </div>
+            <div class="content-split">
+                <aside class="toc-sidebar" id="tocSidebar">
+                    <div class="toc-title">In This Section</div>
+                    <nav class="toc-nav" id="tocNav">
+                        <a href="#iam-policies" class="toc-link" data-section="iam-policies"><span
+                                class="toc-dot"></span>IAM Policies & Roles</a>
+                        <a href="#cross-account" class="toc-link" data-section="cross-account"><span
+                                class="toc-dot"></span>Cross-Account Access</a>
+                        <a href="#encryption" class="toc-link" data-section="encryption"><span
+                                class="toc-dot"></span>Encryption & KMS</a>
+                        <a href="#waf-shield" class="toc-link" data-section="waf-shield"><span
+                                class="toc-dot"></span>WAF, Shield & DDoS</a>
+                        <a href="#security-services" class="toc-link" data-section="security-services"><span
+                                class="toc-dot"></span>GuardDuty, Config & SecurityHub</a>
+                        <a href="#zero-trust" class="toc-link" data-section="zero-trust"><span
+                                class="toc-dot"></span>Zero Trust on AWS</a>
+                    </nav>
+                    <div class="toc-keyboard-hint"><kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+                    </div>
+                </aside>
+                <div class="content-panel">
+                    <header class="page-hero">
+                        <div class="hero-badge" style="background:linear-gradient(135deg,#ef4444, #b91c1c)">Security &
+                            IAM</div>
+                        <h1>Security & IAM Interview Guide</h1>
+                        <p class="hero-lead">IAM policies, encryption, WAF, GuardDuty, and Zero Trust — security is in
+                            every SA question.</p>
+                        <div class="hero-stats">
+                            <div class="stat"><span class="stat-number">6</span><span class="stat-label">Topics</span>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- Topic 1: IAM Policies -->
+                    <article id="iam-policies" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>IAM Policies & Roles</h2>
+                            <button class="review-btn" title="Mark as reviewed" aria-label="Mark IAM as reviewed"><svg
+                                    width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>IAM is the backbone of AWS security. Every action in AWS is an API call that IAM
+                                    evaluates:</p>
+
+                                <h4>Policy Types (Know All 6)</h4>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Policy Type</th>
+                                            <th>Attached To</th>
+                                            <th>Use Case</th>
+                                            <th>Priority</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Identity-Based</strong></td>
+                                            <td>Users, Groups, Roles</td>
+                                            <td>Grant permissions to principals</td>
+                                            <td>Standard</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Resource-Based</strong></td>
+                                            <td>S3 buckets, SQS, KMS keys</td>
+                                            <td>Cross-account access without assuming role</td>
+                                            <td>Standard</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Permission Boundary</strong></td>
+                                            <td>Users, Roles</td>
+                                            <td>Maximum permissions a role CAN have (ceiling)</td>
+                                            <td>Restricts other policies</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>SCP (Org-level)</strong></td>
+                                            <td>AWS Organization OU/Account</td>
+                                            <td>Guardrails across ALL accounts (e.g., deny regions)</td>
+                                            <td>Overrides everything</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Session Policy</strong></td>
+                                            <td>STS AssumeRole sessions</td>
+                                            <td>Limit permissions for a specific session</td>
+                                            <td>Restricts role</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ACL (Access Control List)</strong></td>
+                                            <td>S3, VPC</td>
+                                            <td>Legacy cross-account (avoid — use bucket policies)</td>
+                                            <td>Legacy</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>IAM Policy Evaluation Logic</h4>
+                                <ol>
+                                    <li><strong>Explicit Deny?</strong> → DENY (always wins, cannot be overridden)</li>
+                                    <li><strong>SCP allows?</strong> → If no, DENY</li>
+                                    <li><strong>Resource-based policy allows?</strong> → If yes, ALLOW</li>
+                                    <li><strong>Identity-based policy allows?</strong> → If yes, check Permissions
+                                        Boundary</li>
+                                    <li><strong>Permission Boundary allows?</strong> → If yes, ALLOW</li>
+                                    <li><strong>Nothing matches?</strong> → DENY (implicit deny)</li>
+                                </ol>
+
+                                <h4>Roles vs Users — The Rule</h4>
+                                <p><strong>Never use long-term credentials (access keys).</strong> Use IAM Roles
+                                    everywhere: EC2 instance profiles, ECS task roles, Lambda execution roles,
+                                    cross-account roles. Only use IAM users for CLI access by humans, with MFA enforced.
+                                </p>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I follow least-privilege: start with zero
+                                            permissions, add only what's needed. I use IAM Roles (not users) for all
+                                            services, SCPs as guardrails at the org level, and Permission Boundaries to
+                                            limit what developers can create. Explicit deny always wins in policy
+                                            evaluation."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 2: Cross-Account -->
+                    <article id="cross-account" class="topic-card" data-difficulty="advanced">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+                            <h2>Cross-Account Access Patterns</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Cross-Account as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Cross-account access is fundamental in multi-account AWS environments:</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Pattern</th>
+                                            <th>How It Works</th>
+                                            <th>Best For</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>AssumeRole</strong></td>
+                                            <td>Account A's role trusts Account B → B assumes role in A via STS</td>
+                                            <td>Standard cross-account access (most common)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Resource-Based Policy</strong></td>
+                                            <td>S3 bucket policy grants access to Account B's principal directly</td>
+                                            <td>S3, SQS, KMS, Lambda — no role assumption needed</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>AWS RAM</strong></td>
+                                            <td>Share resources (subnets, Transit Gateways) across accounts</td>
+                                            <td>Shared networking, shared databases</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>AWS Organizations</strong></td>
+                                            <td>Trusted access for org-level services (CloudTrail, Config)</td>
+                                            <td>Centralized security, logging, compliance</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>AssumeRole Flow (Know This Cold)</h4>
+                                <ol>
+                                    <li><strong>Account A</strong> creates role with trust policy: <em>"Account B can
+                                            assume this role"</em></li>
+                                    <li><strong>Account B</strong> has identity policy allowing
+                                        <code>sts:AssumeRole</code> on Account A's role ARN</li>
+                                    <li><strong>Account B</strong> calls <code>STS AssumeRole</code> → receives
+                                        temporary credentials (access key, secret key, session token)</li>
+                                    <li>Temporary creds expire in 1-12 hours (configurable) — no long-term keys</li>
+                                </ol>
+
+                                <h4>Confused Deputy Problem</h4>
+                                <p>When a third-party service assumes your role, another customer could potentially
+                                    trick it into accessing your resources. <strong>Solution:</strong> Use
+                                    <code>ExternalId</code> condition in the trust policy — a shared secret between you
+                                    and the third party.</p>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"For cross-account, I use AssumeRole with
+                                            temporary credentials — never share access keys. For S3 specifically,
+                                            resource-based policies work without role assumption. For shared
+                                            infrastructure (VPC subnets, Transit Gateway), AWS RAM avoids duplication. I
+                                            always use ExternalId for third-party integrations to prevent confused
+                                            deputy attacks."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 3: Encryption -->
+                    <article id="encryption" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>Encryption & KMS</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Encryption as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Encryption is not optional — it's a requirement. Know the differences:</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Aspect</th>
+                                            <th>SSE-S3</th>
+                                            <th>SSE-KMS</th>
+                                            <th>SSE-C</th>
+                                            <th>Client-Side</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Key Management</strong></td>
+                                            <td>AWS manages everything</td>
+                                            <td>AWS KMS manages keys</td>
+                                            <td>You provide key per request</td>
+                                            <td>You encrypt before upload</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Key Visibility</strong></td>
+                                            <td>No visibility</td>
+                                            <td>Full audit trail in CloudTrail</td>
+                                            <td>You manage key lifecycle</td>
+                                            <td>Full control</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Rotation</strong></td>
+                                            <td>Automatic</td>
+                                            <td>Automatic (yearly) or manual</td>
+                                            <td>You rotate manually</td>
+                                            <td>You rotate</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cross-Account</strong></td>
+                                            <td>❌</td>
+                                            <td>✅ Via key policy</td>
+                                            <td>✅ You share keys</td>
+                                            <td>✅ You share keys</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cost</strong></td>
+                                            <td>Free</td>
+                                            <td>$1/month/key + $0.03/10K requests</td>
+                                            <td>Free (you manage keys)</td>
+                                            <td>Free (you manage)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Use Case</strong></td>
+                                            <td>Default, no compliance needs</td>
+                                            <td>Compliance, audit, cross-account</td>
+                                            <td>Regulatory (you must hold keys)</td>
+                                            <td>Most restrictive compliance</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>KMS Key Types</h4>
+                                <ul>
+                                    <li><strong>AWS Managed Key</strong> (<code>aws/s3</code>, <code>aws/ebs</code>) —
+                                        AWS creates, manages. Free. No cross-account.</li>
+                                    <li><strong>Customer Managed Key (CMK)</strong> — You create, control policy.
+                                        $1/month. Cross-account ✅. Recommended for production.</li>
+                                    <li><strong>AWS Owned Key</strong> — Used internally by AWS services. You can't see
+                                        or manage them.</li>
+                                </ul>
+
+                                <h4>Envelope Encryption (Know This!)</h4>
+                                <p>KMS uses <strong>envelope encryption</strong>: KMS generates a Data Encryption Key
+                                    (DEK) → DEK encrypts your data → KMS encrypts the DEK with your CMK → Store
+                                    encrypted DEK alongside encrypted data. This avoids sending all your data to KMS
+                                    (which has a 4KB limit per API call).</p>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I use SSE-KMS with Customer Managed Keys for
+                                            production — gives me audit trails in CloudTrail, automatic rotation, and
+                                            cross-account sharing via key policies. For data at rest: KMS everywhere
+                                            (S3, EBS, RDS, DynamoDB). For data in transit: TLS 1.2+ enforced via
+                                            ALB/CloudFront with ACM certificates."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 4: WAF & Shield -->
+                    <article id="waf-shield" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>WAF, Shield & DDoS Protection</h2>
+                            <button class="review-btn" title="Mark as reviewed" aria-label="Mark WAF as reviewed"><svg
+                                    width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Service</th>
+                                            <th>Protects Against</th>
+                                            <th>Attached To</th>
+                                            <th>Cost</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>AWS WAF</strong></td>
+                                            <td>SQL injection, XSS, bot attacks, rate limiting (L7)</td>
+                                            <td>CloudFront, ALB, API Gateway, AppSync</td>
+                                            <td>$5/month/web ACL + $1/rule + $0.60/million requests</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Shield Standard</strong></td>
+                                            <td>Common DDoS attacks (L3/L4)</td>
+                                            <td>All AWS resources automatically</td>
+                                            <td>✅ Free (always on)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Shield Advanced</strong></td>
+                                            <td>Sophisticated DDoS + DRT team + cost protection</td>
+                                            <td>EC2, ELB, CloudFront, Route 53, Global Accelerator</td>
+                                            <td>$3,000/month + data transfer</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>WAF Rule Groups (Quick Reference)</h4>
+                                <ul>
+                                    <li><strong>AWS Managed Rules</strong> — Pre-built: OWASP Top 10, SQL injection,
+                                        Known Bad Inputs, Bot Control, IP Reputation</li>
+                                    <li><strong>Rate-Based Rules</strong> — Block IPs exceeding threshold (e.g., 2000
+                                        requests/5 minutes)</li>
+                                    <li><strong>Geo-Match</strong> — Block/allow traffic from specific countries</li>
+                                    <li><strong>Custom Rules</strong> — Match on headers, URI path, query string, body
+                                        content</li>
+                                </ul>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"Shield Standard is free and always on —
+                                            protects against L3/L4 DDoS. WAF protects at L7 — I attach it to CloudFront
+                                            and ALB with AWS Managed Rules for OWASP Top 10, plus rate-based rules.
+                                            Shield Advanced is for enterprises with $3K/month budget — gives you the AWS
+                                            DDoS Response Team and cost protection."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 5: Security Services -->
+                    <article id="security-services" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>GuardDuty, Config & Security Hub</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Security Services as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Know the security service landscape — interviewers test whether you know which tool
+                                    does what:</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Service</th>
+                                            <th>What It Does</th>
+                                            <th>Data Sources</th>
+                                            <th>Key Capability</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>GuardDuty</strong></td>
+                                            <td>Threat detection (ML-based)</td>
+                                            <td>CloudTrail, VPC Flow Logs, DNS logs, S3 data events</td>
+                                            <td>Detects crypto mining, compromised credentials, C2 communication</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>AWS Config</strong></td>
+                                            <td>Configuration compliance</td>
+                                            <td>Resource configuration history</td>
+                                            <td>Rules: "All S3 buckets must be encrypted", "All SGs must not allow
+                                                0.0.0.0/0 inbound"</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Security Hub</strong></td>
+                                            <td>Central security dashboard</td>
+                                            <td>Aggregates GuardDuty, Config, Inspector, IAM Analyzer</td>
+                                            <td>Single pane of glass + automated compliance checks (CIS, PCI-DSS)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Inspector</strong></td>
+                                            <td>Vulnerability scanning</td>
+                                            <td>EC2, ECR container images, Lambda</td>
+                                            <td>CVE detection, network reachability analysis</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>IAM Access Analyzer</strong></td>
+                                            <td>Find over-permissive policies</td>
+                                            <td>IAM policies, S3 bucket policies, KMS policies</td>
+                                            <td>Detects resources shared with external accounts</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Macie</strong></td>
+                                            <td>PII/sensitive data discovery</td>
+                                            <td>S3 buckets</td>
+                                            <td>ML-based detection of credit cards, SSNs, PHI in S3</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Enterprise Security Architecture</h4>
+                                <p><strong>Enable in ALL accounts:</strong> GuardDuty → detects threats. Config →
+                                    enforces compliance. Security Hub → aggregates findings. CloudTrail → audit trail.
+                                    All findings flow to a central Security account for the security team to triage.</p>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I enable GuardDuty across all accounts for
+                                            threat detection, Config for compliance rules, and Security Hub as the
+                                            single dashboard. GuardDuty finds compromised instances, Config catches
+                                            misconfigurations like open security groups, and Security Hub gives the
+                                            security team one view across all accounts with CIS benchmark scoring."</em>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 6: Zero Trust -->
+                    <article id="zero-trust" class="topic-card" data-difficulty="advanced">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+                            <h2>Zero Trust Architecture on AWS</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Zero Trust as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Zero Trust means <strong>"never trust, always verify"</strong> — every request is
+                                    authenticated and authorized regardless of network location:</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Principle</th>
+                                            <th>Traditional</th>
+                                            <th>Zero Trust on AWS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Network</strong></td>
+                                            <td>Trust inside VPC/VPN</td>
+                                            <td>Microsegmentation via SGs per workload, PrivateLink</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Identity</strong></td>
+                                            <td>Once authenticated, trusted</td>
+                                            <td>Short-lived tokens (STS), MFA everywhere, just-in-time access</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Access</strong></td>
+                                            <td>Broad permissions</td>
+                                            <td>Least privilege, Permission Boundaries, SCPs</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Verification</strong></td>
+                                            <td>Perimeter-based</td>
+                                            <td>Every API call verified: mTLS, signed requests (SigV4)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Monitoring</strong></td>
+                                            <td>Perimeter monitoring</td>
+                                            <td>Every action logged: CloudTrail, VPC Flow Logs, GuardDuty</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>AWS Zero Trust Services</h4>
+                                <ul>
+                                    <li><strong>AWS Verified Access</strong> — Zero-trust access to corporate apps
+                                        without VPN. Evaluates identity + device posture per request.</li>
+                                    <li><strong>IAM Roles Anywhere</strong> — Extend IAM roles to on-premises servers
+                                        using X.509 certificates. No access keys needed.</li>
+                                    <li><strong>AWS SSO (IAM Identity Center)</strong> — Centralized access management.
+                                        Short-lived credentials. One identity across all accounts.</li>
+                                </ul>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"Zero Trust on AWS means: IAM Roles
+                                            everywhere (no long-term keys), microsegmented SGs (not broad VPC trust),
+                                            mTLS between services, short-lived session tokens via STS, and continuous
+                                            verification via GuardDuty and Config. AWS Verified Access replaces
+                                            traditional VPN with per-request identity + device verification."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </main>
+    </div>
+    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu"><svg width="24" height="24"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg></button>
+    <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top"><svg
+            width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6" />
+        </svg></button>
+    <script src="js/page.js"></script>
+</body>
+
+</html>

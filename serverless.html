@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/devops.css" />
 </head>
+
 <body>
   <div class="app-layout">
     <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
@@ -16,20 +18,31 @@
       </div>
       <nav class="sidebar-nav">
         <div class="sidebar-nav-label">Categories</div>
-        <a href="aws.html" class="sidebar-link">AWS <span class="count">7</span></a>
+        
+        <div class="nav-dropdown">
+        <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+        <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
+        <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
+        <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
+        <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
         <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+        <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
         <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
         <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
-        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
         <a href="serverless.html" class="sidebar-link active">Serverless <span class="count">3</span></a>
+        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+        <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
         <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
         <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
         <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
         <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
+        </div>
       </nav>
       <div class="sidebar-footer">
         <div class="sidebar-progress-label">Study Progress</div>
-        <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progressFill"></div></div>
+        <div class="sidebar-progress-bar">
+          <div class="sidebar-progress-fill" id="progressFill"></div>
+        </div>
         <div class="sidebar-progress-text" id="progressText">0 / 3 reviewed</div>
       </div>
     </aside>
@@ -38,7 +51,10 @@
       <div class="topbar">
         <div class="topbar-inner">
           <div class="search-box">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" />
+            </svg>
             <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
           </div>
           <div class="difficulty-filters">
@@ -53,9 +69,12 @@
         <aside class="toc-sidebar" id="tocSidebar">
           <div class="toc-title">In This Section</div>
           <nav class="toc-nav" id="tocNav">
-            <a href="#lambda-cheaper" class="toc-link" data-section="lambda-cheaper"><span class="toc-dot"></span>Lambda Cheaper Than EC2?</a>
-            <a href="#serverless-webapp-sls" class="toc-link" data-section="serverless-webapp-sls"><span class="toc-dot"></span>Serverless Web Application</a>
-            <a href="#lambda-transform" class="toc-link" data-section="lambda-transform"><span class="toc-dot"></span>Lambda Transform</a>
+            <a href="#lambda-cheaper" class="toc-link" data-section="lambda-cheaper"><span class="toc-dot"></span>Lambda
+              Cheaper Than EC2?</a>
+            <a href="#serverless-webapp-sls" class="toc-link" data-section="serverless-webapp-sls"><span
+                class="toc-dot"></span>Serverless Web Application</a>
+            <a href="#lambda-transform" class="toc-link" data-section="lambda-transform"><span
+                class="toc-dot"></span>Lambda Transform</a>
           </nav>
           <div class="toc-keyboard-hint">
             <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
@@ -78,38 +97,96 @@
                 <span class="difficulty-badge beginner">Beginner</span>
               </div>
               <h2>Lambda Cheaper Than EC2?</h2>
-              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Lambda Cheaper Than EC2? as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <button class="review-btn" title="Mark as reviewed"
+                aria-label="Mark Lambda Cheaper Than EC2? as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
               <div class="topic-body">
-              <div class="answer-block incorrect">
-                <h4>Incorrect Answer</h4>
-                <p>Yes, AWS Lambda is cheaper than Amazon EC2.</p>
+                <div class="answer-block incorrect">
+                  <h4>Incorrect Answer</h4>
+                  <p>Yes, AWS Lambda is cheaper than Amazon EC2.</p>
+                </div>
+                <div class="answer-block correct">
+                  <h4>Correct Answer</h4>
+                  <p>It depends on the workload. Both have different cost factors. Lambda can actually be <strong>more
+                      expensive</strong> than EC2 for high-throughput, long-running workloads. The key metric is
+                    <strong>TCO (Total Cost of Ownership)</strong> — Lambda eliminates patching, AMI management, and
+                    capacity planning overhead.</p>
+                </div>
+
+                <h4>Lambda vs EC2 vs Fargate — Cost Comparison</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Aspect</th>
+                      <th>Lambda</th>
+                      <th>EC2</th>
+                      <th>Fargate</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Pricing Model</strong></td>
+                      <td>Per request + duration × memory</td>
+                      <td>Per hour (On-Demand/Reserved/Spot)</td>
+                      <td>Per vCPU-hour + GB-hour</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Idle Cost</strong></td>
+                      <td>$0 — pay only when invoked</td>
+                      <td>Pays even when idle</td>
+                      <td>Pays while task runs</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Cheaper When</strong></td>
+                      <td>&lt;1M requests/month, bursty/sporadic</td>
+                      <td>&gt;70% utilization, steady traffic</td>
+                      <td>Containerized, variable workloads</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Hidden Costs</strong></td>
+                      <td>NAT Gateway for VPC, CloudWatch Logs</td>
+                      <td>EBS, ALB, AMI storage, patching time</td>
+                      <td>ALB, CloudWatch, ECR</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Max Duration</strong></td>
+                      <td>15 minutes</td>
+                      <td>Unlimited</td>
+                      <td>Unlimited</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Ops Overhead</strong></td>
+                      <td>Zero (fully managed)</td>
+                      <td>High (OS patching, scaling config)</td>
+                      <td>Low (no EC2 to manage)</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h4>Lambda Limits (Know These for Interviews)</h4>
+                <ul>
+                  <li><strong>Memory:</strong> 128 MB – 10,240 MB (10 GB)</li>
+                  <li><strong>Timeout:</strong> Max 15 minutes</li>
+                  <li><strong>Payload:</strong> 6 MB sync, 256 KB async</li>
+                  <li><strong>Concurrency:</strong> 1,000 default (can request increase to 10,000+)</li>
+                  <li><strong>Deployment:</strong> 50 MB zipped, 250 MB unzipped (use container images for up to 10 GB)
+                  </li>
+                  <li><strong>Graviton:</strong> arm64 architecture gives 20% better price-performance</li>
+                </ul>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> Never say "Lambda is always cheaper." Say: <em>"Lambda wins on TCO
+                      for sporadic, event-driven workloads under 15 minutes. EC2 wins for sustained high-throughput
+                      workloads. I'd run a cost analysis using the AWS Pricing Calculator comparing the specific request
+                      volume, duration, and memory before choosing."</em></p>
+                </div>
               </div>
-              <div class="answer-block correct">
-                <h4>Correct Answer</h4>
-                <p>It depends on the application. Both Lambda and EC2 have different cost factors. It is possible that,
-                  depending on the application, AWS Lambda can have a higher charge than EC2, and vice versa. It is
-                  important to consider not just the compute cost but the <strong>TCO (Total Cost of
-                    Ownership)</strong>. With AWS Lambda there is no AMI to maintain, patch, and rehydrate, reducing
-                  management overhead and hence overall TCO.</p>
-              </div>
-              <h4>Lambda Cost Factors</h4>
-              <ul>
-                <li>Architecture (x86 vs. Graviton)</li>
-                <li>Number of requests</li>
-                <li>Duration of each request</li>
-                <li>Amount of memory allocated (NOT used)</li>
-                <li>Amount of ephemeral storage allocated</li>
-              </ul>
-              <h4>EC2 Main Cost Factors</h4>
-              <ul>
-                <li>Instance family</li>
-                <li>Attached EBS</li>
-                <li>Duration of EC2 runtime</li>
-              </ul>
-            </div>
             </div>
           </article>
 
@@ -119,27 +196,130 @@
                 <span class="difficulty-badge beginner">Beginner</span>
               </div>
               <h2>Serverless Web Application</h2>
-              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Serverless Web Application as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <button class="review-btn" title="Mark as reviewed"
+                aria-label="Mark Serverless Web Application as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
               <div class="topic-body">
-              <p>A fully serverless web application on AWS (no servers to manage):</p>
-              <h4>Architecture</h4>
-              <ol>
-                <li><strong>Amazon S3 + CloudFront</strong> — Host static frontend (React, Angular, Vue) on S3, served
-                  globally via CloudFront CDN.</li>
-                <li><strong>Amazon Cognito</strong> — User authentication (sign-up, sign-in, social login, MFA).</li>
-                <li><strong>Amazon API Gateway</strong> — REST/WebSocket API layer. Handles request validation,
-                  throttling, and auth token verification.</li>
-                <li><strong>AWS Lambda</strong> — Backend business logic. Each API endpoint triggers a Lambda function.
-                  Scales automatically from zero to thousands of concurrent executions.</li>
-                <li><strong>Amazon DynamoDB</strong> — NoSQL database for application data. Single-digit-millisecond
-                  latency, fully managed, scales on demand.</li>
-              </ol>
-              <p><strong>Cost model:</strong> Pay only when the API is called. Zero traffic = zero cost (excluding S3
-                storage). Ideal for variable or unpredictable workloads.</p>
-            </div>
+                <p>A fully serverless web application on AWS — the #1 whiteboard question for Solutions Architect
+                  interviews:</p>
+                <h4>Architecture (Layer by Layer)</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Layer</th>
+                      <th>Service</th>
+                      <th>Purpose</th>
+                      <th>Key Detail</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>DNS</strong></td>
+                      <td>Route 53</td>
+                      <td>Domain routing + health checks</td>
+                      <td>Alias record to CloudFront for zero-latency resolution</td>
+                    </tr>
+                    <tr>
+                      <td><strong>CDN</strong></td>
+                      <td>CloudFront</td>
+                      <td>Global content delivery, caching</td>
+                      <td>450+ edge PoPs, HTTPS termination, WebSocket support</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Frontend</strong></td>
+                      <td>S3</td>
+                      <td>Static hosting (React/Vue/Angular)</td>
+                      <td>OAC (Origin Access Control) restricts direct S3 access</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Auth</strong></td>
+                      <td>Cognito User Pools</td>
+                      <td>User signup, login, MFA, social login</td>
+                      <td>Returns JWT tokens; API Gateway validates them natively</td>
+                    </tr>
+                    <tr>
+                      <td><strong>API</strong></td>
+                      <td>API Gateway (HTTP API)</td>
+                      <td>Request routing, throttling, CORS</td>
+                      <td>HTTP API is 70% cheaper than REST API for most use cases</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Logic</strong></td>
+                      <td>Lambda</td>
+                      <td>Business logic per endpoint</td>
+                      <td>Use Powertools for structured logging, tracing, metrics</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Database</strong></td>
+                      <td>DynamoDB</td>
+                      <td>NoSQL data storage</td>
+                      <td>On-demand mode → no capacity planning; &lt;10ms latency</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Storage</strong></td>
+                      <td>S3</td>
+                      <td>File uploads via pre-signed URLs</td>
+                      <td>Lambda generates pre-signed URLs; client uploads directly</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Notifications</strong></td>
+                      <td>SNS + SES</td>
+                      <td>Push notifications, email</td>
+                      <td>SNS for fan-out, SES for transactional email</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h4>HTTP API vs REST API — Which to Choose</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Feature</th>
+                      <th>HTTP API</th>
+                      <th>REST API</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Cost</strong></td>
+                      <td>$1.00 per million</td>
+                      <td>$3.50 per million</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Auth</strong></td>
+                      <td>JWT (Cognito, OIDC natively)</td>
+                      <td>IAM, Cognito, Lambda Authorizer</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Features</strong></td>
+                      <td>Basic routing, CORS, JWT</td>
+                      <td>Caching, WAF, usage plans, API keys, request validation</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Use When</strong></td>
+                      <td>Most new serverless apps</td>
+                      <td>Need caching, WAF, API keys, or request transforms</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <p><strong>Cost model:</strong> ~$5-20/month for 1M requests. Zero traffic = ~$0. EC2 equivalent:
+                  $50-100+/month minimum.</p>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> This is the most-asked design question. Draw it layer by layer:
+                    <em>"Route 53 → CloudFront → S3 for static frontend. For the API path: CloudFront → HTTP API →
+                      Lambda → DynamoDB. Cognito handles auth with JWT tokens validated at the API Gateway level. For
+                      file uploads, Lambda generates pre-signed S3 URLs so clients upload directly — never send files
+                      through Lambda."</em></p>
+                </div>
+              </div>
             </div>
           </article>
 
@@ -149,29 +329,76 @@
                 <span class="difficulty-badge intermediate">Intermediate</span>
               </div>
               <h2>Lambda Transform</h2>
-              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Lambda Transform as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Lambda Transform as reviewed"><svg
+                  width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
               <div class="topic-body">
-              <p>AWS Lambda can be used as a transformation step in data pipelines to modify, enrich, or filter data in
-                transit:</p>
-              <h4>Common Patterns</h4>
-              <ul>
-                <li><strong>Kinesis Data Firehose Transform</strong> — Firehose invokes a Lambda function to transform
-                  records before delivering them to S3, Redshift, or Elasticsearch. Use cases: convert formats (CSV to
-                  JSON), redact PII, enrich with metadata.</li>
-                <li><strong>S3 Event Transform</strong> — S3 triggers Lambda when a new file is uploaded. Lambda reads
-                  the file, transforms it (resize images, transcode video, parse CSV), and writes the result to another
-                  S3 bucket or DynamoDB.</li>
-                <li><strong>CloudFormation Macro</strong> — Lambda-backed macros that transform CloudFormation templates
-                  at deploy time. Can add custom logic, conditionals, or template generation.</li>
-                <li><strong>API Gateway Request/Response Transform</strong> — Lambda modifies the request before it
-                  reaches the backend, or transforms the response before returning it to the client.</li>
-              </ul>
-              <p><strong>Key benefit:</strong> Serverless transforms eliminate the need for always-on ETL servers. You
-                pay only for the transformation compute time, and Lambda scales automatically with the data volume.</p>
-            </div>
+                <p>AWS Lambda as an inline transformation step in data pipelines — zero infrastructure,
+                  pay-per-execution:</p>
+                <h4>Transform Patterns (Common Interview Scenarios)</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Pattern</th>
+                      <th>Trigger</th>
+                      <th>Use Case</th>
+                      <th>Key Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Firehose Transform</strong></td>
+                      <td>Kinesis Data Firehose</td>
+                      <td>CSV→JSON, PII redaction, data enrichment</td>
+                      <td>Lambda has 60s to process each micro-batch. Must return <code>Ok</code>, <code>Dropped</code>,
+                        or <code>ProcessingFailed</code></td>
+                    </tr>
+                    <tr>
+                      <td><strong>S3 Event Transform</strong></td>
+                      <td>S3 PUT/POST notification</td>
+                      <td>Image resize, video transcode, CSV parse</td>
+                      <td>Use S3 Event Notifications or EventBridge for trigger. Write to a different bucket to avoid
+                        loops</td>
+                    </tr>
+                    <tr>
+                      <td><strong>DynamoDB Streams</strong></td>
+                      <td>Table item change (CDC)</td>
+                      <td>Aggregate, replicate, or fan-out changes</td>
+                      <td>Process in order per partition key. Set batch size and max batching window</td>
+                    </tr>
+                    <tr>
+                      <td><strong>API Gateway Transform</strong></td>
+                      <td>HTTP request</td>
+                      <td>Request/response mapping, enrichment</td>
+                      <td>Can also use VTL mapping templates for simple transforms (no Lambda needed)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>CloudFormation Macro</strong></td>
+                      <td>Stack deploy</td>
+                      <td>Template generation, custom conditionals</td>
+                      <td>Lambda transforms the CloudFormation template at deploy time</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h4>Firehose + Lambda Architecture (Know This Flow)</h4>
+                <p><strong>Producers</strong> (IoT, apps, Kinesis Agent) → <strong>Kinesis Data Firehose</strong> →
+                  <strong>Lambda Transform</strong> (enrich/filter/convert) → <strong>S3 / Redshift /
+                    OpenSearch</strong>. Buffer: 60-900 seconds or 1-128 MB (whichever hits first). Failed records go to
+                  a dead-letter S3 prefix.</p>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> Emphasize zero-infrastructure ETL. Say: <em>"Lambda transforms
+                      eliminate always-on ETL servers. For streaming data, I'd use Firehose with a Lambda transform to
+                      convert format and redact PII before landing in S3. For file-based, I'd trigger Lambda from S3
+                      events. Both scale automatically with data volume."</em></p>
+                </div>
+              </div>
             </div>
           </article>
         </div>
@@ -179,11 +406,17 @@
     </main>
   </div>
   <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18" />
+    </svg>
   </button>
   <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 15l-6-6-6 6" />
+    </svg>
   </button>
   <script src="js/page.js"></script>
 </body>
+
 </html>

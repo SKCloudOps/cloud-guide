@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Storage | Cloud Interview Guide</title>
+    <meta name="description"
+        content="S3 storage classes, lifecycle policies, EBS vs EFS vs FSx, cross-region replication, and data transfer strategies." />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/devops.css" />
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+            <div class="sidebar-header"><a class="sidebar-logo" href="index.html">Cloud Interview Guide</a></div>
+            <nav class="sidebar-nav">
+                <div class="sidebar-nav-label">Categories</div>
+        <div class="nav-dropdown">
+                <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+                <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
+                <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
+                <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
+                <a href="storage.html" class="sidebar-link active">Storage <span class="count">5</span></a>
+                <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+                <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
+                <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+                <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+                <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+                <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+                <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
+                <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
+        </div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-progress-label">Study Progress</div>
+                <div class="sidebar-progress-bar">
+                    <div class="sidebar-progress-fill" id="progressFill"></div>
+                </div>
+                <div class="sidebar-progress-text" id="progressText">0 / 5 reviewed</div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+        <main class="content-area" role="main">
+            <div class="topbar">
+                <div class="topbar-inner">
+                    <div class="search-box">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="M21 21l-4.35-4.35" />
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+                    </div>
+                    <div class="difficulty-filters">
+                        <button class="filter-chip active" data-filter="all">All</button>
+                        <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+                        <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+                        <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+                    </div>
+                </div>
+            </div>
+            <div class="content-split">
+                <aside class="toc-sidebar" id="tocSidebar">
+                    <div class="toc-title">In This Section</div>
+                    <nav class="toc-nav" id="tocNav">
+                        <a href="#s3-classes" class="toc-link" data-section="s3-classes"><span class="toc-dot"></span>S3
+                            Storage Classes</a>
+                        <a href="#s3-features" class="toc-link" data-section="s3-features"><span
+                                class="toc-dot"></span>S3 Advanced Features</a>
+                        <a href="#ebs-efs-fsx" class="toc-link" data-section="ebs-efs-fsx"><span
+                                class="toc-dot"></span>EBS vs EFS vs FSx</a>
+                        <a href="#data-transfer" class="toc-link" data-section="data-transfer"><span
+                                class="toc-dot"></span>Data Transfer Strategies</a>
+                        <a href="#backup-strategy" class="toc-link" data-section="backup-strategy"><span
+                                class="toc-dot"></span>Backup & Recovery</a>
+                    </nav>
+                    <div class="toc-keyboard-hint"><kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+                    </div>
+                </aside>
+                <div class="content-panel">
+                    <header class="page-hero">
+                        <div class="hero-badge" style="background:linear-gradient(135deg,#10b981, #047857)">Storage
+                        </div>
+                        <h1>Storage Interview Guide</h1>
+                        <p class="hero-lead">S3 storage classes, block vs file vs object storage, data transfer, and
+                            backup — critical for cost optimization questions.</p>
+                        <div class="hero-stats">
+                            <div class="stat"><span class="stat-number">5</span><span class="stat-label">Topics</span>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- Topic 1: S3 Storage Classes -->
+                    <article id="s3-classes" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>S3 Storage Classes</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark S3 Classes as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Knowing S3 storage classes = cost optimization mastery. This table is asked
+                                    constantly:</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Class</th>
+                                            <th>Durability</th>
+                                            <th>Availability</th>
+                                            <th>Min Duration</th>
+                                            <th>Retrieval</th>
+                                            <th>Cost (per GB/mo)</th>
+                                            <th>Use Case</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>S3 Standard</strong></td>
+                                            <td>11 9s</td>
+                                            <td>99.99%</td>
+                                            <td>None</td>
+                                            <td>Instant</td>
+                                            <td>$0.023</td>
+                                            <td>Frequently accessed data</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>S3 Intelligent-Tiering</strong></td>
+                                            <td>11 9s</td>
+                                            <td>99.9%</td>
+                                            <td>None</td>
+                                            <td>Instant</td>
+                                            <td>$0.023 + monitoring</td>
+                                            <td>Unknown access patterns</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>S3 Standard-IA</strong></td>
+                                            <td>11 9s</td>
+                                            <td>99.9%</td>
+                                            <td>30 days</td>
+                                            <td>Instant</td>
+                                            <td>$0.0125</td>
+                                            <td>Backups, infrequent access</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>S3 One Zone-IA</strong></td>
+                                            <td>11 9s</td>
+                                            <td>99.5%</td>
+                                            <td>30 days</td>
+                                            <td>Instant</td>
+                                            <td>$0.01</td>
+                                            <td>Reproducible data, secondary backups</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>S3 Glacier Instant</strong></td>
+                                            <td>11 9s</td>
+                                            <td>99.9%</td>
+                                            <td>90 days</td>
+                                            <td>Milliseconds</td>
+                                            <td>$0.004</td>
+                                            <td>Rarely accessed, but need instant access</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>S3 Glacier Flexible</strong></td>
+                                            <td>11 9s</td>
+                                            <td>99.99%</td>
+                                            <td>90 days</td>
+                                            <td>1-12 hours</td>
+                                            <td>$0.0036</td>
+                                            <td>Archives, compliance data</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>S3 Glacier Deep Archive</strong></td>
+                                            <td>11 9s</td>
+                                            <td>99.99%</td>
+                                            <td>180 days</td>
+                                            <td>12-48 hours</td>
+                                            <td>$0.00099</td>
+                                            <td>Regulatory retention (7+ years)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Lifecycle Policies (Auto-Transition)</h4>
+                                <p><strong>Pattern:</strong> S3 Standard (0-30 days) → S3 Standard-IA (30-90 days) →
+                                    Glacier Instant (90-365 days) → Glacier Deep Archive (365+ days → delete after 7
+                                    years). This reduces storage costs by 80%+ over keeping everything in Standard.</p>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I set lifecycle policies on every S3 bucket:
+                                            transition to IA after 30 days, Glacier after 90, Deep Archive after 365.
+                                            For unknown patterns, Intelligent-Tiering automates this. All classes have
+                                            11 9s durability — availability differs. One Zone-IA saves 20% but is
+                                            single-AZ — only for reproducible data."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 2: S3 Advanced -->
+                    <article id="s3-features" class="topic-card" data-difficulty="advanced">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+                            <h2>S3 Advanced Features</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark S3 Features as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Feature</th>
+                                            <th>What</th>
+                                            <th>Use Case</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Versioning</strong></td>
+                                            <td>Keep multiple versions of every object</td>
+                                            <td>Accidental delete protection, audit trail</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cross-Region Replication (CRR)</strong></td>
+                                            <td>Async replicate objects to another region</td>
+                                            <td>DR, compliance (multi-region copies), low-latency access</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Same-Region Replication (SRR)</strong></td>
+                                            <td>Replicate within the same region</td>
+                                            <td>Log aggregation, live copy between accounts</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>S3 Object Lock</strong></td>
+                                            <td>WORM (Write Once Read Many)</td>
+                                            <td>Regulatory compliance (SEC, HIPAA), ransomware protection</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>S3 Event Notifications</strong></td>
+                                            <td>Trigger Lambda/SQS/SNS/EventBridge on PUT/DELETE</td>
+                                            <td>Image processing, ETL pipelines, real-time analytics</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Pre-Signed URLs</strong></td>
+                                            <td>Temporary access to private objects</td>
+                                            <td>File upload/download without exposing credentials</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>S3 Transfer Acceleration</strong></td>
+                                            <td>Use CloudFront edges for faster uploads</td>
+                                            <td>Global users uploading to a single bucket</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Multipart Upload</strong></td>
+                                            <td>Upload large files in parallel parts</td>
+                                            <td>Required for files &gt;5GB, recommended for &gt;100MB</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>S3 Security Layers</h4>
+                                <ul>
+                                    <li><strong>Bucket Policy</strong> — Allow/deny access to the bucket and objects
+                                        (resource-based)</li>
+                                    <li><strong>Block Public Access</strong> — Account-level setting. Always enable. AWS
+                                        recommends ON for all accounts.</li>
+                                    <li><strong>OAC (Origin Access Control)</strong> — Only let CloudFront access S3.
+                                        Replace the legacy OAI.</li>
+                                    <li><strong>S3 Access Points</strong> — Named network endpoints with unique policies
+                                        per use case. Simplify shared bucket management.</li>
+                                </ul>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I enable versioning + CRR for critical data,
+                                            Block Public Access at the account level, Object Lock for compliance. For
+                                            serving S3 via CloudFront, I use OAC (not the legacy OAI). Pre-signed URLs
+                                            handle secure file uploads — never pass files through Lambda."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 3: EBS vs EFS vs FSx -->
+                    <article id="ebs-efs-fsx" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>EBS vs EFS vs FSx</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark EBS EFS FSx as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Feature</th>
+                                            <th>EBS</th>
+                                            <th>EFS</th>
+                                            <th>FSx for Lustre</th>
+                                            <th>FSx for Windows</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Type</strong></td>
+                                            <td>Block storage</td>
+                                            <td>NFS file system</td>
+                                            <td>High-performance parallel FS</td>
+                                            <td>SMB/Windows file server</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Attach</strong></td>
+                                            <td>Single EC2 (io1/io2 multi-attach)</td>
+                                            <td>1000s of EC2/ECS/Lambda</td>
+                                            <td>1000s of instances</td>
+                                            <td>Windows instances</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>AZ Scope</strong></td>
+                                            <td>Single AZ</td>
+                                            <td>Multi-AZ (regional)</td>
+                                            <td>Single AZ or linked to S3</td>
+                                            <td>Single or Multi-AZ</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Performance</strong></td>
+                                            <td>Up to 256K IOPS (io2)</td>
+                                            <td>Elastic throughput</td>
+                                            <td>Hundreds of GB/s</td>
+                                            <td>Up to 3 GB/s</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cost</strong></td>
+                                            <td>Lowest (gp3: $0.08/GB)</td>
+                                            <td>$0.30/GB (Standard)</td>
+                                            <td>$0.14/GB</td>
+                                            <td>$0.13/GB</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Use Case</strong></td>
+                                            <td>Boot volumes, databases, single-instance</td>
+                                            <td>Shared content, web servers, ML training data</td>
+                                            <td>HPC, ML training, genomics</td>
+                                            <td>Active Directory, .NET apps</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>EBS Volume Types (Know These)</h4>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>IOPS</th>
+                                            <th>Throughput</th>
+                                            <th>Use Case</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>gp3</strong></td>
+                                            <td>3,000 (baseline), 16K max</td>
+                                            <td>125 MB/s, 1,000 max</td>
+                                            <td>Default for most workloads (best price/performance)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>io2 Block Express</strong></td>
+                                            <td>Up to 256,000</td>
+                                            <td>4,000 MB/s</td>
+                                            <td>Critical databases (Oracle, SAP HANA)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>st1</strong></td>
+                                            <td>N/A (throughput-optimized)</td>
+                                            <td>Up to 500 MB/s</td>
+                                            <td>Big data, Hadoop, data warehouses</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>sc1</strong></td>
+                                            <td>N/A (cold storage)</td>
+                                            <td>Up to 250 MB/s</td>
+                                            <td>Infrequent access, lowest cost</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"EBS for single-instance block storage (gp3
+                                            is my default), EFS for shared NFS across multiple instances (containers,
+                                            Lambda), FSx for Lustre for HPC/ML workloads, FSx for Windows for Active
+                                            Directory environments. Always use gp3 over gp2 — same performance at 20%
+                                            lower cost."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 4: Data Transfer -->
+                    <article id="data-transfer" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>Data Transfer Strategies</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Data Transfer as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>How do you move terabytes/petabytes to AWS? This is a common migration question:</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Service</th>
+                                            <th>Data Volume</th>
+                                            <th>Speed</th>
+                                            <th>Use Case</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>S3 Transfer Acceleration</strong></td>
+                                            <td>Any size</td>
+                                            <td>Network speed via CloudFront edges</td>
+                                            <td>Global uploads to a single S3 bucket</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>AWS DataSync</strong></td>
+                                            <td>GB to TB</td>
+                                            <td>10 Gbps via agent</td>
+                                            <td>On-prem NFS/SMB → S3/EFS/FSx (recurring sync)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Snow Family (Snowcone)</strong></td>
+                                            <td>8-14 TB</td>
+                                            <td>Physical device</td>
+                                            <td>Edge computing, small data migration</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Snow Family (Snowball Edge)</strong></td>
+                                            <td>80-210 TB</td>
+                                            <td>Physical device, ~1 week</td>
+                                            <td>Large migration when network too slow</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>AWS Snowmobile</strong></td>
+                                            <td>Up to 100 PB</td>
+                                            <td>Shipping container truck</td>
+                                            <td>Datacenter-scale migration</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Direct Connect</strong></td>
+                                            <td>Continuous</td>
+                                            <td>1/10/100 Gbps dedicated</td>
+                                            <td>Ongoing hybrid workloads</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Decision Rule of Thumb</h4>
+                                <p><strong>If it takes more than 1 week to transfer over your network → use Snow
+                                        Family.</strong> Example: 100 TB over 1 Gbps connection = ~12 days. Use Snowball
+                                    Edge instead.</p>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I calculate transfer time first: if it's
+                                            over a week on the available bandwidth, I use Snowball Edge for offline
+                                            transfer. For ongoing sync, DataSync with a local agent. For global users
+                                            uploading files, S3 Transfer Acceleration via CloudFront edges. The key
+                                            insight is: network transfer doesn't scale linearly — physical device wins
+                                            for large volumes."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 5: Backup -->
+                    <article id="backup-strategy" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>Backup & Recovery Architecture</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Backup as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Service</th>
+                                            <th>What It Backs Up</th>
+                                            <th>Key Feature</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>AWS Backup</strong></td>
+                                            <td>EC2, EBS, RDS, DynamoDB, EFS, FSx, S3, Aurora</td>
+                                            <td>Central policy-based backup across all services. Cross-region,
+                                                cross-account vault.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>EBS Snapshots</strong></td>
+                                            <td>EBS volumes</td>
+                                            <td>Incremental, stored in S3. Can copy cross-region for DR.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>RDS Automated Backups</strong></td>
+                                            <td>RDS/Aurora databases</td>
+                                            <td>Point-in-time recovery (PITR) within retention window (up to 35 days).
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>DynamoDB PITR</strong></td>
+                                            <td>DynamoDB tables</td>
+                                            <td>Continuous backups, restore to any second in last 35 days.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>S3 Versioning + Replication</strong></td>
+                                            <td>S3 objects</td>
+                                            <td>Version history + cross-region copy for DR.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Backup Architecture Best Practices</h4>
+                                <ul>
+                                    <li><strong>Centralize with AWS Backup</strong> — One policy for all services.
+                                        Define backup frequency, retention, and cross-region vault copy.</li>
+                                    <li><strong>Cross-Account Vault</strong> — Copy backups to a separate "backup
+                                        account" for ransomware protection. The backup account has restricted access —
+                                        even if the production account is compromised, backups are safe.</li>
+                                    <li><strong>Immutable Backups</strong> — Use AWS Backup Vault Lock (WORM) to prevent
+                                        anyone from deleting backups before retention expires.</li>
+                                    <li><strong>Test Restores</strong> — Regularly test restoration to verify RTO. A
+                                        backup you can't restore is not a backup.</li>
+                                </ul>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I use AWS Backup as the central policy for
+                                            all services — daily backups with 30-day retention, copied to a
+                                            cross-account vault for ransomware protection, with Vault Lock for
+                                            immutability. For RDS/Aurora, I enable PITR so I can restore to any second.
+                                            For critical S3 data, versioning + CRR to a secondary region."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </main>
+    </div>
+    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu"><svg width="24" height="24"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg></button>
+    <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top"><svg
+            width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6" />
+        </svg></button>
+    <script src="js/page.js"></script>
+</body>
+
+</html>

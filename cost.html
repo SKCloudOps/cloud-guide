@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cost Optimization | Cloud Interview Guide</title>
+    <meta name="description"
+        content="Reserved Instances, Savings Plans, Spot, right-sizing, Cost Explorer, and cost allocation strategies." />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/devops.css" />
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+            <div class="sidebar-header"><a class="sidebar-logo" href="index.html">Cloud Interview Guide</a></div>
+            <nav class="sidebar-nav">
+                <div class="sidebar-nav-label">Categories</div>
+        <div class="nav-dropdown">
+                <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+                <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
+                <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
+                <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
+                <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
+                <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+                <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
+                <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+                <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+                <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+                <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+                <a href="cost.html" class="sidebar-link active">Cost Optimization <span class="count">4</span></a>
+                <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
+        </div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-progress-label">Study Progress</div>
+                <div class="sidebar-progress-bar">
+                    <div class="sidebar-progress-fill" id="progressFill"></div>
+                </div>
+                <div class="sidebar-progress-text" id="progressText">0 / 4 reviewed</div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+        <main class="content-area" role="main">
+            <div class="topbar">
+                <div class="topbar-inner">
+                    <div class="search-box">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="M21 21l-4.35-4.35" />
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+                    </div>
+                    <div class="difficulty-filters">
+                        <button class="filter-chip active" data-filter="all">All</button>
+                        <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+                        <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+                        <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+                    </div>
+                </div>
+            </div>
+            <div class="content-split">
+                <aside class="toc-sidebar" id="tocSidebar">
+                    <div class="toc-title">In This Section</div>
+                    <nav class="toc-nav" id="tocNav">
+                        <a href="#pricing-models" class="toc-link" data-section="pricing-models"><span
+                                class="toc-dot"></span>AWS Pricing Models</a>
+                        <a href="#right-sizing" class="toc-link" data-section="right-sizing"><span
+                                class="toc-dot"></span>Right-Sizing & Monitoring</a>
+                        <a href="#cost-governance" class="toc-link" data-section="cost-governance"><span
+                                class="toc-dot"></span>Cost Governance & Allocation</a>
+                        <a href="#cost-patterns" class="toc-link" data-section="cost-patterns"><span
+                                class="toc-dot"></span>Architecture Cost Patterns</a>
+                    </nav>
+                    <div class="toc-keyboard-hint"><kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+                    </div>
+                </aside>
+                <div class="content-panel">
+                    <header class="page-hero">
+                        <div class="hero-badge" style="background:linear-gradient(135deg,#f59e0b, #d97706)">Cost</div>
+                        <h1>Cost Optimization Interview Guide</h1>
+                        <p class="hero-lead">Pricing models, right-sizing, governance, and cost-efficient architectures
+                            — shows business awareness in interviews.</p>
+                        <div class="hero-stats">
+                            <div class="stat"><span class="stat-number">4</span><span class="stat-label">Topics</span>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- Topic 1: Pricing Models -->
+                    <article id="pricing-models" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>AWS Pricing Models</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Pricing as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Model</th>
+                                            <th>Discount</th>
+                                            <th>Commitment</th>
+                                            <th>Flexibility</th>
+                                            <th>Best For</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>On-Demand</strong></td>
+                                            <td>0% (baseline)</td>
+                                            <td>None</td>
+                                            <td>Start/stop anytime</td>
+                                            <td>Short-term, unpredictable, testing</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Savings Plans (Compute)</strong></td>
+                                            <td>Up to 66%</td>
+                                            <td>1 or 3 year $/hour</td>
+                                            <td>Any instance family, size, OS, region</td>
+                                            <td>Steady compute (EC2, Lambda, Fargate)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Savings Plans (EC2 Instance)</strong></td>
+                                            <td>Up to 72%</td>
+                                            <td>1 or 3 year $/hour</td>
+                                            <td>Specific instance family + region</td>
+                                            <td>Known instance family, highest savings</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Reserved Instances</strong></td>
+                                            <td>Up to 72%</td>
+                                            <td>1 or 3 year</td>
+                                            <td>Specific instance type + AZ (less flexible)</td>
+                                            <td>Databases (RDS RI), legacy</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Spot Instances</strong></td>
+                                            <td>Up to 90%</td>
+                                            <td>None (can be interrupted)</td>
+                                            <td>Any available capacity</td>
+                                            <td>Batch, CI/CD, ML training, stateless</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Savings Plans vs Reserved Instances</h4>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Aspect</th>
+                                            <th>Savings Plans</th>
+                                            <th>Reserved Instances</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Flexibility</strong></td>
+                                            <td>Change instance family, size, OS, region</td>
+                                            <td>Locked to specific instance type</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Applies To</strong></td>
+                                            <td>EC2, Fargate, Lambda</td>
+                                            <td>EC2, RDS, ElastiCache, Redshift, OpenSearch</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Recommendation</strong></td>
+                                            <td>✅ Preferred for EC2 compute</td>
+                                            <td>✅ Preferred for RDS, ElastiCache</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Spot Instance Strategies</h4>
+                                <ul>
+                                    <li><strong>Diversify instance types</strong> — Request multiple instance families
+                                        to reduce interruption (e.g., m5, m5a, m5n, m6i)</li>
+                                    <li><strong>Use Spot Fleet</strong> — Automatically requests capacity from the
+                                        cheapest available pools</li>
+                                    <li><strong>Handle interruptions</strong> — 2-minute warning. Save state to S3, use
+                                        SQS for job queues</li>
+                                    <li><strong>Best for:</strong> EKS node pools, EMR clusters, CI/CD builds, batch
+                                        processing</li>
+                                </ul>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I use a mix: Compute Savings Plans for
+                                            baseline steady-state (66% savings), Spot for stateless/fault-tolerant
+                                            workloads like EKS worker nodes (90% savings), and On-Demand for spikes. For
+                                            RDS/ElastiCache, I use Reserved Instances. This typically saves 40-60% vs
+                                            all On-Demand."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 2: Right-Sizing -->
+                    <article id="right-sizing" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>Right-Sizing & Monitoring</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Right-Sizing as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Right-sizing is the #1 cost optimization lever — most instances are oversized:</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tool</th>
+                                            <th>What It Does</th>
+                                            <th>Actionable Output</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>AWS Cost Explorer</strong></td>
+                                            <td>Visualize spend over time, forecast</td>
+                                            <td>RI/SP purchase recommendations</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>AWS Compute Optimizer</strong></td>
+                                            <td>ML-based right-sizing recommendations</td>
+                                            <td>"Downsize m5.xlarge → m5.large" with impact analysis</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>AWS Trusted Advisor</strong></td>
+                                            <td>Best practice checks across 5 pillars</td>
+                                            <td>Idle instances, underutilized EBS, unused EIPs</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>AWS Budgets</strong></td>
+                                            <td>Set cost/usage budgets with alerts</td>
+                                            <td>Email/SNS alert when 80%, 100% of budget hit</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cost Anomaly Detection</strong></td>
+                                            <td>ML-based detection of unexpected spend</td>
+                                            <td>"Your EC2 spend increased 300% — investigate"</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Top 5 Quick Wins</h4>
+                                <ol>
+                                    <li><strong>Delete unused resources</strong> — Unattached EBS volumes, unused EIPs,
+                                        idle load balancers</li>
+                                    <li><strong>Right-size EC2</strong> — If CPU &lt;20% average, downsize. Compute
+                                        Optimizer automates this.</li>
+                                    <li><strong>Use gp3 over gp2</strong> — Same baseline performance, 20% cheaper.
+                                        Immediate savings.</li>
+                                    <li><strong>S3 lifecycle policies</strong> — Transition old data to Glacier. Most S3
+                                        data is accessed &lt;30 days.</li>
+                                    <li><strong>NAT Gateway optimization</strong> — Use S3/DynamoDB Gateway Endpoints
+                                        (free) to avoid NAT data charges.</li>
+                                </ol>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"My cost optimization process: 1) Enable Cost
+                                            Explorer and set Budgets first, 2) Run Compute Optimizer for right-sizing,
+                                            3) Buy Savings Plans for steady-state, 4) Add Spot for fault-tolerant
+                                            workloads, 5) Lifecycle policies on all S3 buckets. This typically cuts
+                                            bills by 30-50%."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 3: Cost Governance -->
+                    <article id="cost-governance" class="topic-card" data-difficulty="advanced">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+                            <h2>Cost Governance & Allocation</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Cost Governance as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>Enterprise cost management — showing this in interviews demonstrates business
+                                    awareness:</p>
+                                <h4>Cost Allocation Strategy</h4>
+                                <ul>
+                                    <li><strong>Tagging</strong> — Tag every resource with Team, Environment, Project,
+                                        CostCenter. Enforce via SCP + AWS Config rules.</li>
+                                    <li><strong>Separate Accounts</strong> — One AWS account per environment (dev,
+                                        staging, prod) per team. Consolidated billing via Organizations.</li>
+                                    <li><strong>AWS Budgets</strong> — Per-account and per-tag budgets. Alert at 80%
+                                        threshold. Auto-actions: stop EC2, apply SCP.</li>
+                                </ul>
+
+                                <h4>FinOps Framework</h4>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Phase</th>
+                                            <th>Activities</th>
+                                            <th>AWS Tools</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Inform</strong></td>
+                                            <td>Visibility, allocation, reporting</td>
+                                            <td>Cost Explorer, Cost & Usage Report, QuickSight</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Optimize</strong></td>
+                                            <td>Right-size, commitments, architectural changes</td>
+                                            <td>Compute Optimizer, Savings Plans, Spot</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Operate</strong></td>
+                                            <td>Continuous monitoring, governance, culture</td>
+                                            <td>Budgets, Anomaly Detection, SCPs, Config rules</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I implement FinOps across three phases:
+                                            Inform (visibility via CUR + Cost Explorer), Optimize (Savings Plans,
+                                            right-sizing, Spot), Operate (Budgets with auto-actions, tagging enforcement
+                                            via SCPs). Cost tags are mandatory — I enforce them with AWS Config rules
+                                            that flag untagged resources."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 4: Architecture Cost Patterns -->
+                    <article id="cost-patterns" class="topic-card" data-difficulty="advanced">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+                            <h2>Cost-Efficient Architecture Patterns</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Cost Patterns as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Pattern</th>
+                                            <th>Expensive Way</th>
+                                            <th>Cost-Optimized Way</th>
+                                            <th>Savings</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>API Backend</strong></td>
+                                            <td>ALB + EC2 (always running)</td>
+                                            <td>API Gateway + Lambda (pay per request)</td>
+                                            <td>80%+ for low traffic</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Database</strong></td>
+                                            <td>RDS Multi-AZ provisioned</td>
+                                            <td>Aurora Serverless v2 (scales to zero ACUs)</td>
+                                            <td>60%+ for variable workloads</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Batch Processing</strong></td>
+                                            <td>EC2 On-Demand fleet</td>
+                                            <td>Spot Fleet + SQS job queue</td>
+                                            <td>Up to 90%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Static Hosting</strong></td>
+                                            <td>EC2 + Nginx</td>
+                                            <td>S3 + CloudFront</td>
+                                            <td>90%+ (no compute)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Container Workloads</strong></td>
+                                            <td>EKS with On-Demand nodes</td>
+                                            <td>EKS with Karpenter + Spot + Graviton</td>
+                                            <td>60-80%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Data Lake Queries</strong></td>
+                                            <td>Redshift always-on cluster</td>
+                                            <td>S3 + Athena (pay per query, $5/TB scanned)</td>
+                                            <td>80%+ for ad-hoc</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>The Hidden Costs (Interview Differentiator)</h4>
+                                <ul>
+                                    <li><strong>NAT Gateway</strong> — $0.045/GB data processing. Use VPC endpoints for
+                                        S3/DynamoDB to avoid.</li>
+                                    <li><strong>Data Transfer</strong> — Inter-AZ: $0.01/GB. Inter-Region: $0.02/GB. Use
+                                        VPC endpoints + same-AZ where possible.</li>
+                                    <li><strong>CloudWatch Logs</strong> — $0.50/GB ingestion. Use log levels wisely.
+                                        Set retention policies.</li>
+                                    <li><strong>Elastic IP</strong> — $0.005/hr when NOT attached. Delete unused EIPs.
+                                    </li>
+                                    <li><strong>EBS Snapshots</strong> — $0.05/GB. Old snapshots accumulate silently.
+                                        Use lifecycle policies.</li>
+                                </ul>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I architect for cost from day one:
+                                            serverless for variable workloads (pay-per-use), Spot for fault-tolerant
+                                            compute, Graviton for 20% savings. The hidden costs most teams miss are NAT
+                                            Gateway data processing, inter-AZ transfer, and CloudWatch log ingestion. I
+                                            set VPC endpoints for S3/DynamoDB and log retention policies as standard
+                                            practice."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </main>
+    </div>
+    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu"><svg width="24" height="24"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg></button>
+    <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top"><svg
+            width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6" />
+        </svg></button>
+    <script src="js/page.js"></script>
+</body>
+
+</html>

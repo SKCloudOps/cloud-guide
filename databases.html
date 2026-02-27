@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Databases | Cloud Interview Guide</title>
+    <meta name="description"
+        content="RDS vs Aurora vs DynamoDB, ElastiCache, Redshift, database migration DMS, read replicas, and Global Tables." />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/devops.css" />
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+            <div class="sidebar-header"><a class="sidebar-logo" href="index.html">Cloud Interview Guide</a></div>
+            <nav class="sidebar-nav">
+                <div class="sidebar-nav-label">Categories</div>
+        <div class="nav-dropdown">
+                <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+                <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
+                <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
+                <a href="databases.html" class="sidebar-link active">Databases <span class="count">5</span></a>
+                <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
+                <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+                <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
+                <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+                <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+                <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+                <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+                <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
+                <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
+        </div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-progress-label">Study Progress</div>
+                <div class="sidebar-progress-bar">
+                    <div class="sidebar-progress-fill" id="progressFill"></div>
+                </div>
+                <div class="sidebar-progress-text" id="progressText">0 / 5 reviewed</div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+        <main class="content-area" role="main">
+            <div class="topbar">
+                <div class="topbar-inner">
+                    <div class="search-box">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="M21 21l-4.35-4.35" />
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+                    </div>
+                    <div class="difficulty-filters">
+                        <button class="filter-chip active" data-filter="all">All</button>
+                        <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+                        <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+                        <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+                    </div>
+                </div>
+            </div>
+            <div class="content-split">
+                <aside class="toc-sidebar" id="tocSidebar">
+                    <div class="toc-title">In This Section</div>
+                    <nav class="toc-nav" id="tocNav">
+                        <a href="#db-selection" class="toc-link" data-section="db-selection"><span
+                                class="toc-dot"></span>Database Selection Framework</a>
+                        <a href="#rds-aurora" class="toc-link" data-section="rds-aurora"><span
+                                class="toc-dot"></span>RDS vs Aurora Deep Dive</a>
+                        <a href="#dynamodb" class="toc-link" data-section="dynamodb"><span
+                                class="toc-dot"></span>DynamoDB Architect Patterns</a>
+                        <a href="#caching" class="toc-link" data-section="caching"><span class="toc-dot"></span>Caching
+                            — ElastiCache & DAX</a>
+                        <a href="#migration" class="toc-link" data-section="migration"><span
+                                class="toc-dot"></span>Database Migration (DMS/SCT)</a>
+                    </nav>
+                    <div class="toc-keyboard-hint"><kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+                    </div>
+                </aside>
+                <div class="content-panel">
+                    <header class="page-hero">
+                        <div class="hero-badge" style="background:linear-gradient(135deg,#8b5cf6, #6d28d9)">Databases
+                        </div>
+                        <h1>Database Interview Guide</h1>
+                        <p class="hero-lead">Database selection, RDS vs Aurora vs DynamoDB, caching, and migration —
+                            asked in every SA interview.</p>
+                        <div class="hero-stats">
+                            <div class="stat"><span class="stat-number">5</span><span class="stat-label">Topics</span>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- Topic 1: Database Selection -->
+                    <article id="db-selection" class="topic-card" data-difficulty="advanced">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+                            <h2>Database Selection Framework</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark DB Selection as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>The #1 SA interview question: "Which database would you use?" — here's the decision
+                                    matrix:</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Requirement</th>
+                                            <th>Best Choice</th>
+                                            <th>Why</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Relational + complex queries</strong></td>
+                                            <td>Aurora (PostgreSQL/MySQL)</td>
+                                            <td>5x throughput of standard MySQL, auto-scaling storage, multi-AZ</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Key-value, &lt;10ms, any scale</strong></td>
+                                            <td>DynamoDB</td>
+                                            <td>Serverless, single-digit ms latency, unlimited scale, on-demand pricing
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Sub-millisecond caching</strong></td>
+                                            <td>ElastiCache (Redis)</td>
+                                            <td>In-memory, supports complex data structures, pub/sub</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Data warehouse / analytics</strong></td>
+                                            <td>Redshift</td>
+                                            <td>Columnar storage, MPP, optimized for OLAP queries on petabytes</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Document / flexible schema</strong></td>
+                                            <td>DocumentDB</td>
+                                            <td>MongoDB-compatible, managed, scales to millions of reads/writes</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Graph relationships</strong></td>
+                                            <td>Neptune</td>
+                                            <td>Social networks, fraud detection, knowledge graphs</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Time-series / IoT</strong></td>
+                                            <td>Timestream</td>
+                                            <td>Purpose-built for time-series with built-in analytics</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Ledger / immutable</strong></td>
+                                            <td>QLDB</td>
+                                            <td>Cryptographically verifiable transaction log</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>In-memory + durability</strong></td>
+                                            <td>MemoryDB for Redis</td>
+                                            <td>Redis-compatible with multi-AZ durable storage</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>The Decision Tree (Interview Framework)</h4>
+                                <ol>
+                                    <li><strong>Need SQL joins/transactions?</strong> → Yes: Aurora. No: continue.</li>
+                                    <li><strong>Simple key-value access patterns?</strong> → Yes: DynamoDB. No:
+                                        continue.</li>
+                                    <li><strong>Need caching layer?</strong> → Yes: ElastiCache Redis. No: continue.
+                                    </li>
+                                    <li><strong>Analytics on large datasets?</strong> → Yes: Redshift or Athena
+                                        (serverless). No: continue.</li>
+                                    <li><strong>Graph relationships?</strong> → Yes: Neptune. No: check remaining
+                                        options.</li>
+                                </ol>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I start with the access pattern: if I need
+                                            complex SQL joins and ACID transactions, Aurora. If simple get/put with
+                                            massive scale, DynamoDB. For analytics, Redshift. I always add ElastiCache
+                                            in front for hot data — even a simple cache reduces RDS load by 90%."</em>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 2: RDS vs Aurora -->
+                    <article id="rds-aurora" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>RDS vs Aurora Deep Dive</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark RDS Aurora as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Feature</th>
+                                            <th>RDS</th>
+                                            <th>Aurora</th>
+                                            <th>Aurora Serverless v2</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Engines</strong></td>
+                                            <td>MySQL, PostgreSQL, MariaDB, Oracle, SQL Server</td>
+                                            <td>MySQL, PostgreSQL only</td>
+                                            <td>MySQL, PostgreSQL only</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Storage</strong></td>
+                                            <td>EBS (gp3/io1), manual scaling</td>
+                                            <td>Auto-scales 10GB → 128TB, 6 copies across 3 AZs</td>
+                                            <td>Same as Aurora</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Read Replicas</strong></td>
+                                            <td>Up to 15 (async)</td>
+                                            <td>Up to 15 (shared storage, ~10ms lag)</td>
+                                            <td>Same as Aurora</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Failover</strong></td>
+                                            <td>~60-120 seconds</td>
+                                            <td>~30 seconds (faster with reader)</td>
+                                            <td>~30 seconds</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Scaling</strong></td>
+                                            <td>Manual instance resize (downtime)</td>
+                                            <td>Add readers, instance resize</td>
+                                            <td>Auto-scales 0.5 → 128 ACUs with load</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cost</strong></td>
+                                            <td>Lower starting point</td>
+                                            <td>~20% more than RDS</td>
+                                            <td>Pay per ACU-hour (can scale to zero)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Global</strong></td>
+                                            <td>Cross-region read replicas (minutes lag)</td>
+                                            <td>Global Database (&lt;1 second lag, 5 secondary regions)</td>
+                                            <td>Not supported yet</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Best For</strong></td>
+                                            <td>Small/medium, Oracle/SQL Server</td>
+                                            <td>Production MySQL/PostgreSQL</td>
+                                            <td>Variable/unpredictable workloads</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Aurora Storage Architecture (Know This)</h4>
+                                <p>Aurora stores data in a shared, distributed storage layer: <strong>6 copies across 3
+                                        AZs</strong>. It can lose 2 copies and still write, lose 3 and still read.
+                                    Storage auto-heals — bad segments are automatically repaired. This is why Aurora has
+                                    sub-30-second failover.</p>
+
+                                <h4>Multi-AZ vs Read Replicas</h4>
+                                <ul>
+                                    <li><strong>Multi-AZ:</strong> Standby instance for HA (automatic failover). Cannot
+                                        serve reads. Purpose: availability.</li>
+                                    <li><strong>Read Replica:</strong> Separate instance that serves read queries. Can
+                                        be promoted to primary. Purpose: read scaling.</li>
+                                    <li><strong>Aurora:</strong> Every reader is also a failover target. Multi-AZ + read
+                                        scaling in one.</li>
+                                </ul>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I always recommend Aurora over standard RDS
+                                            for production MySQL/PostgreSQL. Aurora's storage layer (6 copies, 3 AZs,
+                                            auto-healing) gives better durability and 30-second failover. For
+                                            unpredictable workloads, Aurora Serverless v2 auto-scales ACUs. For
+                                            multi-region, Aurora Global Database provides &lt;1 second
+                                            replication."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 3: DynamoDB -->
+                    <article id="dynamodb" class="topic-card" data-difficulty="advanced">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+                            <h2>DynamoDB Architect Patterns</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark DynamoDB as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <p>DynamoDB is THE go-to for serverless and high-scale architectures:</p>
+                                <h4>Key Concepts</h4>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Concept</th>
+                                            <th>What</th>
+                                            <th>Why It Matters</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Partition Key (PK)</strong></td>
+                                            <td>Required. Determines which partition stores the item.</td>
+                                            <td>Bad PK = hot partition = throttling. Use high-cardinality keys.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Sort Key (SK)</strong></td>
+                                            <td>Optional. Enables range queries within a partition.</td>
+                                            <td>Design SK to support your query patterns (e.g., ORDER#timestamp).</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>GSI</strong></td>
+                                            <td>Global Secondary Index — different PK/SK</td>
+                                            <td>Enables queries on non-key attributes. Has its own throughput.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>LSI</strong></td>
+                                            <td>Local Secondary Index — same PK, different SK</td>
+                                            <td>Must be created at table creation. Shares table throughput.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Single-Table Design</strong></td>
+                                            <td>Store multiple entity types in one table</td>
+                                            <td>Reduces costs, enables transactional operations across entities.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Capacity Modes</h4>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Mode</th>
+                                            <th>Best For</th>
+                                            <th>Cost</th>
+                                            <th>Scaling</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>On-Demand</strong></td>
+                                            <td>Unpredictable, new apps, spiky traffic</td>
+                                            <td>~6x provisioned price per request</td>
+                                            <td>Instant, automatic</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Provisioned</strong></td>
+                                            <td>Predictable, steady workloads</td>
+                                            <td>Lowest (with auto-scaling)</td>
+                                            <td>Auto-scaling with target utilization</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Reserved Capacity</strong></td>
+                                            <td>Committed steady workload</td>
+                                            <td>Up to 77% savings</td>
+                                            <td>Fixed capacity</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>DynamoDB Streams + EventBridge</h4>
+                                <p><strong>Pattern:</strong> DynamoDB Streams captures every item change (INSERT,
+                                    MODIFY, DELETE) → triggers Lambda → fan-out via EventBridge to downstream services.
+                                    This is the CDC (Change Data Capture) pattern for real-time event-driven
+                                    architectures.</p>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I design DynamoDB tables
+                                            access-pattern-first: identify all queries before choosing PK/SK. I use
+                                            single-table design to colocate related entities, On-Demand mode for new
+                                            apps, then switch to Provisioned with auto-scaling once traffic is
+                                            predictable. DynamoDB Streams + Lambda powers real-time event
+                                            processing."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 4: Caching -->
+                    <article id="caching" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>Caching — ElastiCache & DAX</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Caching as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Service</th>
+                                            <th>Engine</th>
+                                            <th>Latency</th>
+                                            <th>Best For</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>ElastiCache Redis</strong></td>
+                                            <td>Redis (in-memory)</td>
+                                            <td>Sub-millisecond</td>
+                                            <td>Session store, leaderboards, pub/sub, complex data types</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ElastiCache Memcached</strong></td>
+                                            <td>Memcached (in-memory)</td>
+                                            <td>Sub-millisecond</td>
+                                            <td>Simple key-value caching, multi-threaded</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>DAX</strong></td>
+                                            <td>DynamoDB-native cache</td>
+                                            <td>Microseconds</td>
+                                            <td>DynamoDB read-heavy workloads (drop-in, no code change)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>CloudFront</strong></td>
+                                            <td>CDN edge cache</td>
+                                            <td>Edge-level</td>
+                                            <td>Static assets, API responses at the edge</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Caching Strategies</h4>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Strategy</th>
+                                            <th>How</th>
+                                            <th>Use When</th>
+                                            <th>Trade-off</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Lazy Loading (Cache-Aside)</strong></td>
+                                            <td>App checks cache → miss → read DB → write to cache</td>
+                                            <td>Most cases, default strategy</td>
+                                            <td>First read is always a miss (cold start)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Write-Through</strong></td>
+                                            <td>Write to cache AND DB on every write</td>
+                                            <td>Data must always be in cache</td>
+                                            <td>Higher write latency, cache may hold unused data</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Write-Behind</strong></td>
+                                            <td>Write to cache → async write to DB later</td>
+                                            <td>High write throughput</td>
+                                            <td>Risk of data loss if cache crashes</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>TTL</strong></td>
+                                            <td>Set expiration time on cached items</td>
+                                            <td>Always — prevents stale data</td>
+                                            <td>Must balance freshness vs hit rate</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I use lazy loading with TTL as my default
+                                            caching strategy — it handles cache misses gracefully and TTL prevents stale
+                                            data. For DynamoDB reads, DAX gives microsecond latency with zero code
+                                            changes. Redis is my choice over Memcached because it supports pub/sub,
+                                            sorted sets, and persistence."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 5: Database Migration -->
+                    <article id="migration" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
+                            </div>
+                            <h2>Database Migration (DMS & SCT)</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark Migration as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tool</th>
+                                            <th>Purpose</th>
+                                            <th>Migration Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>DMS (Database Migration Service)</strong></td>
+                                            <td>Migrate data between databases (including during operation)</td>
+                                            <td>Homogeneous (MySQL → MySQL) or Heterogeneous (Oracle → Aurora)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>SCT (Schema Conversion Tool)</strong></td>
+                                            <td>Convert schema + stored procedures between engines</td>
+                                            <td>Heterogeneous only (e.g., Oracle → PostgreSQL)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>DMS Migration Modes</h4>
+                                <ul>
+                                    <li><strong>Full Load</strong> — One-time migration of all existing data</li>
+                                    <li><strong>CDC (Change Data Capture)</strong> — Continuous replication of changes
+                                        after full load</li>
+                                    <li><strong>Full Load + CDC</strong> — Most common: migrate everything, then keep
+                                        syncing until cutover</li>
+                                </ul>
+
+                                <h4>Migration Strategy</h4>
+                                <ol>
+                                    <li><strong>Assessment:</strong> Run SCT to analyze schema compatibility and
+                                        identify conversion issues</li>
+                                    <li><strong>Schema conversion:</strong> SCT converts schema, stored procedures,
+                                        triggers</li>
+                                    <li><strong>Full load:</strong> DMS migrates all existing data to the target</li>
+                                    <li><strong>CDC replication:</strong> DMS continuously replicates changes while
+                                        source is live</li>
+                                    <li><strong>Cutover:</strong> Stop writes to source → verify target → switch
+                                        application connection string</li>
+                                </ol>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"For database migration, I use DMS with Full
+                                            Load + CDC for near-zero downtime. For heterogeneous (Oracle → Aurora), I
+                                            run SCT first to convert the schema, then DMS for data migration. During
+                                            CDC, the source stays live — we cut over only when the replication lag is
+                                            zero."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </main>
+    </div>
+    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu"><svg width="24" height="24"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg></button>
+    <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top"><svg
+            width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6" />
+        </svg></button>
+    <script src="js/page.js"></script>
+</body>
+
+</html>

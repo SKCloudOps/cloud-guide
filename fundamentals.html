@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/devops.css" />
 </head>
+
 <body>
   <div class="app-layout">
     <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
@@ -16,20 +18,31 @@
       </div>
       <nav class="sidebar-nav">
         <div class="sidebar-nav-label">Categories</div>
-        <a href="aws.html" class="sidebar-link">AWS <span class="count">7</span></a>
+        
+        <div class="nav-dropdown">
+        <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+        <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
+        <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
+        <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
+        <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
         <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+        <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
         <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
         <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
-        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
         <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+        <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
         <a href="fundamentals.html" class="sidebar-link active">Fundamentals <span class="count">2</span></a>
         <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
         <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
         <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">12</span></a>
+        </div>
       </nav>
       <div class="sidebar-footer">
         <div class="sidebar-progress-label">Study Progress</div>
-        <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progressFill"></div></div>
+        <div class="sidebar-progress-bar">
+          <div class="sidebar-progress-fill" id="progressFill"></div>
+        </div>
         <div class="sidebar-progress-text" id="progressText">0 / 2 reviewed</div>
       </div>
     </aside>
@@ -38,7 +51,10 @@
       <div class="topbar">
         <div class="topbar-inner">
           <div class="search-box">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" />
+            </svg>
             <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
           </div>
           <div class="difficulty-filters">
@@ -53,8 +69,10 @@
         <aside class="toc-sidebar" id="tocSidebar">
           <div class="toc-title">In This Section</div>
           <nav class="toc-nav" id="tocNav">
-            <a href="#ip-vs-url" class="toc-link" data-section="ip-vs-url"><span class="toc-dot"></span>IP Address Vs URL</a>
-            <a href="#what-happens-url" class="toc-link" data-section="what-happens-url"><span class="toc-dot"></span>What Happens When You Type an URL</a>
+            <a href="#ip-vs-url" class="toc-link" data-section="ip-vs-url"><span class="toc-dot"></span>IP Address Vs
+              URL</a>
+            <a href="#what-happens-url" class="toc-link" data-section="what-happens-url"><span
+                class="toc-dot"></span>What Happens When You Type an URL</a>
           </nav>
           <div class="toc-keyboard-hint">
             <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
@@ -82,30 +100,110 @@
                 <span class="difficulty-badge beginner">Beginner</span>
               </div>
               <h2>IP Address Vs URL</h2>
-              <button class="review-btn" title="Mark as reviewed" aria-label="Mark IP Address Vs URL as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark IP Address Vs URL as reviewed"><svg
+                  width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
               <div class="topic-body">
-              <div class="answer-block incorrect">
-                <h4>Bad Answer</h4>
-                <p>URL is a link assigned to an IP address.</p>
+                <div class="answer-block incorrect">
+                  <h4>Bad Answer</h4>
+                  <p>URL is a link assigned to an IP address.</p>
+                </div>
+                <div class="answer-block correct">
+                  <h4>Correct Answer</h4>
+                  <p>An IP address is a unique number identifying a device on a network. A URL (Uniform Resource
+                    Locator) is a human-friendly address that gets resolved to an IP via DNS. Critically, in production
+                    architectures, <strong>one URL does NOT map to one IP</strong> — it maps to a <strong>Load
+                      Balancer</strong> that distributes traffic across multiple servers with different IPs.</p>
+                </div>
+
+                <h4>IP Address Types (Know These for Interviews)</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Scope</th>
+                      <th>AWS Example</th>
+                      <th>Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Private IP</strong></td>
+                      <td>Internal to VPC only</td>
+                      <td>10.0.1.23 (assigned to EC2 in VPC)</td>
+                      <td>Non-routable on internet. Free. Used for internal communication.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Public IP</strong></td>
+                      <td>Internet-reachable</td>
+                      <td>54.123.45.67 (auto-assigned)</td>
+                      <td>Changes on instance stop/start. Don't rely on it.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Elastic IP</strong></td>
+                      <td>Static public IP you own</td>
+                      <td>Attached to EC2 or NAT Gateway</td>
+                      <td>$0.005/hr when NOT attached. Free when in use. Max 5 per region by default.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>IPv6</strong></td>
+                      <td>128-bit address</td>
+                      <td>Dual-stack VPCs, ALB, CloudFront</td>
+                      <td>No NAT needed — every IPv6 is globally unique. AWS VPCs support dual-stack.</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h4>DNS Record Types (Quick Reference)</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Record</th>
+                      <th>Maps</th>
+                      <th>AWS Use Case</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>A</strong></td>
+                      <td>Domain → IPv4 address</td>
+                      <td>EC2 instance, NLB</td>
+                    </tr>
+                    <tr>
+                      <td><strong>AAAA</strong></td>
+                      <td>Domain → IPv6 address</td>
+                      <td>Dual-stack ALB</td>
+                    </tr>
+                    <tr>
+                      <td><strong>CNAME</strong></td>
+                      <td>Domain → another domain</td>
+                      <td>Cannot be used at zone apex (e.g., example.com)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Alias (AWS)</strong></td>
+                      <td>Domain → AWS resource</td>
+                      <td>CloudFront, ALB, S3, API Gateway. Free, works at zone apex.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>MX</strong></td>
+                      <td>Domain → mail server</td>
+                      <td>Amazon SES, WorkMail</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> Show AWS awareness: <em>"In AWS, I'd use Route 53 Alias records
+                      (free, zone-apex compatible) pointing to an ALB, not individual EC2 IPs. The ALB handles health
+                      checks and distributes traffic across targets in multiple AZs. For static IPs (needed by
+                      firewalls), I'd use a Network Load Balancer or Global Accelerator."</em></p>
+                </div>
               </div>
-              <div class="answer-block correct">
-                <h4>Correct Answer</h4>
-                <p>IP Address is a unique number that identifies a device connected to the internet, such as a Virtual
-                  Machine running your application. However, accessing a resource using this unique number is
-                  cumbersome; moreover, when a VM goes down, a new VM comes up to replace it with a <strong>different IP
-                    address</strong>.</p>
-                <p>Hence, in reality, applications running inside VMs are accessed using a <strong>URL (Uniform Resource
-                    Locator)</strong>. One URL does generally NOT map to one IP address; rather, the URL (e.g.
-                  www.amazon.com) is mapped to a <strong>Load Balancer</strong>, and that Load Balancer distributes
-                  traffic to multiple VMs with different IP addresses.</p>
-                <p>Even if one VM goes down and another comes up, the Load Balancer using a URL always works because it
-                  appropriately distributes traffic across healthy instances. This way, you (the user) do not need to
-                  worry about the underlying IP addresses.</p>
-              </div>
-            </div>
             </div>
           </article>
 
@@ -115,34 +213,95 @@
                 <span class="difficulty-badge beginner">Beginner</span>
               </div>
               <h2>What Happens When You Type an URL</h2>
-              <button class="review-btn" title="Mark as reviewed" aria-label="Mark What Happens When You Type an URL as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></button>
+              <button class="review-btn" title="Mark as reviewed"
+                aria-label="Mark What Happens When You Type an URL as reviewed"><svg width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
               <div class="topic-body">
-              <p>The complete end-to-end flow when you type <code>www.example.com</code> in your browser:</p>
-              <ol>
-                <li><strong>DNS Resolution</strong> — The browser checks its cache, then the OS cache, then queries a
-                  DNS resolver (e.g., Route 53) to translate the domain name into an IP address. The resolver may query
-                  root servers, TLD servers, and authoritative name servers.</li>
-                <li><strong>TCP Connection</strong> — The browser initiates a TCP three-way handshake (SYN, SYN-ACK,
-                  ACK) with the server at the resolved IP address to establish a reliable connection.</li>
-                <li><strong>TLS Handshake</strong> — For HTTPS, a TLS handshake follows. The client and server agree on
-                  encryption algorithms, exchange certificates, and establish a shared secret for encrypted
-                  communication.</li>
-                <li><strong>HTTP Request</strong> — The browser sends an HTTP GET request (with headers: User-Agent,
-                  Accept, cookies, etc.) to the server requesting the page.</li>
-                <li><strong>Server Processing</strong> — The server (or Load Balancer &rarr; application server)
-                  processes the request, queries databases if needed, and generates the HTML response.</li>
-                <li><strong>HTTP Response</strong> — The server sends back an HTTP response (status code 200 OK,
-                  headers, and the HTML body).</li>
-                <li><strong>Browser Rendering</strong> — The browser parses HTML, builds the DOM tree, fetches
-                  additional resources (CSS, JS, images), constructs the render tree, and paints the page on screen.
-                </li>
-              </ol>
-              <p><strong>Interview tip:</strong> This question tests your understanding of networking fundamentals, DNS,
-                TLS, HTTP, and how web applications work end-to-end. Be ready to go deep on any step.</p>
-            </div>
+                <p>The complete end-to-end flow when you type <code>www.example.com</code> in your browser — mapped to
+                  AWS services:</p>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Step</th>
+                      <th>What Happens</th>
+                      <th>AWS Service</th>
+                      <th>Latency</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>1. DNS Resolution</strong></td>
+                      <td>Browser checks cache → OS cache → DNS resolver queries root → TLD → authoritative nameserver
+                      </td>
+                      <td>Route 53 (authoritative DNS)</td>
+                      <td>~1-50ms (cached) to ~100ms (cold)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>2. TCP Handshake</strong></td>
+                      <td>Three-way handshake: SYN → SYN-ACK → ACK establishes reliable connection</td>
+                      <td>ALB / CloudFront edge</td>
+                      <td>~1 RTT (round-trip time)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>3. TLS Handshake</strong></td>
+                      <td>Client & server agree on encryption, exchange certificates, establish shared secret</td>
+                      <td>ACM (free TLS certs), CloudFront terminates TLS at edge</td>
+                      <td>~1-2 RTTs</td>
+                    </tr>
+                    <tr>
+                      <td><strong>4. HTTP Request</strong></td>
+                      <td>Browser sends GET request with headers (User-Agent, cookies, Accept)</td>
+                      <td>CloudFront checks cache → ALB → Target Group</td>
+                      <td>~0ms if CDN cache hit</td>
+                    </tr>
+                    <tr>
+                      <td><strong>5. Server Processing</strong></td>
+                      <td>LB routes to app server, which queries DB and generates response</td>
+                      <td>EC2/Lambda/ECS + RDS/DynamoDB</td>
+                      <td>~5-500ms (varies)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>6. HTTP Response</strong></td>
+                      <td>Server returns status code (200), headers, HTML body</td>
+                      <td>Response cached at CloudFront edge for future requests</td>
+                      <td>—</td>
+                    </tr>
+                    <tr>
+                      <td><strong>7. Browser Rendering</strong></td>
+                      <td>Parse HTML → build DOM → fetch CSS/JS/images → render tree → paint</td>
+                      <td>Additional assets may come from S3/CloudFront</td>
+                      <td>~100-2000ms</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h4>Performance Optimization at Each Layer</h4>
+                <ul>
+                  <li><strong>DNS:</strong> Route 53 latency-based routing routes users to the nearest region</li>
+                  <li><strong>TLS:</strong> CloudFront terminates TLS at the edge (450+ PoPs) — users connect to nearby
+                    edge, not distant origin</li>
+                  <li><strong>HTTP:</strong> CloudFront caches static assets. Set proper <code>Cache-Control</code>
+                    headers. Use HTTP/2 and HTTP/3.</li>
+                  <li><strong>Server:</strong> Use ElastiCache/DAX to cache DB queries. Use read replicas for read-heavy
+                    workloads.</li>
+                  <li><strong>Rendering:</strong> Serve pre-compressed assets (gzip/Brotli from CloudFront). Lazy-load
+                    images.</li>
+                </ul>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> Map each step to AWS services to show cloud awareness: <em>"Route
+                      53 resolves DNS with latency-based routing, CloudFront terminates TLS at the edge and serves
+                      cached content, ALB distributes to healthy targets across AZs, the app queries DynamoDB/RDS with
+                      ElastiCache in front for hot data. Total time: sub-100ms for cached content, 200-500ms for
+                      dynamic."</em></p>
+                </div>
+              </div>
             </div>
           </article>
         </div>
@@ -150,11 +309,17 @@
     </main>
   </div>
   <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18" />
+    </svg>
   </button>
   <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 15l-6-6-6 6" />
+    </svg>
   </button>
   <script src="js/page.js"></script>
 </body>
+
 </html>
