@@ -480,7 +480,93 @@
             <div class="topic-card-body">
               <div class="topic-body">
                 <p>Gen AI is the hottest interview topic in 2025-2026. These questions test your ability to architect AI-powered applications, not just use APIs.</p>
-                <ol class="interview-questions-list">
+                <div class="iq-controls">
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.add('open'))">Show All Answers</button>
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.remove('open'))">Hide All</button>
+                                </div>
+                                <ol class="iq-list">
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">When would you use prompt engineering vs RAG vs fine-tuning? A legal team wants to build a chatbot that answers questions about their 50,000 internal legal documents. Which approach do you recommend?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">RAG — the documents change frequently (new cases, updated contracts), fine-tuning would require constant retraining. RAG retrieves relevant document chunks at query time. Prompt engineering alone can't inject 50K documents into context. Fine-tuning is for changing model behavior/style, not adding knowledge.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design a RAG architecture on AWS. Walk through the complete flow from document ingestion to user query response. Which vector database would you choose and why?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Ingestion: S3 → Bedrock Knowledge Base (auto-chunks, embeds, indexes). Query: user prompt → embedding → vector search → top-K chunks → LLM with context. Vector DB options: OpenSearch Serverless (managed, scales), Aurora pgvector (existing PostgreSQL), Pinecone (purpose-built). Choice depends on existing infrastructure and scale.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your RAG chatbot is returning inaccurate answers. Users report it "hallucinates" facts that aren't in the source documents. What are three strategies to improve accuracy?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">1) Better chunking strategy (smaller chunks, overlap, semantic chunking). 2) Metadata filtering (restrict search to relevant document categories). 3) Bedrock Guardrails (ground truth checks, citation requirements). Also: hybrid search (keyword + semantic), re-ranking retrieved chunks, and prompt engineering to instruct "only answer from provided context."</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Compare Bedrock vs SageMaker for deploying a Gen AI application. A startup with 2 ML engineers wants to build a customer support chatbot. Which platform and why?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Bedrock — fully managed, API-based, no infrastructure. Perfect for a small team that wants to focus on the application, not model hosting. SageMaker for: custom model training, fine-tuning at scale, full control over inference infrastructure, teams with deep ML expertise. Bedrock for application builders, SageMaker for model builders.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">How would you implement guardrails for a Gen AI application in a regulated industry (banking/healthcare)? What specific risks do you need to mitigate?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Bedrock Guardrails: content filtering (block harmful content), PII detection/redaction, topic denial (prevent off-topic responses), word filters, grounding checks. Additional: input/output logging to S3 (audit trail), VPC endpoints for Bedrock (no public internet), IAM for model access control. Risks: hallucinations, data leakage, prompt injection.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A customer wants their Gen AI app to take actions — book meetings, query databases, send emails — not just answer questions. Design the architecture using Bedrock Agents.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Bedrock Agents with Action Groups. Define tools (Lambda functions for each action: book_meeting, query_db, send_email). Agent uses ReAct pattern: reason about user intent → select tool → execute → return result. Include: OpenAPI schema for each action, session management for multi-turn conversations, guardrails to limit which actions are allowed.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your Gen AI application uses Claude on Bedrock. The API costs are 
                   <li>When would you use prompt engineering vs RAG vs fine-tuning? A legal team wants to build a chatbot that answers questions about their 50,000 internal legal documents. Which approach do you recommend?
                     <span class="iq-hint">Hint: RAG — the documents change frequently (new cases, updated contracts), fine-tuning would require constant retraining. RAG retrieves relevant document chunks at query time. Prompt engineering alone can't inject 50K documents into context. Fine-tuning is for changing model behavior/style, not adding knowledge.</span>
                   </li>
@@ -511,7 +597,56 @@
                   <li>Design a multi-model architecture where different LLMs handle different types of queries. How do you route requests to the right model and handle fallback if a model is unavailable?
                     <span class="iq-hint">Hint: Router Lambda classifies intent → routes to appropriate model (Haiku for FAQ, Sonnet for complex reasoning, Claude for code generation). Step Functions orchestrates with fallback: primary model timeout → retry → fallback model. Cost optimization: cheapest model that meets quality threshold. Use Bedrock's multi-model endpoints or custom routing logic.</span>
                   </li>
-                </ol>
+                0,000/month with 100,000 requests/day. The CEO asks you to cut costs by 60%. What strategies would you use?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">1) Prompt caching (cache common prefixes). 2) Model routing — use a smaller/cheaper model (Haiku) for simple queries, Sonnet for complex ones. 3) Response caching (cache identical queries in ElastiCache). 4) Prompt optimization (shorter prompts = fewer tokens). 5) Batch API for non-real-time workloads (50% cheaper).</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Explain the difference between embedding models and generation models. Why does a RAG system need both? What happens if you use a poor-quality embedding model?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Embedding models convert text to vectors (for search/retrieval). Generation models produce text (answers). RAG needs embeddings to find relevant chunks, then a generator to compose the answer. Poor embeddings → wrong chunks retrieved → irrelevant or wrong answers regardless of how good the generator is. Embedding quality is the foundation of RAG accuracy.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">How do you evaluate the quality of a Gen AI application? A product manager asks "how do we know if our chatbot is getting better?" Define the metrics and evaluation approach.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Metrics: relevance (does the answer address the question?), groundedness (is it supported by source documents?), coherence, completeness, toxicity. Approaches: human evaluation (gold standard), LLM-as-judge (use a model to evaluate another model), RAGAS framework for RAG-specific metrics. A/B testing in production with user feedback.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design a multi-model architecture where different LLMs handle different types of queries. How do you route requests to the right model and handle fallback if a model is unavailable?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Router Lambda classifies intent → routes to appropriate model (Haiku for FAQ, Sonnet for complex reasoning, Claude for code generation). Step Functions orchestrates with fallback: primary model timeout → retry → fallback model. Cost optimization: cheapest model that meets quality threshold. Use Bedrock's multi-model endpoints or custom routing logic.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ol>
                 <div class="answer-block correct">
                   <h4>Preparation Strategy</h4>
                   <p>Gen AI interviews in 2025-2026 focus on <strong>architectural decisions, not model theory</strong>. Know when to use RAG vs fine-tuning, understand the cost implications of model selection, and be ready to discuss guardrails and responsible AI. Show that you can build production-grade AI applications, not just prototype demos.</p>

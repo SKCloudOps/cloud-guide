@@ -389,32 +389,116 @@
             <div class="topic-card-body">
               <div class="topic-body">
                 <p>Interviewers ask about recent AWS launches to test if you stay current. Knowing these services and when to use them signals a growth mindset.</p>
-                <ol class="interview-questions-list">
-                  <li>Explain EKS Auto Mode. How does it differ from standard EKS? When would you NOT want to use it?
-                    <span class="iq-hint">Hint: EKS Auto Mode manages compute, networking, and storage automatically (no node groups, no Karpenter config, no add-ons). NOT ideal when: you need custom AMIs, specific kernel configurations, GPU workloads with custom drivers, or fine-grained node control. Trade-off: simplicity vs control.</span>
-                  </li>
-                  <li>Compare Aurora DSQL with DynamoDB Global Tables and Aurora Global Database. When would you choose DSQL over the other two?
-                    <span class="iq-hint">Hint: DSQL = distributed SQL with strong consistency across regions (fills the gap between Aurora Global DB's single-writer and DynamoDB's eventual consistency). Choose DSQL when: you need multi-region active-active writes WITH SQL and strong consistency — previously impossible on AWS without third-party (CockroachDB, Spanner).</span>
-                  </li>
-                  <li>What are S3 Tables? How do they change the traditional data lake architecture (S3 + Glue Catalog + Athena)?
-                    <span class="iq-hint">Hint: S3 Tables are built-in Apache Iceberg tables managed natively by S3. Eliminates Glue Crawler, Glue Catalog management, manual compaction, and metadata management. Up to 3x faster query performance and 10x more transactions/sec. Simplifies the data lakehouse stack from 4-5 services to S3 + Athena.</span>
-                  </li>
-                  <li>An interviewer asks: "What was the most impactful AWS launch from Re:Invent 2024 and why?" How would you answer this using the architectural significance framework?
-                    <span class="iq-hint">Hint: Structure your answer: "I'd pick [service] because it solves [problem] that previously required [workaround]. For example, Aurora DSQL solves multi-region strong consistency for SQL — previously you needed CockroachDB or accepted eventual consistency with DynamoDB. This changes how we architect global applications." Show you evaluate launches by architectural impact, not just hype.</span>
-                  </li>
-                  <li>Your existing EKS cluster uses Karpenter for node scaling with custom NodePools configured for GPU and Spot instances. Should you migrate to EKS Auto Mode? What factors influence this decision?
-                    <span class="iq-hint">Hint: Probably not — EKS Auto Mode doesn't support custom AMIs or GPU-specific node configurations (at launch). If you need: custom Karpenter NodePools, GPU workloads, specific instance type constraints, or Bottlerocket customization — stay with standard EKS + Karpenter. Auto Mode is best for standard compute workloads where simplicity outweighs control.</span>
-                  </li>
-                  <li>A data engineer asks whether they should migrate their existing Glue-based data pipeline to use S3 Tables. What questions would you ask before recommending?
-                    <span class="iq-hint">Hint: Ask: 1) Do you use Apache Iceberg already? (S3 Tables is Iceberg-native). 2) Do other tools query your data (Spark, Trino)? Iceberg format ensures compatibility. 3) How much operational overhead is Glue Crawler + Catalog? 4) What's the query performance requirement? 5) Is your data mostly structured tabular data? (S3 Tables is for tabular, not unstructured).</span>
-                  </li>
-                  <li>How do you stay current with AWS service launches? An interviewer wants to know your approach to continuous learning.
-                    <span class="iq-hint">Hint: Re:Invent keynotes and breakout sessions. AWS What's New feed (subscribe by category). AWS blogs (Architecture Blog, Database Blog). Follow AWS heroes and community builders. Hands-on: spin up new services in a sandbox account. The key: don't just read about services — evaluate them against your current architecture decisions.</span>
-                  </li>
-                  <li>Aurora DSQL offers strong consistency across regions. What is the performance trade-off? In which scenarios would the latency penalty make DSQL a poor choice?
-                    <span class="iq-hint">Hint: Strong consistency across regions requires cross-region coordination (consensus protocol), adding latency (potentially 100-300ms for cross-region writes vs single-digit ms for single-region Aurora). Poor choice for: latency-sensitive applications where all writes can be single-region, high-throughput write-heavy workloads, or when eventual consistency is acceptable (DynamoDB Global Tables would be faster and cheaper).</span>
-                  </li>
-                </ol>
+                <div class="iq-controls">
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.add('open'))">Show All Answers</button>
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.remove('open'))">Hide All</button>
+                                </div>
+                                <ol class="iq-list">
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Explain EKS Auto Mode. How does it differ from standard EKS? When would you NOT want to use it?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">EKS Auto Mode manages compute, networking, and storage automatically (no node groups, no Karpenter config, no add-ons). NOT ideal when: you need custom AMIs, specific kernel configurations, GPU workloads with custom drivers, or fine-grained node control. Trade-off: simplicity vs control.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Compare Aurora DSQL with DynamoDB Global Tables and Aurora Global Database. When would you choose DSQL over the other two?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">DSQL = distributed SQL with strong consistency across regions (fills the gap between Aurora Global DB's single-writer and DynamoDB's eventual consistency). Choose DSQL when: you need multi-region active-active writes WITH SQL and strong consistency — previously impossible on AWS without third-party (CockroachDB, Spanner).</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">What are S3 Tables? How do they change the traditional data lake architecture (S3 + Glue Catalog + Athena)?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">S3 Tables are built-in Apache Iceberg tables managed natively by S3. Eliminates Glue Crawler, Glue Catalog management, manual compaction, and metadata management. Up to 3x faster query performance and 10x more transactions/sec. Simplifies the data lakehouse stack from 4-5 services to S3 + Athena.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">An interviewer asks: "What was the most impactful AWS launch from Re:Invent 2024 and why?" How would you answer this using the architectural significance framework?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Structure your answer: "I'd pick [service] because it solves [problem] that previously required [workaround]. For example, Aurora DSQL solves multi-region strong consistency for SQL — previously you needed CockroachDB or accepted eventual consistency with DynamoDB. This changes how we architect global applications." Show you evaluate launches by architectural impact, not just hype.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your existing EKS cluster uses Karpenter for node scaling with custom NodePools configured for GPU and Spot instances. Should you migrate to EKS Auto Mode? What factors influence this decision?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Probably not — EKS Auto Mode doesn't support custom AMIs or GPU-specific node configurations (at launch). If you need: custom Karpenter NodePools, GPU workloads, specific instance type constraints, or Bottlerocket customization — stay with standard EKS + Karpenter. Auto Mode is best for standard compute workloads where simplicity outweighs control.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A data engineer asks whether they should migrate their existing Glue-based data pipeline to use S3 Tables. What questions would you ask before recommending?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Ask: 1) Do you use Apache Iceberg already? (S3 Tables is Iceberg-native). 2) Do other tools query your data (Spark, Trino)? Iceberg format ensures compatibility. 3) How much operational overhead is Glue Crawler + Catalog? 4) What's the query performance requirement? 5) Is your data mostly structured tabular data? (S3 Tables is for tabular, not unstructured).</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">How do you stay current with AWS service launches? An interviewer wants to know your approach to continuous learning.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Re:Invent keynotes and breakout sessions. AWS What's New feed (subscribe by category). AWS blogs (Architecture Blog, Database Blog). Follow AWS heroes and community builders. Hands-on: spin up new services in a sandbox account. The key: don't just read about services — evaluate them against your current architecture decisions.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Aurora DSQL offers strong consistency across regions. What is the performance trade-off? In which scenarios would the latency penalty make DSQL a poor choice?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Strong consistency across regions requires cross-region coordination (consensus protocol), adding latency (potentially 100-300ms for cross-region writes vs single-digit ms for single-region Aurora). Poor choice for: latency-sensitive applications where all writes can be single-region, high-throughput write-heavy workloads, or when eventual consistency is acceptable (DynamoDB Global Tables would be faster and cheaper).</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ol>
                 <div class="answer-block correct">
                   <h4>Preparation Strategy</h4>
                   <p>When discussing new services in interviews, use the <strong>comparative framework</strong>: <em>"Service X solves [problem]. Before this, the alternatives were [A] and [B], each with [trade-offs]. X fills the gap by [specific value]."</em> This shows you evaluate services architecturally, not just follow hype.</p>

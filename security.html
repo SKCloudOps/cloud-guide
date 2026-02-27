@@ -689,36 +689,140 @@
                         <div class="topic-card-body">
                             <div class="topic-body">
                                 <p>Security is tested in every architect interview. These questions cover IAM, encryption, incident response, and governance scenarios.</p>
-                                <ol class="interview-questions-list">
-                                    <li>Walk me through the IAM policy evaluation logic. A user has an identity policy that allows s3:GetObject, but there's an SCP that denies all S3 actions. What happens and why?
-                                        <span class="iq-hint">Hint: SCPs are evaluated first and act as a guardrail. Even if the identity policy allows it, the SCP deny wins. The evaluation order is: SCP → Resource policy → Permission boundary → Identity policy.</span>
+                                <div class="iq-controls">
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.add('open'))">Show All Answers</button>
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.remove('open'))">Hide All</button>
+                                </div>
+                                <ol class="iq-list">
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Walk me through the IAM policy evaluation logic. A user has an identity policy that allows s3:GetObject, but there's an SCP that denies all S3 actions. What happens and why?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">SCPs are evaluated first and act as a guardrail. Even if the identity policy allows it, the SCP deny wins. The evaluation order is: SCP → Resource policy → Permission boundary → Identity policy.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>A third-party vendor needs read access to your S3 bucket in a different AWS account. Design the most secure cross-account access pattern. What's the "confused deputy" problem and how do you prevent it?
-                                        <span class="iq-hint">Hint: IAM Role with trust policy + ExternalId condition. The ExternalId prevents confused deputy attacks where another customer could assume the role. Never use long-term access keys.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A third-party vendor needs read access to your S3 bucket in a different AWS account. Design the most secure cross-account access pattern. What's the "confused deputy" problem and how do you prevent it?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">IAM Role with trust policy + ExternalId condition. The ExternalId prevents confused deputy attacks where another customer could assume the role. Never use long-term access keys.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>Where would you store database credentials for a Lambda function — environment variables, SSM Parameter Store, or Secrets Manager? Justify your choice.
-                                        <span class="iq-hint">Hint: Secrets Manager for automatic rotation and cross-account sharing. Parameter Store (SecureString) for simpler secrets without rotation. Never plaintext env vars — they appear in console and logs.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Where would you store database credentials for a Lambda function — environment variables, SSM Parameter Store, or Secrets Manager? Justify your choice.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Secrets Manager for automatic rotation and cross-account sharing. Parameter Store (SecureString) for simpler secrets without rotation. Never plaintext env vars — they appear in console and logs.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>GuardDuty alerts that an EC2 instance is communicating with a known cryptocurrency mining pool. Walk me through your incident response procedure.
-                                        <span class="iq-hint">Hint: Isolate (change SG to deny all), preserve (snapshot EBS for forensics), investigate (VPC Flow Logs, CloudTrail, GuardDuty findings), remediate (terminate instance, rotate all credentials on it), post-mortem.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">GuardDuty alerts that an EC2 instance is communicating with a known cryptocurrency mining pool. Walk me through your incident response procedure.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Isolate (change SG to deny all), preserve (snapshot EBS for forensics), investigate (VPC Flow Logs, CloudTrail, GuardDuty findings), remediate (terminate instance, rotate all credentials on it), post-mortem.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>Design an encryption strategy for a HIPAA-compliant application. Data must be encrypted at rest and in transit, with customer-managed keys and annual key rotation.
-                                        <span class="iq-hint">Hint: KMS CMKs with automatic rotation (now configurable 90-2560 days). Envelope encryption for large data. TLS 1.2+ enforced via security policies. Discuss S3 SSE-KMS, RDS encryption, EBS encryption, and ACM for certificates.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design an encryption strategy for a HIPAA-compliant application. Data must be encrypted at rest and in transit, with customer-managed keys and annual key rotation.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">KMS CMKs with automatic rotation (now configurable 90-2560 days). Envelope encryption for large data. TLS 1.2+ enforced via security policies. Discuss S3 SSE-KMS, RDS encryption, EBS encryption, and ACM for certificates.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>Your organization has 50 AWS accounts. How do you implement guardrails so that no account can launch resources outside of us-east-1 and eu-west-1?
-                                        <span class="iq-hint">Hint: AWS Organizations with SCPs. Create a deny policy for all regions except the allowed ones. Apply at the OU level. Discuss the "deny all + allow list" vs "allow all + deny list" approach.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your organization has 50 AWS accounts. How do you implement guardrails so that no account can launch resources outside of us-east-1 and eu-west-1?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">AWS Organizations with SCPs. Create a deny policy for all regions except the allowed ones. Apply at the OU level. Discuss the "deny all + allow list" vs "allow all + deny list" approach.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>Explain the difference between AWS WAF and AWS Shield. A customer is experiencing a Layer 7 DDoS attack (HTTP flood). Which service handles this and how would you configure it?
-                                        <span class="iq-hint">Hint: WAF handles Layer 7 (rate-based rules, IP reputation, SQL injection). Shield Standard (free, Layer 3/4 DDoS). Shield Advanced ($3K/month) adds DRT support, cost protection, and advanced metrics.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Explain the difference between AWS WAF and AWS Shield. A customer is experiencing a Layer 7 DDoS attack (HTTP flood). Which service handles this and how would you configure it?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">WAF handles Layer 7 (rate-based rules, IP reputation, SQL injection). Shield Standard (free, Layer 3/4 DDoS). Shield Advanced ($3K/month) adds DRT support, cost protection, and advanced metrics.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>A developer created an IAM user with AdministratorAccess for a CI/CD pipeline and stored the access keys in a GitHub repository. What are the immediate risks and how do you remediate?
-                                        <span class="iq-hint">Hint: Immediate: rotate/delete the keys, audit CloudTrail for unauthorized usage. Long-term: use OIDC federation (GitHub Actions → IAM role) instead of keys. Implement permission boundaries and SCP to prevent admin access.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A developer created an IAM user with AdministratorAccess for a CI/CD pipeline and stored the access keys in a GitHub repository. What are the immediate risks and how do you remediate?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Immediate: rotate/delete the keys, audit CloudTrail for unauthorized usage. Long-term: use OIDC federation (GitHub Actions → IAM role) instead of keys. Implement permission boundaries and SCP to prevent admin access.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>What is a Permission Boundary and how does it differ from a regular IAM policy? Give a scenario where you'd use one.
-                                        <span class="iq-hint">Hint: Permission boundary sets the maximum permissions a role/user can have. Use case: allow developers to create IAM roles but limit what those roles can do (prevent privilege escalation). Effective permissions = intersection of boundary and identity policy.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">What is a Permission Boundary and how does it differ from a regular IAM policy? Give a scenario where you'd use one.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Permission boundary sets the maximum permissions a role/user can have. Use case: allow developers to create IAM roles but limit what those roles can do (prevent privilege escalation). Effective permissions = intersection of boundary and identity policy.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>Design a Zero Trust architecture for an enterprise replacing their traditional VPN-based access. Which AWS services would you use?
-                                        <span class="iq-hint">Hint: AWS Verified Access (per-request verification, no VPN), IAM Identity Center for SSO, IAM Roles Anywhere for on-prem workloads, mTLS between services, microsegmented Security Groups, short-lived STS tokens.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design a Zero Trust architecture for an enterprise replacing their traditional VPN-based access. Which AWS services would you use?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">AWS Verified Access (per-request verification, no VPN), IAM Identity Center for SSO, IAM Roles Anywhere for on-prem workloads, mTLS between services, microsegmented Security Groups, short-lived STS tokens.</div>
+                                            </div>
+                                        </div>
                                     </li>
                                 </ol>
                                 <div class="answer-block correct">

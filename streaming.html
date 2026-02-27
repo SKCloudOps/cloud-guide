@@ -493,38 +493,142 @@
             <div class="topic-card-body">
               <div class="topic-body">
                 <p>Streaming questions cover both data streaming (Kinesis, MSK) and video streaming architecture. These test real-time data pipeline design.</p>
-                <ol class="interview-questions-list">
-                  <li>Compare SQS, SNS, Kinesis Data Streams, and EventBridge. You need to process clickstream data from a website at 50,000 events/second with ordering guarantees. Which do you choose and why?
-                    <span class="iq-hint">Hint: Kinesis Data Streams — ordered within shard (by partition key), handles massive throughput, 7-day retention. SQS has no ordering (unless FIFO, which caps at 3,000 msg/s). SNS is pub/sub (no retention). EventBridge is for event routing, not high-throughput data streaming.</span>
-                  </li>
-                  <li>When would you choose Amazon MSK (Managed Kafka) over Kinesis Data Streams? A team already using open-source Kafka on-prem wants to migrate to AWS.
-                    <span class="iq-hint">Hint: MSK if: existing Kafka expertise, need Kafka ecosystem (Kafka Connect, Kafka Streams, ksqlDB), complex consumer group patterns, longer retention (unlimited). Kinesis if: fully serverless, tight AWS integration (Lambda, Firehose), simpler operations. Migration path: MSK preserves Kafka APIs, no code changes.</span>
-                  </li>
-                  <li>Design a real-time analytics pipeline for an e-commerce platform. You need to: track user behavior, calculate trending products (last 15 minutes), and populate a real-time dashboard.
-                    <span class="iq-hint">Hint: Clickstream → Kinesis Data Streams (partitioned by user_id) → Managed Apache Flink (sliding window aggregation over 15 min) → DynamoDB/ElastiCache for trending products → API Gateway + Lambda for dashboard API. Alternative: Kinesis → Firehose → S3 for batch analytics with Athena.</span>
-                  </li>
-                  <li>Your Kinesis stream has 10 shards. One shard is receiving 80% of all traffic because events are partitioned by a single popular product_id. How do you fix this hot shard problem?
-                    <span class="iq-hint">Hint: Use a composite partition key (product_id + random_suffix) to distribute across shards. Or use a hash-based partition key. Trade-off: you lose strict ordering for that product_id. Alternative: re-shard (split the hot shard), but this is temporary if the key distribution doesn't change.</span>
-                  </li>
-                  <li>A financial services company needs exactly-once processing semantics for their transaction stream. Can Kinesis provide this? How would you guarantee no duplicates and no data loss?
-                    <span class="iq-hint">Hint: Kinesis provides at-least-once delivery. For exactly-once: use KCL (Kinesis Client Library) with checkpointing + DynamoDB for deduplication (idempotency key per record). Use enhanced fan-out for dedicated throughput per consumer. Discuss: Kafka with transactions can provide exactly-once semantics natively — trade-off consideration.</span>
-                  </li>
-                  <li>You need to deliver live video to 100,000 concurrent viewers with sub-5-second latency. Would you use MediaLive + MediaPackage + CloudFront, or Amazon IVS? Justify your choice.
-                    <span class="iq-hint">Hint: IVS for simplicity (managed, sub-3s latency out-of-the-box, WebRTC-based). MediaLive stack for control (custom encoding profiles, DVR, DRM, SSAI ads, multi-CDN). At 100K viewers, IVS is simpler but less customizable. If you need ad insertion or premium features, go MediaLive stack.</span>
-                  </li>
-                  <li>Design a log aggregation pipeline for an application generating 10GB of logs per hour across 200 EC2 instances. Logs need to be searchable within 30 seconds of generation.
-                    <span class="iq-hint">Hint: CloudWatch Agent on instances → CloudWatch Logs → Subscription Filter → Kinesis Data Firehose → OpenSearch (near-real-time indexing, ~30s). Alternative: Fluent Bit → Kinesis Data Streams → Lambda/Flink → OpenSearch. Discuss: Firehose buffers (60-900 seconds), so tune buffer interval to 60s for near-real-time.</span>
-                  </li>
-                  <li>Explain Kinesis Data Firehose vs Kinesis Data Streams. A team asks: "Why would I use Firehose when Streams does the same thing?"
-                    <span class="iq-hint">Hint: They solve different problems. Streams: real-time processing, custom consumers, replay, ordering. Firehose: fully managed delivery to S3/Redshift/OpenSearch with built-in transformation (Lambda), batching, compression, and format conversion (Parquet). Use Streams for real-time processing, Firehose for data delivery/ETL.</span>
-                  </li>
-                  <li>Your streaming pipeline experiences a 2-hour outage. When it recovers, how do you reprocess the missed data without duplicating records that were already processed?
-                    <span class="iq-hint">Hint: Kinesis retains data for 24-365 hours. Use TRIM_HORIZON or AT_TIMESTAMP to replay from before the outage. Idempotent consumers (dedup using DynamoDB conditional writes) ensure no duplicates. For Firehose: check S3 for already-delivered files. For Kafka/MSK: reset consumer group offset to the outage timestamp.</span>
-                  </li>
-                  <li>A media company wants to monetize their live stream with personalized ads. Each viewer should see different ads based on their profile. How does server-side ad insertion (SSAI) work and why is it preferred over client-side?
-                    <span class="iq-hint">Hint: SSAI (MediaTailor) stitches ads into the video stream server-side — ad blockers can't detect them, seamless quality matching, frame-accurate insertion. CSAI relies on client player to fetch ads — blocked by ad blockers, buffering during transitions. SSAI uses SCTE-35 markers in the manifest to identify ad break positions.</span>
-                  </li>
-                </ol>
+                <div class="iq-controls">
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.add('open'))">Show All Answers</button>
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.remove('open'))">Hide All</button>
+                                </div>
+                                <ol class="iq-list">
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Compare SQS, SNS, Kinesis Data Streams, and EventBridge. You need to process clickstream data from a website at 50,000 events/second with ordering guarantees. Which do you choose and why?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Kinesis Data Streams — ordered within shard (by partition key), handles massive throughput, 7-day retention. SQS has no ordering (unless FIFO, which caps at 3,000 msg/s). SNS is pub/sub (no retention). EventBridge is for event routing, not high-throughput data streaming.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">When would you choose Amazon MSK (Managed Kafka) over Kinesis Data Streams? A team already using open-source Kafka on-prem wants to migrate to AWS.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">MSK if: existing Kafka expertise, need Kafka ecosystem (Kafka Connect, Kafka Streams, ksqlDB), complex consumer group patterns, longer retention (unlimited). Kinesis if: fully serverless, tight AWS integration (Lambda, Firehose), simpler operations. Migration path: MSK preserves Kafka APIs, no code changes.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design a real-time analytics pipeline for an e-commerce platform. You need to: track user behavior, calculate trending products (last 15 minutes), and populate a real-time dashboard.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Clickstream → Kinesis Data Streams (partitioned by user_id) → Managed Apache Flink (sliding window aggregation over 15 min) → DynamoDB/ElastiCache for trending products → API Gateway + Lambda for dashboard API. Alternative: Kinesis → Firehose → S3 for batch analytics with Athena.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your Kinesis stream has 10 shards. One shard is receiving 80% of all traffic because events are partitioned by a single popular product_id. How do you fix this hot shard problem?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Use a composite partition key (product_id + random_suffix) to distribute across shards. Or use a hash-based partition key. Trade-off: you lose strict ordering for that product_id. Alternative: re-shard (split the hot shard), but this is temporary if the key distribution doesn't change.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A financial services company needs exactly-once processing semantics for their transaction stream. Can Kinesis provide this? How would you guarantee no duplicates and no data loss?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Kinesis provides at-least-once delivery. For exactly-once: use KCL (Kinesis Client Library) with checkpointing + DynamoDB for deduplication (idempotency key per record). Use enhanced fan-out for dedicated throughput per consumer. Discuss: Kafka with transactions can provide exactly-once semantics natively — trade-off consideration.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">You need to deliver live video to 100,000 concurrent viewers with sub-5-second latency. Would you use MediaLive + MediaPackage + CloudFront, or Amazon IVS? Justify your choice.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">IVS for simplicity (managed, sub-3s latency out-of-the-box, WebRTC-based). MediaLive stack for control (custom encoding profiles, DVR, DRM, SSAI ads, multi-CDN). At 100K viewers, IVS is simpler but less customizable. If you need ad insertion or premium features, go MediaLive stack.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design a log aggregation pipeline for an application generating 10GB of logs per hour across 200 EC2 instances. Logs need to be searchable within 30 seconds of generation.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">CloudWatch Agent on instances → CloudWatch Logs → Subscription Filter → Kinesis Data Firehose → OpenSearch (near-real-time indexing, ~30s). Alternative: Fluent Bit → Kinesis Data Streams → Lambda/Flink → OpenSearch. Discuss: Firehose buffers (60-900 seconds), so tune buffer interval to 60s for near-real-time.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Explain Kinesis Data Firehose vs Kinesis Data Streams. A team asks: "Why would I use Firehose when Streams does the same thing?"</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">They solve different problems. Streams: real-time processing, custom consumers, replay, ordering. Firehose: fully managed delivery to S3/Redshift/OpenSearch with built-in transformation (Lambda), batching, compression, and format conversion (Parquet). Use Streams for real-time processing, Firehose for data delivery/ETL.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your streaming pipeline experiences a 2-hour outage. When it recovers, how do you reprocess the missed data without duplicating records that were already processed?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Kinesis retains data for 24-365 hours. Use TRIM_HORIZON or AT_TIMESTAMP to replay from before the outage. Idempotent consumers (dedup using DynamoDB conditional writes) ensure no duplicates. For Firehose: check S3 for already-delivered files. For Kafka/MSK: reset consumer group offset to the outage timestamp.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A media company wants to monetize their live stream with personalized ads. Each viewer should see different ads based on their profile. How does server-side ad insertion (SSAI) work and why is it preferred over client-side?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">SSAI (MediaTailor) stitches ads into the video stream server-side — ad blockers can't detect them, seamless quality matching, frame-accurate insertion. CSAI relies on client player to fetch ads — blocked by ad blockers, buffering during transitions. SSAI uses SCTE-35 markers in the manifest to identify ad break positions.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ol>
                 <div class="answer-block correct">
                   <h4>Preparation Strategy</h4>
                   <p>Streaming questions test <strong>real-time data architecture</strong>. Know the decision framework: SQS (decoupling) vs SNS (fan-out) vs Kinesis (ordered streaming) vs EventBridge (event routing). For each, know throughput limits, retention periods, and ordering guarantees — interviewers will probe these specifics.</p>

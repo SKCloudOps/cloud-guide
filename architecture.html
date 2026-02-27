@@ -801,38 +801,142 @@
             <div class="topic-card-body">
               <div class="topic-body">
                 <p>Scenario-based architecture questions that test your ability to think through trade-offs, not just name services.</p>
-                <ol class="interview-questions-list">
-                  <li>You're building an e-commerce platform that needs to process orders, send notifications, update inventory, and trigger shipping — all when a customer clicks "Buy." Would you use synchronous microservices or event-driven architecture? Design the flow.
-                    <span class="iq-hint">Hint: EDA with SNS/SQS fan-out. Order placed → SNS topic → SQS queues for each downstream service. Discuss idempotency, dead-letter queues, and how to handle partial failures.</span>
-                  </li>
-                  <li>Your monolithic application is deployed on a single EC2 instance. The team wants to move to microservices. What migration strategy would you recommend — big bang rewrite or incremental? Name the specific pattern you'd use.
-                    <span class="iq-hint">Hint: Strangler Fig pattern. Route traffic through an ALB, gradually extracting services behind new paths. Never rewrite from scratch — it's the riskiest approach.</span>
-                  </li>
-                  <li>Design a three-tier architecture for a healthcare application that processes 10,000 transactions/second. The data must stay in a single country due to regulations. Walk through each tier and the security boundaries between them.
-                    <span class="iq-hint">Hint: Web tier (ALB + CloudFront with geo-restriction), App tier (ECS/EKS in private subnet), Data tier (Aurora with encryption). Discuss SGs between tiers, NACLs, and data residency.</span>
-                  </li>
-                  <li>Explain the CAP theorem. A teammate says "we need strong consistency AND high availability." How do you respond? Give a real-world AWS example of a CP system and an AP system.
-                    <span class="iq-hint">Hint: You can't have both during a partition. CP example: Aurora (favors consistency, may reject writes during failures). AP example: DynamoDB (eventual consistency, always available).</span>
-                  </li>
-                  <li>You have a microservice making synchronous REST calls to 5 downstream services. If one downstream service is slow (3-second response), the entire request takes 15 seconds. How do you fix this?
-                    <span class="iq-hint">Hint: Circuit breaker pattern for failing services, async processing via SQS for non-critical calls, parallel calls where possible, and timeout limits on each call.</span>
-                  </li>
-                  <li>Design a multi-site active-active architecture for a global SaaS platform serving users in US, Europe, and Asia. How do you handle data consistency across regions?
-                    <span class="iq-hint">Hint: DynamoDB Global Tables for active-active with eventual consistency, Aurora Global Database for SQL with read replicas per region. Route 53 latency-based routing. Discuss conflict resolution.</span>
-                  </li>
-                  <li>Your event-driven system is processing 1 million events per day through EventBridge. Some events are being processed out of order and duplicates are appearing. How do you solve both problems?
-                    <span class="iq-hint">Hint: SQS FIFO for ordering (MessageGroupId), idempotency keys in DynamoDB for deduplication. Discuss the trade-off: FIFO queues have lower throughput (3,000 msg/s with batching).</span>
-                  </li>
-                  <li>A team proposes using microservices for a 3-person startup building an MVP. What's your recommendation and why?
-                    <span class="iq-hint">Hint: Start with a well-structured monolith. Microservices add operational complexity (service mesh, distributed tracing, CI/CD per service) that a 3-person team can't sustain. Evolve when team and scale justify it.</span>
-                  </li>
-                  <li>You need to design a system where reads outnumber writes 100:1 and the data model for reads is very different from writes. What pattern would you recommend?
-                    <span class="iq-hint">Hint: CQRS (Command Query Responsibility Segregation). Write to Aurora/DynamoDB, project into read-optimized views (ElastiCache, OpenSearch). Events synchronize the two sides.</span>
-                  </li>
-                  <li>Your distributed order processing system spans 4 microservices. An order requires all 4 to succeed — but if the third one fails after the first two committed, how do you handle the rollback?
-                    <span class="iq-hint">Hint: Saga pattern with compensating transactions. Each service publishes events — if step 3 fails, trigger compensating actions for steps 1 and 2. Orchestrated (Step Functions) vs choreographed (events).</span>
-                  </li>
-                </ol>
+                <div class="iq-controls">
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.add('open'))">Show All Answers</button>
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.remove('open'))">Hide All</button>
+                                </div>
+                                <ol class="iq-list">
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">You're building an e-commerce platform that needs to process orders, send notifications, update inventory, and trigger shipping — all when a customer clicks "Buy." Would you use synchronous microservices or event-driven architecture? Design the flow.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">EDA with SNS/SQS fan-out. Order placed → SNS topic → SQS queues for each downstream service. Discuss idempotency, dead-letter queues, and how to handle partial failures.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your monolithic application is deployed on a single EC2 instance. The team wants to move to microservices. What migration strategy would you recommend — big bang rewrite or incremental? Name the specific pattern you'd use.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Strangler Fig pattern. Route traffic through an ALB, gradually extracting services behind new paths. Never rewrite from scratch — it's the riskiest approach.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design a three-tier architecture for a healthcare application that processes 10,000 transactions/second. The data must stay in a single country due to regulations. Walk through each tier and the security boundaries between them.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Web tier (ALB + CloudFront with geo-restriction), App tier (ECS/EKS in private subnet), Data tier (Aurora with encryption). Discuss SGs between tiers, NACLs, and data residency.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Explain the CAP theorem. A teammate says "we need strong consistency AND high availability." How do you respond? Give a real-world AWS example of a CP system and an AP system.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">You can't have both during a partition. CP example: Aurora (favors consistency, may reject writes during failures). AP example: DynamoDB (eventual consistency, always available).</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">You have a microservice making synchronous REST calls to 5 downstream services. If one downstream service is slow (3-second response), the entire request takes 15 seconds. How do you fix this?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Circuit breaker pattern for failing services, async processing via SQS for non-critical calls, parallel calls where possible, and timeout limits on each call.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design a multi-site active-active architecture for a global SaaS platform serving users in US, Europe, and Asia. How do you handle data consistency across regions?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">DynamoDB Global Tables for active-active with eventual consistency, Aurora Global Database for SQL with read replicas per region. Route 53 latency-based routing. Discuss conflict resolution.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your event-driven system is processing 1 million events per day through EventBridge. Some events are being processed out of order and duplicates are appearing. How do you solve both problems?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">SQS FIFO for ordering (MessageGroupId), idempotency keys in DynamoDB for deduplication. Discuss the trade-off: FIFO queues have lower throughput (3,000 msg/s with batching).</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A team proposes using microservices for a 3-person startup building an MVP. What's your recommendation and why?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Start with a well-structured monolith. Microservices add operational complexity (service mesh, distributed tracing, CI/CD per service) that a 3-person team can't sustain. Evolve when team and scale justify it.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">You need to design a system where reads outnumber writes 100:1 and the data model for reads is very different from writes. What pattern would you recommend?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">CQRS (Command Query Responsibility Segregation). Write to Aurora/DynamoDB, project into read-optimized views (ElastiCache, OpenSearch). Events synchronize the two sides.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your distributed order processing system spans 4 microservices. An order requires all 4 to succeed — but if the third one fails after the first two committed, how do you handle the rollback?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Saga pattern with compensating transactions. Each service publishes events — if step 3 fails, trigger compensating actions for steps 1 and 2. Orchestrated (Step Functions) vs choreographed (events).</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ol>
                 <div class="answer-block correct">
                   <h4>Preparation Strategy</h4>
                   <p>Architecture interviews test your <strong>trade-off reasoning</strong>, not your ability to name services. For every design, articulate: <em>"This approach gives us [benefit] at the cost of [trade-off]. I chose it because [constraint makes this trade-off acceptable]."</em></p>

@@ -476,38 +476,142 @@
             <div class="topic-card-body">
               <div class="topic-body">
                 <p>DevOps questions test your understanding of CI/CD pipelines, deployment strategies, and operational excellence at scale.</p>
-                <ol class="interview-questions-list">
-                  <li>Design a CI/CD pipeline for a microservices application deployed across 3 AWS accounts (dev, staging, prod). How do you handle cross-account deployments securely?
-                    <span class="iq-hint">Hint: Pipeline in a shared tooling account. Cross-account IAM roles assumed by the pipeline. Artifact stored in S3/ECR with cross-account policies. Stage gates between environments. Use OIDC federation (no long-term keys) for GitHub Actions or CodePipeline cross-account.</span>
-                  </li>
-                  <li>Compare blue/green, canary, and rolling deployment strategies. Your application has a database schema change in the release. Which strategy would you choose and why?
-                    <span class="iq-hint">Hint: Blue/green for zero-downtime with instant rollback. Canary for gradual risk reduction (5% → 25% → 100%). With DB schema changes, you MUST ensure backward compatibility — both old and new code versions must work with the new schema. This rules out big-bang blue/green without careful planning.</span>
-                  </li>
-                  <li>A developer pushes a commit and the deployment reaches production in 8 minutes with no human intervention. Your security team says this is too risky. How do you balance speed with safety?
-                    <span class="iq-hint">Hint: Automated quality gates: unit tests, integration tests, SAST/DAST, container image scanning, approval gates for prod. Canary deployments with automatic rollback on error rate thresholds. Discuss DORA metrics: deployment frequency, lead time, MTTR, change failure rate.</span>
-                  </li>
-                  <li>Explain GitOps. How does ArgoCD differ from a traditional push-based CI/CD pipeline? When would you NOT use GitOps?
-                    <span class="iq-hint">Hint: GitOps: Git is the source of truth for desired state. ArgoCD (pull-based) watches the repo and reconciles. Push-based: pipeline pushes changes directly. GitOps NOT ideal for: database migrations, one-time scripts, secret rotation (secrets shouldn't be in Git).</span>
-                  </li>
-                  <li>Your team uses trunk-based development. A feature takes 3 weeks to build and isn't ready for production, but other developers need to merge to main daily. How do you handle this?
-                    <span class="iq-hint">Hint: Feature flags (LaunchDarkly, AWS AppConfig). The incomplete feature is merged to main but hidden behind a flag. This avoids long-lived branches while keeping main deployable. Discuss: branch by abstraction pattern for larger refactors.</span>
-                  </li>
-                  <li>A production deployment failed at 3 AM. The on-call engineer can't rollback because the deployment modified a DynamoDB table schema. How should you have designed this to allow safe rollback?
-                    <span class="iq-hint">Hint: Schema changes must be backward-compatible and decoupled from code deployments. Expand-contract pattern: 1) Add new column, 2) Deploy code that writes to both old and new, 3) Migrate data, 4) Deploy code that reads only from new, 5) Remove old column. Never deploy schema + code together.</span>
-                  </li>
-                  <li>Your CI pipeline takes 45 minutes to run. Developers are merging 3 times per day each, and the pipeline is always backed up. How do you reduce the build time?
-                    <span class="iq-hint">Hint: Parallelize test suites, cache dependencies (npm, Docker layers), run only affected tests (test impact analysis), split unit/integration/e2e into stages with fast-fail. Consider: monorepo tools (Turborepo, Nx) that build only changed packages. Target: under 10 minutes for the critical path.</span>
-                  </li>
-                  <li>Design a shift-left security strategy for a containerized application. Which security checks would you add at each stage of the pipeline?
-                    <span class="iq-hint">Hint: Pre-commit: secrets scanning (gitleaks). Build: SAST (Snyk, SonarQube), dependency scanning (npm audit). Container: image scanning (Trivy, ECR scanning), base image policy. Deploy: OPA/Kyverno admission policies. Runtime: GuardDuty for EKS, Falco for container anomalies.</span>
-                  </li>
-                  <li>Compare Terraform and AWS CDK for infrastructure as code. A team with strong Python skills asks which to use for a new project. What's your recommendation?
-                    <span class="iq-hint">Hint: CDK — generates CloudFormation, uses familiar languages (Python, TypeScript), great for teams already in AWS. Terraform — provider-agnostic, mature state management, large community. CDK for AWS-only shops; Terraform for multi-cloud or teams needing explicit state control. Discuss state management trade-offs.</span>
-                  </li>
-                  <li>What are the four DORA metrics and why do they matter? Your team has a deployment frequency of once per month and MTTR of 24 hours. What would you prioritize improving?
-                    <span class="iq-hint">Hint: DORA: Deployment Frequency, Lead Time for Changes, MTTR (Mean Time to Recover), Change Failure Rate. Priority: MTTR first — 24 hours is too long. Implement automated rollback, better monitoring/alerting, and runbooks. Then increase deployment frequency (smaller, safer changes).</span>
-                  </li>
-                </ol>
+                <div class="iq-controls">
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.add('open'))">Show All Answers</button>
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.remove('open'))">Hide All</button>
+                                </div>
+                                <ol class="iq-list">
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design a CI/CD pipeline for a microservices application deployed across 3 AWS accounts (dev, staging, prod). How do you handle cross-account deployments securely?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Pipeline in a shared tooling account. Cross-account IAM roles assumed by the pipeline. Artifact stored in S3/ECR with cross-account policies. Stage gates between environments. Use OIDC federation (no long-term keys) for GitHub Actions or CodePipeline cross-account.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Compare blue/green, canary, and rolling deployment strategies. Your application has a database schema change in the release. Which strategy would you choose and why?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Blue/green for zero-downtime with instant rollback. Canary for gradual risk reduction (5% → 25% → 100%). With DB schema changes, you MUST ensure backward compatibility — both old and new code versions must work with the new schema. This rules out big-bang blue/green without careful planning.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A developer pushes a commit and the deployment reaches production in 8 minutes with no human intervention. Your security team says this is too risky. How do you balance speed with safety?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Automated quality gates: unit tests, integration tests, SAST/DAST, container image scanning, approval gates for prod. Canary deployments with automatic rollback on error rate thresholds. Discuss DORA metrics: deployment frequency, lead time, MTTR, change failure rate.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Explain GitOps. How does ArgoCD differ from a traditional push-based CI/CD pipeline? When would you NOT use GitOps?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">GitOps: Git is the source of truth for desired state. ArgoCD (pull-based) watches the repo and reconciles. Push-based: pipeline pushes changes directly. GitOps NOT ideal for: database migrations, one-time scripts, secret rotation (secrets shouldn't be in Git).</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your team uses trunk-based development. A feature takes 3 weeks to build and isn't ready for production, but other developers need to merge to main daily. How do you handle this?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Feature flags (LaunchDarkly, AWS AppConfig). The incomplete feature is merged to main but hidden behind a flag. This avoids long-lived branches while keeping main deployable. Discuss: branch by abstraction pattern for larger refactors.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A production deployment failed at 3 AM. The on-call engineer can't rollback because the deployment modified a DynamoDB table schema. How should you have designed this to allow safe rollback?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Schema changes must be backward-compatible and decoupled from code deployments. Expand-contract pattern: 1) Add new column, 2) Deploy code that writes to both old and new, 3) Migrate data, 4) Deploy code that reads only from new, 5) Remove old column. Never deploy schema + code together.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your CI pipeline takes 45 minutes to run. Developers are merging 3 times per day each, and the pipeline is always backed up. How do you reduce the build time?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Parallelize test suites, cache dependencies (npm, Docker layers), run only affected tests (test impact analysis), split unit/integration/e2e into stages with fast-fail. Consider: monorepo tools (Turborepo, Nx) that build only changed packages. Target: under 10 minutes for the critical path.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design a shift-left security strategy for a containerized application. Which security checks would you add at each stage of the pipeline?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Pre-commit: secrets scanning (gitleaks). Build: SAST (Snyk, SonarQube), dependency scanning (npm audit). Container: image scanning (Trivy, ECR scanning), base image policy. Deploy: OPA/Kyverno admission policies. Runtime: GuardDuty for EKS, Falco for container anomalies.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Compare Terraform and AWS CDK for infrastructure as code. A team with strong Python skills asks which to use for a new project. What's your recommendation?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">CDK — generates CloudFormation, uses familiar languages (Python, TypeScript), great for teams already in AWS. Terraform — provider-agnostic, mature state management, large community. CDK for AWS-only shops; Terraform for multi-cloud or teams needing explicit state control. Discuss state management trade-offs.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">What are the four DORA metrics and why do they matter? Your team has a deployment frequency of once per month and MTTR of 24 hours. What would you prioritize improving?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">DORA: Deployment Frequency, Lead Time for Changes, MTTR (Mean Time to Recover), Change Failure Rate. Priority: MTTR first — 24 hours is too long. Implement automated rollback, better monitoring/alerting, and runbooks. Then increase deployment frequency (smaller, safer changes).</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ol>
                 <div class="answer-block correct">
                   <h4>Preparation Strategy</h4>
                   <p>DevOps interviews test <strong>operational maturity</strong>. Don't just describe tools — explain your pipeline design principles: fast feedback, automated quality gates, immutable artifacts, infrastructure as code, and the ability to rollback any change within minutes.</p>

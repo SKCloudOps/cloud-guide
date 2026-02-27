@@ -658,38 +658,142 @@
             <div class="topic-card-body">
               <div class="topic-body">
                 <p>Serverless is a top interview domain. These questions test your understanding of Lambda internals, event-driven patterns, and when serverless is NOT the right choice.</p>
-                <ol class="interview-questions-list">
-                  <li>A Lambda function has cold starts averaging 3 seconds. Users complain about slow API responses. Walk me through every option to reduce cold start latency.
-                    <span class="iq-hint">Hint: Provisioned Concurrency (pre-warm instances, costs money), SnapStart (Java — snapshots initialized state), smaller deployment packages, avoid VPC unless necessary, use lighter runtimes (Python/Node over Java), lazy initialization of SDK clients, and Lambda Layers for shared dependencies.</span>
-                  </li>
-                  <li>Design an order processing workflow: validate order → charge payment → reserve inventory → send confirmation email. If payment fails after inventory is reserved, how do you handle rollback? Which AWS service orchestrates this?
-                    <span class="iq-hint">Hint: Step Functions (Standard Workflow) with compensation pattern. Each step has a corresponding undo step. If ChargePayment fails → call ReleaseInventory. Use Step Functions' built-in error handling (Catch/Retry). Discuss orchestration (Step Functions) vs choreography (EventBridge + SQS).</span>
-                  </li>
-                  <li>Explain Lambda concurrency. Your function has an account limit of 1,000 concurrent executions. You have 10 Lambda functions. One rogue function consumes 900 concurrency, throttling all others. How do you prevent this?
-                    <span class="iq-hint">Hint: Reserved Concurrency — allocate a guaranteed pool per function (e.g., 100 for critical functions). The rogue function gets a cap. Remaining unreserved pool is shared. Discuss: reserved concurrency also acts as a throttle (requests beyond the limit get throttled, not queued).</span>
-                  </li>
-                  <li>When would you choose EventBridge over SNS + SQS? Design an event-driven architecture for a system where 15 different consumers need to react to "order placed" events with different filtering criteria.
-                    <span class="iq-hint">Hint: EventBridge — content-based filtering (rules match on event body fields), schema registry, archive/replay, cross-account delivery. SNS — simple fan-out, filter on message attributes (limited). For 15 consumers with different filters, EventBridge rules are cleaner than 15 SNS filter policies.</span>
-                  </li>
-                  <li>A Lambda function processes SQS messages. Under high load, some messages are processed twice, causing duplicate database entries. How do you make the system idempotent?
-                    <span class="iq-hint">Hint: Idempotency key in DynamoDB (conditional write: PutItem with condition attribute_not_exists). Lambda Powertools provides a built-in idempotency decorator. Also: enable SQS FIFO with deduplication for exactly-once delivery (5-minute dedup window), or use DynamoDB conditional writes as the last line of defense.</span>
-                  </li>
-                  <li>Compare Step Functions Standard vs Express workflows. An image processing pipeline processes 10,000 images per minute, each taking 30 seconds. Which type and why?
-                    <span class="iq-hint">Hint: Express Workflows — for high-volume, short-duration (up to 5 min), lower cost ($0.000025/transition vs $0.025/transition). 10K images/min with Standard would cost 100x more. Trade-off: Express is at-most-once (no built-in exactly-once), no visual execution history in console. Standard for long-running, Express for high-throughput.</span>
-                  </li>
-                  <li>Your serverless API (API Gateway + Lambda) works perfectly at 100 requests/second but returns 429 errors at 1,000 requests/second. Walk through all the potential throttling points.
-                    <span class="iq-hint">Hint: API Gateway default: 10,000 req/s account limit (per region), per-stage throttling. Lambda: 1,000 concurrent executions default, reserved concurrency limits. DynamoDB: provisioned capacity throttling. Check CloudWatch metrics for each service's throttle count. Request limit increases or switch to provisioned concurrency.</span>
-                  </li>
-                  <li>When would you NOT use serverless? Give three concrete scenarios where EC2 or containers are a better choice than Lambda.
-                    <span class="iq-hint">Hint: 1) Long-running processes (>15 min) — batch ETL, video transcoding. 2) Consistent high traffic (millions of req/s steady) — Lambda per-request pricing exceeds EC2 at ~1M requests/hour. 3) Applications needing persistent connections — WebSockets, gRPC streaming, stateful sessions. Also: GPU workloads, compliance requiring specific OS hardening.</span>
-                  </li>
-                  <li>Design a serverless data pipeline: ingest data from 50 IoT devices (1 event/second each), transform the data, and store it for analytics. Which services would you use?
-                    <span class="iq-hint">Hint: IoT Core → Kinesis Data Firehose (batching + buffering) → Lambda transform (enrich/filter) → S3 (Parquet format for Athena). For real-time: IoT Core → Lambda → DynamoDB for live dashboards. Discuss: Firehose handles batching and delivery guarantees, reducing Lambda invocations vs processing each event individually.</span>
-                  </li>
-                  <li>A Lambda function in a VPC takes 10+ seconds for cold starts (vs 1 second without VPC). Explain why this happens and how AWS has improved it. Is VPC still slow for Lambda in 2025?
-                    <span class="iq-hint">Hint: Before 2019: Lambda created an ENI per cold start (10-30s). After Hyperplane (2019): ENIs are pre-provisioned and shared — cold starts reduced to ~1s even in VPC. In 2025, there's minimal penalty. But: still need NAT Gateway for internet access from VPC Lambda, which adds cost. Only put Lambda in VPC if it needs to access VPC resources (RDS, ElastiCache).</span>
-                  </li>
-                </ol>
+                <div class="iq-controls">
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.add('open'))">Show All Answers</button>
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.remove('open'))">Hide All</button>
+                                </div>
+                                <ol class="iq-list">
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A Lambda function has cold starts averaging 3 seconds. Users complain about slow API responses. Walk me through every option to reduce cold start latency.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Provisioned Concurrency (pre-warm instances, costs money), SnapStart (Java — snapshots initialized state), smaller deployment packages, avoid VPC unless necessary, use lighter runtimes (Python/Node over Java), lazy initialization of SDK clients, and Lambda Layers for shared dependencies.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design an order processing workflow: validate order → charge payment → reserve inventory → send confirmation email. If payment fails after inventory is reserved, how do you handle rollback? Which AWS service orchestrates this?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Step Functions (Standard Workflow) with compensation pattern. Each step has a corresponding undo step. If ChargePayment fails → call ReleaseInventory. Use Step Functions' built-in error handling (Catch/Retry). Discuss orchestration (Step Functions) vs choreography (EventBridge + SQS).</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Explain Lambda concurrency. Your function has an account limit of 1,000 concurrent executions. You have 10 Lambda functions. One rogue function consumes 900 concurrency, throttling all others. How do you prevent this?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Reserved Concurrency — allocate a guaranteed pool per function (e.g., 100 for critical functions). The rogue function gets a cap. Remaining unreserved pool is shared. Discuss: reserved concurrency also acts as a throttle (requests beyond the limit get throttled, not queued).</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">When would you choose EventBridge over SNS + SQS? Design an event-driven architecture for a system where 15 different consumers need to react to "order placed" events with different filtering criteria.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">EventBridge — content-based filtering (rules match on event body fields), schema registry, archive/replay, cross-account delivery. SNS — simple fan-out, filter on message attributes (limited). For 15 consumers with different filters, EventBridge rules are cleaner than 15 SNS filter policies.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A Lambda function processes SQS messages. Under high load, some messages are processed twice, causing duplicate database entries. How do you make the system idempotent?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Idempotency key in DynamoDB (conditional write: PutItem with condition attribute_not_exists). Lambda Powertools provides a built-in idempotency decorator. Also: enable SQS FIFO with deduplication for exactly-once delivery (5-minute dedup window), or use DynamoDB conditional writes as the last line of defense.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Compare Step Functions Standard vs Express workflows. An image processing pipeline processes 10,000 images per minute, each taking 30 seconds. Which type and why?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Express Workflows — for high-volume, short-duration (up to 5 min), lower cost ($0.000025/transition vs $0.025/transition). 10K images/min with Standard would cost 100x more. Trade-off: Express is at-most-once (no built-in exactly-once), no visual execution history in console. Standard for long-running, Express for high-throughput.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your serverless API (API Gateway + Lambda) works perfectly at 100 requests/second but returns 429 errors at 1,000 requests/second. Walk through all the potential throttling points.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">API Gateway default: 10,000 req/s account limit (per region), per-stage throttling. Lambda: 1,000 concurrent executions default, reserved concurrency limits. DynamoDB: provisioned capacity throttling. Check CloudWatch metrics for each service's throttle count. Request limit increases or switch to provisioned concurrency.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">When would you NOT use serverless? Give three concrete scenarios where EC2 or containers are a better choice than Lambda.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">1) Long-running processes (>15 min) — batch ETL, video transcoding. 2) Consistent high traffic (millions of req/s steady) — Lambda per-request pricing exceeds EC2 at ~1M requests/hour. 3) Applications needing persistent connections — WebSockets, gRPC streaming, stateful sessions. Also: GPU workloads, compliance requiring specific OS hardening.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design a serverless data pipeline: ingest data from 50 IoT devices (1 event/second each), transform the data, and store it for analytics. Which services would you use?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">IoT Core → Kinesis Data Firehose (batching + buffering) → Lambda transform (enrich/filter) → S3 (Parquet format for Athena). For real-time: IoT Core → Lambda → DynamoDB for live dashboards. Discuss: Firehose handles batching and delivery guarantees, reducing Lambda invocations vs processing each event individually.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A Lambda function in a VPC takes 10+ seconds for cold starts (vs 1 second without VPC). Explain why this happens and how AWS has improved it. Is VPC still slow for Lambda in 2025?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Before 2019: Lambda created an ENI per cold start (10-30s). After Hyperplane (2019): ENIs are pre-provisioned and shared — cold starts reduced to ~1s even in VPC. In 2025, there's minimal penalty. But: still need NAT Gateway for internet access from VPC Lambda, which adds cost. Only put Lambda in VPC if it needs to access VPC resources (RDS, ElastiCache).</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ol>
                 <div class="answer-block correct">
                   <h4>Preparation Strategy</h4>
                   <p>Serverless interviews test two things: <strong>event-driven thinking</strong> and <strong>knowing the limits</strong>. For every Lambda question, mention the 15-minute timeout, 10GB memory limit, 1,000 concurrent executions default, and 6MB synchronous payload limit. Knowing limits shows you've built real systems.</p>

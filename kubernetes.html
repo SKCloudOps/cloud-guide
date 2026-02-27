@@ -730,38 +730,142 @@
             <div class="topic-card-body">
               <div class="topic-body">
                 <p>Kubernetes questions go deep on architecture internals, EKS operations, and production-readiness. These cover what interviewers actually ask.</p>
-                <ol class="interview-questions-list">
-                  <li>Walk me through what happens when you run <code>kubectl create deployment nginx --image=nginx</code>. Trace the request from kubectl to a running pod.
-                    <span class="iq-hint">Hint: kubectl → API Server (auth/authz/admission) → etcd (store desired state) → Scheduler (picks a node based on resources/affinity) → Kubelet on node (pulls image, creates container via CRI) → Pod running. Discuss the control loop pattern.</span>
-                  </li>
-                  <li>Your EKS cluster is running out of pod IP addresses. Pods are stuck in "Pending" with the error "insufficient IPs." What's happening and how do you fix it?
-                    <span class="iq-hint">Hint: AWS VPC CNI assigns real VPC IPs to pods. Each instance type has a max ENI × IPs-per-ENI limit. Solutions: enable prefix delegation (16 IPs per slot instead of 1), use larger instance types, add secondary CIDR to VPC, or consider custom networking with separate pod subnets.</span>
-                  </li>
-                  <li>Compare Cluster Autoscaler and Karpenter. Why would you choose Karpenter over Cluster Autoscaler for a production EKS cluster?
-                    <span class="iq-hint">Hint: Karpenter: group-less (no ASGs), provisions optimal instance type per pod spec, faster scaling (seconds vs minutes), supports consolidation (bin-packing to reduce waste), drift detection for automated upgrades. CA: uses ASGs, requires node groups per instance type, slower scheduling.</span>
-                  </li>
-                  <li>Design the RBAC policy for an EKS cluster shared by 3 teams (platform, backend, frontend). Each team should only access their own namespace. Platform team needs cluster-wide access. How do you set it up?
-                    <span class="iq-hint">Hint: Create namespaces (platform, backend, frontend). Role + RoleBinding per namespace for team-specific access. ClusterRole + ClusterRoleBinding for platform team. Map IAM roles to K8s groups using aws-auth ConfigMap or EKS access entries. Use IRSA for pod-level AWS permissions.</span>
-                  </li>
-                  <li>Explain the difference between ClusterIP, NodePort, LoadBalancer, and Ingress in Kubernetes. When would you use each?
-                    <span class="iq-hint">Hint: ClusterIP (internal only), NodePort (exposes on every node's port, testing), LoadBalancer (creates AWS ALB/NLB per service — expensive if many services), Ingress (single ALB with path/host-based routing to multiple services — preferred for production). Discuss AWS ALB Ingress Controller.</span>
-                  </li>
-                  <li>A pod keeps crashing with OOMKilled. The developer set resource requests to 256Mi and limits to 512Mi. The application uses 300Mi at startup and 600Mi under load. Walk through the diagnosis and fix.
-                    <span class="iq-hint">Hint: The application exceeds the 512Mi limit under load → kernel OOM kills the container. Fix: increase limits to match actual peak usage (e.g., 768Mi). Discuss requests vs limits: requests guarantee scheduling, limits cap usage. VPA can auto-tune these based on actual usage.</span>
-                  </li>
-                  <li>Your company wants to run both stateless web services and stateful databases (PostgreSQL) on the same EKS cluster. Is this a good idea? How would you handle persistent storage?
-                    <span class="iq-hint">Hint: Stateless services — fine on EKS. Stateful databases — use with caution. PersistentVolumeClaims with EBS CSI driver (gp3), StorageClass for dynamic provisioning. Consider: node affinity for data locality, pod disruption budgets, backup strategies. For critical databases, managed services (RDS) are often better than self-managed on K8s.</span>
-                  </li>
-                  <li>How do you implement a zero-downtime deployment for a Kubernetes application that has database schema changes? Walk through the deployment strategy.
-                    <span class="iq-hint">Hint: Rolling update with readiness probes. Database: backward-compatible migrations only (add columns, not rename/delete). Deploy new code that handles both old and new schema → migrate schema → remove old-schema code in next release. Discuss blue/green deployments with Argo Rollouts for safer rollbacks.</span>
-                  </li>
-                  <li>You need to secure secrets in an EKS cluster. A developer suggests using Kubernetes Secrets. What are the problems with that approach and what alternatives would you recommend?
-                    <span class="iq-hint">Hint: K8s Secrets are base64-encoded (not encrypted by default), stored in etcd, visible to anyone with RBAC read on the namespace. Better: AWS Secrets Manager + External Secrets Operator (syncs secrets from AWS to K8s). Enable EKS envelope encryption for etcd. Use IRSA to limit which pods access which secrets.</span>
-                  </li>
-                  <li>Describe how you'd set up observability for an EKS cluster in production. What metrics, logs, and traces would you collect? Which tools would you use?
-                    <span class="iq-hint">Hint: Metrics: Prometheus + Grafana (or Amazon Managed Prometheus/Grafana). Karpenter and HPA metrics. Logs: Fluent Bit → CloudWatch Logs or OpenSearch. Traces: OpenTelemetry → X-Ray or Jaeger. Key metrics: pod CPU/memory, request latency (p50/p95/p99), error rates, node utilization, pending pods count.</span>
-                  </li>
-                </ol>
+                <div class="iq-controls">
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.add('open'))">Show All Answers</button>
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.remove('open'))">Hide All</button>
+                                </div>
+                                <ol class="iq-list">
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Walk me through what happens when you run <code>kubectl create deployment nginx --image=nginx</code>. Trace the request from kubectl to a running pod.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">kubectl → API Server (auth/authz/admission) → etcd (store desired state) → Scheduler (picks a node based on resources/affinity) → Kubelet on node (pulls image, creates container via CRI) → Pod running. Discuss the control loop pattern.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your EKS cluster is running out of pod IP addresses. Pods are stuck in "Pending" with the error "insufficient IPs." What's happening and how do you fix it?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">AWS VPC CNI assigns real VPC IPs to pods. Each instance type has a max ENI × IPs-per-ENI limit. Solutions: enable prefix delegation (16 IPs per slot instead of 1), use larger instance types, add secondary CIDR to VPC, or consider custom networking with separate pod subnets.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Compare Cluster Autoscaler and Karpenter. Why would you choose Karpenter over Cluster Autoscaler for a production EKS cluster?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Karpenter: group-less (no ASGs), provisions optimal instance type per pod spec, faster scaling (seconds vs minutes), supports consolidation (bin-packing to reduce waste), drift detection for automated upgrades. CA: uses ASGs, requires node groups per instance type, slower scheduling.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design the RBAC policy for an EKS cluster shared by 3 teams (platform, backend, frontend). Each team should only access their own namespace. Platform team needs cluster-wide access. How do you set it up?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Create namespaces (platform, backend, frontend). Role + RoleBinding per namespace for team-specific access. ClusterRole + ClusterRoleBinding for platform team. Map IAM roles to K8s groups using aws-auth ConfigMap or EKS access entries. Use IRSA for pod-level AWS permissions.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Explain the difference between ClusterIP, NodePort, LoadBalancer, and Ingress in Kubernetes. When would you use each?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">ClusterIP (internal only), NodePort (exposes on every node's port, testing), LoadBalancer (creates AWS ALB/NLB per service — expensive if many services), Ingress (single ALB with path/host-based routing to multiple services — preferred for production). Discuss AWS ALB Ingress Controller.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A pod keeps crashing with OOMKilled. The developer set resource requests to 256Mi and limits to 512Mi. The application uses 300Mi at startup and 600Mi under load. Walk through the diagnosis and fix.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">The application exceeds the 512Mi limit under load → kernel OOM kills the container. Fix: increase limits to match actual peak usage (e.g., 768Mi). Discuss requests vs limits: requests guarantee scheduling, limits cap usage. VPA can auto-tune these based on actual usage.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your company wants to run both stateless web services and stateful databases (PostgreSQL) on the same EKS cluster. Is this a good idea? How would you handle persistent storage?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Stateless services — fine on EKS. Stateful databases — use with caution. PersistentVolumeClaims with EBS CSI driver (gp3), StorageClass for dynamic provisioning. Consider: node affinity for data locality, pod disruption budgets, backup strategies. For critical databases, managed services (RDS) are often better than self-managed on K8s.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">How do you implement a zero-downtime deployment for a Kubernetes application that has database schema changes? Walk through the deployment strategy.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Rolling update with readiness probes. Database: backward-compatible migrations only (add columns, not rename/delete). Deploy new code that handles both old and new schema → migrate schema → remove old-schema code in next release. Discuss blue/green deployments with Argo Rollouts for safer rollbacks.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">You need to secure secrets in an EKS cluster. A developer suggests using Kubernetes Secrets. What are the problems with that approach and what alternatives would you recommend?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">K8s Secrets are base64-encoded (not encrypted by default), stored in etcd, visible to anyone with RBAC read on the namespace. Better: AWS Secrets Manager + External Secrets Operator (syncs secrets from AWS to K8s). Enable EKS envelope encryption for etcd. Use IRSA to limit which pods access which secrets.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Describe how you'd set up observability for an EKS cluster in production. What metrics, logs, and traces would you collect? Which tools would you use?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Metrics: Prometheus + Grafana (or Amazon Managed Prometheus/Grafana). Karpenter and HPA metrics. Logs: Fluent Bit → CloudWatch Logs or OpenSearch. Traces: OpenTelemetry → X-Ray or Jaeger. Key metrics: pod CPU/memory, request latency (p50/p95/p99), error rates, node utilization, pending pods count.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ol>
                 <div class="answer-block correct">
                   <h4>Preparation Strategy</h4>
                   <p>Kubernetes interviews test <strong>both conceptual understanding and operational depth</strong>. Be ready to explain the control plane architecture, troubleshoot pod scheduling issues, and discuss production concerns (security, observability, upgrades). Hands-on experience with <code>kubectl</code> troubleshooting commands is essential.</p>

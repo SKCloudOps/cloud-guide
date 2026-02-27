@@ -621,36 +621,140 @@
                         <div class="topic-card-body">
                             <div class="topic-body">
                                 <p>Compute is the backbone of every architecture. These questions test your ability to pick the right compute model and design for scale.</p>
-                                <ol class="interview-questions-list">
-                                    <li>Your application gets 10x traffic every Black Friday (from 1,000 to 10,000 requests/second). Design the auto-scaling strategy. Would you use reactive scaling, predictive scaling, or both?
-                                        <span class="iq-hint">Hint: Predictive scaling (pre-warm capacity before the event), target tracking for steady-state, and warm pools for fast instance launch. Combine with Spot Instances for cost savings on fault-tolerant tiers.</span>
+                                <div class="iq-controls">
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.add('open'))">Show All Answers</button>
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.remove('open'))">Hide All</button>
+                                </div>
+                                <ol class="iq-list">
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your application gets 10x traffic every Black Friday (from 1,000 to 10,000 requests/second). Design the auto-scaling strategy. Would you use reactive scaling, predictive scaling, or both?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Predictive scaling (pre-warm capacity before the event), target tracking for steady-state, and warm pools for fast instance launch. Combine with Spot Instances for cost savings on fault-tolerant tiers.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>Compare EC2, ECS on Fargate, EKS, and Lambda for a batch processing workload that runs for 20 minutes every hour. Which would you choose and why?
-                                        <span class="iq-hint">Hint: ECS on Fargate (no infrastructure management, pay per task, supports long-running tasks). Lambda has a 15-minute limit so it's out. EC2 wastes money idling 40 min/hr. EKS is overkill for a single batch job.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Compare EC2, ECS on Fargate, EKS, and Lambda for a batch processing workload that runs for 20 minutes every hour. Which would you choose and why?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">ECS on Fargate (no infrastructure management, pay per task, supports long-running tasks). Lambda has a 15-minute limit so it's out. EC2 wastes money idling 40 min/hr. EKS is overkill for a single batch job.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>Explain Spot Instances. Your ML training job takes 6 hours. How would you use Spot to save 70-90% while handling the 2-minute interruption warning?
-                                        <span class="iq-hint">Hint: Use checkpointing (save model state to S3 every N minutes). Diversify across 4+ instance types/AZs. Use Spot Fleet or mixed instance ASG. On interruption signal, save checkpoint and terminate gracefully.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Explain Spot Instances. Your ML training job takes 6 hours. How would you use Spot to save 70-90% while handling the 2-minute interruption warning?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Use checkpointing (save model state to S3 every N minutes). Diversify across 4+ instance types/AZs. Use Spot Fleet or mixed instance ASG. On interruption signal, save checkpoint and terminate gracefully.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>When would you choose an NLB over an ALB? A team is using ALB for a gRPC service and experiencing high latency. What's the issue?
-                                        <span class="iq-hint">Hint: ALB operates at Layer 7 (HTTP/HTTPS). NLB operates at Layer 4 (TCP/UDP) with ultra-low latency. gRPC uses HTTP/2 — ALB supports it, but NLB with TLS passthrough may have lower overhead. Also consider: NLB supports static IPs.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">When would you choose an NLB over an ALB? A team is using ALB for a gRPC service and experiencing high latency. What's the issue?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">ALB operates at Layer 7 (HTTP/HTTPS). NLB operates at Layer 4 (TCP/UDP) with ultra-low latency. gRPC uses HTTP/2 — ALB supports it, but NLB with TLS passthrough may have lower overhead. Also consider: NLB supports static IPs.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>You need to run an HPC (High-Performance Computing) simulation that requires low-latency, high-bandwidth communication between 50 instances. Which placement group would you use and why?
-                                        <span class="iq-hint">Hint: Cluster placement group — packs instances on the same rack for lowest latency and 25 Gbps throughput between instances. Trade-off: if the rack fails, all instances fail. Use EFA (Elastic Fabric Adapter) for HPC networking.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">You need to run an HPC (High-Performance Computing) simulation that requires low-latency, high-bandwidth communication between 50 instances. Which placement group would you use and why?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Cluster placement group — packs instances on the same rack for lowest latency and 25 Gbps throughput between instances. Trade-off: if the rack fails, all instances fail. Use EFA (Elastic Fabric Adapter) for HPC networking.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>Your organization has Oracle database licenses that require per-socket, per-core licensing. How do you run them on AWS while staying compliant?
-                                        <span class="iq-hint">Hint: Dedicated Hosts — you control the physical server, can track sockets/cores for licensing. Dedicated Instances don't give you host-level visibility. Also consider: AWS License Manager for tracking.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your organization has Oracle database licenses that require per-socket, per-core licensing. How do you run them on AWS while staying compliant?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Dedicated Hosts — you control the physical server, can track sockets/cores for licensing. Dedicated Instances don't give you host-level visibility. Also consider: AWS License Manager for tracking.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>An application on EC2 has a cold start problem — new instances take 8 minutes to fully initialize (download config, warm caches, JVM warmup). During scaling events, users see errors. How do you fix it?
-                                        <span class="iq-hint">Hint: Auto Scaling warm pools (pre-initialized instances in stopped state, launch in seconds). Also consider: golden AMIs (bake dependencies into the image), lifecycle hooks (delay traffic until health check passes).</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">An application on EC2 has a cold start problem — new instances take 8 minutes to fully initialize (download config, warm caches, JVM warmup). During scaling events, users see errors. How do you fix it?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Auto Scaling warm pools (pre-initialized instances in stopped state, launch in seconds). Also consider: golden AMIs (bake dependencies into the image), lifecycle hooks (delay traffic until health check passes).</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>A startup is choosing between ECS and EKS. They have a team of 3 developers, 8 microservices, and no Kubernetes experience. What do you recommend?
-                                        <span class="iq-hint">Hint: ECS on Fargate — simpler, fully managed, no cluster management. EKS adds operational complexity (control plane upgrades, node management, K8s expertise required). ECS is sufficient until they need K8s-specific features (service mesh, CRDs, multi-cloud).</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A startup is choosing between ECS and EKS. They have a team of 3 developers, 8 microservices, and no Kubernetes experience. What do you recommend?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">ECS on Fargate — simpler, fully managed, no cluster management. EKS adds operational complexity (control plane upgrades, node management, K8s expertise required). ECS is sufficient until they need K8s-specific features (service mesh, CRDs, multi-cloud).</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>Explain cross-zone load balancing. An ALB has 10 targets in us-east-1a and 2 targets in us-east-1b. How is traffic distributed with cross-zone enabled vs disabled?
-                                        <span class="iq-hint">Hint: Enabled: traffic distributed evenly across all 12 targets (each gets ~8.3%). Disabled: each AZ gets 50% — so 1a targets get 5% each, 1b targets get 25% each (overloaded). ALB enables cross-zone by default (free). NLB charges for cross-zone.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Explain cross-zone load balancing. An ALB has 10 targets in us-east-1a and 2 targets in us-east-1b. How is traffic distributed with cross-zone enabled vs disabled?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Enabled: traffic distributed evenly across all 12 targets (each gets ~8.3%). Disabled: each AZ gets 50% — so 1a targets get 5% each, 1b targets get 25% each (overloaded). ALB enables cross-zone by default (free). NLB charges for cross-zone.</div>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li>Your company wants to save money on compute. Currently running 100 m5.xlarge instances 24/7. 60% have steady-state usage, 30% are dev/test (business hours only), and 10% are batch processing. Design the purchasing strategy.
-                                        <span class="iq-hint">Hint: 60 instances → Compute Savings Plans (1yr, up to 66% off). 30 dev/test → scheduled scaling (stop nights/weekends) + On-Demand. 10 batch → Spot Instances (up to 90% off). Consider Graviton (m7g) for additional 20% savings.</span>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your company wants to save money on compute. Currently running 100 m5.xlarge instances 24/7. 60% have steady-state usage, 30% are dev/test (business hours only), and 10% are batch processing. Design the purchasing strategy.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">60 instances → Compute Savings Plans (1yr, up to 66% off). 30 dev/test → scheduled scaling (stop nights/weekends) + On-Demand. 10 batch → Spot Instances (up to 90% off). Consider Graviton (m7g) for additional 20% savings.</div>
+                                            </div>
+                                        </div>
                                     </li>
                                 </ol>
                                 <div class="answer-block correct">

@@ -559,38 +559,38 @@
 }
 
 /* ========== Interview Questions Section ========== */
-.interview-questions-list {
-  counter-reset: iq-counter;
+.iq-list {
   list-style: none;
   margin: 0;
   padding: 0;
+  counter-reset: iq-counter;
 }
 
-.interview-questions-list > li {
+.iq-item {
   counter-increment: iq-counter;
-  position: relative;
-  padding: 1rem 1.25rem 1rem 3.25rem;
-  margin-bottom: 0.5rem;
-  background: var(--content-bg);
+  margin-bottom: 0.75rem;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  font-size: 0.9375rem;
-  color: var(--text);
-  font-weight: 500;
-  line-height: 1.55;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  border-radius: var(--radius-lg, 10px);
+  background: var(--content-card, #fff);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+.iq-item:hover { border-color: var(--accent); }
 
-.interview-questions-list > li:hover {
-  border-color: var(--accent);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+/* Question header — clickable */
+.iq-question {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
 }
+.iq-question:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: var(--radius-lg, 10px); }
 
-.interview-questions-list > li::before {
-  content: counter(iq-counter);
-  position: absolute;
-  left: 1rem;
-  top: 1rem;
+.iq-num {
+  flex-shrink: 0;
   width: 1.75rem;
   height: 1.75rem;
   background: linear-gradient(135deg, #2563eb, #7c3aed);
@@ -601,33 +601,105 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
+  margin-top: 0.05rem;
+}
+.iq-num::before { content: counter(iq-counter); }
+
+.iq-text {
+  flex: 1;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.5;
 }
 
-.interview-questions-list .iq-hint {
-  display: block;
-  margin-top: 0.375rem;
-  font-size: 0.8125rem;
-  font-weight: 400;
+.iq-toggle {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--text-muted);
-  font-style: italic;
+  transition: transform 0.25s ease, color 0.15s ease;
+  margin-top: 0.125rem;
+}
+.iq-item.open .iq-toggle { transform: rotate(180deg); color: var(--accent); }
+
+/* Answer panel — hidden by default */
+.iq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+.iq-item.open .iq-answer { max-height: 600px; }
+
+.iq-answer-inner {
+  padding: 0 1.25rem 1.125rem 3.75rem;
 }
 
+.iq-answer-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #16a34a;
+  margin-bottom: 0.5rem;
+}
+.iq-answer-label svg { flex-shrink: 0; }
+
+.iq-answer-text {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--text-secondary, #475569);
+  background: #f0fdf4;
+  border-left: 3px solid #22c55e;
+  padding: 0.75rem 1rem;
+  border-radius: 0 6px 6px 0;
+}
+
+/* Difficulty badges */
 .iq-difficulty {
   display: inline-block;
-  padding: 0.125rem 0.4rem;
+  padding: 0.15rem 0.5rem;
   font-size: 0.625rem;
   font-weight: 600;
-  border-radius: 3px;
+  border-radius: 4px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   margin-left: 0.5rem;
   vertical-align: middle;
 }
-
 .iq-difficulty.beginner { background: #dcfce7; color: #166534; }
 .iq-difficulty.intermediate { background: #fef9c3; color: #854d0e; }
 .iq-difficulty.advanced { background: #fee2e2; color: #991b1b; }
+
+/* Expand/Collapse all controls */
+.iq-controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.iq-ctrl-btn {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.iq-ctrl-btn:hover { background: var(--accent); color: #fff; }
+
+@media (max-width: 600px) {
+  .iq-answer-inner { padding-left: 1.25rem; }
+  .iq-question { padding: 0.875rem 1rem; gap: 0.5rem; }
+}
 
 /* ========== Responsive ========== */
 @media (max-width: 1100px) {
