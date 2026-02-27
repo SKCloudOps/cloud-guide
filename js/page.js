@@ -17,6 +17,21 @@
         });
     }
 
+    // === Move search box into header ===
+    var headerEl = document.getElementById('sidebar');
+    var searchBox = document.querySelector('.topbar .search-box');
+    var sidebarFooter = headerEl ? headerEl.querySelector('.sidebar-footer') : null;
+    if (headerEl && searchBox) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'header-search';
+        wrapper.appendChild(searchBox);
+        if (sidebarFooter) {
+            headerEl.insertBefore(wrapper, sidebarFooter);
+        } else {
+            headerEl.appendChild(wrapper);
+        }
+    }
+
     // === DOM Elements ===
     var sidebar = document.getElementById('sidebar');
     var overlay = document.getElementById('sidebarOverlay');
