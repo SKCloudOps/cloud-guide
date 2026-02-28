@@ -323,7 +323,19 @@
 }
 
 .topic-card.collapsed .topic-card-body {
-  display: none;
+  display: block;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: max-height 0.35s ease-out, opacity 0.2s ease-out, padding 0.2s ease;
+}
+
+.topic-card:not(.collapsed) .topic-card-body {
+  max-height: 2000px;
+  opacity: 1;
+  transition: max-height 0.4s ease-in, opacity 0.25s ease-in;
 }
 
 .topic-card.hidden {

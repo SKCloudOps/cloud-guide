@@ -19,6 +19,12 @@
         if (document.getElementById('sidebar') && document.getElementById('sidebar').contains(e.target)) return;
         menuItems.forEach(function (m) { m.classList.remove('open'); });
     });
+    // Auto-expand section containing active page link
+    var activeLink = document.querySelector('.sidebar-link.active');
+    if (activeLink) {
+        var parentItem = activeLink.closest('.nav-menu-item');
+        if (parentItem) parentItem.classList.add('open');
+    }
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') menuItems.forEach(function (m) { m.classList.remove('open'); });
     });
@@ -128,6 +134,45 @@
                 var card = header.closest('.topic-card');
                 card.classList.toggle('collapsed');
                 header.setAttribute('aria-expanded', !card.classList.contains('collapsed'));
+            }
+        });
+    });
+
+    // Default: all topic cards collapsed. Click TOC to open one.
+    topicCards.forEach(function (card) {
+        card.classList.add('collapsed');
+        var h = card.querySelector('.topic-card-header');
+        if (h) h.setAttribute('aria-expanded', 'false');
+    });
+
+    // TOC click: open only that topic (no scroll), with animation
+    tocLinks.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+            var sectionId = link.getAttribute('data-section');
+            if (!sectionId) return;
+            e.preventDefault();
+            topicCards.forEach(function (card) {
+                if (card.id === sectionId) {
+                    card.classList.remove('collapsed');
+                    var h = card.querySelector('.topic-card-header');
+                    if (h) h.setAttribute('aria-expanded', 'true');
+                } else {
+                    card.classList.add('collapsed');
+                    var h = card.querySelector('.topic-card-header');
+                    if (h) h.setAttribute('aria-expanded', 'false');
+                }
+            });
+            tocLinks.forEach(function (l) { l.classList.remove('active'); });
+            link.classList.add('active');
+            // Scroll the opened topic to the top after expand animation finishes
+            var targetCard = document.getElementById(sectionId);
+            if (targetCard) {
+                var scrollMargin = 24;
+                setTimeout(function () {
+                    var rect = targetCard.getBoundingClientRect();
+                    var top = (window.pageYOffset || document.documentElement.scrollTop) + rect.top - scrollMargin;
+                    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+                }, 450);
             }
         });
     });
