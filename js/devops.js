@@ -16,17 +16,10 @@
   var STORAGE_KEY = 'devops_reviewed';
   var activeFilter = 'all';
 
-  // === Sidebar Toggle (Mobile) ===
+  // === Sidebar Toggle (mobile: expand/collapse top nav) ===
   if (toggle) {
     toggle.addEventListener('click', function () {
       sidebar.classList.toggle('open');
-      overlay.classList.toggle('visible');
-    });
-  }
-  if (overlay) {
-    overlay.addEventListener('click', function () {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('visible');
     });
   }
 

@@ -46,38 +46,10 @@
     var STORAGE_KEY = pageName + '_reviewed';
     var activeFilter = 'all';
 
-    // === Sidebar Toggle ===
-    var appLayout = document.querySelector('.app-layout');
-    var SIDEBAR_PREF = 'sidebar_collapsed';
-
-    // Restore sidebar state from localStorage
-    try {
-        if (localStorage.getItem(SIDEBAR_PREF) === 'true') {
-            appLayout && appLayout.classList.add('sidebar-collapsed');
-            toggle && toggle.setAttribute('aria-label', 'Open menu');
-        }
-    } catch (e) { }
-
-    function isMobile() { return window.innerWidth <= 900; }
-
+    // === Sidebar Toggle (mobile: expand/collapse top nav) ===
     if (toggle) {
         toggle.addEventListener('click', function () {
-            if (isMobile()) {
-                sidebar.classList.toggle('open');
-                overlay.classList.toggle('visible');
-            } else {
-                appLayout.classList.toggle('sidebar-collapsed');
-                toggle.setAttribute('aria-label', appLayout.classList.contains('sidebar-collapsed') ? 'Open menu' : 'Close menu');
-                try {
-                    localStorage.setItem(SIDEBAR_PREF, appLayout.classList.contains('sidebar-collapsed'));
-                } catch (e) { }
-            }
-        });
-    }
-    if (overlay) {
-        overlay.addEventListener('click', function () {
-            sidebar.classList.remove('open');
-            overlay.classList.remove('visible');
+            sidebar.classList.toggle('open');
         });
     }
 
