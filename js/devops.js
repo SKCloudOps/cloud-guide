@@ -169,6 +169,35 @@
     }
   });
 
+  // === Sort topics by difficulty: Beginner → Intermediate → Advanced ===
+  (function sortByDifficulty() {
+    if (!topicCards.length) return;
+    var order = { beginner: 0, intermediate: 1, advanced: 2 };
+    var container = topicCards[0].parentNode;
+    var cards = Array.prototype.slice.call(topicCards);
+
+    cards.sort(function (a, b) {
+      var da = order[a.getAttribute('data-difficulty')] !== undefined ? order[a.getAttribute('data-difficulty')] : 99;
+      var db = order[b.getAttribute('data-difficulty')] !== undefined ? order[b.getAttribute('data-difficulty')] : 99;
+      return da - db;
+    });
+
+    cards.forEach(function (card) { container.appendChild(card); });
+
+    if (tocLinks.length) {
+      var tocContainer = tocLinks[0].parentNode;
+      var cardIndexMap = {};
+      cards.forEach(function (card, i) { cardIndexMap[card.id] = i; });
+      var links = Array.prototype.slice.call(tocLinks);
+      links.sort(function (a, b) {
+        var ia = cardIndexMap[a.getAttribute('data-section')];
+        var ib = cardIndexMap[b.getAttribute('data-section')];
+        return (ia !== undefined ? ia : 99) - (ib !== undefined ? ib : 99);
+      });
+      links.forEach(function (link) { tocContainer.appendChild(link); });
+    }
+  })();
+
   // === Initialize ===
   updateProgress();
   setTimeout(updateTocHighlight, 100);

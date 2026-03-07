@@ -269,12 +269,7 @@
 }
 
 .hero-stats {
-  display: flex;
-  gap: 2.25rem;
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
-  flex-wrap: wrap;
+  display: none;
 }
 
 .stat { display: flex; flex-direction: column; }
