@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -Command \"Get-ChildItem ''c:\\\\Sathish\\\\me-new\\\\cloud-guide\\\\*.html'' | ForEach-Object { $c = Get-Content $_FullName -Raw; $c = $c -replace ''Data &amp; Apps'', ''App Services''; $c = $c -replace ''Design &amp; Ops'', ''Architecture &amp; Ops''; Set-Content $_FullName $c -NoNewline }\")"
+    ]
+  }
+}
