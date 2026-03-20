@@ -165,8 +165,15 @@
             <p class="hero-lead">EKS scaling, Karpenter, container lifecycle, and Kubernetes tech stack.</p>
             <div class="hero-stats">
               <div class="stat"><span class="stat-number">15</span><span class="stat-label">Topics</span></div>
+              <div class="stat"><span class="stat-number">11</span><span class="stat-label">Diagrams</span></div>
             </div>
           </header>
+
+          <!-- Hero overview diagram -->
+          <figure class="hero-diagram">
+            <img src="assets/kubernetes-architecture.png" alt="Kubernetes Architecture Overview Diagram" />
+            <figcaption>Kubernetes Architecture &amp; EKS Overview</figcaption>
+          </figure>
 
 
           <article id="k8s-tools" class="topic-card" data-difficulty="beginner">
@@ -179,6 +186,9 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/kubernetes-tools.png" alt="Kubernetes Tools Ecosystem Diagram" />
+              </figure>
               <div class="topic-body">
               <p>Kubernetes Tools Ecosystem with AWS Cloud Implementation:</p>
               <ul>
@@ -204,6 +214,9 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/kubernetes-scaling-compare.png" alt="Scaling EC2 vs Lambda vs EKS Comparison Diagram" />
+              </figure>
               <div class="topic-body">
               <table class="topic-table">
                 <thead>
@@ -267,6 +280,9 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/kubernetes-eks-scaling.png" alt="Kubernetes EKS Scaling Levels Diagram" />
+              </figure>
               <div class="topic-body">
               <p>EKS scaling operates at two levels:</p>
               <h4>Pod-Level Scaling</h4>
@@ -301,6 +317,9 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/kubernetes-karpenter-upgrade.png" alt="EKS Upgrade with Karpenter Diagram" />
+              </figure>
               <div class="topic-body">
               <p>Karpenter simplifies EKS upgrades by managing node lifecycle automatically:</p>
               <ol>
@@ -362,6 +381,9 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/kubernetes-container-lifecycle.png" alt="Container Lifecycle Local to Cloud Diagram" />
+              </figure>
               <div class="topic-body">
               <p>The journey of a containerized application from a developer's laptop to production in the cloud:</p>
               <ol>
@@ -393,6 +415,9 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/kubernetes-node-pod-container.png" alt="Kubernetes Node Pod Container Hierarchy Diagram" />
+              </figure>
               <div class="topic-body">
               <p>Understanding the hierarchy in Kubernetes:</p>
               <ul>
@@ -427,6 +452,9 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/kubernetes-karpenter-saves-money.png" alt="How Karpenter Saves Money Diagram" />
+              </figure>
               <div class="topic-body">
               <p>Karpenter reduces costs through intelligent node provisioning and continuous optimization:</p>
               <ol>
@@ -492,6 +520,9 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/kubernetes-eda-sns-sqs.png" alt="EDA with SNS SQS Kubernetes Diagram" />
+              </figure>
               <div class="topic-body">
               <p>A common event-driven pattern combining AWS messaging with Kubernetes consumers:</p>
               <h4>Architecture Flow</h4>
@@ -524,6 +555,9 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/kubernetes-eks-auto.png" alt="EKS Auto Mode Diagram" />
+              </figure>
               <div class="topic-body">
               <p>EKS Auto Mode, announced at Re:Invent 2024, is a fully managed experience for Amazon EKS that automates
                 cluster infrastructure management:</p>
@@ -555,6 +589,9 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/kubernetes-docker-vs-k8s.png" alt="Docker vs Kubernetes Comparison Diagram" />
+              </figure>
               <div class="topic-body">
               <p>Docker and Kubernetes solve different problems and work together, not against each other:</p>
               <table class="topic-table">
@@ -620,6 +657,9 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/kubernetes-pod-sidecar.png" alt="Pod Sidecar Pattern Diagram" />
+              </figure>
               <div class="topic-body">
               <p>The sidecar pattern runs a secondary container alongside the main application container within the same
                 pod. Both containers share the same network and storage.</p>
@@ -656,6 +696,9 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/kubernetes-binpack.png" alt="Karpenter Bin Pack Consolidation Diagram" />
+              </figure>
               <div class="topic-body">
               <p>Karpenter's bin packing decides how tightly pods are packed onto nodes to maximize resource
                 utilization:</p>
@@ -695,6 +738,9 @@
               <span class="expand-icon" aria-hidden="true"></span>
             </div>
             <div class="topic-card-body">
+              <figure class="topic-diagram">
+                <img src="assets/kubernetes-tech-stack.png" alt="Kubernetes Production Tech Stack Diagram" />
+              </figure>
               <div class="topic-body">
               <p>A typical production-ready Kubernetes tech stack on AWS EKS:</p>
               <table class="topic-table">
