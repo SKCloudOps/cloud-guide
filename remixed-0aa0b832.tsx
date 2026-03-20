@@ -31,28 +31,28 @@ const GuideTab = ({ categories, allQuestions }) => {
   const formatGuideAnswer = (text) => {
     return text.split('\n').map((line, i) => {
       const s = line.trim();
-      if (!s) return <div key={i} style={{ height: '8px' }} />;
+      if (!s) return <div key={i} style={{ height: '10px' }} />;
       if (/^\*\*[^*]+:\*\*$/.test(s)) {
-        return <div key={i} style={{ fontWeight: '700', color: '#1d4ed8', fontSize: '13px', marginTop: '14px', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.3px' }}>{s.replace(/\*\*/g, '')}</div>;
+        return <div key={i} style={{ fontWeight: '700', color: '#1d4ed8', fontSize: '14px', marginTop: '18px', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.3px' }}>{s.replace(/\*\*/g, '')}</div>;
       }
-      if (s.startsWith('## ')) return <div key={i} style={{ fontWeight: '700', color: '#1e3a5f', fontSize: '14px', marginTop: '16px', marginBottom: '6px' }}>{s.slice(3)}</div>;
-      if (s.startsWith('### ')) return <div key={i} style={{ fontWeight: '600', color: '#334155', fontSize: '13px', marginTop: '12px', marginBottom: '4px' }}>{s.slice(4)}</div>;
+      if (s.startsWith('## ')) return <div key={i} style={{ fontWeight: '700', color: '#1e3a5f', fontSize: '15px', marginTop: '20px', marginBottom: '8px' }}>{s.slice(3)}</div>;
+      if (s.startsWith('### ')) return <div key={i} style={{ fontWeight: '600', color: '#334155', fontSize: '14px', marginTop: '14px', marginBottom: '5px' }}>{s.slice(4)}</div>;
       if (s.startsWith('• ') || s.startsWith('- ')) {
-        return <div key={i} style={{ display: 'flex', gap: '8px', marginTop: '3px', paddingLeft: '8px' }}>
+        return <div key={i} style={{ display: 'flex', gap: '10px', marginTop: '5px', paddingLeft: '8px' }}>
           <span style={{ color: '#3b82f6', fontWeight: '700', flexShrink: 0 }}>•</span>
-          <span style={{ color: '#334155', fontSize: '13px', lineHeight: '1.6' }}>{s.slice(2)}</span>
+          <span style={{ color: '#374151', fontSize: '14px', lineHeight: '1.7' }}>{s.slice(2)}</span>
         </div>;
       }
       if (/^\d+\.\s/.test(s)) {
         const n = s.match(/^\d+/)[0];
-        return <div key={i} style={{ display: 'flex', gap: '8px', marginTop: '3px', paddingLeft: '8px' }}>
+        return <div key={i} style={{ display: 'flex', gap: '10px', marginTop: '5px', paddingLeft: '8px' }}>
           <span style={{ color: '#3b82f6', fontWeight: '700', flexShrink: 0, minWidth: '18px' }}>{n}.</span>
-          <span style={{ color: '#334155', fontSize: '13px', lineHeight: '1.6' }}>{s.replace(/^\d+\.\s/, '')}</span>
+          <span style={{ color: '#374151', fontSize: '14px', lineHeight: '1.7' }}>{s.replace(/^\d+\.\s/, '')}</span>
         </div>;
       }
       // inline bold
       const parts = s.split(/\*\*([^*]+)\*\*/g);
-      return <div key={i} style={{ color: '#334155', fontSize: '13px', lineHeight: '1.7', marginTop: '4px' }}>
+      return <div key={i} style={{ color: '#374151', fontSize: '14px', lineHeight: '1.75', marginTop: '5px' }}>
         {parts.map((p, j) => j % 2 === 1 ? <strong key={j}>{p}</strong> : p)}
       </div>;
     });
@@ -179,17 +179,17 @@ const GuideTab = ({ categories, allQuestions }) => {
                   {openQ === item.id && (
                     <div style={{ padding: '0 20px 20px 62px', background: '#fafafa' }}>
                       {/* Answer */}
-                      <div style={{ background: 'white', border: '1px solid #e2e8f0', borderLeft: '4px solid #3b82f6', borderRadius: '0 8px 8px 0', padding: '16px 20px', marginBottom: '12px' }}>
-                        <div style={{ fontSize: '11px', fontWeight: '700', color: '#3b82f6', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>💡 Sample Answer</div>
+                      <div style={{ background: 'white', border: '1px solid #e2e8f0', borderLeft: '4px solid #3b82f6', borderRadius: '0 12px 12px 0', padding: '20px 24px', marginBottom: '16px' }}>
+                        <div style={{ fontSize: '12px', fontWeight: '700', color: '#3b82f6', marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>💡 Sample Answer</div>
                         {formatGuideAnswer(item.a)}
                       </div>
                       {/* Tips */}
-                      <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '8px', padding: '14px 18px' }}>
-                        <div style={{ fontSize: '11px', fontWeight: '700', color: '#92400e', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>⚡ Pro Tips</div>
+                      <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '12px', padding: '18px 22px' }}>
+                        <div style={{ fontSize: '12px', fontWeight: '700', color: '#92400e', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>⚡ Pro Tips</div>
                         {item.tips.map((tip, i) => (
-                          <div key={i} style={{ display: 'flex', gap: '8px', marginBottom: '5px' }}>
-                            <span style={{ color: '#f59e0b', fontWeight: '700', flexShrink: 0 }}>›</span>
-                            <span style={{ fontSize: '12px', color: '#78350f', lineHeight: '1.6' }}>{tip}</span>
+                          <div key={i} style={{ display: 'flex', gap: '10px', marginBottom: '7px' }}>
+                            <span style={{ color: '#f59e0b', fontWeight: '700', flexShrink: 0, fontSize: '16px' }}>›</span>
+                            <span style={{ fontSize: '13.5px', color: '#78350f', lineHeight: '1.7' }}>{tip}</span>
                           </div>
                         ))}
                       </div>

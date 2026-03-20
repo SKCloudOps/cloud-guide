@@ -69,25 +69,324 @@
   }
   </script>
   <style>
-    /* Override for the React app container */
+    /* ============================================================
+       PLATFORM INTERVIEW — READABILITY & UX OVERHAUL
+       ============================================================ */
+
+    /* ── Layout overrides ── */
     .react-app-container {
       max-width: 100%;
       width: 100%;
     }
-    /* Hide sidebar elements for the full-width React app experience */
-    .content-split {
-      display: block !important;
-    }
-    .toc-sidebar {
-      display: none !important;
-    }
+    .content-split { display: block !important; }
+    .toc-sidebar   { display: none  !important; }
     .content-panel {
       max-width: 100% !important;
-      padding: 24px !important;
+      padding: 0 !important;
     }
-    /* Ensure React app styling works within the portal layout */
-    .react-app-container * {
-      box-sizing: border-box;
+    .react-app-container * { box-sizing: border-box; }
+
+    /* ── Global typography inside React root ── */
+    #react-root {
+      font-family: var(--font-sans, 'Inter', system-ui, -apple-system, sans-serif);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.65;
+    }
+
+    /* ── Header section (gradient banner) ── */
+    #react-root > div > div:first-child {
+      padding: 40px 32px !important;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #1a1a40 100%) !important;
+    }
+
+    #react-root > div > div:first-child h1 {
+      font-size: 30px !important;
+      font-weight: 800 !important;
+      letter-spacing: -0.03em !important;
+      line-height: 1.2 !important;
+    }
+
+    #react-root > div > div:first-child p {
+      font-size: 16px !important;
+      opacity: 0.85 !important;
+      line-height: 1.6 !important;
+    }
+
+    /* Progress bar improvements */
+    #react-root > div > div:first-child > div > div:last-child span {
+      font-size: 15px !important;
+    }
+
+    /* ── Tab navigation ── */
+    #react-root > div > div:nth-child(2) {
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
+      top: var(--topnav-height, 60px) !important;
+    }
+
+    #react-root > div > div:nth-child(2) button {
+      padding: 18px 24px !important;
+      font-size: 15px !important;
+      letter-spacing: -0.01em !important;
+      transition: color 0.2s, border-color 0.2s !important;
+    }
+
+    #react-root > div > div:nth-child(2) button:hover {
+      color: #3b82f6 !important;
+    }
+
+    /* ── Category sidebar (Questions tab) ── */
+    #react-root button {
+      transition: all 0.2s ease !important;
+    }
+
+    /* ── Question list items ── */
+    /* Question rows — bigger touch targets and better readability */
+    #react-root h3 {
+      font-size: 15.5px !important;
+      font-weight: 550 !important;
+      line-height: 1.55 !important;
+      letter-spacing: -0.015em !important;
+      color: #1e293b !important;
+    }
+
+    /* ── Expanded answer blocks ── */
+    /* Sample Answer section */
+    #react-root h4 {
+      font-size: 15px !important;
+      font-weight: 600 !important;
+      color: #1e293b !important;
+      margin: 18px 0 10px !important;
+      line-height: 1.4 !important;
+    }
+
+    #react-root p {
+      font-size: 14.5px !important;
+      line-height: 1.75 !important;
+      color: #374151 !important;
+    }
+
+    #react-root li {
+      font-size: 14.5px !important;
+      line-height: 1.7 !important;
+      color: #374151 !important;
+      margin-bottom: 5px !important;
+    }
+
+    #react-root ul {
+      margin: 10px 0 !important;
+      padding-left: 22px !important;
+    }
+
+    /* Code blocks in answers */
+    #react-root pre {
+      font-size: 13px !important;
+      line-height: 1.65 !important;
+      padding: 16px 20px !important;
+      border-radius: 10px !important;
+      margin: 14px 0 !important;
+      background: #0f172a !important;
+      color: #e2e8f0 !important;
+      font-family: var(--font-mono, 'JetBrains Mono', monospace) !important;
+      overflow-x: auto !important;
+    }
+
+    /* ── Level / difficulty badges ── */
+    #react-root span[style*="text-transform: uppercase"][style*="letter-spacing"] {
+      font-size: 11px !important;
+      padding: 4px 10px !important;
+      border-radius: 6px !important;
+      font-weight: 650 !important;
+    }
+
+    /* ── Accordion / expandable sections (Guide tab) ── */
+    /* Category accordion headers */
+    #react-root > div > div:nth-child(3) > div > div > div:first-child {
+      transition: background 0.2s ease !important;
+    }
+
+    /* ── Answer and Tips cards ── */
+    /* Blue left-border answer cards */
+    #react-root div[style*="border-left: 4px solid"] {
+      border-radius: 0 12px 12px 0 !important;
+      padding: 20px 24px !important;
+    }
+
+    /* Tips section (amber background) */
+    #react-root div[style*="border: 1px solid rgb(253, 230, 138)"],
+    #react-root div[style*="border: 1px solid #fde68a"] {
+      border-radius: 12px !important;
+      padding: 18px 22px !important;
+    }
+
+    /* ── Footer ── */
+    #react-root > div > div:last-child {
+      font-size: 15px !important;
+      padding: 40px 24px !important;
+      color: #94a3b8 !important;
+    }
+
+    /* ── Profile / Tips / Guide tab cards ── */
+    /* White cards in grid */
+    #react-root div[style*="box-shadow: 0 1px 3px"] {
+      border-radius: 14px !important;
+      border: 1px solid var(--border, #e2e8f0) !important;
+    }
+
+    #react-root div[style*="box-shadow: 0 1px 3px"] h3 {
+      font-size: 17px !important;
+      font-weight: 650 !important;
+      margin-bottom: 16px !important;
+    }
+
+    #react-root div[style*="box-shadow: 0 1px 3px"] li {
+      font-size: 14.5px !important;
+      line-height: 1.8 !important;
+    }
+
+    /* ── Guide tab (Full Reference) ── */
+    /* Guide search input */
+    #react-root input[placeholder*="Search"] {
+      font-size: 14.5px !important;
+      padding: 12px 18px !important;
+      border-radius: 10px !important;
+    }
+
+    /* Guide filter buttons */
+    #react-root button[style*="border-radius: 8px"] {
+      font-size: 14px !important;
+      padding: 12px 20px !important;
+      border-radius: 10px !important;
+    }
+
+    /* Guide category section headers */
+    #react-root div[style*="cursor: pointer"][style*="justify-content: space-between"] > div > div:first-child {
+      font-size: 17px !important;
+      font-weight: 700 !important;
+    }
+
+    /* Guide answer formatting — larger text */
+    #react-root div[style*="border-left: 4px solid rgb(59, 130, 246)"] div[style*="font-size: 13px"],
+    #react-root div[style*="border-left: 4px solid #3b82f6"] div[style*="font-size: 13px"] {
+      font-size: 14px !important;
+      line-height: 1.7 !important;
+    }
+
+    /* ── Smooth scroll behavior ── */
+    #react-root {
+      scroll-behavior: smooth;
+    }
+
+    /* ── Hover states for clickable rows ── */
+    #react-root div[style*="cursor: pointer"]:hover {
+      filter: brightness(0.98);
+    }
+
+    /* ── Selection color ── */
+    #react-root ::selection {
+      background: #dbeafe;
+      color: #1e3a5f;
+    }
+
+    /* ── Focus-visible for accessibility ── */
+    #react-root button:focus-visible,
+    #react-root input:focus-visible {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }
+
+    /* ── Responsive improvements ── */
+    @media (max-width: 900px) {
+      #react-root > div > div:first-child {
+        padding: 28px 20px !important;
+      }
+
+      #react-root > div > div:first-child h1 {
+        font-size: 22px !important;
+      }
+
+      #react-root > div > div:nth-child(2) button {
+        padding: 14px 16px !important;
+        font-size: 13.5px !important;
+      }
+
+      /* Stack category sidebar below on mobile */
+      #react-root > div > div:nth-child(3) > div[style*="display: flex"] {
+        flex-direction: column !important;
+      }
+
+      #react-root > div > div:nth-child(3) > div[style*="display: flex"] > div:first-child {
+        width: 100% !important;
+        position: static !important;
+      }
+
+      /* Category list becomes horizontal scroll on mobile */
+      #react-root > div > div:nth-child(3) > div[style*="display: flex"] > div:first-child > div {
+        display: flex !important;
+        overflow-x: auto !important;
+        gap: 8px !important;
+        padding-bottom: 8px !important;
+      }
+
+      #react-root > div > div:nth-child(3) > div[style*="display: flex"] > div:first-child > div > h3 {
+        display: none !important;
+      }
+
+      #react-root > div > div:nth-child(3) > div[style*="display: flex"] > div:first-child > div > button {
+        min-width: fit-content !important;
+        flex-shrink: 0 !important;
+      }
+
+      /* Answer area left padding reduced */
+      #react-root div[style*="padding: 0 24px 24px 70px"],
+      #react-root div[style*="padding: 0px 24px 24px 70px"] {
+        padding-left: 20px !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #react-root > div > div:first-child h1 {
+        font-size: 19px !important;
+      }
+
+      #react-root h3 {
+        font-size: 14px !important;
+      }
+
+      #react-root p, #react-root li {
+        font-size: 13.5px !important;
+      }
+
+      /* Tips grid single column */
+      #react-root div[style*="grid-template-columns: repeat(auto-fit, minmax(350px"] {
+        grid-template-columns: 1fr !important;
+      }
+
+      #react-root div[style*="grid-template-columns: repeat(auto-fit, minmax(350px"] > div[style*="grid-column: span 2"] {
+        grid-column: span 1 !important;
+      }
+    }
+
+    /* ── Print styles ── */
+    @media print {
+      .sidebar, .sidebar-toggle, .scroll-top-btn, .sidebar-overlay {
+        display: none !important;
+      }
+
+      #react-root > div > div:nth-child(2) {
+        position: static !important;
+      }
+
+      #react-root {
+        font-size: 12px !important;
+      }
+
+      #react-root pre {
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+      }
     }
   </style>
 </head>
