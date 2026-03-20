@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Platform Engineering Interview Prep | Cloud Interview Guide</title>
+  <meta name="description" content="Comprehensive platform engineering interview preparation. 180+ questions across Platform Engineering, Mobile CI/CD, Kubernetes, Terraform, AWS, System Design, Behavioral, and DevSecOps." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/devops.css" />
+
+    <meta name="keywords" content="platform engineering interview, mobile CI/CD interview, kubernetes interview questions, terraform interview, system design questions, behavioral interview STAR" />
+    <meta name="author" content="SKCloudOps" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://skcloudops.github.io/cloud-guide/platform-interview.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article" />
+    <meta property="article:section" content="Foundations" />
+    <meta property="article:tag" content="Platform Engineering,Interview Prep,Mobile CI/CD,Kubernetes,Terraform,System Design,Behavioral" />
+    <meta property="og:title" content="Platform Engineering Interview Prep | Cloud Interview Guide" />
+    <meta property="og:description" content="Comprehensive platform engineering interview preparation. 180+ questions across 11 categories with sample answers and pro tips." />
+    <meta property="og:url" content="https://skcloudops.github.io/cloud-guide/platform-interview.html" />
+    <meta property="og:site_name" content="Cloud Interview Guide" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Platform Engineering Interview Prep | Cloud Interview Guide" />
+    <meta name="twitter:description" content="Comprehensive platform engineering interview preparation. 180+ questions across 11 categories with sample answers and pro tips." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#0f172a">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "headline": "Platform Engineering Interview Prep",
+        "description": "Comprehensive platform engineering interview preparation with 180+ questions across 11 categories.",
+        "url": "https://skcloudops.github.io/cloud-guide/platform-interview.html",
+        "author": {"@type": "Organization", "name": "SKCloudOps", "url": "https://skcloudops.github.io/cloud-guide/"},
+        "publisher": {
+          "@type": "Organization",
+          "name": "SKCloudOps",
+          "url": "https://skcloudops.github.io/cloud-guide/",
+          "logo": {"@type": "ImageObject", "url": "https://skcloudops.github.io/cloud-guide/assets/favicon.svg"}
+        },
+        "dateModified": "2026-03-20",
+        "inLanguage": "en-US",
+        "teaches": "Platform Engineering, Mobile CI/CD, Kubernetes, Terraform, AWS, System Design, Behavioral interview techniques",
+        "educationalLevel": "Advanced",
+        "about": [
+          {"@type":"Thing","name":"Platform Engineering"},
+          {"@type":"Thing","name":"Interview Preparation"},
+          {"@type":"Thing","name":"DevOps"},
+          {"@type":"Thing","name":"Mobile CI/CD"},
+          {"@type":"Thing","name":"System Design"}
+        ],
+        "isPartOf": {"@type": "WebSite", "name": "Cloud Interview Guide", "url": "https://skcloudops.github.io/cloud-guide/"}
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Cloud Interview Guide", "item": "https://skcloudops.github.io/cloud-guide/"},
+          {"@type": "ListItem", "position": 2, "name": "Foundations", "item": "https://skcloudops.github.io/cloud-guide/"},
+          {"@type": "ListItem", "position": 3, "name": "Platform Engineering Interview Prep", "item": "https://skcloudops.github.io/cloud-guide/platform-interview.html"}
+        ]
+      }
+    ]
+  }
+  </script>
+  <style>
+    /* Override for the React app container */
+    .react-app-container {
+      max-width: 100%;
+      width: 100%;
+    }
+    /* Hide sidebar elements for the full-width React app experience */
+    .content-split {
+      display: block !important;
+    }
+    .toc-sidebar {
+      display: none !important;
+    }
+    .content-panel {
+      max-width: 100% !important;
+      padding: 24px !important;
+    }
+    /* Ensure React app styling works within the portal layout */
+    .react-app-container * {
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+      <div class="sidebar-header">
+        <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
+      </div>
+                  <nav class="sidebar-nav">
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">Infrastructure</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+                        <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
+                        <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
+                        <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
+                    </div>
+                </div>
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">App Services</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
+                        <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+                        <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+                        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+                    </div>
+                </div>
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">Architecture &amp; Ops</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+                        <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+                        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+                        <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
+                    </div>
+                </div>
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">Foundations</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+                        <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
+                        <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+                        <a href="interview.html" class="sidebar-link">Interview &amp; Career <span class="count">7</span></a>
+                        <a href="platform-interview.html" class="sidebar-link active">Platform Interview <span class="count">181</span></a>
+                    </div>
+                </div>
+            </nav>
+      <div class="header-search">
+        <div class="search-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+        </div>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+    <main class="content-area" role="main">
+      <div class="content-split">
+        <div class="content-panel">
+          <div id="react-root" class="react-app-container"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+  </button>
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <!-- React & Babel for in-browser TSX transpilation -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Load the TSX component -->
+  <script type="text/babel" data-type="module">
+    // Fetch and execute the TSX file
+    fetch('remixed-0aa0b832.tsx')
+      .then(res => res.text())
+      .then(code => {
+        // Remove the import/export statements for browser compatibility
+        let cleaned = code
+          .replace(/^import .+$/gm, '')
+          .replace(/^export default .+$/gm, '');
+
+        // Transpile with Babel
+        const transformed = Babel.transform(cleaned, {
+          presets: ['react'],
+          filename: 'interview.tsx'
+        }).code;
+
+        // Execute the code
+        const script = new Function('React', 'useState', transformed + '\n return InterviewPrep;');
+        const InterviewPrep = script(React, React.useState);
+
+        // Render the component
+        const root = ReactDOM.createRoot(document.getElementById('react-root'));
+        root.render(React.createElement(InterviewPrep));
+      })
+      .catch(err => {
+        console.error('Failed to load interview component:', err);
+        document.getElementById('react-root').innerHTML = `
+          <div style="padding:40px;text-align:center;color:#ef4444;">
+            <h2>Failed to load the interview prep app</h2>
+            <p>Error: ${err.message}</p>
+            <p>Please ensure you're running this from a local server (not file:// protocol).</p>
+          </div>
+        `;
+      });
+  </script>
+
+  <!-- Sidebar toggle (minimal JS for sidebar interactions) -->
+  <script>
+    // Sidebar toggle
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    if (sidebarToggle) {
+      sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('active');
+      });
+    }
+    if (sidebarOverlay) {
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+      });
+    }
+
+    // Scroll to top
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    if (scrollTopBtn) {
+      window.addEventListener('scroll', () => {
+        scrollTopBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+      });
+      scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  </script>
+</body>
+</html>
