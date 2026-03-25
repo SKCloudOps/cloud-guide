@@ -7,7 +7,7 @@ const GuideTab = ({ categories, allQuestions }) => {
   const [search, setSearch] = useState('');
   const [filterLevel, setFilterLevel] = useState('All');
 
-  const catOrder = ['platform','mobile','kubernetes','cicd','terraform','behavioral','system','aws','devsecops','observability','stakeholder'];
+  const catOrder = ['platform','mobile','kubernetes','cicd','terraform','behavioral','system','aws','devsecops','observability','stakeholder','career'];
 
   const filteredCats = catOrder.map(key => {
     const cat = categories[key];
@@ -10356,6 +10356,259 @@ Resolution: "Resolved: [Service] is fully operational. Root cause: [brief]. Post
             'Discuss blameless culture',
             'Know MTTA/MTTR metrics',
             'Mention runbook discipline'
+          ]
+        }
+      ]
+    },
+    career: {
+      title: 'Interview & Career Guide',
+      icon: '🎯',
+      questions: [
+        {
+          id: 'car1',
+          level: 'All',
+          q: 'What is the STAR interview format and how should you use it?',
+          a: `**STAR Method Overview:**
+
+The STAR method is the gold standard for answering behavioral interview questions:
+
+**1. Situation** — Set the context. Describe the project, team, and challenge. Be specific: "At Company X, we had a monolithic application serving 10M users that was experiencing frequent outages during peak hours."
+
+**2. Task** — What was your responsibility? "I was tasked with designing a migration plan to decompose the monolith into microservices to improve reliability and scalability."
+
+**3. Action** — What did YOU do? (Use "I", not "we"). "I identified the top 3 most failure-prone modules, designed a strangler fig pattern to extract them into independent services on EKS, set up CI/CD pipelines with ArgoCD, and implemented circuit breakers using Istio."
+
+**4. Result** — Quantify the outcome. "We reduced outages by 95%, improved deployment frequency from monthly to daily, and reduced P99 latency from 2s to 200ms. The architecture now handles 3x the previous peak traffic."
+
+**Preparation Tips:**
+
+• Prepare 5–8 STAR stories that cover: technical challenge, leadership, conflict, failure/learning, and cross-team collaboration.
+• Always quantify results (percentages, dollar amounts, time saved).
+• Keep each STAR answer under 2 minutes unless the interviewer asks to go deeper.`,
+          tips: [
+            'Always use "I" not "we" when describing actions',
+            'Quantify every result with specific numbers',
+            'Prepare stories across multiple themes: leadership, failure, conflict, teamwork',
+            'Practice out loud until stories feel natural but not rehearsed'
+          ]
+        },
+        {
+          id: 'car2',
+          level: 'Mid-Senior',
+          q: 'What is the difference between a Platform Team and a Developer Team?',
+          a: `**Platform Team vs Developer Team Workflow:**
+
+**Step 1:** The developer team requests the Platform team to provision appropriate AWS resources (e.g. Amazon EKS). This request is typically done via a ticketing system.
+
+**Step 2:** The platform team receives the request.
+
+**Step 3:** The platform team uses Infrastructure as Code (IaC) such as Terraform, CDK, etc., to provision the requested AWS resources and share credentials with the developer team.
+
+**Step 4:** The developer team kicks off the CI/CD process. Developers check in Code, Dockerfile, and manifest YAMLs. CI tools (e.g. Jenkins, GitHub Actions) build the container image and save it in Amazon ECR.
+
+**Step 5:** CD tools (e.g. Jenkins, Spinnaker) update the deployment manifest files with the tag of the container image.
+
+**Step 6:** CD tools deploy the manifest files into the cluster, deploying the newly built container in Amazon EKS.
+
+**Conclusion:**
+
+The platform team takes care of the infrastructure (often with guardrails appropriate for the organization), and the developer team uses that infrastructure to deploy their application. The platform team does the upgrade and maintenance of the infrastructure to reduce the burden on the developer team.`,
+          tips: [
+            'Emphasize clear ownership boundaries between teams',
+            'Mention self-service as the goal for mature platform teams',
+            'Discuss how guardrails balance speed with governance',
+            'Know how Team Topologies describes this relationship'
+          ]
+        },
+        {
+          id: 'car3',
+          level: 'Mid-Senior',
+          q: 'What are the options for running batch workloads on AWS?',
+          a: `**AWS Batch Workload Options:**
+
+**AWS Lambda:**
+• Best for: Simple, short transformations
+• Max duration: 15 minutes
+• Scaling: Automatic (1000+ concurrent)
+
+**AWS Batch:**
+• Best for: Large-scale compute jobs (genomics, rendering, ML training)
+• Max duration: Unlimited
+• Scaling: Automatic (managed compute environments with Spot)
+
+**AWS Step Functions:**
+• Best for: Complex multi-step workflows with branching, retries, and error handling
+• Max duration: 1 year (Standard) / 5 min (Express)
+• Scaling: Automatic
+
+**AWS Fargate:**
+• Best for: Containerized batch jobs without managing servers
+• Max duration: Unlimited
+• Scaling: Task-based scaling
+
+**Amazon EMR:**
+• Best for: Big data processing (Spark, Hadoop, Hive)
+• Max duration: Unlimited
+• Scaling: Cluster auto-scaling
+
+**Common Pattern:**
+
+Use Step Functions to orchestrate a batch pipeline — trigger Lambda for lightweight steps, AWS Batch for heavy compute, and DynamoDB/S3 for state and output storage.`,
+          tips: [
+            'Match the service to the workload characteristics (duration, compute needs)',
+            'Mention Spot instances for cost optimization in batch jobs',
+            'Discuss Step Functions as the orchestration layer',
+            'Know the concurrency and duration limits for each service'
+          ]
+        },
+        {
+          id: 'car4',
+          level: 'Senior',
+          q: 'How does EventBridge cross-account event routing work?',
+          a: `**EventBridge Cross-Account Architecture:**
+
+Amazon EventBridge supports routing events across AWS accounts for multi-account architectures:
+
+**How It Works:**
+
+1. **Source Account** — An application in Account A publishes events to an EventBridge event bus.
+2. **Event Rule** — A rule in Account A matches specific events and sets the target as the event bus in Account B.
+3. **Resource Policy** — Account B's event bus has a resource-based policy that allows Account A to put events onto it.
+4. **Target Account** — A rule in Account B's event bus matches the received events and triggers targets (Lambda, SQS, Step Functions, etc.).
+
+**Use Cases:**
+
+• **Centralized audit** — All accounts send security/compliance events to a central security account.
+• **Shared services** — A shared services account processes billing, notifications, or infrastructure events from workload accounts.
+• **Microservices across accounts** — Different teams own different accounts; EventBridge enables event-driven communication without tight coupling.`,
+          tips: [
+            'Draw the cross-account flow with resource policies',
+            'Mention event bus resource-based policies as the key enabler',
+            'Discuss centralized audit as a common real-world pattern',
+            'Compare with SNS cross-account for simpler use cases'
+          ]
+        },
+        {
+          id: 'car5',
+          level: 'Mid-Senior',
+          q: 'What does a typical microservice technology stack look like on AWS?',
+          a: `**Microservice Tech Stack Layers:**
+
+**API Gateway:**
+• Purpose: External API routing, auth, throttling
+• Technologies: Amazon API Gateway, Kong, Apigee
+
+**Compute:**
+• Purpose: Run microservices
+• Technologies: Amazon EKS, ECS, Fargate, Lambda
+
+**Service Discovery:**
+• Purpose: Find other services
+• Technologies: AWS Cloud Map, Kubernetes DNS, Consul
+
+**Communication:**
+• Purpose: Sync & async messaging
+• Technologies: gRPC, REST, SQS, SNS, EventBridge, Kafka
+
+**Database:**
+• Purpose: Data storage (database per service)
+• Technologies: DynamoDB, Aurora, ElastiCache, S3
+
+**Observability:**
+• Purpose: Metrics, logs, traces
+• Technologies: CloudWatch, Prometheus, Grafana, X-Ray, Jaeger
+
+**CI/CD:**
+• Purpose: Build and deploy
+• Technologies: GitHub Actions, Jenkins, ArgoCD, CodePipeline
+
+**Security:**
+• Purpose: AuthN/AuthZ, encryption
+• Technologies: Cognito, IAM, KMS, Istio (mTLS)`,
+          tips: [
+            'Know the purpose of each layer and why it matters',
+            'Be ready to justify your technology choices at each layer',
+            'Discuss the "database per service" pattern and its trade-offs',
+            'Mention observability as a non-negotiable for microservices'
+          ]
+        },
+        {
+          id: 'car6',
+          level: 'Mid-Senior',
+          q: 'What are the most common behavioral interview questions and how should you answer them?',
+          a: `**Key Behavioral Question Categories:**
+
+## Leadership & Influence
+• "Tell me about a time you influenced a team to adopt a technology they were resistant to."
+• "Describe a time you had to make a technical decision with incomplete information."
+• "Tell me about a time you disagreed with your manager or a senior engineer."
+
+## Failure & Learning
+• "Tell me about a project that failed. What did you learn?"
+• "Describe a production incident you caused or handled."
+• "Tell me about a time you received critical feedback. How did you respond?"
+
+## Collaboration & Communication
+• "Describe a time you had to explain a complex technical concept to a non-technical stakeholder."
+• "Tell me about a time you mentored a junior engineer who was struggling."
+• "Describe a situation where two teams had conflicting priorities. How did you resolve it?"
+
+## Scale & Innovation
+• "Tell me about a time you optimized a system for 10x scale."
+• "How did you reduce cloud costs significantly for your organization?"
+
+**Key Takeaway:**
+
+Prepare 8-10 STAR stories and practice them out loud until they feel natural but not rehearsed. Every story should have quantified results. Keep each answer under 2 minutes. Have at least one failure story ready — it shows self-awareness and is always asked.`,
+          tips: [
+            'Map stories to company values (e.g. Amazon Leadership Principles)',
+            'Always have a failure story ready — it shows maturity',
+            'Lead with data, not opinions, when describing disagreements',
+            'Practice the 2-minute rule: keep initial answers concise, let interviewer probe'
+          ]
+        },
+        {
+          id: 'car7',
+          level: 'All',
+          q: 'What does a typical Solutions Architect interview process look like?',
+          a: `**Typical Interview Rounds:**
+
+**Phone Screen (30-45 min):**
+• Focus: Resume deep-dive, "tell me about yourself," 2-3 technical questions
+• Prep: Prepare a 2-minute elevator pitch. Know your resume projects cold — be ready to go deep on any bullet point.
+
+**Technical Deep Dive (45-60 min):**
+• Focus: AWS services, architecture decisions, past project analysis
+• Prep: Review all topics in this guide. Be ready to whiteboard an architecture from a past project and defend your decisions.
+
+**System Design (45-60 min):**
+• Focus: Design a system from scratch on a whiteboard
+• Prep: Practice the 4-step framework: 1) Clarify requirements, 2) High-level design, 3) Deep dive on components, 4) Discuss trade-offs and scaling.
+
+**Behavioral (45-60 min):**
+• Focus: Leadership, conflict, failure, collaboration (STAR format)
+• Prep: Prepare 8-10 STAR stories. At Amazon, map each to a Leadership Principle. Always quantify results.
+
+**Bar Raiser — Amazon (45-60 min):**
+• Focus: Cross-functional evaluation. Tests long-term potential, not just current role fit.
+• Prep: Expect unusual questions that test how you think, not what you know. Show depth AND breadth.
+
+**How to Handle "I Don't Know":**
+
+• Don't bluff. Experienced interviewers will probe until the bluff collapses.
+• Show your reasoning: "I haven't worked with Aurora DSQL directly, but based on my understanding of distributed SQL systems like Spanner, I'd expect it provides strong consistency across regions..."
+• Acknowledge and pivot: "That's not an area I've gone deep on yet. What I can share is how I'd approach learning it..."
+
+**Company-Specific Preparation:**
+
+• **Amazon:** 16 Leadership Principles drive every question. Map your STAR stories to: Customer Obsession, Ownership, Invent and Simplify, Bias for Action, Dive Deep, Earn Trust.
+• **Google:** Focus on system design depth and "Googliness" — intellectual humility, collaboration, bringing out the best in others.
+• **Startups:** Emphasize breadth, speed, and cost consciousness. They want architects who can build, not just design.`,
+          tips: [
+            'The system design round has the highest weight for architect roles',
+            'Structure every design answer: requirements → high-level → deep dive → trade-offs',
+            'Practice whiteboarding while speaking simultaneously',
+            'Never bluff — show reasoning process instead'
           ]
         }
       ]
