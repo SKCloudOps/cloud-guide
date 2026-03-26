@@ -1,0 +1,364 @@
+                    <!-- Topic 1: Database Selection -->
+                    <article id="db-selection" class="topic-card" data-difficulty="advanced">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+                            <h2>Database Selection Framework</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark DB Selection as reviewed"><svg width="20" height="20"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <!-- Enterprise Diagram: Database Selection Framework -->
+                            <div class="topic-diagram" style="margin-bottom: 2rem; padding: 1.5rem; background: #fafafa; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                                <svg viewBox="0 0 800 240" width="100%" height="auto" style="font-family: var(--font-sans);">
+                                    <defs>
+                                        <linearGradient id="aurGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3b82f6" /><stop offset="100%" stop-color="#1d4ed8" /></linearGradient>
+                                        <linearGradient id="dynGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563eb" /><stop offset="100%" stop-color="#1e40af" /></linearGradient>
+                                        <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ea580c" /><stop offset="100%" stop-color="#c2410c" /></linearGradient>
+                                        <linearGradient id="elaGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ef4444" /><stop offset="100%" stop-color="#b91c1c" /></linearGradient>
+                                        <marker id="arrowD" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+                                        </marker>
+                                    </defs>
+
+                                    <!-- Main Decision Node -->
+                                    <rect x="330" y="10" width="140" height="40" rx="20" fill="#1e293b" />
+                                    <text x="400" y="35" fill="white" font-size="14" font-weight="700" text-anchor="middle">Data Requirement</text>
+
+                                    <!-- Arrows -->
+                                    <path d="M 400 50 L 400 65 L 140 65 L 140 90" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowD)" fill="none" />
+                                    <path d="M 400 50 L 400 65 L 315 65 L 315 90" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowD)" fill="none" />
+                                    <path d="M 400 50 L 400 65 L 485 65 L 485 90" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowD)" fill="none" />
+                                    <path d="M 400 50 L 400 65 L 660 65 L 660 90" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowD)" fill="none" />
+
+                                    <!-- Categories -->
+                                    <rect x="70" y="90" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#cbd5e1" />
+                                    <text x="140" y="110" fill="#334155" font-size="12" font-weight="700" text-anchor="middle">SQL / ACID Joins</text>
+                                    
+                                    <rect x="245" y="90" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#cbd5e1" />
+                                    <text x="315" y="110" fill="#334155" font-size="12" font-weight="700" text-anchor="middle">NoSQL / Scale</text>
+                                    
+                                    <rect x="415" y="90" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#cbd5e1" />
+                                    <text x="485" y="110" fill="#334155" font-size="12" font-weight="700" text-anchor="middle">Caching / Sub-ms</text>
+
+                                    <rect x="590" y="90" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#cbd5e1" />
+                                    <text x="660" y="110" fill="#334155" font-size="12" font-weight="700" text-anchor="middle">Data Warehouse</text>
+
+                                    <!-- Arrows down -->
+                                    <path d="M 140 120 L 140 150" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowD)" />
+                                    <path d="M 315 120 L 315 150" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowD)" />
+                                    <path d="M 485 120 L 485 150" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowD)" />
+                                    <path d="M 660 120 L 660 150" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowD)" />
+
+                                    <!-- Database Services -->
+                                    <rect x="60" y="150" width="160" height="70" rx="8" fill="url(#aurGrad)" />
+                                    <text x="140" y="180" fill="white" font-size="16" font-weight="800" text-anchor="middle">Aurora</text>
+                                    <text x="140" y="195" fill="#bfdbfe" font-size="11" text-anchor="middle">PostgreSQL / MySQL</text>
+
+                                    <rect x="235" y="150" width="160" height="70" rx="8" fill="url(#dynGrad)" />
+                                    <text x="315" y="180" fill="white" font-size="16" font-weight="800" text-anchor="middle">DynamoDB</text>
+                                    <text x="315" y="195" fill="#bfdbfe" font-size="11" text-anchor="middle">Serverless Key-Value</text>
+
+                                    <rect x="405" y="150" width="160" height="70" rx="8" fill="url(#elaGrad)" />
+                                    <text x="485" y="180" fill="white" font-size="16" font-weight="800" text-anchor="middle">ElastiCache</text>
+                                    <text x="485" y="195" fill="#fecaca" font-size="11" text-anchor="middle">Redis / Memcached</text>
+
+                                    <rect x="580" y="150" width="160" height="70" rx="8" fill="url(#redGrad)" />
+                                    <text x="660" y="180" fill="white" font-size="16" font-weight="800" text-anchor="middle">Redshift</text>
+                                    <text x="660" y="195" fill="#fed7aa" font-size="11" text-anchor="middle">Petabyte Analytics</text>
+                                </svg>
+                            </div>
+                            <div class="topic-body">
+                                <p>The #1 SA interview question: "Which database would you use?" — here's the decision matrix:</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Requirement</th>
+                                            <th>Best Choice</th>
+                                            <th>Why</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Relational + complex queries</strong></td>
+                                            <td>Aurora (PostgreSQL/MySQL)</td>
+                                            <td>5x throughput of standard MySQL, auto-scaling storage, multi-AZ</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Key-value, &lt;10ms, any scale</strong></td>
+                                            <td>DynamoDB</td>
+                                            <td>Serverless, single-digit ms latency, unlimited scale, on-demand pricing</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Sub-millisecond caching</strong></td>
+                                            <td>ElastiCache (Redis)</td>
+                                            <td>In-memory, supports complex data structures, pub/sub</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Data warehouse / analytics</strong></td>
+                                            <td>Redshift</td>
+                                            <td>Columnar storage, MPP, optimized for OLAP queries on petabytes</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Document / flexible schema</strong></td>
+                                            <td>DocumentDB</td>
+                                            <td>MongoDB-compatible, managed, scales to millions of reads/writes</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Graph relationships</strong></td>
+                                            <td>Neptune</td>
+                                            <td>Social networks, fraud detection, knowledge graphs</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Time-series / IoT</strong></td>
+                                            <td>Timestream</td>
+                                            <td>Purpose-built for time-series with built-in analytics</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Ledger / immutable</strong></td>
+                                            <td>Aurora PostgreSQL + pgcrypto</td>
+                                            <td>Verifiable transaction log (QLDB deprecated July 2025 — migrate to Aurora with audit tables)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>In-memory + durability</strong></td>
+                                            <td>MemoryDB for Redis</td>
+                                            <td>Redis-compatible with multi-AZ durable storage</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>The Decision Tree (Interview Framework)</h4>
+                                <ol>
+                                    <li><strong>Need SQL joins/transactions?</strong> → Yes: Aurora. No: continue.</li>
+                                    <li><strong>Simple key-value access patterns?</strong> → Yes: DynamoDB. No: continue.</li>
+                                    <li><strong>Need caching layer?</strong> → Yes: ElastiCache Redis. No: continue.</li>
+                                    <li><strong>Analytics on large datasets?</strong> → Yes: Redshift or Athena (serverless). No: continue.</li>
+                                    <li><strong>Graph relationships?</strong> → Yes: Neptune. No: check remaining options.</li>
+                                </ol>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I start with the access pattern: if I need complex SQL joins and ACID transactions, Aurora. If simple get/put with massive scale, DynamoDB. For analytics, Redshift. I always add ElastiCache in front for hot data — even a simple cache reduces RDS load by 90%."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 2: RDS vs Aurora -->
+                    <article id="rds-aurora" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span></div>
+                            <h2>RDS vs Aurora Deep Dive</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark RDS Aurora as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" /></svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <!-- Enterprise Diagram: Aurora Storage Architecture -->
+                            <div class="topic-diagram" style="margin-bottom: 2rem; padding: 1.5rem; background: #fafafa; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                                <svg viewBox="0 0 800 240" width="100%" height="auto" style="font-family: var(--font-sans);">
+                                    <defs>
+                                        <linearGradient id="rdsBox" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3b82f6" /><stop offset="100%" stop-color="#1e40af" /></linearGradient>
+                                        <linearGradient id="storGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#14b8a6" /><stop offset="100%" stop-color="#0f766e" /></linearGradient>
+                                    </defs>
+
+                                    <text x="400" y="20" fill="#64748b" font-size="16" font-weight="700" text-anchor="middle">Aurora Shared Storage Architecture (6 Copies across 3 AZs)</text>
+
+                                    <!-- Control Plane / Instances -->
+                                    <rect x="250" y="40" width="300" height="180" rx="8" fill="white" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6,4" />
+                                    
+                                    <rect x="350" y="50" width="100" height="50" rx="6" fill="url(#rdsBox)" />
+                                    <text x="400" y="75" fill="white" font-size="14" font-weight="800" text-anchor="middle">Primary</text>
+                                    <text x="400" y="90" fill="white" font-size="10" text-anchor="middle">(Read/Write)</text>
+
+                                    <rect x="260" y="130" width="80" height="40" rx="6" fill="#38bdf8" />
+                                    <text x="300" y="150" fill="white" font-size="12" font-weight="700" text-anchor="middle">Reader 1</text>
+                                    <text x="300" y="162" fill="white" font-size="9" text-anchor="middle">(&lt;10ms lag)</text>
+
+                                    <rect x="360" y="130" width="80" height="40" rx="6" fill="#38bdf8" />
+                                    <text x="400" y="150" fill="white" font-size="12" font-weight="700" text-anchor="middle">Reader 2</text>
+                                    <text x="400" y="162" fill="white" font-size="9" text-anchor="middle">(&lt;10ms lag)</text>
+
+                                    <rect x="460" y="130" width="80" height="40" rx="6" fill="#38bdf8" />
+                                    <text x="500" y="150" fill="white" font-size="12" font-weight="700" text-anchor="middle">Reader 3</text>
+                                    <text x="500" y="162" fill="white" font-size="9" text-anchor="middle">(&lt;10ms lag)</text>
+
+                                    <!-- Storage Layer -->
+                                    <rect x="40" y="190" width="720" height="40" rx="8" fill="url(#storGrad)" />
+                                    <text x="400" y="215" fill="white" font-size="14" font-weight="800" text-anchor="middle">Aurora Distributed Storage Layer (Auto-Scaling, Self-Healing)</text>
+
+                                    <!-- Connection Lines to primary -->
+                                    <path d="M 400 100 L 400 190" stroke="#0ea5e9" stroke-width="3" />
+                                    <path d="M 300 170 L 300 190" stroke="#0ea5e9" stroke-width="2" stroke-dasharray="3,3" />
+                                    <path d="M 400 170 L 400 190" stroke="#0ea5e9" stroke-width="2" stroke-dasharray="3,3" />
+                                    <path d="M 500 170 L 500 190" stroke="#0ea5e9" stroke-width="2" stroke-dasharray="3,3" />
+
+                                    <!-- Database Volume Chunks -->
+                                    <rect x="80" y="180" width="40" height="20" rx="2" fill="#34d399" />
+                                    <rect x="200" y="180" width="40" height="20" rx="2" fill="#34d399" />
+                                    <rect x="320" y="180" width="40" height="20" rx="2" fill="#34d399" />
+                                    <rect x="440" y="180" width="40" height="20" rx="2" fill="#34d399" />
+                                    <rect x="560" y="180" width="40" height="20" rx="2" fill="#34d399" />
+                                    <rect x="680" y="180" width="40" height="20" rx="2" fill="#34d399" />
+                                    
+                                    <text x="400" y="188" fill="#1e293b" font-size="10" font-weight="600" text-anchor="middle">6 Copies across 3 Availability Zones</text>
+                                </svg>
+                            </div>
+                            <div class="topic-body">
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Feature</th>
+                                            <th>RDS</th>
+                                            <th>Aurora</th>
+                                            <th>Aurora Serverless v2</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Engines</strong></td>
+                                            <td>MySQL, PostgreSQL, MariaDB, Oracle, SQL Server</td>
+                                            <td>MySQL, PostgreSQL only</td>
+                                            <td>MySQL, PostgreSQL only</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Storage</strong></td>
+                                            <td>EBS (gp3/io1), manual scaling</td>
+                                            <td>Auto-scales 10GB → 128TB, 6 copies across 3 AZs</td>
+                                            <td>Same as Aurora</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Read Replicas</strong></td>
+                                            <td>Up to 15 (async)</td>
+                                            <td>Up to 15 (shared storage, ~10ms lag)</td>
+                                            <td>Same as Aurora</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Failover</strong></td>
+                                            <td>~60-120 seconds</td>
+                                            <td>~30 seconds (faster with reader)</td>
+                                            <td>~30 seconds</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Scaling</strong></td>
+                                            <td>Manual instance resize (downtime)</td>
+                                            <td>Add readers, instance resize</td>
+                                            <td>Auto-scales 0.5 → 128 ACUs with load</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cost</strong></td>
+                                            <td>Lower starting point</td>
+                                            <td>~20% more than RDS</td>
+                                            <td>Pay per ACU-hour (can scale to zero)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Global</strong></td>
+                                            <td>Cross-region read replicas (minutes lag)</td>
+                                            <td>Global Database (&lt;1 second lag, 5 secondary regions)</td>
+                                            <td>Supported (since 2024)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Best For</strong></td>
+                                            <td>Small/medium, Oracle/SQL Server</td>
+                                            <td>Production MySQL/PostgreSQL</td>
+                                            <td>Variable/unpredictable workloads</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h4>Aurora Storage Architecture (Know This)</h4>
+                                <p>Aurora stores data in a shared, distributed storage layer: <strong>6 copies across 3 AZs</strong>. It can lose 2 copies and still write, lose 3 and still read. Storage auto-heals — bad segments are automatically repaired. This is why Aurora has sub-30-second failover.</p>
+
+                                <h4>Multi-AZ vs Read Replicas</h4>
+                                <ul>
+                                    <li><strong>Multi-AZ:</strong> Standby instance for HA (automatic failover). Cannot serve reads. Purpose: availability.</li>
+                                    <li><strong>Read Replica:</strong> Separate instance that serves read queries. Can be promoted to primary. Purpose: read scaling.</li>
+                                    <li><strong>Aurora:</strong> Every reader is also a failover target. Multi-AZ + read scaling in one.</li>
+                                </ul>
+
+                                <div class="answer-block correct">
+                                    <h4>🎯 Key Takeaway</h4>
+                                    <p><strong>Interview tip:</strong> <em>"I always recommend Aurora over standard RDS for production MySQL/PostgreSQL. Aurora's storage layer (6 copies, 3 AZs, auto-healing) gives better durability and 30-second failover. For unpredictable workloads, Aurora Serverless v2 auto-scales ACUs. For multi-region, Aurora Global Database provides &lt;1 second replication."</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 3: DynamoDB -->
+                    <article id="dynamodb" class="topic-card" data-difficulty="advanced">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+                            <h2>DynamoDB Architect Patterns</h2>
+                            <button class="review-btn" title="Mark as reviewed"
+                                aria-label="Mark DynamoDB as reviewed"><svg width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" /></svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <!-- Enterprise Diagram: DynamoDB CDC Pattern -->
+                            <div class="topic-diagram" style="margin-bottom: 2rem; padding: 1.5rem; background: #fafafa; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                                <svg viewBox="0 0 800 240" width="100%" height="auto" style="font-family: var(--font-sans);">
+                                    <defs>
+                                        <linearGradient id="dbDbgGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563eb" /><stop offset="100%" stop-color="#1e3a8a" /></linearGradient>
+                                        <linearGradient id="streamGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0284c7" /><stop offset="100%" stop-color="#0369a1" /></linearGradient>
+                                        <linearGradient id="lamDynGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ea580c" /><stop offset="100%" stop-color="#c2410c" /></linearGradient>
+                                        <linearGradient id="evGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#14b8a6" /><stop offset="100%" stop-color="#0f766e" /></linearGradient>
+                                    </defs>
+
+                                    <!-- Title -->
+                                    <text x="400" y="20" fill="#64748b" font-size="14" font-weight="700" text-anchor="middle">DynamoDB Event-Driven CDC Pipeline (Change Data Capture)</text>
+
+                                    <!-- Application -->
+                                    <rect x="20" y="80" width="120" height="60" rx="8" fill="white" stroke="#64748b" stroke-width="2" />
+                                    <text x="80" y="110" fill="#334155" font-size="14" font-weight="700" text-anchor="middle">Application</text>
+                                    <text x="80" y="125" fill="#64748b" font-size="10" text-anchor="middle">(PutItem/UpdateItem)</text>
+
+                                    <path d="M 140 110 L 215 110" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowD)" />
+
+                                    <!-- DynamoDB -->
+                                    <rect x="220" y="70" width="100" height="80" rx="8" fill="url(#dbDbgGrad)" />
+                                    <text x="270" y="110" fill="white" font-size="14" font-weight="800" text-anchor="middle">DynamoDB</text>
+                                    <text x="270" y="125" fill="#bfdbfe" font-size="10" text-anchor="middle">Orders Table</text>
+
+                                    <!-- Stream -->
+                                    <path d="M 320 110 L 375 110" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowD)" />
+                                    
+                                    <rect x="380" y="85" width="100" height="50" rx="25" fill="url(#streamGrad)" />
+                                    <text x="430" y="110" fill="white" font-size="12" font-weight="700" text-anchor="middle">DDB Streams</text>
+                                    <text x="430" y="122" fill="#bae6fd" font-size="9" text-anchor="middle">(Time-ordered)</text>
+
+                                    <!-- Lambda -->
+                                    <path d="M 480 110 L 535 110" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrowD)" />
+                                    
+                                    <rect x="540" y="85" width="80" height="50" rx="8" fill="url(#lamDynGrad)" />
+                                    <text x="580" y="110" fill="white" font-size="14" font-weight="800" text-anchor="middle">Lambda</text>
+                                    <text x="580" y="122" fill="#ffedd5" font-size="9" text-anchor="middle">Enrichment</text>
+
+                                    <!-- EventBridge -->
+                                    <path d="M 620 110 L 675 110" stroke="#ea580c" stroke-width="3" marker-end="url(#arrowD)" />
+                                    
+                                    <rect x="680" y="70" width="100" height="80" rx="8" fill="url(#evGrad)" />
+                                    <text x="730" y="110" fill="white" font-size="14" font-weight="800" text-anchor="middle">EventBus</text>
+                                    <text x="730" y="125" fill="#ccfbf1" font-size="10" text-anchor="middle">Target Fan-out</text>
+
+                                    <!-- Sub-details Box -->
+                                    <rect x="220" y="170" width="560" height="50" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2" />
+                                    <text x="500" y="190" fill="#475569" font-size="12" font-weight="700" text-anchor="middle">Use Case: When an Order is created in DynamoDB, instantly notify Billing,</text>
+                                    <text x="500" y="205" fill="#475569" font-size="12" font-weight="700" text-anchor="middle">Shipping, and Analytics decoupled from the main database transaction.</text>
+                                </svg>
+                            </div>
+                            <div class="topic-body">
+                                <p>DynamoDB is THE go-to for serverless and high-scale architectures:</p>
+                                <h4>Key Concepts</h4>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Concept</th>
+                                            <th>What</th>
+                                            <th>Why It Matters</th>
+                                        </tr>
+                                    </thead>
