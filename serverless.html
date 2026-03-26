@@ -284,6 +284,80 @@
               <div class="topic-body">
                 <p>A fully serverless web application on AWS — the #1 whiteboard question for Solutions Architect
                   interviews:</p>
+                  
+                <!-- Enterprise Diagram: Serverless Web App -->
+                <div class="topic-diagram" style="margin: 2rem 0; padding: 1.5rem; background: #fafafa; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                    <svg viewBox="0 0 800 320" width="100%" height="auto" style="font-family: var(--font-sans);">
+                        <defs>
+                            <linearGradient id="cdnGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f59e0b" /><stop offset="100%" stop-color="#d97706" /></linearGradient>
+                            <linearGradient id="apiGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8b5cf6" /><stop offset="100%" stop-color="#6d28d9" /></linearGradient>
+                            <linearGradient id="lamGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ea580c" /><stop offset="100%" stop-color="#c2410c" /></linearGradient>
+                            <linearGradient id="dbGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563eb" /><stop offset="100%" stop-color="#1d4ed8" /></linearGradient>
+                            <linearGradient id="cogGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ef4444" /><stop offset="100%" stop-color="#b91c1c" /></linearGradient>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+                            </marker>
+                        </defs>
+
+                        <!-- User -->
+                        <circle cx="50" cy="160" r="25" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+                        <text x="50" y="165" fill="#475569" font-size="14" font-weight="700" text-anchor="middle">User</text>
+
+                        <!-- Internet -->
+                        <path d="M 80 160 L 145 160" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+                        
+                        <!-- Route 53 -->
+                        <circle cx="170" cy="160" r="20" fill="white" stroke="#f59e0b" stroke-width="2" />
+                        <text x="170" y="140" fill="#f59e0b" font-size="10" font-weight="700" text-anchor="middle">Route 53</text>
+                        
+                        <path d="M 195 160 L 255 160" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+
+                        <!-- CloudFront -->
+                        <rect x="260" y="130" width="80" height="60" rx="8" fill="url(#cdnGrad)" />
+                        <text x="300" y="155" fill="white" font-size="12" font-weight="700" text-anchor="middle">Cloud</text>
+                        <text x="300" y="170" fill="white" font-size="12" font-weight="700" text-anchor="middle">Front</text>
+
+                        <!-- Static Route (Top) -->
+                        <path d="M 300 120 L 300 60 L 415 60" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+                        <text x="360" y="50" fill="#64748b" font-size="11" font-weight="700" text-anchor="middle">Static Content</text>
+
+                        <!-- S3 Bucket -->
+                        <rect x="420" y="30" width="100" height="60" rx="8" fill="white" stroke="#22c55e" stroke-width="3" />
+                        <text x="470" y="60" fill="#16a34a" font-size="14" font-weight="700" text-anchor="middle">S3 Bucket</text>
+                        <text x="470" y="75" fill="#16a34a" font-size="10" text-anchor="middle">(React/Vue)</text>
+
+                        <!-- API Route (Middle) -->
+                        <path d="M 345 160 L 415 160" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+                        <text x="380" y="150" fill="#64748b" font-size="11" font-weight="700" text-anchor="middle">API Calls</text>
+
+                        <!-- API Gateway -->
+                        <rect x="420" y="130" width="100" height="60" rx="8" fill="url(#apiGrad)" />
+                        <text x="470" y="155" fill="white" font-size="12" font-weight="700" text-anchor="middle">API</text>
+                        <text x="470" y="170" fill="white" font-size="12" font-weight="700" text-anchor="middle">Gateway</text>
+
+                        <!-- Cognito -->
+                        <rect x="420" y="240" width="100" height="50" rx="8" fill="url(#cogGrad)" />
+                        <text x="470" y="265" fill="white" font-size="12" font-weight="700" text-anchor="middle">Cognito</text>
+                        <text x="470" y="280" fill="rgba(255,255,255,0.8)" font-size="10" text-anchor="middle">(Auth)</text>
+
+                        <!-- Auth Validation -->
+                        <path d="M 470 230 L 470 195" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow)" />
+                        <text x="420" y="215" fill="#ef4444" font-size="10" font-weight="700" text-anchor="start">Validate JWT</text>
+
+                        <path d="M 525 160 L 595 160" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+
+                        <!-- Lambda -->
+                        <rect x="600" y="130" width="80" height="60" rx="8" fill="url(#lamGrad)" />
+                        <text x="640" y="165" fill="white" font-size="14" font-weight="700" text-anchor="middle">Lambda</text>
+
+                        <path d="M 685 160 L 745 160" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+
+                        <!-- DynamoDB -->
+                        <rect x="750" y="120" width="40" height="80" rx="4" fill="url(#dbGrad)" />
+                        <text transform="translate(775,160) rotate(-90)" fill="white" font-size="12" font-weight="700" text-anchor="middle">DynamoDB</text>
+                    </svg>
+                </div>
+                
                 <h4>Architecture (Layer by Layer)</h4>
                 <table class="topic-table">
                   <thead>
@@ -416,6 +490,58 @@
               <div class="topic-body">
                 <p>AWS Lambda as an inline transformation step in data pipelines — zero infrastructure,
                   pay-per-execution:</p>
+                  
+                <!-- Enterprise Diagram: Lambda Transform -->
+                <div class="topic-diagram" style="margin: 2rem 0; padding: 1.5rem; background: #fafafa; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                    <svg viewBox="0 0 800 160" width="100%" height="auto" style="font-family: var(--font-sans);">
+                        <defs>
+                            <linearGradient id="firehoseGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0284c7" /><stop offset="100%" stop-color="#0369a1" /></linearGradient>
+                            <linearGradient id="lamTransGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ea580c" /><stop offset="100%" stop-color="#c2410c" /></linearGradient>
+                            <marker id="arrowT" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+                            </marker>
+                        </defs>
+
+                        <!-- Producer -->
+                        <rect x="20" y="50" width="100" height="60" rx="6" fill="white" stroke="#64748b" stroke-width="2" />
+                        <text x="70" y="80" fill="#334155" font-size="14" font-weight="700" text-anchor="middle">IoT Devices</text>
+                        <text x="70" y="95" fill="#64748b" font-size="10" text-anchor="middle">(Raw Streams)</text>
+
+                        <path d="M 125 80 L 195 80" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowT)" />
+
+                        <!-- Firehose -->
+                        <path d="M 200 40 L 320 40 L 340 80 L 320 120 L 200 120 Z" fill="url(#firehoseGrad)" />
+                        <text x="260" y="75" fill="white" font-size="14" font-weight="800" text-anchor="middle">Kinesis Data</text>
+                        <text x="260" y="95" fill="white" font-size="12" font-weight="600" text-anchor="middle">Firehose</text>
+
+                        <!-- Transform Step -->
+                        <path d="M 270 40 L 270 10 L 460 10 L 460 45" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrowT)" stroke-dasharray="4,4" />
+                        
+                        <rect x="420" y="50" width="120" height="60" rx="6" fill="url(#lamTransGrad)" />
+                        <text x="480" y="75" fill="white" font-size="14" font-weight="800" text-anchor="middle">Lambda</text>
+                        <text x="480" y="90" fill="white" font-size="10" font-weight="600" text-anchor="middle">(Format &amp; Enrich)</text>
+                        
+                        <!-- Return payload -->
+                        <path d="M 420 80 L 350 80" stroke="#ea580c" stroke-width="2" marker-end="url(#arrowT)" />
+                        <text x="385" y="70" fill="#c2410c" font-size="10" font-weight="700" text-anchor="middle">Transformed Data</text>
+
+                        <path d="M 330 105 L 615 105" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowT)" />
+
+                        <!-- Destination S3 -->
+                        <rect x="620" y="75" width="100" height="60" rx="8" fill="white" stroke="#22c55e" stroke-width="3" />
+                        <text x="670" y="105" fill="#16a34a" font-size="14" font-weight="800" text-anchor="middle">S3 Bucket</text>
+                        <text x="670" y="120" fill="#16a34a" font-size="10" text-anchor="middle">(Data Lake)</text>
+                        
+                        <!-- DLQ S3 -->
+                        <rect x="620" y="10" width="100" height="50" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2" />
+                        <text x="670" y="32" fill="#b91c1c" font-size="12" font-weight="700" text-anchor="middle">DLQ Bucket</text>
+                        <text x="670" y="47" fill="#b91c1c" font-size="10" text-anchor="middle">(Failed Records)</text>
+
+                        <path d="M 320 60 L 615 35" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arrowT)" />
+
+                    </svg>
+                </div>
+                
                 <h4>Transform Patterns (Common Interview Scenarios)</h4>
                 <table class="topic-table">
                   <thead>
@@ -491,6 +617,57 @@
             <div class="topic-card-body">
               <div class="topic-body">
                 <p>AWS Step Functions is the orchestration service for serverless workflows — essential for any multi-step process:</p>
+                
+                <!-- Enterprise Diagram: Step Functions Saga -->
+                <div class="topic-diagram" style="margin: 2rem 0; padding: 1.5rem; background: #fafafa; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                    <svg viewBox="0 0 800 240" width="100%" height="auto" style="font-family: var(--font-sans);">
+                        <defs>
+                            <linearGradient id="stepGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4f46e5" /><stop offset="100%" stop-color="#3b82f6" /></linearGradient>
+                            <linearGradient id="compGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ef4444" /><stop offset="100%" stop-color="#b91c1c" /></linearGradient>
+                        </defs>
+
+                        <!-- Title -->
+                        <text x="400" y="20" fill="#64748b" font-size="14" font-weight="700" text-anchor="middle">Saga Pattern Orchestration (Order Workflow)</text>
+
+                        <!-- Main Steps -->
+                        <rect x="50" y="70" width="140" height="50" rx="25" fill="url(#stepGrad)" />
+                        <text x="120" y="100" fill="white" font-size="13" font-weight="700" text-anchor="middle">1. Validate Order</text>
+
+                        <path d="M 195 95 L 265 95" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)" />
+                        
+                        <rect x="270" y="70" width="140" height="50" rx="25" fill="url(#stepGrad)" />
+                        <text x="340" y="100" fill="white" font-size="13" font-weight="700" text-anchor="middle">2. Charge Payment</text>
+
+                        <path d="M 415 95 L 485 95" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)" />
+
+                        <rect x="490" y="70" width="140" height="50" rx="25" fill="url(#stepGrad)" />
+                        <text x="560" y="100" fill="white" font-size="13" font-weight="700" text-anchor="middle">3. Reserve Inv.</text>
+                        
+                        <!-- Error cross -->
+                        <path d="M 640 85 L 660 105 M 660 85 L 640 105" stroke="#ef4444" stroke-width="4" />
+
+                        <!-- Compensating Actions -->
+                        <path d="M 560 125 L 560 160" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow)" />
+                        <!-- Route from 3 fail to refund -->
+                        <path d="M 560 185 L 415 185" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)" />
+
+                        <rect x="270" y="160" width="140" height="50" rx="8" fill="url(#compGrad)" />
+                        <text x="340" y="185" fill="white" font-size="13" font-weight="700" text-anchor="middle">Refund Payment</text>
+                        <text x="340" y="200" fill="rgba(255,255,255,0.8)" font-size="10" text-anchor="middle">(Compensating)</text>
+
+                        <path d="M 265 185 L 195 185" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)" />
+
+                        <rect x="50" y="160" width="140" height="50" rx="8" fill="url(#compGrad)" />
+                        <text x="120" y="185" fill="white" font-size="13" font-weight="700" text-anchor="middle">Fail Order</text>
+                        <text x="120" y="200" fill="rgba(255,255,255,0.8)" font-size="10" text-anchor="middle">(Final State)</text>
+
+                        <!-- Box surrounding everything -->
+                        <rect x="20" y="40" width="760" height="190" rx="8" fill="none" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="6,4" />
+                        <rect x="40" y="30" width="140" height="20" fill="#f8fafc" />
+                        <text x="110" y="45" fill="#64748b" font-size="12" font-weight="700" text-anchor="middle">AWS Step Functions</text>
+                    </svg>
+                </div>
+                
                 <h4>Standard vs Express Workflows</h4>
                 <table class="topic-table">
                   <thead><tr><th>Aspect</th><th>Standard</th><th>Express</th></tr></thead>
@@ -529,6 +706,66 @@
             <div class="topic-card-body">
               <div class="topic-body">
                 <p>Amazon EventBridge is the central nervous system of modern serverless architectures — a serverless event bus for building event-driven systems:</p>
+                
+                <!-- Enterprise Diagram: EventBridge Fan-Out -->
+                <div class="topic-diagram" style="margin: 2rem 0; padding: 1.5rem; background: #fafafa; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                    <svg viewBox="0 0 800 240" width="100%" height="auto" style="font-family: var(--font-sans);">
+                        <defs>
+                            <linearGradient id="busGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#14b8a6" /><stop offset="100%" stop-color="#0f766e" /></linearGradient>
+                            <linearGradient id="nodeGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3b82f6" /><stop offset="100%" stop-color="#2563eb" /></linearGradient>
+                        </defs>
+
+                        <!-- Event Producer -->
+                        <rect x="20" y="90" width="120" height="60" rx="8" fill="white" stroke="#94a3b8" stroke-width="2" />
+                        <text x="80" y="120" fill="#334155" font-size="14" font-weight="700" text-anchor="middle">Order Service</text>
+                        <text x="80" y="135" fill="#64748b" font-size="10" text-anchor="middle">"Order_Placed"</text>
+
+                        <!-- PutEvents Arrow -->
+                        <path d="M 140 120 L 225 120" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)" />
+                        <text x="180" y="110" fill="#64748b" font-size="11" font-weight="600" text-anchor="middle">PutEvents</text>
+
+                        <!-- EventBridge Bus -->
+                        <rect x="230" y="40" width="160" height="160" rx="8" fill="url(#busGrad)" />
+                        <text x="310" y="70" fill="white" font-size="16" font-weight="800" text-anchor="middle">EventBridge</text>
+                        <text x="310" y="85" fill="#ccfbf1" font-size="11" font-weight="600" text-anchor="middle">Custom Event Bus</text>
+
+                        <!-- Rules -->
+                        <rect x="250" y="100" width="120" height="25" rx="4" fill="rgba(255,255,255,0.2)" />
+                        <text x="310" y="117" fill="white" font-size="10" font-weight="700" text-anchor="middle">Rule: Detail-Type == Order</text>
+
+                        <rect x="250" y="130" width="120" height="25" rx="4" fill="rgba(255,255,255,0.2)" />
+                        <text x="310" y="147" fill="white" font-size="10" font-weight="700" text-anchor="middle">Rule: amount &gt; 1000</text>
+                        <rect x="250" y="160" width="120" height="25" rx="4" fill="rgba(255,255,255,0.2)" />
+                        <text x="310" y="177" fill="white" font-size="10" font-weight="700" text-anchor="middle">Rule: location == US</text>
+
+                        <!-- Target 1 -->
+                        <path d="M 390 80 L 485 80" stroke="#0ea5e9" stroke-width="2" marker-end="url(#arrow)" />
+                        <text x="440" y="70" fill="#0284c7" font-size="10" font-weight="700" text-anchor="middle">All Orders</text>
+
+                        <rect x="490" y="60" width="120" height="40" rx="6" fill="url(#nodeGrad)" />
+                        <text x="550" y="85" fill="white" font-size="12" font-weight="700" text-anchor="middle">Inventory Lambda</text>
+
+                        <!-- Target 2 -->
+                        <path d="M 390 142 L 485 142" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow)" />
+                        <text x="440" y="130" fill="#c2410c" font-size="10" font-weight="700" text-anchor="middle">High Value</text>
+
+                        <rect x="490" y="122" width="120" height="40" rx="6" fill="url(#nodeGrad)" />
+                        <text x="550" y="147" fill="white" font-size="12" font-weight="700" text-anchor="middle">Fraud SQS Queue</text>
+
+                        <!-- Target 3 -->
+                        <path d="M 390 172 L 485 200" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arrow)" />
+                        <text x="440" y="170" fill="#6d28d9" font-size="10" font-weight="700" text-anchor="middle">US Region</text>
+
+                        <rect x="490" y="180" width="120" height="40" rx="6" fill="url(#nodeGrad)" />
+                        <text x="550" y="205" fill="white" font-size="12" font-weight="700" text-anchor="middle">US Support Topic</text>
+                        
+                        <!-- Archive block -->
+                        <rect x="330" y="20" width="80" height="30" rx="4" fill="#0f766e" stroke="#042f2e" />
+                        <text x="370" y="40" fill="white" font-size="10" font-weight="700" text-anchor="middle">Event Archive</text>
+                        <path d="M 310 40 L 310 20 L 330 20" stroke="#0f766e" stroke-width="2" fill="none" />
+                    </svg>
+                </div>
+                
                 <h4>EventBridge vs SNS vs SQS — Decision Framework</h4>
                 <table class="topic-table">
                   <thead><tr><th>Aspect</th><th>EventBridge</th><th>SNS</th><th>SQS</th></tr></thead>
@@ -664,6 +901,57 @@
                   <li>Calling external APIs over the internet</li>
                   <li>Simple event processing without VPC resource access</li>
                 </ul>
+                <!-- Enterprise Diagram: VPC Lambda & Hyperplane -->
+                <div class="topic-diagram" style="margin: 2rem 0; padding: 1.5rem; background: #fafafa; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                    <svg viewBox="0 0 800 240" width="100%" height="auto" style="font-family: var(--font-sans);">
+                        <defs>
+                            <linearGradient id="laGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ea580c" /><stop offset="100%" stop-color="#c2410c" /></linearGradient>
+                            <linearGradient id="rdsGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563eb" /><stop offset="100%" stop-color="#1d4ed8" /></linearGradient>
+                            <linearGradient id="natGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8b5cf6" /><stop offset="100%" stop-color="#6d28d9" /></linearGradient>
+                        </defs>
+
+                        <!-- VPC Box -->
+                        <rect x="200" y="20" width="460" height="200" rx="8" fill="transparent" stroke="#10b981" stroke-width="2" stroke-dasharray="6,4" />
+                        <text x="430" y="45" fill="#047857" font-size="14" font-weight="800" text-anchor="middle">Amazon VPC</text>
+
+                        <!-- AWS Service Lambda (outside VPC but bounded by Hyperplane) -->
+                        <rect x="20" y="80" width="140" height="80" rx="8" fill="url(#laGrad)" />
+                        <text x="90" y="115" fill="white" font-size="14" font-weight="700" text-anchor="middle">Lambda</text>
+                        <text x="90" y="135" fill="rgba(255,255,255,0.8)" font-size="10" text-anchor="middle">(VPC Configured)</text>
+
+                        <path d="M 160 120 L 255 120" stroke="#c2410c" stroke-width="3" marker-end="url(#arrow)" />
+
+                        <!-- Hyperplane ENI -->
+                        <rect x="260" y="100" width="100" height="40" rx="4" fill="#f1f5f9" stroke="#94a3b8" />
+                        <text x="310" y="118" fill="#334155" font-size="12" font-weight="700" text-anchor="middle">Hyperplane</text>
+                        <text x="310" y="132" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">ENI</text>
+
+                        <!-- Private Subnet Box -->
+                        <rect x="420" y="70" width="220" height="130" rx="8" fill="#ecfdf5" stroke="#34d399" />
+                        <text x="530" y="90" fill="#065f46" font-size="12" font-weight="700" text-anchor="middle">Private Subnet</text>
+
+                        <path d="M 360 120 L 445 120" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+                        <!-- RDS -->
+                        <rect x="450" y="100" width="80" height="40" rx="6" fill="url(#rdsGrad)" />
+                        <text x="490" y="125" fill="white" font-size="12" font-weight="700" text-anchor="middle">Amazon RDS</text>
+
+                        <!-- Internet Access -->
+                        <path d="M 310 140 L 310 180 L 445 180" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+
+                        <!-- NAT Gateway -->
+                        <rect x="450" y="150" width="80" height="40" rx="6" fill="url(#natGrad)" />
+                        <text x="490" y="175" fill="white" font-size="12" font-weight="700" text-anchor="middle">NAT Gateway</text>
+                        <text x="490" y="145" fill="#ef4444" font-size="10" font-weight="700" text-anchor="middle">$$ Cost Trap</text>
+
+                        <path d="M 530 170 L 695 170" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)" />
+                        
+                        <!-- Internet Cloud -->
+                        <path d="M 700 170 C 700 150, 720 140, 740 150 C 760 140, 780 150, 780 170 C 790 180, 780 200, 760 200 C 740 210, 720 200, 700 200 Z" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="2" />
+                        <text x="740" y="180" fill="#475569" font-size="12" font-weight="700" text-anchor="middle">Internet</text>
+
+                    </svg>
+                </div>
+                
                 <h4>VPC Lambda — Before and After Hyperplane (2019)</h4>
                 <table class="topic-table">
                   <thead><tr><th>Aspect</th><th>Before 2019</th><th>After 2019 (Hyperplane)</th></tr></thead>
