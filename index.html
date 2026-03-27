@@ -352,12 +352,307 @@
       color: var(--text-muted);
     }
 
+    /* ── Video Q&A Accordion ── */
+    .home-qa-intro {
+      font-size: 0.875rem;
+      color: var(--text-secondary, var(--text-muted));
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      max-width: 720px;
+    }
+
+    .home-qa-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .home-qa-item {
+      background: var(--content-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .home-qa-item:hover {
+      border-color: #c7d2fe;
+      box-shadow: 0 4px 16px rgba(37,99,235,0.08);
+    }
+
+    .home-qa-item.open {
+      border-color: #a5b4fc;
+      box-shadow: 0 4px 20px rgba(37,99,235,0.1);
+    }
+
+    .home-qa-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      padding: 1rem 1.25rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      color: var(--text);
+      transition: background 0.15s ease;
+    }
+
+    .home-qa-toggle:hover {
+      background: rgba(37,99,235,0.03);
+    }
+
+    .home-qa-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .home-qa-question {
+      flex: 1;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: -0.015em;
+    }
+
+    .home-qa-time {
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+      background: var(--content-bg);
+      padding: 0.2rem 0.55rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .home-qa-chevron {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: var(--text-muted);
+      transition: transform 0.25s ease;
+    }
+
+    .home-qa-item.open .home-qa-chevron {
+      transform: rotate(180deg);
+    }
+
+    .home-qa-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .home-qa-item.open .home-qa-body {
+      max-height: 2000px;
+    }
+
+    .home-qa-content {
+      padding: 0 1.25rem 1.25rem 3.75rem;
+    }
+
+    /* Framework label */
+    .home-qa-framework {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 0.625rem;
+    }
+
+    .home-qa-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .home-qa-content li {
+      font-size: 0.8375rem;
+      color: var(--text-secondary, var(--text-muted));
+      line-height: 1.65;
+      padding-left: 1rem;
+      position: relative;
+    }
+
+    .home-qa-content li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+
+    .home-qa-content li strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .home-qa-sublist {
+      padding-left: 1.25rem;
+      margin-top: 0.375rem;
+    }
+
+    .home-qa-sublist li {
+      font-size: 0.8125rem;
+    }
+
+    .home-qa-sublist li::before {
+      width: 4px;
+      height: 4px;
+      background: var(--text-muted);
+      opacity: 0.4;
+    }
+
+    /* STAR answer section */
+    .home-qa-star {
+      margin-top: 1rem;
+      border-top: 1px solid var(--border);
+      padding-top: 0.875rem;
+    }
+
+    .home-qa-star-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #7c3aed;
+      margin-bottom: 0.625rem;
+    }
+
+    .home-qa-star-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      line-height: 1.6;
+    }
+
+    .home-qa-star-table td {
+      padding: 0.5rem 0.75rem;
+      vertical-align: top;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary, var(--text-muted));
+    }
+
+    .home-qa-star-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .home-qa-star-table td:first-child {
+      font-weight: 700;
+      color: var(--text);
+      width: 90px;
+      white-space: nowrap;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Comparison / DR table */
+    .home-qa-compare {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .home-qa-compare th,
+    .home-qa-compare td {
+      padding: 0.45rem 0.625rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary, var(--text-muted));
+      line-height: 1.5;
+    }
+
+    .home-qa-compare th {
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: rgba(37,99,235,0.04);
+    }
+
+    .home-qa-compare tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Key metrics bar */
+    .home-qa-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      margin-top: 1.25rem;
+      background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(124,58,237,0.05));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .home-qa-metric {
+      flex: 1;
+      min-width: 140px;
+      text-align: center;
+      padding: 1rem 0.75rem;
+      border-right: 1px solid var(--border);
+    }
+    .home-qa-metric:last-child { border-right: none; }
+
+    .home-qa-metric-val {
+      font-size: 1.25rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .home-qa-metric-label {
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+      font-weight: 500;
+    }
+
     @media (max-width: 900px) {
       .home-hero h1 { font-size: 2rem; }
       .home-main { padding: 2rem 1.25rem 3rem; }
       .home-stat { min-width: 100px; padding: 1.25rem 0.75rem; }
       .home-stat-number { font-size: 1.625rem; }
       .home-card-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .home-qa-content { padding-left: 1.25rem; }
+      .home-qa-star-table td:first-child { width: 70px; }
+      .home-qa-metric { min-width: 100px; }
     }
 
     @media (max-width: 480px) {
@@ -366,6 +661,12 @@
       .home-stats { flex-wrap: wrap; }
       .home-stat { min-width: 50%; border-right: none; border-bottom: 1px solid var(--border); }
       .home-stat:last-child { border-bottom: none; }
+      .home-qa-toggle { padding: 0.875rem 1rem; gap: 0.625rem; }
+      .home-qa-question { font-size: 0.875rem; }
+      .home-qa-time { display: none; }
+      .home-qa-metric { min-width: 50%; border-bottom: 1px solid var(--border); }
+      .home-qa-metric:nth-child(2n) { border-right: none; }
+      .home-qa-metric:nth-last-child(-n+2) { border-bottom: none; }
     }
   </style>
 </head>
@@ -588,6 +889,516 @@
           </div>
         </section>
 
+        <!-- Top Interview Questions -->
+        <section class="home-category">
+          <div class="home-category-header">
+            <div class="home-category-icon" style="background:linear-gradient(135deg,#2563eb,#7c3aed)">Q</div>
+            <h2>Top 10 Cloud Architect Interview Questions</h2>
+          </div>
+          <p class="home-qa-intro">10 high-frequency Solutions Architect interview questions with STAR-format answers grounded in real experience at Takeda Pharmaceuticals, enhanced with key AWS architectural patterns.</p>
+          <div class="home-qa-list" id="qaAccordion">
+
+            <!-- Q1 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num">1</span>
+                <span class="home-qa-question">How can you make your application scalable for a big traffic day?</span>
+                <span class="home-qa-time">0:00 – 5:27</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Framework: Plan ahead, scale at every layer</div>
+                  <ul>
+                    <li><strong>Pre-warm ALBs</strong> via AWS Support request for known traffic spikes</li>
+                    <li><strong>Auto Scaling Groups:</strong> set min/desired &gt; 1; use Warm Pools for pre-initialized EC2 instances</li>
+                    <li><strong>Scheduled Scaling</strong> when traffic time is predictable (e.g., a product launch window)</li>
+                    <li><strong>Lightweight AMIs</strong> reduce provisioning time during burst scale-out</li>
+                    <li><strong>RDS Proxy</strong> for connection pooling — prevents DB overload during traffic surges</li>
+                    <li><strong>AWS Countdown:</strong> Simulate and validate parameters with your account team</li>
+                    <li><strong>Limits:</strong> Check and raise soft account limits; consider multi-region/multi-account for extreme scale</li>
+                  </ul>
+                  <div class="home-qa-star">
+                    <div class="home-qa-star-label">&#9733; STAR Answer — Takeda Mobile CI/CD</div>
+                    <table class="home-qa-star-table">
+                      <tr><td>Situation</td><td>Mobile CI/CD pipeline faced burst load during global release windows — multiple teams triggering iOS and Android builds simultaneously, coinciding with quarterly pharma compliance deadlines.</td></tr>
+                      <tr><td>Task</td><td>Ensure the self-hosted macOS runner fleet and supporting AWS infrastructure didn't become bottlenecks on high-traffic release days, while meeting GxP audit requirements.</td></tr>
+                      <tr><td>Action</td><td>Designed a dynamic runner scaling strategy using GitHub Actions runner groups with concurrency limits and queue-aware autoscaling. Fastlane's parallel lane execution combined with dependency caching on S3 flattened burst demand. Deployed Kubernetes HPA tied to custom metrics (queue depth). Implemented scheduled scaling policies so infrastructure was pre-warmed before traffic arrived.</td></tr>
+                      <tr><td>Result</td><td>iOS build time dropped from 45→15 min. Release cycles compressed from 2 days→15 min. Developer NPS reached +45. Zero degradation on peak release days.</td></tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num">2</span>
+                <span class="home-qa-question">What is an AI agent?</span>
+                <span class="home-qa-time">5:27 – 8:25</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Definition &amp; Key Properties</div>
+                  <ul>
+                    <li><strong>Definition:</strong> A software program that autonomously chooses the best sequence of actions to complete a goal — distinguishing it from simple conditional workflows or standalone LLMs.</li>
+                    <li><strong>Reasoning Engine:</strong> Uses an LLM to decide which tools to invoke and in what order</li>
+                    <li><strong>Feedback Loop:</strong> Perceives context, acts, observes results, and iterates continuously</li>
+                    <li><strong>AWS Implementation:</strong> Lambda or EC2 for execution, Amazon Bedrock for the LLM, MCP for tool integration</li>
+                  </ul>
+                  <div class="home-qa-star">
+                    <div class="home-qa-star-label">&#9733; STAR Answer — AutoDocs (SKCloudOps)</div>
+                    <table class="home-qa-star-table">
+                      <tr><td>Situation</td><td>While building AutoDocs under SKCloudOps, contributors kept confusing it with a simple API wrapper. Needed a concrete architectural distinction.</td></tr>
+                      <tr><td>Task</td><td>Define what made AutoDocs an agent — and design it so the agentic behavior was opt-in, not mandatory.</td></tr>
+                      <tr><td>Action</td><td>Built a dual-engine architecture: heuristic default requiring no API key, and an AI opt-in mode activating the full agent loop (perception → reasoning → action → feedback). The agent reads a git diff, the LLM decides which files need documentation, generates and writes it back, then evaluates quality and iterates.</td></tr>
+                      <tr><td>Result</td><td>Shipped with 91% statement coverage across 86 tests. The dual-engine pattern became a design reference for the AI CI/CD Guardian action. Cited as a key differentiator in the GitHub Marketplace listing.</td></tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num">3</span>
+                <span class="home-qa-question">How do you achieve disaster recovery for your cloud application?</span>
+                <span class="home-qa-time">8:25 – 10:26</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Framework: RTO/RPO drives strategy selection</div>
+                  <table class="home-qa-compare">
+                    <thead><tr><th>Strategy</th><th>RTO</th><th>RPO</th><th>Best For</th></tr></thead>
+                    <tbody>
+                      <tr><td>Backup &amp; Restore</td><td>Hours</td><td>Hours</td><td>Non-critical / cost-sensitive</td></tr>
+                      <tr><td>Pilot Light</td><td>Min–Hours</td><td>Minutes</td><td>Core services always on</td></tr>
+                      <tr><td>Warm Standby</td><td>Minutes</td><td>Seconds</td><td>Business-critical apps</td></tr>
+                      <tr><td>Multi-site Active-Active</td><td>Near zero</td><td>Near zero</td><td>Enterprise critical / pharma</td></tr>
+                    </tbody>
+                  </table>
+                  <div class="home-qa-star">
+                    <div class="home-qa-star-label">&#9733; STAR Answer — Takeda DevSecOps Pipeline</div>
+                    <table class="home-qa-star-table">
+                      <tr><td>Situation</td><td>Pharma GxP compliance required the DevSecOps pipeline — Vault clusters, GitHub OIDC federation, artifact storage — to meet strict RTO/RPO targets. A pipeline outage during a regulated release window would trigger audit findings.</td></tr>
+                      <tr><td>Task</td><td>Design DR for the CI/CD platform without static credentials or manual recovery runbooks.</td></tr>
+                      <tr><td>Action</td><td>Implemented Warm Standby: Vault clusters replicated across two AWS regions with automated unsealing via AWS KMS. GitHub OIDC federation meant no long-lived secrets. Terraform state in S3 with versioning and cross-region replication. Recovery was a <code>terraform apply</code>, not a runbook.</td></tr>
+                      <tr><td>Result</td><td>Recovery became automated and auditable. Zero static credentials meant no credential-leak exposure during failover. Architecture referenced in pharma compliance documentation as the DR standard.</td></tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num">4</span>
+                <span class="home-qa-question">How do you secure your application on the cloud?</span>
+                <span class="home-qa-time">10:26 – 13:11</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Framework: Defense in Depth — every layer</div>
+                  <ul>
+                    <li><strong>Edge:</strong> AWS WAF — protect against SQL injection, XSS, DDoS</li>
+                    <li><strong>Auth:</strong> Amazon Cognito for user auth; OIDC/JWT for machine identity</li>
+                    <li><strong>Transit:</strong> SSL/TLS everywhere; custom certificates via ACM; API Gateway enforces HTTPS</li>
+                    <li><strong>Compute:</strong> IAM roles with least privilege; Amazon Inspector for Lambda vulnerability scanning</li>
+                    <li><strong>Secrets:</strong> AWS Secrets Manager or HashiCorp Vault; never environment variables</li>
+                    <li><strong>Data at rest:</strong> KMS encryption for RDS, S3, EBS</li>
+                    <li><strong>Audit:</strong> CloudTrail, GuardDuty, Security Hub for continuous posture monitoring</li>
+                  </ul>
+                  <div class="home-qa-star">
+                    <div class="home-qa-star-label">&#9733; STAR Answer — Takeda Zero-Static-Credentials Architecture</div>
+                    <table class="home-qa-star-table">
+                      <tr><td>Situation</td><td>Both Takeda (pharma, GxP) and Societe Generale (financial services) required zero-tolerance security postures. The legacy approach used static AWS access keys in CI/CD pipelines.</td></tr>
+                      <tr><td>Task</td><td>Eliminate all static credentials from the CI/CD pipeline while maintaining developer velocity and meeting compliance.</td></tr>
+                      <tr><td>Action</td><td>Designed Vault + GitHub OIDC zero-static-credentials architecture. Every pipeline authenticated via short-lived OIDC tokens. IAM roles followed least-privilege via Terraform policy-as-code. Built the AI CI/CD Guardian GitHub Action with 42 heuristic patterns across 16 build systems to detect credential leaks.</td></tr>
+                      <tr><td>Result</td><td>Passed pharma compliance audits with zero static-credential findings. Zero-static-credentials pattern became a reusable GitHub Actions template. New service onboarding dropped from 2 weeks→2 hours.</td></tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num">5</span>
+                <span class="home-qa-question">Describe an architecture you designed.</span>
+                <span class="home-qa-time">13:11 – 15:08</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Interviewer's goal: business problem understanding + deep-dive readiness</div>
+                  <ul>
+                    <li>Pick a <strong>real system</strong> — be prepared to answer: How does it scale? How is it secured? What would you do differently?</li>
+                    <li>The interviewer will <strong>probe the edges</strong> of your design with follow-up questions</li>
+                  </ul>
+                  <div class="home-qa-star">
+                    <div class="home-qa-star-label">&#9733; STAR Answer — Takeda Mobile CI/CD Platform</div>
+                    <table class="home-qa-star-table">
+                      <tr><td>Situation</td><td>Mobile teams at Takeda were releasing iOS apps manually — Xcode builds on developer laptops, two-day release cycles, no audit trail, no GxP compliance.</td></tr>
+                      <tr><td>Task</td><td>Design and deliver an end-to-end mobile CI/CD platform meeting pharma compliance, eliminating manual steps, scaling across global teams.</td></tr>
+                      <tr><td>Action</td><td>Architected a self-hosted macOS runner fleet on GitHub Actions with Fastlane orchestrating build/test/sign/deploy. Vault + GitHub OIDC for secrets — Apple certificates fetched at runtime. Build artifacts versioned in S3. Branch protection, multi-party approvals, structured logs to Splunk for GxP audit trail. RDS Proxy for the metadata service.</td></tr>
+                      <tr><td>Result</td><td>Release cycle: 2 days→15 min. Build time: 45→15 min. Onboarding: 2 weeks→2 hours. Developer NPS: +45. Became the standard mobile delivery platform at Takeda.</td></tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num">6</span>
+                <span class="home-qa-question">Biggest challenge faced during designing your application on the cloud.</span>
+                <span class="home-qa-time">15:08 – 16:52</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Two strong angles: Scaling or Cost</div>
+                  <ul>
+                    <li><strong>Scaling:</strong> When standard Auto Scaling can't react fast enough — Warm Pools and pre-warming solve this</li>
+                    <li><strong>Cost:</strong> Unexpected AWS bills — CloudWatch Insights, Compute Optimizer, Spot Instances, Cost Explorer</li>
+                  </ul>
+                  <div class="home-qa-star">
+                    <div class="home-qa-star-label">&#9733; STAR Answer — Vault + OIDC Bootstrap Problem</div>
+                    <table class="home-qa-star-table">
+                      <tr><td>Situation</td><td>Integrating Vault into GitHub Actions where runners were ephemeral presented a chicken-and-egg problem: how authenticate a runner to Vault without a pre-placed credential? Static credentials were off the table due to compliance.</td></tr>
+                      <tr><td>Task</td><td>Solve the runner authentication bootstrap without introducing any static secrets — auditable, least-privilege, and reusable across teams.</td></tr>
+                      <tr><td>Action</td><td>Designed a three-hop trust chain: GitHub Actions OIDC JWT → AWS STS AssumeRole (no static keys) → Vault AWS auth backend fetches short-lived Vault token. IAM trust policy scoped to specific repos, branches, and environments. Every hop logged — GitHub audit log, CloudTrail, Vault audit log.</td></tr>
+                      <tr><td>Result</td><td>Zero static credentials in the pipeline. Three-hop trust chain became a reusable composite action, adopted by 6 teams in 3 months. Cited as a resolved finding in GxP compliance audit.</td></tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Q7 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num">7</span>
+                <span class="home-qa-question">How do you pick one service versus another?</span>
+                <span class="home-qa-time">16:52 – 17:55</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Framework: Requirements-first, then trade-off analysis</div>
+                  <ul>
+                    <li>Always <strong>ask for requirements</strong> before recommending: traffic volume, latency SLA, security needs, cost constraints, uptime</li>
+                  </ul>
+                  <table class="home-qa-compare">
+                    <thead><tr><th>Decision</th><th>Choose A when…</th><th>Choose B when…</th></tr></thead>
+                    <tbody>
+                      <tr><td><strong>API GW vs ALB</strong></td><td>External API, auth, rate limiting</td><td>Internal microservice traffic, WebSockets, gRPC</td></tr>
+                      <tr><td><strong>Serverless vs EC2</strong></td><td>Unpredictable burst, short-lived tasks</td><td>Long-running, stateful, GPU, dedicated compute</td></tr>
+                      <tr><td><strong>EventBridge vs SQS/SNS</strong></td><td>Event routing across services/accounts</td><td>Point-to-point queuing, fan-out pub/sub</td></tr>
+                      <tr><td><strong>EKS vs ECS vs Fargate</strong></td><td>K8s portability, complex workloads</td><td>Simpler container ops; Fargate removes nodes</td></tr>
+                    </tbody>
+                  </table>
+                  <div class="home-qa-star">
+                    <div class="home-qa-star-label">&#9733; STAR Answer — Transit Gateway vs VPC Peering</div>
+                    <table class="home-qa-star-table">
+                      <tr><td>Situation</td><td>Needed to connect multiple VPCs across AWS accounts — shared services, dev, staging, prod — with centralized security inspection required by pharma compliance.</td></tr>
+                      <tr><td>Task</td><td>Recommend the right multi-VPC connectivity model that scales, supports centralized audit, and avoids unmanageable operational overhead.</td></tr>
+                      <tr><td>Action</td><td>Evaluated VPC Peering vs Transit Gateway across four axes: operational complexity (N² vs hub-and-spoke), routing (non-transitive vs centralized), cost at scale, and compliance auditability (TGW integrates with Network Firewall for single inspection choke point).</td></tr>
+                      <tr><td>Result</td><td>Standardized on Transit Gateway with shared services VPC. Security team got a single Network Firewall inspection point. Cross-account complexity reduced from N² peering to centralized routing table updates.</td></tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num">8</span>
+                <span class="home-qa-question">What is your favorite AWS service? How will you improve it?</span>
+                <span class="home-qa-time">17:55 – 19:18</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Answer: IAM OIDC Federation / Roles Anywhere</div>
+                  <ul>
+                    <li><strong>Why:</strong> It represents a philosophy — workload identity derived from verifiable context rather than a secret you possess. This single capability unlocked the entire zero-static-credentials architecture across Vault, GitHub Actions, and AWS.</li>
+                    <li><strong>Improvement 1:</strong> Richer claim mapping — allow custom OIDC claims to map directly to IAM condition keys, enabling finer-grained policy without Lambda authorizers</li>
+                    <li><strong>Improvement 2:</strong> Claim-level CloudTrail attribution — surface originating OIDC claims in CloudTrail for complete audit chains</li>
+                    <li><strong>Improvement 3:</strong> Cross-provider claim normalization — standardized claim schema for GitHub Actions, GitLab, Buildkite so platform teams can write portable IAM policies</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Q9 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num">9</span>
+                <span class="home-qa-question">What is AWS Service X? (Handling unknown services)</span>
+                <span class="home-qa-time">19:18 – 20:54</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Framework: Definition → Properties → Composition</div>
+                  <ul>
+                    <li><strong>Example — Lambda:</strong> &ldquo;AWS Lambda is a serverless compute service that runs code without provisioning servers. It scales automatically, is highly available, and you pay only for compute time consumed.&rdquo;</li>
+                    <li><strong>Composition:</strong> Integrates with API Gateway (HTTP trigger), SQS (queue consumer), EventBridge (event-driven), S3 (object events), and Vault via OIDC for secrets</li>
+                    <li><strong>When you don't know:</strong> Be transparent. Reason from first principles — What problem space? What pricing model? How does it compose with IAM, CloudWatch, and VPC?</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Q10 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num">10</span>
+                <span class="home-qa-question">AWS Services Cheat Sheet — Services to know cold</span>
+                <span class="home-qa-time">Reference</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Structured definition pattern for each service</div>
+                  <table class="home-qa-compare">
+                    <thead><tr><th>Service</th><th>One-line Definition</th></tr></thead>
+                    <tbody>
+                      <tr><td><strong>API Gateway</strong></td><td>Managed service to create, publish, and secure REST/HTTP/WebSocket APIs at scale</td></tr>
+                      <tr><td><strong>ALB</strong></td><td>Layer 7 load balancer routing HTTP/HTTPS traffic by path, host, or headers to targets</td></tr>
+                      <tr><td><strong>Transit Gateway</strong></td><td>Hub-and-spoke network transit hub connecting VPCs and on-premises networks at scale</td></tr>
+                      <tr><td><strong>EKS</strong></td><td>Managed Kubernetes control plane — run K8s without managing etcd or control plane nodes</td></tr>
+                      <tr><td><strong>Bedrock</strong></td><td>Fully managed service to build generative AI applications using foundation models via API</td></tr>
+                      <tr><td><strong>EventBridge</strong></td><td>Serverless event bus routing events between AWS services, SaaS, and custom applications</td></tr>
+                      <tr><td><strong>RDS Proxy</strong></td><td>Managed database proxy that pools and shares connections to reduce RDS/Aurora load</td></tr>
+                      <tr><td><strong>Secrets Manager</strong></td><td>Managed secrets storage with automatic rotation for RDS, Redshift, and custom secrets</td></tr>
+                      <tr><td><strong>Inspector</strong></td><td>Automated vulnerability scanning for EC2, Lambda, and container images</td></tr>
+                      <tr><td><strong>GuardDuty</strong></td><td>Managed threat detection using ML to analyze CloudTrail, VPC Flow Logs, and DNS logs</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Key Metrics -->
+          <div class="home-qa-metrics">
+            <div class="home-qa-metric">
+              <div class="home-qa-metric-val">2 wks → 2 hrs</div>
+              <div class="home-qa-metric-label">Service Onboarding</div>
+            </div>
+            <div class="home-qa-metric">
+              <div class="home-qa-metric-val">45 → 15 min</div>
+              <div class="home-qa-metric-label">iOS Build Time</div>
+            </div>
+            <div class="home-qa-metric">
+              <div class="home-qa-metric-val">2 days → 15 min</div>
+              <div class="home-qa-metric-label">Release Cycle</div>
+            </div>
+            <div class="home-qa-metric">
+              <div class="home-qa-metric-val">+45 NPS</div>
+              <div class="home-qa-metric-label">Developer NPS</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick-Reference Video Breakdown -->
+        <section class="home-category">
+          <div class="home-category-header">
+            <div class="home-category-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706)">V</div>
+            <h2>Quick-Reference Video Breakdown</h2>
+          </div>
+          <p class="home-qa-intro">Concise bullet-point summaries of the 9 most-asked questions with video timestamps — ideal for a quick review before your interview.</p>
+          <div class="home-qa-list" id="qaVideoAccordion">
+
+            <!-- V1 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">1</span>
+                <span class="home-qa-question">How can you make your application scalable for a big traffic day?</span>
+                <span class="home-qa-time">0:00 – 5:27</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <ul>
+                    <li><strong>Load Balancers:</strong> Pre-warm the load balancers by submitting a support request to AWS to handle sudden spikes.</li>
+                    <li><strong>Auto Scaling Groups:</strong> Ensure minimum and desired instance counts are greater than one. Use scheduled scaling if the traffic time is known, and implement a Warm Pool of pre-initialized EC2 instances for faster scaling.</li>
+                    <li><strong>Optimization:</strong> Use lightweight AMIs for faster provisioning. Use a database proxy like RDS Proxy to manage connection pooling and reduce latency.</li>
+                    <li><strong>Preparation:</strong> Run AWS Countdown with your account team to simulate traffic and adjust parameters. Check and raise soft account limits, or use multiple regions/accounts for extreme traffic.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- V2 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">2</span>
+                <span class="home-qa-question">What is an AI agent?</span>
+                <span class="home-qa-time">5:27 – 8:25</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <ul>
+                    <li><strong>Definition:</strong> An AI agent is a software program that autonomously and independently chooses the best actions to complete a task, distinguishing it from simple conditional workflows or standalone LLMs.</li>
+                    <li><strong>Functionality:</strong> It uses an LLM to determine which tools to invoke, in what order, and how many times to interact with systems (e.g., fetching logs, searching documentation, fixing issues) to achieve a goal.</li>
+                    <li><strong>Implementation:</strong> Examples include deploying agentic code on AWS Lambda or EC2, using Amazon Bedrock for the LLM, and interacting with tools using MCP.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- V3 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">3</span>
+                <span class="home-qa-question">How do you achieve disaster recovery for your cloud application?</span>
+                <span class="home-qa-time">8:25 – 10:26</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <ul>
+                    <li><strong>Strategy Selection:</strong> The strategy depends on the Recovery Time Objective (RTO) and Recovery Point Objective (RPO).</li>
+                    <li><strong>AWS DR Strategies:</strong>
+                      <ul class="home-qa-sublist">
+                        <li>Backup &amp; Restore (highest RTO/RPO)</li>
+                        <li>Pilot Light</li>
+                        <li>Warm Standby</li>
+                        <li>Multi-site Active-Active (lowest RTO/RPO, ideal for enterprise critical applications despite higher cost)</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- V4 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">4</span>
+                <span class="home-qa-question">How do you secure your application on the cloud?</span>
+                <span class="home-qa-time">10:26 – 13:11</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <ul>
+                    <li><strong>Defense in Depth:</strong> Implement security at every layer.</li>
+                    <li><strong>Authentication &amp; Encryption:</strong> Use Amazon Cognito for user authentication and ensure data is encrypted in transit using SSL/TLS (e.g., via API Gateway custom certificates in ACM).</li>
+                    <li><strong>Edge Protection:</strong> Use AWS WAF to protect endpoints from common attacks like SQL injection or cross-site scripting.</li>
+                    <li><strong>Application Security:</strong> Use Amazon Inspector to scan Lambda code for vulnerabilities and attach IAM roles to Lambda with least privilege permissions.</li>
+                    <li><strong>Data Protection:</strong> Store secrets in Secrets Manager and use KMS for data at rest encryption in databases.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- V5 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">5</span>
+                <span class="home-qa-question">Describe a system YOU designed.</span>
+                <span class="home-qa-time">13:11 – 15:08</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <ul>
+                    <li><strong>Focus:</strong> Choose a project you actually implemented, even if small. Raj highlights a microservices design using Apigee as the API Gateway integrated with AWS Lambda when AWS API Gateway was not approved.</li>
+                    <li><strong>Interviewer Goal:</strong> The interviewer is looking for your understanding of the business problem, how you worked backwards from it, and your ability to answer deep-dive follow-up questions about scalability and security.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- V6 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">6</span>
+                <span class="home-qa-question">Biggest challenge faced during designing your application on the cloud.</span>
+                <span class="home-qa-time">15:08 – 16:52</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <ul>
+                    <li><strong>Example 1 – Scaling:</strong> Designing for high-scale, high-burst traffic that standard Auto Scaling could not handle, requiring the implementation of warm pools and pre-warming.</li>
+                    <li><strong>Example 2 – Cost Optimization:</strong> Managing higher-than-expected AWS bills by using CloudWatch Insights, Compute Optimizer, Spot Instances for interruptible workloads, and AWS Cost Explorer.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- V7 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">7</span>
+                <span class="home-qa-question">How do you pick one service versus another?</span>
+                <span class="home-qa-time">16:52 – 17:55</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <ul>
+                    <li><strong>Requirements Driven:</strong> You must ask the interviewer for specific system requirements regarding traffic volume, latency, security needs, cost constraints, and uptime.</li>
+                    <li><strong>Comparisons:</strong> Be prepared to contrast API Gateway vs. Load Balancer, Serverless vs. EC2, EventBridge vs. SQS/SNS, and various container services (EKS, ECS, Fargate).</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- V8 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">8</span>
+                <span class="home-qa-question">What is your favorite AWS service? How will you improve it?</span>
+                <span class="home-qa-time">17:55 – 19:18</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <ul>
+                    <li><strong>Approach:</strong> Pick a service you have used extensively. Improve it by researching the public AWS Roadmap on GitHub and selecting a highly-voted, requested feature to discuss.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- V9 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">9</span>
+                <span class="home-qa-question">What is AWS service X?</span>
+                <span class="home-qa-time">19:18 – 20:54</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <ul>
+                    <li><strong>Approach:</strong> Start with the official definition, then explain its key properties.</li>
+                    <li><strong>Example (Lambda):</strong> &ldquo;AWS Lambda is a serverless compute service that lets you run your code without provisioning or managing any servers… It scales automatically, is highly available, and you pay only for what you use.&rdquo;</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
         <!-- CTA -->
         <section class="home-cta">
           <h3>Ready to start preparing?</h3>
@@ -634,6 +1445,24 @@
       var toggle = document.getElementById('sidebarToggle');
       if (toggle) toggle.addEventListener('click', function () {
         sidebar.classList.toggle('open');
+      });
+
+      /* Accordion toggle — allows multiple open */
+      document.getElementById('qaAccordion').addEventListener('click', function(e) {
+        var btn = e.target.closest('.home-qa-toggle');
+        if (!btn) return;
+        var item = btn.closest('.home-qa-item');
+        var isOpen = item.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+
+      /* Video breakdown accordion toggle */
+      document.getElementById('qaVideoAccordion').addEventListener('click', function(e) {
+        var btn = e.target.closest('.home-qa-toggle');
+        if (!btn) return;
+        var item = btn.closest('.home-qa-item');
+        var isOpen = item.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       });
     })();
   </script>
