@@ -1185,7 +1185,7 @@ Architecture mirrors org structure. If teams are siloed, APIs will be siloed. Pl
           q: 'How do you handle multi-cloud or hybrid cloud strategy in platform engineering?',
           a: `**My Experience:**
 
-Primary cloud is AWS at Takeda, but platform design considered hybrid (on-prem to cloud migration) and portability.
+Primary cloud is AWS at Enterprise Pharma, but platform design considered hybrid (on-prem to cloud migration) and portability.
 
 **Why Multi-Cloud Comes Up:**
 • Vendor lock-in risk mitigation
@@ -1991,7 +1991,7 @@ Fastlane lanes I maintain:
 • Template with feature list + bug fixes
 • Injected into TestFlight "What to Test" and App Store "What's New"
 
-**Enterprise Distribution (Takeda Use Case):**
+**Enterprise Distribution (Enterprise Pharma Use Case):**
 • Mendix apps distributed via MDM (Mobile Device Management)
 • IPA hosted on internal S3
 • MDM pushes to managed devices automatically
@@ -2194,7 +2194,7 @@ GitHub Actions workflow:
             'Know Mendix native mobile vs hybrid distinction',
             'Discuss OTA update limitations (native code still needs store review)',
             'Mention native template management as unique challenge',
-            'Connect to your actual Takeda experience'
+            'Connect to your actual Enterprise Pharma experience'
           ]
         },
         {
@@ -2250,12 +2250,12 @@ Hotfix workflow with OTA:
 • Version targeting: update only app versions ≥ X
 
 **My Experience:**
-Used Mendix OTA at Takeda for clinical app updates. Allowed business logic fixes to reach field devices within 30 minutes vs 3-5 day App Store review cycle.`,
+Used Mendix OTA at Enterprise Pharma for clinical app updates. Allowed business logic fixes to reach field devices within 30 minutes vs 3-5 day App Store review cycle.`,
           tips: [
             'Know OTA update limitations clearly (native code = no OTA)',
             'Discuss CodePush vs Expo Updates',
             'Mention safety mechanisms (auto-rollback, staged rollout)',
-            'Connect to your Mendix/Takeda experience'
+            'Connect to your Mendix/Enterprise Pharma experience'
           ]
         },
         {
@@ -2384,7 +2384,7 @@ Every major feature has a kill switch flag. If post-release bug found: disable f
           q: 'How do you set up and maintain Mac CI runner infrastructure?',
           a: `**Mac Runner Infrastructure — My Migration Story:**
 
-At Takeda I led the full evolution of iOS build infrastructure, from a single dedicated Mac server to GitHub-hosted runners.
+At Enterprise Pharma I led the full evolution of iOS build infrastructure, from a single dedicated Mac server to GitHub-hosted runners.
 
 **Phase 1: Dedicated Mac Build Server (Starting Point)**
 • Single on-premises Mac server handling all iOS builds
@@ -2584,7 +2584,7 @@ Android Golden Path: New Android app gets: standard Gradle setup, shared Fastlan
 • Breaking template changes require migration window
 • Monthly mobile platform sync across all app teams
 
-**Results at Takeda:**
+**Results at Enterprise Pharma:**
 • 3 apps (React Native, 2 Mendix) on shared platform
 • One team manages all mobile infrastructure
 • Consistent build times, signing, and distribution across all apps
@@ -2593,7 +2593,7 @@ Android Golden Path: New Android app gets: standard Gradle setup, shared Fastlan
             'Discuss centralization vs autonomy balance',
             'Mention shared library approach for Fastlane',
             'Talk about runner fleet sizing for multiple apps',
-            'Connect to your actual multi-app Takeda experience'
+            'Connect to your actual multi-app Enterprise Pharma experience'
           ]
         },
         {
@@ -3303,7 +3303,7 @@ Deploy VPA in recommendation mode initially. kubectl get vpa — shows recommend
 • Growing adoption, modern approach
 
 **My Experience:**
-Evaluated Istio at Takeda for zero-trust internal traffic. Decided against it: compliance did not require encrypted internal traffic (already in private VPC), complexity not justified, team capacity limited. Used Kubernetes Network Policies instead for traffic isolation — 80% of the value at 10% of the complexity.
+Evaluated Istio at Enterprise Pharma for zero-trust internal traffic. Decided against it: compliance did not require encrypted internal traffic (already in private VPC), complexity not justified, team capacity limited. Used Kubernetes Network Policies instead for traffic isolation — 80% of the value at 10% of the complexity.
 
 **If I Implemented a Mesh:**
 Start with Linkerd: simpler operations, automatic mTLS, excellent observability. Add Istio only if traffic management complexity requires it.`,
@@ -4021,7 +4021,7 @@ Two identical environments. Switch traffic all at once (DNS or load balancer). I
 **Canary:**
 Route small % of traffic to new version. Gradually increase if metrics are good. Most risk-tolerant but most complex to implement correctly.
 
-**My Implementation at Takeda:**
+**My Implementation at Enterprise Pharma:**
 
 **Kubernetes Rolling (Most Services):**
 Default strategy with maxUnavailable: 0. ReadinessProbe prevents traffic to non-ready pods. Automated rollback via Harness if error rate spikes.
@@ -4367,7 +4367,7 @@ Pact: consumer defines contract, provider verifies. Broken contract caught befor
 • Helm chart repository
 • NPM/Maven/PyPI proxy + private hosting
 • Universal repository for binaries
-• Migrated on-prem to cloud at Takeda (zero downtime)
+• Migrated on-prem to cloud at Enterprise Pharma (zero downtime)
 
 **Artifact Naming Convention:**
 
@@ -4585,7 +4585,7 @@ Average pipeline time: 45 min → 15 min (67% reduction)
 
 **Production:** Continuous Delivery (not Deployment) — releasable at any time, but human decision to release.
 
-**Why Not Full Continuous Deployment to Production at Takeda:**
+**Why Not Full Continuous Deployment to Production at Enterprise Pharma:**
 • Pharmaceutical industry: change control requirements mandate human approval
 • Business stakeholders need to control feature timing (marketing, training)
 • Risk tolerance: some changes need stakeholder review before user exposure
@@ -4621,7 +4621,7 @@ Stage 4 (Full CD): Auto-deploy to production, rely on monitoring + auto-rollback
           id: 'cicd17',
           level: 'Senior',
           q: 'How do you handle Harness CD for enterprise deployments?',
-          a: `**Harness at Takeda:**
+          a: `**Harness at Enterprise Pharma:**
 
 Used Harness as the CD layer on top of GitHub Actions CI. GitHub Actions: build, test, push image. Harness: deploy to EKS, manage environments, canary analysis.
 
@@ -4664,7 +4664,7 @@ Canary stage: deploy 10% of pods with new image. Continuous Verification: compar
 • Change ticket validation: ServiceNow ticket must be approved before deploy
 • RBAC: developers can trigger dev/staging, not production`,
           tips: [
-            'Connect Harness to your actual Takeda experience',
+            'Connect Harness to your actual Enterprise Pharma experience',
             'Discuss Harness CV (Continuous Verification) as differentiator',
             'Know Harness vs Argo Rollouts comparison',
             'Mention change ticket integration for enterprise compliance'
@@ -4688,11 +4688,11 @@ Canary stage: deploy 10% of pods with new image. Continuous Verification: compar
 **JFrog Artifactory:** More mature, proxies public registries, all package types.
 **AWS CodeArtifact:** AWS-native, IAM-authenticated, good for AWS shops.
 
-**My Setup (Artifactory at Takeda):**
+**My Setup (Artifactory at Enterprise Pharma):**
 
 npm, PyPI, Maven repositories configured in Artifactory.
 All developers configured to pull from Artifactory (which proxies NPM, PyPI, Maven Central).
-Internal packages published to Artifactory under @takeda-internal scope.
+Internal packages published to Artifactory under @pharma-internal scope.
 
 **CI/CD Pipeline for Library:**
 
@@ -6174,7 +6174,7 @@ Decision: Prioritize for next quarter`,
           q: 'Tell me about a time you had to make a difficult trade-off between speed and quality.',
           a: `**Situation:**
 
-During a critical pharma product launch at Takeda, business stakeholders requested a mobile app release be expedited by 2 weeks. The release had passed QA but our standard security scanning revealed 3 HIGH severity vulnerabilities in a third-party library.
+During a critical pharma product launch at Enterprise Pharma, business stakeholders requested a mobile app release be expedited by 2 weeks. The release had passed QA but our standard security scanning revealed 3 HIGH severity vulnerabilities in a third-party library.
 
 **The Trade-off:**
 
@@ -6261,7 +6261,7 @@ Presented 3 options with trade-offs. Let the VP make the call. The decision was 
           q: 'Tell me about a time you took ownership of a problem outside your role.',
           a: `**Situation:**
 
-During a production incident at Takeda, a data pipeline failure was causing drug supply chain reports to be delayed. It was a business-critical system but technically "owned" by the data engineering team. The data engineering on-call was unavailable (timezone issue) and the delay was escalating.
+During a production incident at Enterprise Pharma, a data pipeline failure was causing drug supply chain reports to be delayed. It was a business-critical system but technically "owned" by the data engineering team. The data engineering on-call was unavailable (timezone issue) and the delay was escalating.
 
 **What I did:**
 
@@ -6301,7 +6301,7 @@ Ownership means caring about outcomes, not defending boundaries. When you see so
           q: 'How do you handle working with teams in different time zones?',
           a: `**My Context:**
 
-At Cognizant/Takeda: I coordinate between India-based teams and US-based stakeholders (Bannockburn, IL). 11.5-hour time difference — very limited overlap.
+At Global IT Consultancy/Enterprise Pharma: I coordinate between India-based teams and US-based stakeholders (Bannockburn, IL). 11.5-hour time difference — very limited overlap.
 
 **Practices I've Established:**
 
@@ -6349,7 +6349,7 @@ Confluence (async docs), Loom (video walkthroughs), Jira (status visibility), sh
           q: 'Tell me about a time you had to learn a new technology quickly.',
           a: `**Situation:**
 
-When Harness was selected as the CD platform at Takeda, I had 3 weeks before the first migration was expected to be complete. I had zero prior Harness experience.
+When Harness was selected as the CD platform at Enterprise Pharma, I had 3 weeks before the first migration was expected to be complete. I had zero prior Harness experience.
 
 **My Rapid Learning Approach:**
 
@@ -6484,7 +6484,7 @@ Not defensive. Not immediately apologetic. Curious.
 
 **Real Example — Receiving Hard Feedback:**
 
-A Takeda architect told me my technical documentation was "too complex for the audience." My initial reaction: defensive. I took a day to reflect, reviewed the docs through their lens, realized they were right — I had written for experts, not for the developers who needed to use it.
+A Enterprise Pharma architect told me my technical documentation was "too complex for the audience." My initial reaction: defensive. I took a day to reflect, reviewed the docs through their lens, realized they were right — I had written for experts, not for the developers who needed to use it.
 
 Rewrote the docs, got positive feedback from the developer audience. Went back to architect: "You were right, thank you for saying it directly."
 
@@ -6504,7 +6504,7 @@ Rewrote the docs, got positive feedback from the developer audience. Went back t
           q: 'Tell me about your greatest professional failure and what you learned.',
           a: `**Situation:**
 
-Early in my platform engineering work at Takeda, I ran a Terraform apply in the production environment that destroyed and recreated a load balancer. Result: 45 minutes of downtime for an external-facing API during business hours.
+Early in my platform engineering work at Enterprise Pharma, I ran a Terraform apply in the production environment that destroyed and recreated a load balancer. Result: 45 minutes of downtime for an external-facing API during business hours.
 
 **What Happened:**
 
@@ -6807,7 +6807,7 @@ I didn't set out to be a platform engineer — I became one by seeing the need.
 
 As a full-stack developer at Societe Generale, I watched teams spend days on infrastructure setup for every new feature. I started automating: build scripts, deployment pipelines, environment setup. When the improvement was 10x, I knew this was where I could add more value than in application code.
 
-At Takeda, I had the opportunity to formalize this: designing the CI/CD platform, the mobile build infrastructure, the Kubernetes platform. The feedback from developers — "you saved me a week" — is more satisfying than any feature I shipped as a developer.
+At Enterprise Pharma, I had the opportunity to formalize this: designing the CI/CD platform, the mobile build infrastructure, the Kubernetes platform. The feedback from developers — "you saved me a week" — is more satisfying than any feature I shipped as a developer.
 
 **Why Platform Engineering Specifically:**
 
@@ -8116,7 +8116,7 @@ Cross-cutting concerns (auth, logging, tracing) handled by platform.
           id: 'aws1',
           level: 'Senior',
           q: 'Walk me through how you architected a high-availability AWS environment.',
-          a: `**Architecture at Takeda (My Experience):**
+          a: `**Architecture at Enterprise Pharma (My Experience):**
 
 Multi-AZ, multi-tier architecture built for enterprise pharmaceutical workloads.
 
@@ -8186,7 +8186,7 @@ Multi-AZ, multi-tier architecture built for enterprise pharmaceutical workloads.
 • Spot Instances for CI/CD runners and batch jobs
 • On-demand only for unpredictable spikes
 
-**My Takeda Initiatives:**
+**My Enterprise Pharma Initiatives:**
 
 **Quick Wins:**
 • Identified and terminated 15+ orphaned EC2 instances
@@ -8270,7 +8270,7 @@ Multi-AZ, multi-tier architecture built for enterprise pharmaceutical workloads.
           id: 'aws4',
           level: 'Senior',
           q: 'How do you design cross-account AWS architectures?',
-          a: `**Cross-Account Strategy at Takeda:**
+          a: `**Cross-Account Strategy at Enterprise Pharma:**
 
 **Account Structure:**
 • Separate AWS accounts per environment: dev, staging, prod
@@ -8429,7 +8429,7 @@ GitHub Actions assumes AWS role via OIDC token. Trust policy restricts to specif
           id: 'aws7',
           level: 'Senior',
           q: 'Describe your experience with AWS migrations — on-prem to cloud.',
-          a: `**Migration Experience at Takeda:**
+          a: `**Migration Experience at Enterprise Pharma:**
 
 Led multiple migration tracks simultaneously.
 
@@ -8479,7 +8479,7 @@ Approach: Infrastructure-as-code (Terraform) to recreate in target account, data
 
 Not everything needs a server. Lambda is ideal for: event-driven processing, scheduled jobs, lightweight glue logic, and infrequent workloads.
 
-**My Lambda Use Cases at Takeda:**
+**My Lambda Use Cases at Enterprise Pharma:**
 
 • Scheduled compliance checks (CloudWatch Events → Lambda → Slack alert)
 • S3 event processing (file upload triggers downstream pipeline)
@@ -8548,7 +8548,7 @@ Event producer publishes to SNS topic. SNS fans out to multiple SQS queues. Each
 
 Benefits: consumers decouple from each other, message not lost if consumer is temporarily down, each consumer has independent retry policy.
 
-**My Implementation at Takeda:**
+**My Implementation at Enterprise Pharma:**
 
 Glue ETL job completes → SNS topic → three SQS queues:
 • Downstream data processing service
@@ -8664,7 +8664,7 @@ Tight AWS integration: IAM task roles, Service Connect, native logging.
 
 **My ECS Fargate Experience:**
 
-Cross-account ECS migration at Takeda: moved Fargate tasks and AWS Glue orchestration services from account A to account B with zero data loss.
+Cross-account ECS migration at Enterprise Pharma: moved Fargate tasks and AWS Glue orchestration services from account A to account B with zero data loss.
 
 Process:
 1. Export task definitions via CLI (aws ecs describe-task-definition)
@@ -8700,7 +8700,7 @@ Application Auto Scaling on ECS service desired count. Target tracking policy on
           id: 'aws12',
           level: 'Senior',
           q: 'How do you manage S3 security, lifecycle, and cost optimization?',
-          a: `**S3 Use Cases at Takeda:**
+          a: `**S3 Use Cases at Enterprise Pharma:**
 
 CI/CD artifact storage, Terraform state, log archival (CloudTrail, VPC Flow Logs), Glue ETL input/output, compliance evidence (immutable), static internal tooling assets.
 
@@ -8898,7 +8898,7 @@ internal.company.com zone associated with VPCs. Service-to-service DNS: service-
 Layer 7 — HTTP/HTTPS aware. Path-based and host-based routing. Target groups: EC2, ECS tasks, EKS pods, Lambda. WAF integration. My default for web services and APIs.
 
 **NLB (Network Load Balancer):**
-Layer 4 — TCP/UDP. Static IPs (Elastic IPs). Ultra-low latency. Use for: non-HTTP protocols, static IP requirement (whitelisting), extreme throughput. Used at Takeda for NLB → ALB pattern (NLB for static IPs, ALB for path routing).
+Layer 4 — TCP/UDP. Static IPs (Elastic IPs). Ultra-low latency. Use for: non-HTTP protocols, static IP requirement (whitelisting), extreme throughput. Used at Enterprise Pharma for NLB → ALB pattern (NLB for static IPs, ALB for path routing).
 
 **Architecture Pattern:**
 Public NLB (static IPs, TLS passthrough) → Internal ALB (path routing, target groups) → EKS pods. Allows static IPs for partner whitelisting while keeping Layer 7 routing benefits.
@@ -8984,7 +8984,7 @@ Reserved Instances / Savings Plans:
 
 Spot Instances: 70-90% savings, can be interrupted. Use for: CI/CD runners, batch jobs, stateless worker nodes.
 
-**My Cost Reduction Results at Takeda:**
+**My Cost Reduction Results at Enterprise Pharma:**
 
 • EKS node groups: mixed — reserved for baseline, spot for burst workers → 40% EC2 cost reduction
 • CI/CD runners: spot instances → 70% runner cost reduction
@@ -9127,7 +9127,7 @@ Control Tower: opinionated landing zone, Account Factory for new accounts, pre-b
 
 Custom landing zone: more control, more maintenance. Good for: complex existing environments, specific compliance requirements.
 
-My experience: custom landing zone at Takeda (existing accounts, specific pharma compliance controls).`,
+My experience: custom landing zone at Enterprise Pharma (existing accounts, specific pharma compliance controls).`,
           tips: [
             'Know SCP deny-by-default behavior (they are not allow-lists by themselves)',
             'Discuss OU structure as reflection of business/risk boundaries',
@@ -9194,7 +9194,7 @@ Major version: test in dev, staging, then prod. Blue-green deployment for zero-d
           id: 'sec1',
           level: 'Senior',
           q: 'How do you implement DevSecOps in a regulated industry like pharma?',
-          a: `**Pharma Context (Takeda):**
+          a: `**Pharma Context (Enterprise Pharma):**
 
 GxP compliance requirements, audit trails, change control — security can't be bolted on, it must be built in.
 
@@ -9366,7 +9366,7 @@ Alerts on: shell spawned in container, sensitive file access, unexpected network
           q: 'How do you implement compliance automation and audit readiness?',
           a: `**Compliance Context:**
 
-At Takeda (pharma), SOX and GxP controls required evidence collection, change traceability, and access reviews.
+At Enterprise Pharma (pharma), SOX and GxP controls required evidence collection, change traceability, and access reviews.
 
 **Compliance as Code Framework:**
 
@@ -9597,7 +9597,7 @@ Detected unusual AWS API calls via GuardDuty → traced to compromised CI runner
           q: 'How do you build an observability platform for microservices?',
           a: `**Observability = Metrics + Logs + Traces (The Three Pillars):**
 
-**My Stack at Takeda:**
+**My Stack at Enterprise Pharma:**
 
 **Metrics — Prometheus + Grafana:**
 • Prometheus deployed via kube-prometheus-stack Helm chart
@@ -9723,7 +9723,7 @@ In a microservices architecture, a single user request may touch 10+ services. W
 
 **My Implementation Experience:**
 
-**AppDynamics (Takeda):**
+**AppDynamics (Enterprise Pharma):**
 • Agent-based auto-instrumentation for Java services
 • Business Transaction detection (map transactions to services)
 • Distributed correlation across service boundaries
@@ -10078,7 +10078,7 @@ Security team defined controls. Platform team automated them:
 
 When security says no: "Help me understand the risk. Let's find a solution together." Escalate disagreements to joint architecture review, not email chains.
 
-**Result at Takeda:**
+**Result at Enterprise Pharma:**
 • Security team as advocates for platform work
 • Pre-approval process reduced review time from 2 weeks to same-day for standard patterns
 • Audit prep time cut by 70%
@@ -10096,7 +10096,7 @@ When security says no: "Help me understand the risk. Let's find a solution toget
           q: 'Describe a time you influenced a technical decision without direct authority.',
           a: `**Situation:**
 
-At Takeda, the architecture team had decided to build a custom internal secrets management tool to avoid a HashiCorp Vault license cost. I believed this was a significant risk and wanted to advocate for Vault.
+At Enterprise Pharma, the architecture team had decided to build a custom internal secrets management tool to avoid a HashiCorp Vault license cost. I believed this was a significant risk and wanted to advocate for Vault.
 
 **Challenge:**
 
@@ -10256,7 +10256,7 @@ Proactively reach out: "We're planning to upgrade the EKS version next month —
           q: 'Tell me about a time you navigated disagreement on a technical approach.',
           a: `**Situation:**
 
-During the cloud migration at Takeda, there was a strong disagreement on ECS Fargate vs EKS for containerized workloads. The infrastructure team preferred Fargate (simpler, managed), while I advocated for EKS (more control, better fit for microservices at scale).
+During the cloud migration at Enterprise Pharma, there was a strong disagreement on ECS Fargate vs EKS for containerized workloads. The infrastructure team preferred Fargate (simpler, managed), while I advocated for EKS (more control, better fit for microservices at scale).
 
 **Stakes:**
 
@@ -11001,7 +11001,7 @@ Prepare 8-10 STAR stories and practice them out loud until they feel natural but
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '8px', fontSize: '13px', color: '#cbd5e1' }}>
                 {[
                   ['📍', 'Bannockburn, IL'],
-                  ['🏢', 'Cognizant @ Takeda Pharmaceuticals'],
+                  ['🏢', 'Global IT Consultancy @ Enterprise Pharma'],
                   ['🎓', 'M.S. Computer Science, VIT'],
                   ['📧', 'sathishkr.cs@gmail.com'],
                 ].map(function(item, i) {
@@ -11036,7 +11036,7 @@ Prepare 8-10 STAR stories and practice them out loud until they feel natural but
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '12px' }}>
                   {[
                     { label: 'Opening', text: "Hi, I'm Sathish — Senior Platform Engineer with 15+ years of experience. I started as a full-stack developer, which gives me deep empathy for the developers I now serve." },
-                    { label: 'Cloud Focus', text: "For the past 6 years at Cognizant embedded at Takeda, I've owned cloud migration to AWS, built self-service CI/CD on GitHub Actions and Harness, and designed Kubernetes delivery infrastructure for 60+ services." },
+                    { label: 'Cloud Focus', text: "For the past 6 years at Global IT Consultancy embedded at Enterprise Pharma, I've owned cloud migration to AWS, built self-service CI/CD on GitHub Actions and Harness, and designed Kubernetes delivery infrastructure for 60+ services." },
                     { label: 'Differentiator', text: "What makes me unique is owning the enterprise mobile build platform — migrating iOS CI/CD from a dedicated Mac build server to GitHub-hosted macOS runners, eliminating Xcode maintenance overhead entirely. Fastlane, Vault OIDC for signing, zero static credentials. That combination is rare." },
                     { label: 'Closing', text: "I work at the intersection of cloud platform engineering and automated delivery — enabling teams to deploy safely, reliably, and at scale without tickets or manual steps." },
                   ].map(function(block, i) {
@@ -11056,7 +11056,7 @@ Prepare 8-10 STAR stories and practice them out loud until they feel natural but
                   {[
                     { icon: '🏗', title: 'Full-stack background + Platform depth', detail: 'Builds developer empathy — rare in platform engineers' },
                     { icon: '📱', title: 'Cloud + Mobile CI/CD (unique in market)', detail: 'Migrated dedicated Mac server to GitHub-hosted runners — zero Xcode maintenance' },
-                    { icon: '🏥', title: 'Regulated industry expertise', detail: 'Pharma (Takeda) and Finance (Societe Generale)' },
+                    { icon: '🏥', title: 'Regulated industry expertise', detail: 'Pharma (Enterprise Pharma) and Finance (Societe Generale)' },
                     { icon: '🎯', title: 'Product mindset for internal platforms', detail: 'Developers as customers, NPS tracking, roadmaps' },
                     { icon: '🔐', title: 'Zero-credential security posture', detail: 'Vault OIDC eliminates all static secrets in CI/CD' },
                     { icon: '👥', title: 'Chapter Lead + technical IC experience', detail: 'Led 6+ developers, mentored juniors to promotion' },
@@ -11104,8 +11104,8 @@ Prepare 8-10 STAR stories and practice them out loud until they feel natural but
                 <div style={{ fontSize: '15px', fontWeight: '700', marginBottom: '16px' }}>🚀 Career Journey</div>
                 <div style={{ borderLeft: '2px solid #e2e8f0', paddingLeft: '20px' }}>
                   {[
-                    { role: 'Sr DevOps / Cloud / Platform Engineer', company: 'Cognizant at Takeda Pharmaceuticals', period: '2019 – Present', highlights: ['60+ pipelines migrated to GitHub Actions', 'Mobile CI/CD: dedicated Mac server → GitHub-hosted runners', 'On-prem to AWS EKS migration', 'HashiCorp Vault OIDC — zero static credentials'], current: true },
-                    { role: 'Dev Chapter Lead and Lead Developer', company: 'Cognizant at Societe Generale', period: '2013 – 2019', highlights: ['Led 6+ developer team as Chapter Lead', 'Business Continuity Management suite', 'Angular 2+, Node.js, PL/SQL full-stack'], current: false },
+                    { role: 'Sr DevOps / Cloud / Platform Engineer', company: 'Global IT Consultancy at Enterprise Pharma', period: '2019 – Present', highlights: ['60+ pipelines migrated to GitHub Actions', 'Mobile CI/CD: dedicated Mac server → GitHub-hosted runners', 'On-prem to AWS EKS migration', 'HashiCorp Vault OIDC — zero static credentials'], current: true },
+                    { role: 'Dev Chapter Lead and Lead Developer', company: 'Global IT Consultancy at Societe Generale', period: '2013 – 2019', highlights: ['Led 6+ developer team as Chapter Lead', 'Business Continuity Management suite', 'Angular 2+, Node.js, PL/SQL full-stack'], current: false },
                     { role: 'Member of Technical Staff', company: 'NetApp', period: '2012 – 2013', highlights: ['ExtJS + PHP Zend firmware debugging tools'], current: false },
                     { role: 'Senior Front-End Engineer', company: 'Verismo Networks', period: '2008 – 2012', highlights: ['HTML5 apps for GoogleTV, WD, EnjoyTV Set-Top Boxes'], current: false },
                     { role: 'Software Engineer', company: 'Adsoft Solutions', period: '2007 – 2008', highlights: ['PHP portals for media clients'], current: false },

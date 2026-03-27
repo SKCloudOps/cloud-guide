@@ -895,7 +895,7 @@
             <div class="home-category-icon" style="background:linear-gradient(135deg,#2563eb,#7c3aed)">Q</div>
             <h2>Top 10 Cloud Architect Interview Questions</h2>
           </div>
-          <p class="home-qa-intro">10 high-frequency Solutions Architect interview questions with STAR-format answers grounded in real experience at Takeda Pharmaceuticals, enhanced with key AWS architectural patterns.</p>
+          <p class="home-qa-intro">10 high-frequency Solutions Architect interview questions with STAR-format answers grounded in real experience at Enterprise Pharma, enhanced with key AWS architectural patterns.</p>
           <div class="home-qa-list" id="qaAccordion">
 
             <!-- Q1 -->
@@ -919,7 +919,7 @@
                     <li><strong>Limits:</strong> Check and raise soft account limits; consider multi-region/multi-account for extreme scale</li>
                   </ul>
                   <div class="home-qa-star">
-                    <div class="home-qa-star-label">&#9733; STAR Answer — Takeda Mobile CI/CD</div>
+                    <div class="home-qa-star-label">&#9733; STAR Answer — Enterprise Pharma Mobile CI/CD</div>
                     <table class="home-qa-star-table">
                       <tr><td>Situation</td><td>Mobile CI/CD pipeline faced burst load during global release windows — multiple teams triggering iOS and Android builds simultaneously, coinciding with quarterly pharma compliance deadlines.</td></tr>
                       <tr><td>Task</td><td>Ensure the self-hosted macOS runner fleet and supporting AWS infrastructure didn't become bottlenecks on high-traffic release days, while meeting GxP audit requirements.</td></tr>
@@ -982,7 +982,7 @@
                     </tbody>
                   </table>
                   <div class="home-qa-star">
-                    <div class="home-qa-star-label">&#9733; STAR Answer — Takeda DevSecOps Pipeline</div>
+                    <div class="home-qa-star-label">&#9733; STAR Answer — Enterprise Pharma DevSecOps Pipeline</div>
                     <table class="home-qa-star-table">
                       <tr><td>Situation</td><td>Pharma GxP compliance required the DevSecOps pipeline — Vault clusters, GitHub OIDC federation, artifact storage — to meet strict RTO/RPO targets. A pipeline outage during a regulated release window would trigger audit findings.</td></tr>
                       <tr><td>Task</td><td>Design DR for the CI/CD platform without static credentials or manual recovery runbooks.</td></tr>
@@ -1015,9 +1015,9 @@
                     <li><strong>Audit:</strong> CloudTrail, GuardDuty, Security Hub for continuous posture monitoring</li>
                   </ul>
                   <div class="home-qa-star">
-                    <div class="home-qa-star-label">&#9733; STAR Answer — Takeda Zero-Static-Credentials Architecture</div>
+                    <div class="home-qa-star-label">&#9733; STAR Answer — Enterprise Pharma Zero-Static-Credentials Architecture</div>
                     <table class="home-qa-star-table">
-                      <tr><td>Situation</td><td>Both Takeda (pharma, GxP) and Societe Generale (financial services) required zero-tolerance security postures. The legacy approach used static AWS access keys in CI/CD pipelines.</td></tr>
+                      <tr><td>Situation</td><td>Both Enterprise Pharma (pharma, GxP) and Societe Generale (financial services) required zero-tolerance security postures. The legacy approach used static AWS access keys in CI/CD pipelines.</td></tr>
                       <tr><td>Task</td><td>Eliminate all static credentials from the CI/CD pipeline while maintaining developer velocity and meeting compliance.</td></tr>
                       <tr><td>Action</td><td>Designed Vault + GitHub OIDC zero-static-credentials architecture. Every pipeline authenticated via short-lived OIDC tokens. IAM roles followed least-privilege via Terraform policy-as-code. Built the AI CI/CD Guardian GitHub Action with 42 heuristic patterns across 16 build systems to detect credential leaks.</td></tr>
                       <tr><td>Result</td><td>Passed pharma compliance audits with zero static-credential findings. Zero-static-credentials pattern became a reusable GitHub Actions template. New service onboarding dropped from 2 weeks→2 hours.</td></tr>
@@ -1043,12 +1043,12 @@
                     <li>The interviewer will <strong>probe the edges</strong> of your design with follow-up questions</li>
                   </ul>
                   <div class="home-qa-star">
-                    <div class="home-qa-star-label">&#9733; STAR Answer — Takeda Mobile CI/CD Platform</div>
+                    <div class="home-qa-star-label">&#9733; STAR Answer — Enterprise Pharma Mobile CI/CD Platform</div>
                     <table class="home-qa-star-table">
-                      <tr><td>Situation</td><td>Mobile teams at Takeda were releasing iOS apps manually — Xcode builds on developer laptops, two-day release cycles, no audit trail, no GxP compliance.</td></tr>
+                      <tr><td>Situation</td><td>Mobile teams at Enterprise Pharma were releasing iOS apps manually — Xcode builds on developer laptops, two-day release cycles, no audit trail, no GxP compliance.</td></tr>
                       <tr><td>Task</td><td>Design and deliver an end-to-end mobile CI/CD platform meeting pharma compliance, eliminating manual steps, scaling across global teams.</td></tr>
                       <tr><td>Action</td><td>Architected a self-hosted macOS runner fleet on GitHub Actions with Fastlane orchestrating build/test/sign/deploy. Vault + GitHub OIDC for secrets — Apple certificates fetched at runtime. Build artifacts versioned in S3. Branch protection, multi-party approvals, structured logs to Splunk for GxP audit trail. RDS Proxy for the metadata service.</td></tr>
-                      <tr><td>Result</td><td>Release cycle: 2 days→15 min. Build time: 45→15 min. Onboarding: 2 weeks→2 hours. Developer NPS: +45. Became the standard mobile delivery platform at Takeda.</td></tr>
+                      <tr><td>Result</td><td>Release cycle: 2 days→15 min. Build time: 45→15 min. Onboarding: 2 weeks→2 hours. Developer NPS: +45. Became the standard mobile delivery platform at Enterprise Pharma.</td></tr>
                     </table>
                   </div>
                 </div>
