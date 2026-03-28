@@ -1399,6 +1399,324 @@
           </div>
         </section>
 
+        <!-- Definitive Interview Compendium -->
+        <section class="home-category">
+          <div class="home-category-header">
+            <div class="home-category-icon" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">⚡</div>
+            <h2>The Definitive Interview Compendium</h2>
+          </div>
+          <p class="home-qa-intro">Senior-level frameworks for the most high-stakes questions — with "bad vs. delightful" answer contrasts, comparison tables, and the "So What?" layer that separates architects from engineers.</p>
+          <div class="home-qa-list" id="qaCompendiumAccordion">
+
+            <!-- C1 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">1</span>
+                <span class="home-qa-question">What is the fundamental difference between High Availability and Disaster Recovery?</span>
+                <span class="home-qa-time">Architecture</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; The most mis-answered foundational question</div>
+                  <table class="home-qa-compare">
+                    <thead><tr><th>Dimension</th><th>High Availability (HA)</th><th>Disaster Recovery (DR)</th></tr></thead>
+                    <tbody>
+                      <tr><td><strong>Scope</strong></td><td>Within a single Region (cross-AZ)</td><td>Across different geographic Regions</td></tr>
+                      <tr><td><strong>Primary Goal</strong></td><td>Minimize downtime during AZ failure</td><td>Restore service after a Region-wide event</td></tr>
+                      <tr><td><strong>AWS Examples</strong></td><td>Multi-AZ EC2, Application Load Balancers</td><td>Route 53 Health Checks, S3 Cross-Region Replication</td></tr>
+                    </tbody>
+                  </table>
+                  <ul style="margin-top:0.75rem">
+                    <li><strong>Bad Answer:</strong> "HA means the app stays up; DR is when it falls back to another region." This conflates the two concepts entirely.</li>
+                    <li><strong>Delightful Answer:</strong> HA is scoped to <strong>AZs within one region</strong>. DR is scoped to <strong>different geographic regions</strong>. Confusing them signals you haven't operated at enterprise scale.</li>
+                    <li><strong>The "So What?" Layer:</strong> A total AZ failure is handled by HA — no human intervention needed. A total regional failure requires DR — a deliberate architectural and operational strategy.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- C2 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">2</span>
+                <span class="home-qa-question">Walk me through a production-grade 3-tier Highly Available architecture.</span>
+                <span class="home-qa-time">Architecture</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Layer-by-layer HA walkthrough — the "delightful" answer format</div>
+                  <ul>
+                    <li><strong>External ALB:</strong> Routes traffic across multiple AZs. Inherently HA — no single point of failure.</li>
+                    <li><strong>Web / App Tier (EC2 in ASG):</strong> A single EC2 instance resides in one AZ and is a SPOF. Deploy across ≥2 AZs inside an Auto Scaling Group. If one AZ fails, traffic re-routes to instances in surviving AZs automatically.</li>
+                    <li><strong>Internal ALB:</strong> Decouples the web and app tiers; distributes internal traffic across healthy AZs — identical HA properties to the external ALB.</li>
+                    <li><strong>Data Tier (Amazon DynamoDB):</strong> A regional service that automatically replicates data across three AZs. AZ failure is fully transparent to application code.</li>
+                    <li><strong>So What?</strong> This design ensures a complete data-center failure is a <em>non-event</em> for end users — business continuity with zero manual intervention.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- C3 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">3</span>
+                <span class="home-qa-question">Define RTO and RPO. What units are they measured in? Compare all 4 DR strategies.</span>
+                <span class="home-qa-time">Architecture</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; The "trap question" — RPO is always measured in TIME, not data volume</div>
+                  <ul>
+                    <li><strong>RTO (Recovery Time Objective):</strong> Max acceptable time the application can be offline. Measured in <em>minutes, hours, or days</em>.</li>
+                    <li><strong>RPO (Recovery Point Objective):</strong> Max acceptable data loss, expressed as a point in <em>time</em>. A common mistake: measuring RPO in megabytes. Wrong. It's always time.</li>
+                  </ul>
+                  <table class="home-qa-compare" style="margin-top:0.75rem">
+                    <thead><tr><th>Strategy</th><th>RTO / RPO</th><th>How It Works</th></tr></thead>
+                    <tbody>
+                      <tr><td><strong>Backup &amp; Restore</strong></td><td>Hours / Days</td><td>Data backed up to S3; restored to new region after disaster. Highest RTO/RPO, lowest cost.</td></tr>
+                      <tr><td><strong>Pilot Light</strong></td><td>Minutes / Hours</td><td>Core data (DB) is live and replicated; app servers are "off" (AMIs) until disaster triggers provisioning.</td></tr>
+                      <tr><td><strong>Warm Standby</strong></td><td>Minutes / Minutes</td><td>Scaled-down full environment always running in DR region. Scale up on activation.</td></tr>
+                      <tr><td><strong>Multi-site Active-Active</strong></td><td>Real-time / Real-time</td><td>Full traffic in two+ regions simultaneously. Instant synchronous/asynchronous replication. Highest cost, zero RTO/RPO.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- C4 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">4</span>
+                <span class="home-qa-question">Contrast Monolithic vs. Microservices. Illustrate a real Microservices flow and explain Event-Driven Architecture.</span>
+                <span class="home-qa-time">Architecture</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Show fault isolation and EDA asynchrony — not just definitions</div>
+                  <ul>
+                    <li><strong>Monolith:</strong> Single tightly coupled unit. One component fails → redeploy everything. No independent scaling.</li>
+                    <li><strong>Microservices:</strong> Independent services, independently deployed, independently scaled, polyglot by design.</li>
+                  </ul>
+                  <ul style="margin-top:0.5rem">
+                    <li><strong>Real Flow — store.com (ALB Path-Based Routing):</strong>
+                      <ul class="home-qa-sublist">
+                        <li><code>store.com/browse</code> → EC2 + DynamoDB (Python)</li>
+                        <li><code>store.com/purchase</code> → EKS + Aurora (Go) — isolated for high integrity</li>
+                        <li><code>store.com/return</code> → Lambda (serverless, spiky traffic)</li>
+                        <li>If /browse crashes, /purchase and revenue remain unaffected. That's fault isolation.</li>
+                      </ul>
+                    </li>
+                    <li><strong>EDA — Bad Answer:</strong> "API Gateway → Lambda → DynamoDB." That is <em>synchronous</em>, not event-driven.</li>
+                    <li><strong>EDA — Delightful:</strong> API Gateway → <strong>SQS</strong> → Lambda → DynamoDB. SQS decouples producer from consumer. Lambda consumes at its own rate. Benefits: independent scaling, built-in retry, no wasted idle capacity.</li>
+                  </ul>
+                  <table class="home-qa-compare" style="margin-top:0.75rem">
+                    <thead><tr><th>Trait</th><th>Synchronous</th><th>EDA (Asynchronous)</th></tr></thead>
+                    <tbody>
+                      <tr><td>Scaling</td><td>All layers must match</td><td>Components scale independently</td></tr>
+                      <tr><td>Retries</td><td>Hard-coded in client</td><td>Built-in queue retry</td></tr>
+                      <tr><td>Cost</td><td>Over-provision for spikes</td><td>Pay only for events processed</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- C5 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">5</span>
+                <span class="home-qa-question">Compare SQL vs. NoSQL databases from a Solutions Architect perspective.</span>
+                <span class="home-qa-time">Databases</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Distinguish by schema approach and consistency model — not just "relational vs. not"</div>
+                  <table class="home-qa-compare">
+                    <thead><tr><th>Property</th><th>SQL (Relational)</th><th>NoSQL (Non-relational)</th></tr></thead>
+                    <tbody>
+                      <tr><td><strong>Schema</strong></td><td>Schema-on-write — rigid, predefined</td><td>Schema-on-read — flexible, evolving</td></tr>
+                      <tr><td><strong>Consistency</strong></td><td>ACID transactions</td><td>Eventual consistency (configurable)</td></tr>
+                      <tr><td><strong>Scaling</strong></td><td>Vertical primary</td><td>Horizontal by design</td></tr>
+                      <tr><td><strong>Best For</strong></td><td>Complex joins, financial transactions</td><td>High-throughput, low-latency, variable structure</td></tr>
+                      <tr><td><strong>AWS Examples</strong></td><td>Amazon Aurora, RDS</td><td>Amazon DynamoDB</td></tr>
+                    </tbody>
+                  </table>
+                  <ul style="margin-top:0.75rem">
+                    <li><strong>Architect's Rule:</strong> Never say "NoSQL is better." Choose based on access patterns. If you need ACID joins, SQL wins. If you need single-digit millisecond reads at millions of RPS, DynamoDB wins.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- C6 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">6</span>
+                <span class="home-qa-question">What are the strategic GenAI use cases? Explain MCP and differentiate A2A, MCP, and RAG.</span>
+                <span class="home-qa-time">Generative AI</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Categorize GenAI use cases — "chatbots" alone is a junior answer</div>
+                  <ul>
+                    <li><strong>Customer Experience:</strong> Agentic assistants that take action on behalf of users (not just answer questions).</li>
+                    <li><strong>Productivity:</strong> Content creation, automated report generation, search summarization — measurable ROI.</li>
+                    <li><strong>Cutting Edge (MCP):</strong> Automated cost analysis, code-quality evaluation against architectural best practices — agents acting autonomously on cloud infrastructure.</li>
+                  </ul>
+                  <ul style="margin-top:0.75rem">
+                    <li><strong>Model Context Protocol (MCP):</strong> A standardized JSON-RPC protocol enabling LLMs to interact with tools and data sources without custom-coding every integration.
+                      <ul class="home-qa-sublist">
+                        <li><strong>Pre-MCP:</strong> Manually define every API URL, header, and payload per tool.</li>
+                        <li><strong>MCP:</strong> MCP Server exposes tool schemas. MCP Client (e.g., VS Code) discovers tools dynamically. LLM chooses which tool to invoke based on purpose — no brittle hard-coded logic.</li>
+                        <li><strong>Key Innovation:</strong> Dynamic Discovery — the protocol feeds tool purpose and schema to the LLM at runtime.</li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <table class="home-qa-compare" style="margin-top:0.75rem">
+                    <thead><tr><th>Protocol</th><th>What It Does</th></tr></thead>
+                    <tbody>
+                      <tr><td><strong>A2A</strong></td><td>Agent-to-Agent communication (orchestration between agents)</td></tr>
+                      <tr><td><strong>MCP</strong></td><td>Standardized protocol connecting agents/LLMs to tools and data</td></tr>
+                      <tr><td><strong>RAG</strong></td><td>Retrieval-Augmented Generation — grounding LLM responses in external data without retraining</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- C7 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">7</span>
+                <span class="home-qa-question">Continuous Delivery vs. Deployment. Describe a senior-level DevOps pipeline. Contrast Traditional CI/CD vs. GitOps.</span>
+                <span class="home-qa-time">DevOps</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Know the human-button distinction and the push vs. pull model</div>
+                  <ul>
+                    <li><strong>Continuous Delivery:</strong> Code is always in a deployable state; a <em>manual trigger</em> pushes to production.</li>
+                    <li><strong>Continuous Deployment:</strong> Every passing build auto-deploys to production. Zero human intervention.</li>
+                  </ul>
+                  <ul style="margin-top:0.5rem">
+                    <li><strong>Senior-Level Pipeline (Source → Build → Test → Deploy):</strong>
+                      <ul class="home-qa-sublist">
+                        <li><strong>IaC:</strong> Non-negotiable — Terraform ensures environment consistency across accounts.</li>
+                        <li><strong>Automated Unit Testing:</strong> AWS CodeBuild catches logic errors before staging.</li>
+                        <li><strong>DevSecOps:</strong> Shift security left — secret scanning and vulnerability assessment are pipeline gates, not post-deployment audits.</li>
+                        <li><strong>Multi-Account Strategy:</strong> Dev → Test → Prod isolation minimizes blast radius of any failure.</li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <table class="home-qa-compare" style="margin-top:0.75rem">
+                    <thead><tr><th>Model</th><th>Traditional CI/CD</th><th>GitOps</th></tr></thead>
+                    <tbody>
+                      <tr><td><strong>Direction</strong></td><td>Push — tool pushes config to environment</td><td>Pull — controller in cluster pulls from Git</td></tr>
+                      <tr><td><strong>Truth Source</strong></td><td>CI/CD tool state</td><td>Git repository (declarative)</td></tr>
+                      <tr><td><strong>Controller</strong></td><td>Jenkins, GitHub Actions, Harness</td><td>ArgoCD, Flux</td></tr>
+                      <tr><td><strong>Drift Detection</strong></td><td>Manual or scheduled</td><td>Continuous, automatic reconciliation</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- C8 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">8</span>
+                <span class="home-qa-question">Why EKS? Explain HPA vs. Cluster Autoscaler vs. Karpenter. Define DaemonSets and Sidecars.</span>
+                <span class="home-qa-time">Kubernetes</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; Three layers of scaling, and when each kicks in</div>
+                  <ul>
+                    <li><strong>Why EKS:</strong> AWS manages the control plane (API server, etcd) across multiple AZs. Managing this yourself is the hardest part of Kubernetes operations — EKS eliminates it.</li>
+                  </ul>
+                  <table class="home-qa-compare" style="margin-top:0.75rem">
+                    <thead><tr><th>Scaler</th><th>What It Scales</th><th>Trigger</th><th>Notes</th></tr></thead>
+                    <tbody>
+                      <tr><td><strong>HPA</strong></td><td>Pods</td><td>CPU / Memory / custom metrics</td><td>Horizontal Pod Autoscaler — doesn't add nodes</td></tr>
+                      <tr><td><strong>Cluster Autoscaler</strong></td><td>Nodes (via ASG)</td><td>Pending pods with no room</td><td>Works with EC2 Auto Scaling Groups</td></tr>
+                      <tr><td><strong>Karpenter</strong></td><td>Nodes (directly)</td><td>Pending pods with no room</td><td>Bypasses ASGs; provisions right-sized, right-typed node instantly. Faster + cheaper.</td></tr>
+                    </tbody>
+                  </table>
+                  <ul style="margin-top:0.75rem">
+                    <li><strong>DaemonSet:</strong> Ensures one pod per node. Use for cluster-wide agents — log collectors (Fluent Bit), monitoring agents (Prometheus node-exporter).</li>
+                    <li><strong>Sidecar:</strong> Runs alongside the app container in the same pod. Use for pod-specific concerns — service mesh proxy (Envoy), localized log offloading.</li>
+                    <li><strong>Monitoring Stack to name:</strong> Prometheus + Grafana for metrics; Fluent Bit / CloudWatch Container Insights / ELK for logs. Not naming your stack is a red flag.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- C9 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">9</span>
+                <span class="home-qa-question">Lambda cold starts, scaling, and security. Differentiate SQS vs. SNS vs. EventBridge.</span>
+                <span class="home-qa-time">Serverless</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; CPU is indirect, cold starts are solvable, messaging services are distinct tools</div>
+                  <ul>
+                    <li><strong>Cold Start:</strong> Latency when AWS provisions a new execution environment. Mitigate with <strong>Provisioned Concurrency</strong> (keeps environments warm) or Custom Container Images.</li>
+                    <li><strong>Scaling CPU:</strong> You cannot set Lambda CPU directly. Increase <strong>memory allocation</strong> — AWS scales CPU proportionally. More memory = faster execution = lower cost in pay-per-ms model.</li>
+                    <li><strong>Lambda vs. Fargate:</strong> Lambda scales instantly for burst; Fargate scales slower (node provisioning) but handles tasks exceeding Lambda's 15-minute limit.</li>
+                    <li><strong>Security best practices:</strong> Least-privilege IAM role per function; KMS for environment variable encryption; VPC integration for private resource access.</li>
+                  </ul>
+                  <table class="home-qa-compare" style="margin-top:0.75rem">
+                    <thead><tr><th>Service</th><th>Pattern</th><th>Use Case</th></tr></thead>
+                    <tbody>
+                      <tr><td><strong>SQS</strong></td><td>Queue — point-to-point</td><td>One producer, one consumer. Decoupling, backpressure, retry.</td></tr>
+                      <tr><td><strong>SNS</strong></td><td>Pub/sub topic — fan-out</td><td>One producer, many consumers. Broadcast notifications.</td></tr>
+                      <tr><td><strong>EventBridge</strong></td><td>Event bus — content-based routing</td><td>Filter and route events from AWS services, SaaS, and custom apps with rules.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- C10 -->
+            <div class="home-qa-item">
+              <button class="home-qa-toggle" aria-expanded="false">
+                <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">10</span>
+                <span class="home-qa-question">Interview strategy: The "Question Behind the Question" and critical mistakes to avoid.</span>
+                <span class="home-qa-time">Strategy</span>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="home-qa-body">
+                <div class="home-qa-content">
+                  <div class="home-qa-framework">&#9670; The "So What?" layer separates architects from engineers</div>
+                  <ul>
+                    <li><strong>Trait 1 — The Question Behind the Question:</strong> When asked "What is RPO?", the real test is whether you know it's measured in <em>time</em>, not data volume. Pivot to the underlying principle, not the dictionary definition.</li>
+                    <li><strong>Trait 2 — System Design Pivot:</strong> When asked "What is SQS?", don't just say "It's a queue." Explain how you used SQS to decouple an ordering system and absorb a 10x Black Friday traffic spike without dropping a single order. That's the delight factor.</li>
+                    <li><strong>Trait 3 — Big Picture Thinking:</strong> Show how services interact to solve a business problem. Walk through flows, not definitions.</li>
+                  </ul>
+                  <ul style="margin-top:0.5rem">
+                    <li><strong>❌ Rambling:</strong> Five minutes on a VPC question signals inability to communicate with executives. Use the <strong>3-2-1 trick</strong>: 3 points, 2 minutes, 1 clear summary.</li>
+                    <li><strong>❌ Generic answers:</strong> "I would use the best practices" is not an answer. Name the service, the trade-off, and the operational consequence.</li>
+                    <li><strong>❌ Jumping to solutions:</strong> Always ask for requirements first — RTO, RPO, budget, scale, compliance constraints. Skipping this is a junior mistake.</li>
+                    <li><strong>❌ Calling a service "the best":</strong> A Principal Architect selects services based on specific system requirements — cost, latency, scale — never on preference.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
         <!-- CTA -->
         <section class="home-cta">
           <h3>Ready to start preparing?</h3>
@@ -1458,6 +1776,15 @@
 
       /* Video breakdown accordion toggle */
       document.getElementById('qaVideoAccordion').addEventListener('click', function(e) {
+        var btn = e.target.closest('.home-qa-toggle');
+        if (!btn) return;
+        var item = btn.closest('.home-qa-item');
+        var isOpen = item.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+
+      /* Compendium accordion toggle */
+      document.getElementById('qaCompendiumAccordion').addEventListener('click', function(e) {
         var btn = e.target.closest('.home-qa-toggle');
         if (!btn) return;
         var item = btn.closest('.home-qa-item');
