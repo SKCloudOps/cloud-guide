@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Designing Fault-Tolerant AWS Architecture — Blueprint for High Availability | Cloud Interview Guide</title>
+    <meta name="description" content="A deep-dive article on building truly fault-tolerant, highly available AWS architectures from first principles. Covers the global edge, stateless compute, async decoupling, stateful data layers, and multi-region expansion." />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/devops.css" />
+
+    <meta name="keywords" content="fault-tolerant AWS architecture, high availability, Route 53, CloudFront, ALB, EKS, ECS Fargate, SQS, SNS, Aurora Multi-AZ, DynamoDB, ElastiCache Redis, multi-region, active-active, pilot light" />
+    <meta name="author" content="SKCloudOps" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://skcloudops.github.io/cloud-guide/fault-tolerant-architecture.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article" />
+    <meta property="article:section" content="Architecture" />
+    <meta property="article:tag" content="fault-tolerant,high availability,AWS architecture,Route 53,Aurora,DynamoDB,SQS,multi-region" />
+    <meta property="og:title" content="Designing Fault-Tolerant AWS Architecture — Blueprint for High Availability" />
+    <meta property="og:description" content="A deep-dive article on building truly fault-tolerant, highly available AWS architectures from first principles. Global edge, stateless compute, async decoupling, stateful data, and multi-region." />
+    <meta property="og:url" content="https://skcloudops.github.io/cloud-guide/fault-tolerant-architecture.html" />
+    <meta property="og:site_name" content="Cloud Interview Guide" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Designing Fault-Tolerant AWS Architecture — Blueprint for High Availability" />
+    <meta name="twitter:description" content="A deep-dive article on building truly fault-tolerant, highly available AWS architectures from first principles." />
+
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#0f172a">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Designing Fault-Tolerant AWS Architecture — Blueprint for High Availability",
+          "description": "A deep-dive article on building truly fault-tolerant, highly available AWS architectures from first principles. Covers global edge, stateless compute, async decoupling, stateful data layers, and multi-region expansion.",
+          "url": "https://skcloudops.github.io/cloud-guide/fault-tolerant-architecture.html",
+          "author": {"@type": "Organization", "name": "SKCloudOps", "url": "https://skcloudops.github.io/cloud-guide/"},
+          "publisher": {
+            "@type": "Organization",
+            "name": "SKCloudOps",
+            "url": "https://skcloudops.github.io/cloud-guide/",
+            "logo": {"@type": "ImageObject", "url": "https://skcloudops.github.io/cloud-guide/assets/favicon.svg"}
+          },
+          "dateModified": "2026-03-30",
+          "inLanguage": "en-US",
+          "teaches": "Fault-tolerant architecture, high availability, AWS resiliency patterns, multi-region design",
+          "educationalLevel": "Advanced",
+          "about": [
+            {"@type":"Thing","name":"AWS High Availability"},
+            {"@type":"Thing","name":"Fault-Tolerant Architecture"},
+            {"@type":"Thing","name":"Amazon Route 53"},
+            {"@type":"Thing","name":"Amazon Aurora"},
+            {"@type":"Thing","name":"Amazon SQS"},
+            {"@type":"Thing","name":"Multi-Region AWS"}
+          ],
+          "isPartOf": {"@type": "WebSite", "name": "Cloud Interview Guide", "url": "https://skcloudops.github.io/cloud-guide/"}
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Cloud Interview Guide", "item": "https://skcloudops.github.io/cloud-guide/"},
+            {"@type": "ListItem", "position": 2, "name": "Architecture & Ops", "item": "https://skcloudops.github.io/cloud-guide/"},
+            {"@type": "ListItem", "position": 3, "name": "Fault-Tolerant Architecture Blueprint", "item": "https://skcloudops.github.io/cloud-guide/fault-tolerant-architecture.html"}
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <style>
+        /* ===== Article Page Styles ===== */
+        .article-main {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem 5rem;
+        }
+
+        /* ── Article Hero ── */
+        .article-hero {
+            margin-bottom: 2.75rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.3rem 0.875rem;
+            font-size: 0.6875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #fff;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 20px;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+        }
+
+        .article-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.04em;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+
+        .article-hero-lead {
+            font-size: 1.0625rem;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            max-width: 640px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        .article-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .article-meta-item svg {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+        }
+
+        /* ── Article Body ── */
+        .article-body h2 {
+            font-size: 1.625rem;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.03em;
+            margin: 3rem 0 1rem;
+            padding-bottom: 0.625rem;
+            border-bottom: 2px solid var(--border);
+            line-height: 1.25;
+        }
+
+        .article-body h2:first-child {
+            margin-top: 0;
+        }
+
+        .article-body h3 {
+            font-size: 1.1875rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            margin: 2rem 0 0.75rem;
+            line-height: 1.35;
+        }
+
+        .article-body h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 1.75rem 0 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .article-body p {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.125rem;
+        }
+
+        .article-body ul, .article-body ol {
+            margin: 0.75rem 0 1.25rem 1.5rem;
+        }
+
+        .article-body li {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-body li strong {
+            color: var(--text);
+        }
+
+        .article-body strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .article-body em {
+            color: var(--text-secondary);
+        }
+
+        /* ── Inline SVG Diagram Container ── */
+        .article-diagram {
+            margin: 2rem 0;
+            padding: 1.75rem;
+            background: #fafbfc;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .article-diagram-caption {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        /* ── Comparison Table ── */
+        .article-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .article-table th,
+        .article-table td {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-table th {
+            background: linear-gradient(135deg, rgba(245,158,11,0.07), rgba(239,68,68,0.04));
+            font-weight: 700;
+            color: var(--text);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .article-table td {
+            color: var(--text-secondary);
+        }
+
+        .article-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .article-table tr:hover td {
+            background: rgba(245,158,11,0.02);
+        }
+
+        /* ── Callout / Tip Blocks ── */
+        .article-callout {
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1.5rem;
+            margin: 1.75rem 0;
+            position: relative;
+        }
+
+        .article-callout h4 {
+            margin: 0 0 0.5rem !important;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .article-callout p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .article-callout p:last-child {
+            margin-bottom: 0;
+        }
+
+        .article-callout.tip {
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            border-left: 4px solid #22c55e;
+        }
+
+        .article-callout.tip h4 {
+            color: #15803d;
+        }
+
+        .article-callout.info {
+            background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+            border-left: 4px solid #3b82f6;
+        }
+
+        .article-callout.info h4 {
+            color: #1d4ed8;
+        }
+
+        .article-callout.warning {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border-left: 4px solid #f59e0b;
+        }
+
+        .article-callout.warning h4 {
+            color: #b45309;
+        }
+
+        .article-callout.danger {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border-left: 4px solid #ef4444;
+        }
+
+        .article-callout.danger h4 {
+            color: #b91c1c;
+        }
+
+        /* ── Layer Cards (the 5 pillars) ── */
+        .layer-card {
+            background: var(--content-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin: 1.75rem 0;
+            transition: border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .layer-card:hover {
+            box-shadow: 0 6px 24px rgba(0,0,0,0.07);
+        }
+
+        .layer-card-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+        }
+
+        .layer-card.edge   { border-top: 3px solid #3b82f6; }
+        .layer-card.compute { border-top: 3px solid #10b981; }
+        .layer-card.async  { border-top: 3px solid #f59e0b; }
+        .layer-card.data   { border-top: 3px solid #8b5cf6; }
+        .layer-card.multi  { border-top: 3px solid #ef4444; }
+
+        .layer-card.edge   .layer-card-header { background: linear-gradient(135deg, rgba(59,130,246,0.05), rgba(29,78,216,0.03)); }
+        .layer-card.compute .layer-card-header { background: linear-gradient(135deg, rgba(16,185,129,0.05), rgba(5,150,105,0.03)); }
+        .layer-card.async  .layer-card-header { background: linear-gradient(135deg, rgba(245,158,11,0.05), rgba(217,119,6,0.03)); }
+        .layer-card.data   .layer-card-header { background: linear-gradient(135deg, rgba(139,92,246,0.05), rgba(109,40,217,0.03)); }
+        .layer-card.multi  .layer-card-header { background: linear-gradient(135deg, rgba(239,68,68,0.05), rgba(185,28,28,0.03)); }
+
+        .layer-num {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.875rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .layer-card.edge   .layer-num { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .layer-card.compute .layer-num { background: linear-gradient(135deg, #10b981, #059669); }
+        .layer-card.async  .layer-num { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .layer-card.data   .layer-num { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .layer-card.multi  .layer-num { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        .layer-card-header-text strong {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.01em;
+            display: block;
+        }
+
+        .layer-card-header-text span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .layer-card-body {
+            padding: 1.25rem 1.5rem;
+        }
+
+        .layer-card-body p {
+            font-size: 0.9rem;
+            line-height: 1.75;
+            margin-bottom: 0.75rem;
+        }
+
+        .layer-card-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ── Service Pills ── */
+        .service-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.6875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 5px;
+            margin: 0.1rem 0.15rem;
+            vertical-align: middle;
+        }
+
+        .pill-blue   { background: #dbeafe; color: #1e40af; }
+        .pill-green  { background: #d1fae5; color: #065f46; }
+        .pill-amber  { background: #fef3c7; color: #92400e; }
+        .pill-purple { background: #ede9fe; color: #5b21b6; }
+        .pill-red    { background: #fee2e2; color: #991b1b; }
+        .pill-indigo { background: #e0e7ff; color: #3730a3; }
+
+        /* ── Section Divider ── */
+        .article-divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 3rem 0;
+        }
+
+        /* ── Principle Banner ── */
+        .principle-banner {
+            background: linear-gradient(135deg, #0f172a, #1e1b4b);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem 2rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .principle-banner::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at top right, rgba(139,92,246,0.15), transparent 60%),
+                        radial-gradient(ellipse at bottom left, rgba(59,130,246,0.1), transparent 60%);
+            pointer-events: none;
+        }
+
+        .principle-banner p {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            line-height: 1.6;
+            margin: 0;
+            font-style: italic;
+            position: relative;
+        }
+
+        .principle-banner .attribution {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-weight: 500;
+            font-style: normal;
+            margin-top: 0.5rem;
+            display: block;
+            position: relative;
+        }
+
+        /* ── Question callout ── */
+        .question-callout {
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            border: 1px solid #bbf7d0;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 1.75rem;
+            margin: 2.5rem 0 0;
+        }
+
+        .question-callout h4 {
+            font-size: 0.8125rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #15803d;
+            margin: 0 0 0.625rem;
+        }
+
+        .question-callout p {
+            font-size: 0.9375rem;
+            color: #166534;
+            line-height: 1.7;
+            margin: 0;
+            font-style: italic;
+        }
+
+        /* ── Back / Navigation Links ── */
+        .article-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .article-nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.6rem 1.25rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--accent);
+            background: var(--accent-light);
+            border: 1px solid var(--accent-mid);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.15s ease, box-shadow 0.15s ease;
+            letter-spacing: -0.01em;
+        }
+
+        .article-nav-link:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+        }
+
+        /* ── Footer ── */
+        .article-footer {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .article-main { padding: 1.75rem 1.25rem 3rem; }
+            .article-hero h1 { font-size: 1.875rem; }
+            .article-meta { flex-wrap: wrap; gap: 0.75rem; }
+            .layer-card-body { padding: 1rem 1.25rem; }
+        }
+
+        @media (max-width: 480px) {
+            .article-hero h1 { font-size: 1.5rem; }
+            .article-body h2 { font-size: 1.375rem; }
+            .article-diagram { padding: 1rem; }
+            .principle-banner { padding: 1.25rem 1.25rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+            <div class="sidebar-header"><a class="sidebar-logo" href="index.html">Cloud Interview Guide</a></div>
+            <nav class="sidebar-nav">
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">Infrastructure</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+                        <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
+                        <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
+                        <a href="compute-article.html" class="sidebar-link">Compute Article <span class="count">4</span></a>
+                        <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
+                    </div>
+                </div>
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">App Services</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
+                        <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+                        <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+                        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+                    </div>
+                </div>
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">Architecture &amp; Ops</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+                        <a href="fault-tolerant-architecture.html" class="sidebar-link active">Fault-Tolerant Blueprint <span class="count">5</span></a>
+                        <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+                        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+                        <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
+                    </div>
+                </div>
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">Foundations</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+                        <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
+                        <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+                        <a href="platform-interview.html" class="sidebar-link">Interview Prep <span class="count">188</span></a>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+        <main class="content-area" role="main">
+            <div class="article-main">
+
+                <!-- ===== Article Hero ===== -->
+                <header class="article-hero">
+                    <div class="article-hero-badge">Architecture &amp; Ops · Blueprint</div>
+                    <h1>Designing a Fault-Tolerant AWS Architecture</h1>
+                    <p class="article-hero-lead">
+                        Everything fails all the time. The goal isn't to prevent failure — it's to design a system where individual component failures are completely invisible to the end user. Here is the blueprint.
+                    </p>
+                    <div class="article-meta">
+                        <span class="article-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            10 min read
+                        </span>
+                        <span class="article-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            SKCloudOps
+                        </span>
+                        <span class="article-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            March 2026
+                        </span>
+                        <span class="article-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            Advanced
+                        </span>
+                    </div>
+                </header>
+
+                <!-- ===== Article Body ===== -->
+                <div class="article-body">
+
+                    <!-- ── Introduction ── -->
+                    <div class="principle-banner">
+                        <p>"A solution that merely 'works' strings together an ALB, some EC2 instances, and an RDS database in a single region. An elegant, craftsman-level architecture removes state from the compute layer, heavily utilizes decoupling, and pushes traffic routing to the global edge."</p>
+                        <span class="attribution">— First Principles of Distributed Systems Design</span>
+                    </div>
+
+                    <p>
+                        To build a system that is truly fault-tolerant and highly available, we have to start from first principles: <strong>everything fails all the time.</strong> The goal isn't to prevent failure, but to design a system where individual component failures are invisible to the end user.
+                    </p>
+
+                    <p>
+                        Here is the blueprint for a robust, fault-tolerant AWS architecture that scales predictably and heals itself — organized into five layered pillars.
+                    </p>
+
+                    <!-- ── Architecture Overview Diagram ── -->
+                    <div class="article-diagram">
+                        <svg viewBox="0 0 800 380" width="100%" height="auto" style="font-family: var(--font-sans);">
+                            <defs>
+                                <linearGradient id="gEdge"    x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
+                                <linearGradient id="gCompute" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+                                <linearGradient id="gAsync"   x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient>
+                                <linearGradient id="gData"    x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient>
+                                <linearGradient id="gMulti"   x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#dc2626"/></linearGradient>
+                                <marker id="arrowD" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+                                </marker>
+                            </defs>
+
+                            <!-- Layer 1: Global Edge -->
+                            <rect x="20" y="16" width="760" height="52" rx="8" fill="url(#gEdge)" opacity="0.9"/>
+                            <text x="400" y="37" fill="white" font-size="11" font-weight="800" text-anchor="middle" letter-spacing="0.06em">LAYER 1 — GLOBAL EDGE</text>
+                            <text x="210" y="57" fill="#bfdbfe" font-size="11" font-weight="600" text-anchor="middle">Route 53</text>
+                            <text x="400" y="57" fill="#bfdbfe" font-size="11" font-weight="600" text-anchor="middle">CloudFront</text>
+                            <text x="590" y="57" fill="#bfdbfe" font-size="11" font-weight="600" text-anchor="middle">AWS WAF</text>
+
+                            <!-- Arrow -->
+                            <line x1="400" y1="72" x2="400" y2="86" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowD)"/>
+
+                            <!-- Layer 2: Stateless Compute -->
+                            <rect x="20" y="90" width="760" height="52" rx="8" fill="url(#gCompute)" opacity="0.9"/>
+                            <text x="400" y="111" fill="white" font-size="11" font-weight="800" text-anchor="middle" letter-spacing="0.06em">LAYER 2 — STATELESS COMPUTE (SELF-HEALING)</text>
+                            <text x="175" y="131" fill="#d1fae5" font-size="11" font-weight="600" text-anchor="middle">Application Load Balancer</text>
+                            <text x="400" y="131" fill="#d1fae5" font-size="11" font-weight="600" text-anchor="middle">EKS / ECS on Fargate (3 AZs)</text>
+                            <text x="630" y="131" fill="#d1fae5" font-size="11" font-weight="600" text-anchor="middle">Auto Scaling (Custom Metrics)</text>
+
+                            <!-- Arrow -->
+                            <line x1="400" y1="146" x2="400" y2="160" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowD)"/>
+
+                            <!-- Layer 3: Async Decoupling -->
+                            <rect x="20" y="164" width="760" height="52" rx="8" fill="url(#gAsync)" opacity="0.9"/>
+                            <text x="400" y="185" fill="white" font-size="11" font-weight="800" text-anchor="middle" letter-spacing="0.06em">LAYER 3 — DECOUPLING &amp; ASYNC PROCESSING</text>
+                            <text x="230" y="205" fill="#fef3c7" font-size="11" font-weight="600" text-anchor="middle">Amazon SQS (Queue)</text>
+                            <text x="400" y="205" fill="#fef3c7" font-size="11" font-weight="600" text-anchor="middle">Amazon SNS (Fan-out)</text>
+                            <text x="580" y="205" fill="#fef3c7" font-size="11" font-weight="600" text-anchor="middle">Amazon EventBridge</text>
+
+                            <!-- Arrow -->
+                            <line x1="400" y1="220" x2="400" y2="234" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowD)"/>
+
+                            <!-- Layer 4: Stateful Data -->
+                            <rect x="20" y="238" width="760" height="52" rx="8" fill="url(#gData)" opacity="0.9"/>
+                            <text x="400" y="259" fill="white" font-size="11" font-weight="800" text-anchor="middle" letter-spacing="0.06em">LAYER 4 — STATEFUL DATA (REPLICATION &amp; DURABILITY)</text>
+                            <text x="175" y="279" fill="#ede9fe" font-size="11" font-weight="600" text-anchor="middle">Aurora Multi-AZ</text>
+                            <text x="400" y="279" fill="#ede9fe" font-size="11" font-weight="600" text-anchor="middle">DynamoDB Global Tables</text>
+                            <text x="625" y="279" fill="#ede9fe" font-size="11" font-weight="600" text-anchor="middle">ElastiCache (Redis)</text>
+
+                            <!-- Arrow -->
+                            <line x1="400" y1="294" x2="400" y2="308" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowD)"/>
+
+                            <!-- Layer 5: Multi-Region -->
+                            <rect x="20" y="312" width="760" height="52" rx="8" fill="url(#gMulti)" opacity="0.9"/>
+                            <text x="400" y="333" fill="white" font-size="11" font-weight="800" text-anchor="middle" letter-spacing="0.06em">LAYER 5 — MULTI-REGION EXPANSION (ULTIMATE RESILIENCE)</text>
+                            <text x="230" y="353" fill="#fee2e2" font-size="11" font-weight="600" text-anchor="middle">Aurora Global Database</text>
+                            <text x="400" y="353" fill="#fee2e2" font-size="11" font-weight="600" text-anchor="middle">DynamoDB Global Tables</text>
+                            <text x="600" y="353" fill="#fee2e2" font-size="11" font-weight="600" text-anchor="middle">Route 53 Failover</text>
+                        </svg>
+                        <div class="article-diagram-caption">Fig 1 — Five-Layer Fault-Tolerant AWS Architecture: From global edge to multi-region expansion</div>
+                    </div>
+
+                    <!-- ─────────────────────────────────────────────── -->
+                    <h2 id="layer-1">1. The Global Edge (Routing &amp; Caching)</h2>
+
+                    <p>
+                        The first line of defense is keeping traffic away from your core infrastructure whenever possible. The edge layer absorbs load, filters threats, and automatically re-routes around failures before they ever touch your origin servers.
+                    </p>
+
+                    <div class="layer-card edge">
+                        <div class="layer-card-header">
+                            <div class="layer-num">1</div>
+                            <div class="layer-card-header-text">
+                                <strong>The Global Edge Layer</strong>
+                                <span>Route 53 · CloudFront · AWS WAF</span>
+                            </div>
+                        </div>
+                        <div class="layer-card-body">
+                            <p>
+                                <span class="service-pill pill-blue">Amazon Route 53</span> — Use this as the global DNS entry point, utilizing <strong>health checks and latency-based routing</strong>. If a region or endpoint degrades, Route 53 automatically shunts traffic to healthy infrastructure without any manual intervention.
+                            </p>
+                            <p>
+                                <span class="service-pill pill-blue">Amazon CloudFront</span> <span class="service-pill pill-blue">AWS WAF</span> — Serve static assets and cache dynamic responses at the edge. This significantly reduces the load on your origin servers. WAF provides fault tolerance against malicious traffic (like DDoS or SQL injection) that could otherwise bring down your application.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="article-callout tip">
+                        <h4>🎯 Interview Tip</h4>
+                        <p>Frame the edge layer as your <strong>first responder</strong>. In an interview, saying "I push as much as possible to CloudFront so my origin servers almost never see raw traffic" demonstrates deep cost and resilience awareness simultaneously.</p>
+                    </div>
+
+                    <hr class="article-divider">
+
+                    <!-- ─────────────────────────────────────────────── -->
+                    <h2 id="layer-2">2. The Stateless Compute Layer (Self-Healing)</h2>
+
+                    <p>
+                        Compute must be treated as entirely ephemeral. If a server or container dies, it should be replaced without a single dropped session. The golden rule: <strong>no state on the compute tier</strong>.
+                    </p>
+
+                    <div class="layer-card compute">
+                        <div class="layer-card-header">
+                            <div class="layer-num">2</div>
+                            <div class="layer-card-header-text">
+                                <strong>Stateless Compute — Self-Healing Infrastructure</strong>
+                                <span>ALB · EKS / ECS Fargate · Auto Scaling</span>
+                            </div>
+                        </div>
+                        <div class="layer-card-body">
+                            <p>
+                                <span class="service-pill pill-green">Application Load Balancer</span> — Distributes traffic across multiple Availability Zones (AZs). It constantly monitors the health of target groups and <strong>stops routing to degraded nodes instantly</strong>.
+                            </p>
+                            <p>
+                                <span class="service-pill pill-green">Amazon EKS</span> <span class="service-pill pill-green">ECS on Fargate</span> — Containerized microservices deployed across <strong>at least three AZs</strong>. By using Fargate, you abstract away the underlying infrastructure management entirely — no nodes to patch, no capacity to pre-provision.
+                            </p>
+                            <p>
+                                <span class="service-pill pill-green">Auto Scaling</span> — Tied to <strong>custom metrics</strong> (like concurrent requests or queue depth, rather than just CPU), ensuring the system scales out <em>before</em> load causes a failure, and scales in to maintain cost efficiency.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="article-callout info">
+                        <h4>Why "Stateless" is the Key Word</h4>
+                        <p>If your compute instances hold any user session data locally, a single crash creates a degraded user experience. By pushing all state to Redis (ElastiCache) or a database, any container can serve any request — making individual crashes invisible.</p>
+                    </div>
+
+                    <hr class="article-divider">
+
+                    <!-- ─────────────────────────────────────────────── -->
+                    <h2 id="layer-3">3. Decoupling &amp; Asynchronous Processing</h2>
+
+                    <p>
+                        This is where <strong>true fault tolerance is achieved</strong>. Synchronous calls between microservices create a chain of vulnerability — if one service slows down, the whole request fails. The solution is to break those chains.
+                    </p>
+
+                    <div class="layer-card async">
+                        <div class="layer-card-header">
+                            <div class="layer-num">3</div>
+                            <div class="layer-card-header-text">
+                                <strong>Event-Driven Decoupling</strong>
+                                <span>Amazon SQS · SNS · EventBridge</span>
+                            </div>
+                        </div>
+                        <div class="layer-card-body">
+                            <p>
+                                <span class="service-pill pill-amber">Amazon SQS</span> <span class="service-pill pill-amber">Amazon SNS</span> <span class="service-pill pill-amber">EventBridge</span> — Architect the system to be event-driven. If a user submits an order, the web layer <strong>drops a payload into an SQS queue and immediately returns a "success"</strong> to the user.
+                            </p>
+                            <p>
+                                Downstream worker services pull from the queue independently. If the worker crashes, the message remains safely in the SQS queue until a healthy worker picks it up. <strong>No data is lost.</strong> The failure is completely absorbed by the queue.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Async Flow Diagram -->
+                    <div class="article-diagram">
+                        <svg viewBox="0 0 760 160" width="100%" height="auto" style="font-family: var(--font-sans);">
+                            <defs>
+                                <marker id="arrowFlow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b"/>
+                                </marker>
+                            </defs>
+
+                            <!-- User -->
+                            <rect x="20" y="55" width="110" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+                            <text x="75" y="77" fill="#92400e" font-size="11" font-weight="700" text-anchor="middle">Web Layer</text>
+                            <text x="75" y="93" fill="#b45309" font-size="10" text-anchor="middle">(API Gateway)</text>
+
+                            <!-- Arrow 1 -->
+                            <line x1="132" y1="80" x2="188" y2="80" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowFlow)"/>
+                            <text x="160" y="72" fill="#92400e" font-size="9" font-weight="600" text-anchor="middle">Submit</text>
+
+                            <!-- SQS -->
+                            <rect x="190" y="55" width="130" height="50" rx="8" fill="#fef9c3" stroke="#eab308" stroke-width="1.5"/>
+                            <text x="255" y="77" fill="#713f12" font-size="11" font-weight="700" text-anchor="middle">Amazon SQS</text>
+                            <text x="255" y="93" fill="#854d0e" font-size="10" text-anchor="middle">Message Queue</text>
+
+                            <!-- "200 OK" response up -->
+                            <line x1="75" y1="55" x2="75" y2="25" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,3"/>
+                            <text x="75" y="18" fill="#065f46" font-size="10" font-weight="700" text-anchor="middle">200 OK (Instant)</text>
+
+                            <!-- Arrow 2 -->
+                            <line x1="322" y1="80" x2="378" y2="80" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowFlow)"/>
+                            <text x="350" y="72" fill="#92400e" font-size="9" font-weight="600" text-anchor="middle">Poll</text>
+
+                            <!-- Worker -->
+                            <rect x="380" y="55" width="130" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+                            <text x="445" y="77" fill="#92400e" font-size="11" font-weight="700" text-anchor="middle">Worker Service</text>
+                            <text x="445" y="93" fill="#b45309" font-size="10" text-anchor="middle">(ECS / Lambda)</text>
+
+                            <!-- Arrow 3 -->
+                            <line x1="512" y1="80" x2="568" y2="80" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowFlow)"/>
+                            <text x="540" y="72" fill="#92400e" font-size="9" font-weight="600" text-anchor="middle">Process</text>
+
+                            <!-- DB -->
+                            <rect x="570" y="55" width="130" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+                            <text x="635" y="77" fill="#92400e" font-size="11" font-weight="700" text-anchor="middle">Database</text>
+                            <text x="635" y="93" fill="#b45309" font-size="10" text-anchor="middle">(Aurora / DynamoDB)</text>
+
+                            <!-- Crash annotation -->
+                            <text x="445" y="128" fill="#ef4444" font-size="10" font-weight="700" text-anchor="middle">⚡ Worker crashes?</text>
+                            <text x="445" y="143" fill="#6b7280" font-size="10" text-anchor="middle">Message stays in SQS. New worker picks up.</text>
+                        </svg>
+                        <div class="article-diagram-caption">Fig 2 — Async SQS decoupling: a worker crash never loses a message or fails the user request</div>
+                    </div>
+
+                    <div class="article-callout warning">
+                        <h4>⚠️ The Synchronous Anti-Pattern</h4>
+                        <p>When Service A synchronously calls Service B, which calls Service C — a timeout in Service C cascades up and fails the entire user request. This is the #1 architectural mistake in microservices. Queues break the chain.</p>
+                    </div>
+
+                    <hr class="article-divider">
+
+                    <!-- ─────────────────────────────────────────────── -->
+                    <h2 id="layer-4">4. The Stateful Data Layer (Replication &amp; Durability)</h2>
+
+                    <p>
+                        Since compute is stateless, the data layer must be <strong>incredibly resilient</strong>. This is where managed AWS services earn their keep — they handle replication, failover, and durability automatically.
+                    </p>
+
+                    <div class="layer-card data">
+                        <div class="layer-card-header">
+                            <div class="layer-num">4</div>
+                            <div class="layer-card-header-text">
+                                <strong>Stateful Data — Replication &amp; Durability</strong>
+                                <span>Aurora Multi-AZ · DynamoDB · ElastiCache Redis</span>
+                            </div>
+                        </div>
+                        <div class="layer-card-body">
+                            <p>
+                                <span class="service-pill pill-purple">Amazon Aurora (Multi-AZ)</span> — A distributed, fault-tolerant database that <strong>synchronously replicates data across three AZs</strong>. If the primary writer instance fails, Aurora automatically promotes a read replica to the primary in <strong>under 30 seconds, usually with zero data loss</strong>.
+                            </p>
+                            <p>
+                                <span class="service-pill pill-purple">Amazon DynamoDB</span> — For non-relational data, DynamoDB provides <strong>single-digit millisecond performance and built-in Multi-AZ replication</strong> with no configuration required.
+                            </p>
+                            <p>
+                                <span class="service-pill pill-purple">Amazon ElastiCache (Redis)</span> — Store user session data and frequent database query results here. If an application container crashes, the <strong>new container simply reads the session state from Redis, making the crash invisible to the user</strong>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Data Layer comparison table -->
+                    <table class="article-table">
+                        <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Use Case</th>
+                                <th>Replication</th>
+                                <th>Failover Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Aurora Multi-AZ</strong></td>
+                                <td>Relational (OLTP, SQL)</td>
+                                <td>Synchronous — 3 AZs</td>
+                                <td>&lt; 30 seconds, zero data loss</td>
+                            </tr>
+                            <tr>
+                                <td><strong>DynamoDB</strong></td>
+                                <td>Non-relational, key-value/document</td>
+                                <td>Built-in Multi-AZ</td>
+                                <td>Instant — always available</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ElastiCache Redis</strong></td>
+                                <td>Session cache, query cache</td>
+                                <td>Multi-AZ with replica</td>
+                                <td>~1 minute (auto-failover)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <hr class="article-divider">
+
+                    <!-- ─────────────────────────────────────────────── -->
+                    <h2 id="layer-5">5. Multi-Region Expansion (The Ultimate Edge Case)</h2>
+
+                    <p>
+                        For a system that cannot tolerate a full regional AWS outage (e.g., <code>us-east-1</code> going completely dark), the architecture must evolve to Multi-Region. This is the ultimate resilience tier.
+                    </p>
+
+                    <div class="layer-card multi">
+                        <div class="layer-card-header">
+                            <div class="layer-num">5</div>
+                            <div class="layer-card-header-text">
+                                <strong>Multi-Region Expansion</strong>
+                                <span>Aurora Global DB · DynamoDB Global Tables · Route 53 Failover</span>
+                            </div>
+                        </div>
+                        <div class="layer-card-body">
+                            <p>
+                                <span class="service-pill pill-red">Aurora Global Database</span> <span class="service-pill pill-red">DynamoDB Global Tables</span> — Asynchronously replicate your primary database to a secondary region (e.g., <code>us-west-2</code>) with <strong>sub-second latency</strong>.
+                            </p>
+                            <p>
+                                <span class="service-pill pill-red">Route 53 Failover</span> — In a true regional disaster, Route 53 detects the outage and updates DNS to point to the secondary region's infrastructure, turning a <strong>catastrophic failure into a minor latency bump</strong>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Multi-Region comparison -->
+                    <table class="article-table">
+                        <thead>
+                            <tr>
+                                <th>Strategy</th>
+                                <th>RTO</th>
+                                <th>RPO</th>
+                                <th>Cost</th>
+                                <th>Best For</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Active-Active</strong></td>
+                                <td>Near-zero</td>
+                                <td>Near-zero</td>
+                                <td>2× infrastructure</td>
+                                <td>Mission-critical (finance, healthcare)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Active-Passive (Warm Standby)</strong></td>
+                                <td>Minutes</td>
+                                <td>Seconds</td>
+                                <td>~1.5× infrastructure</td>
+                                <td>Tier-1 applications with budget constraints</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pilot Light</strong></td>
+                                <td>10–30 minutes</td>
+                                <td>Minutes</td>
+                                <td>~1.1× infrastructure</td>
+                                <td>Cost-sensitive DR with relaxed RTO</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="article-callout info">
+                        <h4>Active-Active vs Active-Passive — The Interview Differentiator</h4>
+                        <p><strong>Active-Active:</strong> Both regions serve live traffic simultaneously. Route 53 latency routing splits traffic. Requires conflict-resolution in DynamoDB Global Tables (last-writer-wins). Maximum resilience, maximum cost.</p>
+                        <p><strong>Pilot Light:</strong> Only the database is running in the DR region. Everything else is off. On failover, you spin up the compute layer. Lowest cost, highest RTO. Ideal for non-critical apps that need DR for compliance.</p>
+                    </div>
+
+                    <hr class="article-divider">
+
+                    <!-- ── Closing Principle ── -->
+                    <h2 id="closing">Putting It All Together</h2>
+
+                    <p>
+                        This architecture simplifies operations by relying on managed AWS services to handle the heavy lifting of redundancy, while adhering to the <strong>first principle of distributed systems: components will fail, but the system must survive.</strong>
+                    </p>
+
+                    <p>
+                        The key design decisions that make this architecture self-healing:
+                    </p>
+
+                    <ul>
+                        <li><strong>State is pushed out of compute</strong> — containers can die without data loss because sessions live in Redis and data lives in Aurora.</li>
+                        <li><strong>Synchronous coupling is eliminated</strong> — SQS queues absorb failures between services, preventing cascade failures.</li>
+                        <li><strong>Traffic decisions are made at the global edge</strong> — Route 53 and CloudFront route around failures before requests even hit your VPC.</li>
+                        <li><strong>Managed services handle redundancy</strong> — Aurora Multi-AZ, DynamoDB, and ElastiCache self-heal without operator intervention.</li>
+                        <li><strong>An escape hatch exists for regional disasters</strong> — Global Database and Route 53 failover means even a full AZ or region loss is survivable.</li>
+                    </ul>
+
+                    <div class="article-callout tip">
+                        <h4>🎯 The Craftsman's Answer in an Interview</h4>
+                        <p>When asked to design a highly-available system, most candidates draw an ALB + EC2 + RDS. The craftsman-level answer removes state from compute, introduces an SQS queue between the web and worker tiers, uses Aurora Multi-AZ, caches sessions in ElastiCache, and routes globally through Route 53. That single answer demonstrates awareness across six AWS service domains at once.</p>
+                    </div>
+
+                    <!-- ── Follow-up Question ── -->
+                    <div class="question-callout">
+                        <h4>💬 Natural Follow-up Discussion</h4>
+                        <p>Would you like to drill down into the cost-efficiency trade-offs of running this as an <strong>Active-Active Multi-Region</strong> setup versus an <strong>Active-Passive Pilot Light</strong> approach?</p>
+                    </div>
+
+                    <!-- ── Navigation ── -->
+                    <nav class="article-nav">
+                        <a href="architecture.html" class="article-nav-link">⟵ Architecture Topics</a>
+                        <a href="compute-article.html" class="article-nav-link">Compute Deep-Dive ⟶</a>
+                    </nav>
+
+                    <footer class="article-footer">
+                        <p>Cloud Interview Guide · Built by SKCloudOps · Open Source</p>
+                    </footer>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg>
+    </button>
+    <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6" />
+        </svg>
+    </button>
+    <script src="js/page.js"></script>
+</body>
+
+</html>

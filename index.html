@@ -5,11 +5,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cloud Interview Guide | Solutions Architect Preparation for AWS, Azure & GCP</title>
-  <meta name="description" content="Comprehensive cloud architect interview preparation covering 16 domains: AWS services, architecture patterns, Kubernetes, DevOps, security, networking, databases, serverless, and more. 100+ curated topics for Solutions Architect roles." />
+  <meta name="description"
+    content="Comprehensive cloud architect interview preparation covering 16 domains: AWS services, architecture patterns, Kubernetes, DevOps, security, networking, databases, serverless, and more. 100+ curated topics for Solutions Architect roles." />
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/devops.css" />
 
-  <meta name="keywords" content="cloud interview guide, AWS solutions architect, cloud architect interview preparation, AWS interview questions, cloud computing study guide, solutions architect preparation, AWS certification, cloud engineering interview" />
+  <meta name="keywords"
+    content="cloud interview guide, AWS solutions architect, cloud architect interview preparation, AWS interview questions, cloud computing study guide, solutions architect preparation, AWS certification, cloud engineering interview" />
   <meta name="author" content="SKCloudOps" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://skcloudops.github.io/cloud-guide" />
@@ -17,7 +19,8 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Cloud Interview Guide | Solutions Architect Preparation for AWS, Azure & GCP" />
-  <meta property="og:description" content="Comprehensive cloud architect interview preparation covering 16 domains: AWS services, architecture patterns, Kubernetes, DevOps, security, networking, databases, serverless, and more. 100+ curated topics for Solutions Architect roles." />
+  <meta property="og:description"
+    content="Comprehensive cloud architect interview preparation covering 16 domains: AWS services, architecture patterns, Kubernetes, DevOps, security, networking, databases, serverless, and more. 100+ curated topics for Solutions Architect roles." />
   <meta property="og:url" content="https://skcloudops.github.io/cloud-guide" />
   <meta property="og:site_name" content="Cloud Interview Guide" />
   <meta property="og:image" content="https://skcloudops.github.io/cloud-guide/assets/architecture-top-3-designs.png" />
@@ -26,7 +29,8 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Cloud Interview Guide | Solutions Architect Preparation for AWS, Azure & GCP" />
-  <meta name="twitter:description" content="Comprehensive cloud architect interview preparation covering 16 domains: AWS services, architecture patterns, Kubernetes, DevOps, security, networking, databases, serverless, and more. 100+ curated topics for Solutions Architect roles." />
+  <meta name="twitter:description"
+    content="Comprehensive cloud architect interview preparation covering 16 domains: AWS services, architecture patterns, Kubernetes, DevOps, security, networking, databases, serverless, and more. 100+ curated topics for Solutions Architect roles." />
   <meta name="twitter:image" content="https://skcloudops.github.io/cloud-guide/assets/architecture-top-3-designs.png" />
   <meta name="twitter:image:alt" content="Cloud Interview Guide - 16 Domains for AWS Solutions Architect Preparation" />
 
@@ -147,7 +151,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       overflow: hidden;
-      box-shadow: var(--shadow-xs, 0 1px 2px rgba(0,0,0,0.04));
+      box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.04));
     }
 
     .home-stat {
@@ -157,7 +161,10 @@
       padding: 1.5rem 1rem;
       border-right: 1px solid var(--border);
     }
-    .home-stat:last-child { border-right: none; }
+
+    .home-stat:last-child {
+      border-right: none;
+    }
 
     .home-stat-number {
       font-size: 2rem;
@@ -178,7 +185,9 @@
     }
 
     /* ── Category section ── */
-    .home-category { margin-bottom: 2.75rem; }
+    .home-category {
+      margin-bottom: 2.75rem;
+    }
 
     .home-category-header {
       display: flex;
@@ -200,7 +209,7 @@
       font-size: 0.9375rem;
       font-weight: 700;
       flex-shrink: 0;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
 
     .home-category-header h2 {
@@ -234,7 +243,9 @@
     .home-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 3px;
       background: linear-gradient(90deg, var(--accent), #7c3aed);
       opacity: 0;
@@ -243,12 +254,14 @@
 
     .home-card:hover {
       border-color: #c7d2fe;
-      box-shadow: 0 6px 24px rgba(37,99,235,0.1), 0 1px 4px rgba(0,0,0,0.05);
+      box-shadow: 0 6px 24px rgba(37, 99, 235, 0.1), 0 1px 4px rgba(0, 0, 0, 0.05);
       transform: translateY(-2px);
       color: var(--text);
     }
 
-    .home-card:hover::before { opacity: 1; }
+    .home-card:hover::before {
+      opacity: 1;
+    }
 
     .home-card-title {
       font-size: 0.9375rem;
@@ -293,7 +306,10 @@
       transition: opacity 0.18s ease, gap 0.18s ease;
     }
 
-    .home-card:hover .home-card-arrow { opacity: 1; gap: 0.5rem; }
+    .home-card:hover .home-card-arrow {
+      opacity: 1;
+      gap: 0.5rem;
+    }
 
     /* ── CTA section ── */
     .home-cta {
@@ -332,14 +348,14 @@
       font-weight: 600;
       text-decoration: none;
       transition: background 0.15s ease, box-shadow 0.15s ease;
-      box-shadow: 0 2px 8px rgba(37,99,235,0.35);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
       letter-spacing: -0.01em;
     }
 
     .home-cta-btn:hover {
       background: var(--accent-hover);
       color: #fff;
-      box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
     }
 
     /* ── Footer ── */
@@ -377,12 +393,12 @@
 
     .home-qa-item:hover {
       border-color: #c7d2fe;
-      box-shadow: 0 4px 16px rgba(37,99,235,0.08);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
     }
 
     .home-qa-item.open {
       border-color: #a5b4fc;
-      box-shadow: 0 4px 20px rgba(37,99,235,0.1);
+      box-shadow: 0 4px 20px rgba(37, 99, 235, 0.1);
     }
 
     .home-qa-toggle {
@@ -401,7 +417,7 @@
     }
 
     .home-qa-toggle:hover {
-      background: rgba(37,99,235,0.03);
+      background: rgba(37, 99, 235, 0.03);
     }
 
     .home-qa-num {
@@ -599,7 +615,7 @@
       color: var(--text);
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      background: rgba(37,99,235,0.04);
+      background: rgba(37, 99, 235, 0.04);
     }
 
     .home-qa-compare tr:last-child td {
@@ -612,7 +628,7 @@
       flex-wrap: wrap;
       gap: 0;
       margin-top: 1.25rem;
-      background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(124,58,237,0.05));
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(124, 58, 237, 0.05));
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       overflow: hidden;
@@ -625,7 +641,10 @@
       padding: 1rem 0.75rem;
       border-right: 1px solid var(--border);
     }
-    .home-qa-metric:last-child { border-right: none; }
+
+    .home-qa-metric:last-child {
+      border-right: none;
+    }
 
     .home-qa-metric-val {
       font-size: 1.25rem;
@@ -645,28 +664,89 @@
     }
 
     @media (max-width: 900px) {
-      .home-hero h1 { font-size: 2rem; }
-      .home-main { padding: 2rem 1.25rem 3rem; }
-      .home-stat { min-width: 100px; padding: 1.25rem 0.75rem; }
-      .home-stat-number { font-size: 1.625rem; }
-      .home-card-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-      .home-qa-content { padding-left: 1.25rem; }
-      .home-qa-star-table td:first-child { width: 70px; }
-      .home-qa-metric { min-width: 100px; }
+      .home-hero h1 {
+        font-size: 2rem;
+      }
+
+      .home-main {
+        padding: 2rem 1.25rem 3rem;
+      }
+
+      .home-stat {
+        min-width: 100px;
+        padding: 1.25rem 0.75rem;
+      }
+
+      .home-stat-number {
+        font-size: 1.625rem;
+      }
+
+      .home-card-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+      }
+
+      .home-qa-content {
+        padding-left: 1.25rem;
+      }
+
+      .home-qa-star-table td:first-child {
+        width: 70px;
+      }
+
+      .home-qa-metric {
+        min-width: 100px;
+      }
     }
 
     @media (max-width: 480px) {
-      .home-hero h1 { font-size: 1.625rem; }
-      .home-card-grid { grid-template-columns: 1fr; }
-      .home-stats { flex-wrap: wrap; }
-      .home-stat { min-width: 50%; border-right: none; border-bottom: 1px solid var(--border); }
-      .home-stat:last-child { border-bottom: none; }
-      .home-qa-toggle { padding: 0.875rem 1rem; gap: 0.625rem; }
-      .home-qa-question { font-size: 0.875rem; }
-      .home-qa-time { display: none; }
-      .home-qa-metric { min-width: 50%; border-bottom: 1px solid var(--border); }
-      .home-qa-metric:nth-child(2n) { border-right: none; }
-      .home-qa-metric:nth-last-child(-n+2) { border-bottom: none; }
+      .home-hero h1 {
+        font-size: 1.625rem;
+      }
+
+      .home-card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .home-stats {
+        flex-wrap: wrap;
+      }
+
+      .home-stat {
+        min-width: 50%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .home-stat:last-child {
+        border-bottom: none;
+      }
+
+      .home-qa-toggle {
+        padding: 0.875rem 1rem;
+        gap: 0.625rem;
+      }
+
+      .home-qa-question {
+        font-size: 0.875rem;
+      }
+
+      .home-qa-time {
+        display: none;
+      }
+
+      .home-qa-metric {
+        min-width: 50%;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .home-qa-metric:nth-child(2n) {
+        border-right: none;
+      }
+
+      .home-qa-metric:nth-last-child(-n+2) {
+        border-bottom: none;
+      }
     }
   </style>
 </head>
@@ -700,8 +780,11 @@
           <div class="nav-menu-label">Architecture &amp; Ops</div>
           <div class="nav-menu-dropdown">
             <a href="architecture.html" class="sidebar-link">Architecture</a>
+            <a href="fault-tolerant-architecture.html" class="sidebar-link">Fault-Tolerant Blueprint</a>
+            a href="compute-article.html" class="sidebar-link">EC2 vs ECS vs EKS vs Lambda</a>
             <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD</a>
-            <a href="https://claude.ai/public/artifacts/6f7e142d-be28-4e0c-8673-ba2567597640" target="_blank" class="sidebar-link">DevOps Interview ↗</a>
+            <a href="https://claude.ai/public/artifacts/6f7e142d-be28-4e0c-8673-ba2567597640" target="_blank"
+              class="sidebar-link">DevOps Interview ↗</a>
             <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS</a>
             <a href="cost.html" class="sidebar-link">Cost Optimization</a>
           </div>
@@ -727,7 +810,8 @@
         <section class="home-hero">
           <div class="home-hero-badge">Open-Source Study Guide</div>
           <h1>Cloud Architect Interview Guide</h1>
-          <p>Everything you need to prepare for Solutions Architect interviews — from networking fundamentals to system design walkthroughs, with 148 interview questions and scripted answer frameworks.</p>
+          <p>Everything you need to prepare for Solutions Architect interviews — from networking fundamentals to system
+            design walkthroughs, with 148 interview questions and scripted answer frameworks.</p>
         </section>
 
         <!-- Stats -->
@@ -759,22 +843,26 @@
           <div class="home-card-grid">
             <a href="networking.html" class="home-card">
               <div class="home-card-title">Networking & VPC <span class="home-card-count">7 topics</span></div>
-              <div class="home-card-desc">VPC design, subnets, Security Groups vs NACLs, Direct Connect, Route 53, VPC Endpoints.</div>
+              <div class="home-card-desc">VPC design, subnets, Security Groups vs NACLs, Direct Connect, Route 53, VPC
+                Endpoints.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
             <a href="security.html" class="home-card">
               <div class="home-card-title">Security & IAM <span class="home-card-count">7 topics</span></div>
-              <div class="home-card-desc">IAM policies, cross-account access, KMS encryption, WAF/Shield, GuardDuty, Zero Trust.</div>
+              <div class="home-card-desc">IAM policies, cross-account access, KMS encryption, WAF/Shield, GuardDuty,
+                Zero Trust.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
             <a href="compute.html" class="home-card">
               <div class="home-card-title">Compute <span class="home-card-count">4 topics</span></div>
-              <div class="home-card-desc">Trade-off matrix, EC2 vs ECS vs EKS vs Lambda, Real-World Scenarios, and Interview Cheat Sheet.</div>
+              <div class="home-card-desc">Trade-off matrix, EC2 vs ECS vs EKS vs Lambda, Real-World Scenarios, and
+                Interview Cheat Sheet.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
             <a href="storage.html" class="home-card">
               <div class="home-card-title">Storage <span class="home-card-count">6 topics</span></div>
-              <div class="home-card-desc">S3 storage classes, EBS vs EFS vs FSx, data transfer strategies, backup & recovery.</div>
+              <div class="home-card-desc">S3 storage classes, EBS vs EFS vs FSx, data transfer strategies, backup &
+                recovery.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
           </div>
@@ -789,22 +877,26 @@
           <div class="home-card-grid">
             <a href="databases.html" class="home-card">
               <div class="home-card-title">Databases <span class="home-card-count">6 topics</span></div>
-              <div class="home-card-desc">RDS vs Aurora, DynamoDB patterns, ElastiCache, database migration with DMS/SCT.</div>
+              <div class="home-card-desc">RDS vs Aurora, DynamoDB patterns, ElastiCache, database migration with
+                DMS/SCT.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
             <a href="serverless.html" class="home-card">
               <div class="home-card-title">Serverless <span class="home-card-count">9 topics</span></div>
-              <div class="home-card-desc">Lambda internals, Step Functions, EventBridge, cold starts, concurrency, VPC integration.</div>
+              <div class="home-card-desc">Lambda internals, Step Functions, EventBridge, cold starts, concurrency, VPC
+                integration.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
             <a href="streaming.html" class="home-card">
               <div class="home-card-title">Streaming <span class="home-card-count">7 topics</span></div>
-              <div class="home-card-desc">SQS vs SNS vs Kinesis, MSK (Kafka), stream processing patterns, video streaming.</div>
+              <div class="home-card-desc">SQS vs SNS vs Kinesis, MSK (Kafka), stream processing patterns, video
+                streaming.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
             <a href="genai.html" class="home-card">
               <div class="home-card-title">Gen AI <span class="home-card-count">5 topics</span></div>
-              <div class="home-card-desc">Bedrock vs SageMaker, RAG architecture, prompt engineering, multi-model strategies.</div>
+              <div class="home-card-desc">Bedrock vs SageMaker, RAG architecture, prompt engineering, multi-model
+                strategies.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
           </div>
@@ -819,27 +911,40 @@
           <div class="home-card-grid">
             <a href="architecture.html" class="home-card">
               <div class="home-card-title">Architecture <span class="home-card-count">16 topics</span></div>
-              <div class="home-card-desc">Microservices, event-driven, three-tier, hybrid cloud, system design walkthroughs, trade-offs.</div>
+              <div class="home-card-desc">Microservices, event-driven, three-tier, hybrid cloud, system design
+                walkthroughs, trade-offs.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
+            </a>
+            <a href="fault-tolerant-architecture.html" class="home-card">
+              <div class="home-card-title">Fault-Tolerant Blueprint <span class="home-card-count">5 layers</span></div>
+              <div class="home-card-desc">First-principles HA design: global edge, stateless compute, async decoupling,
+                multi-AZ data, multi-region.</div>
+              <span class="home-card-arrow">Read Article &rarr;</span>
             </a>
             <a href="devops.html" class="home-card">
               <div class="home-card-title">DevOps & CI/CD <span class="home-card-count">6 topics</span></div>
-              <div class="home-card-desc">CI/CD pipelines, GitOps, Git branching, DevSecOps, deployment strategies.</div>
+              <div class="home-card-desc">CI/CD pipelines, GitOps, Git branching, DevSecOps, deployment strategies.
+              </div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
-            <a href="https://claude.ai/public/artifacts/6f7e142d-be28-4e0c-8673-ba2567597640" target="_blank" class="home-card">
-              <div class="home-card-title" style="color:#3b82f6;">DevOps Interview ↗ <span class="home-card-count">External Q&A</span></div>
-              <div class="home-card-desc">Real-world 45-minute DevOps interview questions covering ECS, EKS, RDS, CI/CD, and Linux.</div>
+            <a href="https://claude.ai/public/artifacts/6f7e142d-be28-4e0c-8673-ba2567597640" target="_blank"
+              class="home-card">
+              <div class="home-card-title" style="color:#3b82f6;">DevOps Interview ↗ <span
+                  class="home-card-count">External Q&A</span></div>
+              <div class="home-card-desc">Real-world 45-minute DevOps interview questions covering ECS, EKS, RDS, CI/CD,
+                and Linux.</div>
               <span class="home-card-arrow">View Artifact &rarr;</span>
             </a>
             <a href="kubernetes.html" class="home-card">
               <div class="home-card-title">Kubernetes & EKS <span class="home-card-count">16 topics</span></div>
-              <div class="home-card-desc">Karpenter, scaling strategies, KEDA, container lifecycle, sidecars, EKS Auto Mode.</div>
+              <div class="home-card-desc">Karpenter, scaling strategies, KEDA, container lifecycle, sidecars, EKS Auto
+                Mode.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
             <a href="cost.html" class="home-card">
               <div class="home-card-title">Cost Optimization <span class="home-card-count">5 topics</span></div>
-              <div class="home-card-desc">Pricing models, right-sizing, FinOps governance, hidden costs, cost-efficient patterns.</div>
+              <div class="home-card-desc">Pricing models, right-sizing, FinOps governance, hidden costs, cost-efficient
+                patterns.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
           </div>
@@ -854,22 +959,26 @@
           <div class="home-card-grid">
             <a href="aws.html" class="home-card">
               <div class="home-card-title">AWS Core <span class="home-card-count">8 topics</span></div>
-              <div class="home-card-desc">Well-Architected Framework, migration 7Rs, API Gateway auth, DR strategies, global infra.</div>
+              <div class="home-card-desc">Well-Architected Framework, migration 7Rs, API Gateway auth, DR strategies,
+                global infra.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
             <a href="fundamentals.html" class="home-card">
               <div class="home-card-title">Fundamentals <span class="home-card-count">3 topics</span></div>
-              <div class="home-card-desc">IP vs URL, DNS resolution flow, OSI model, CIDR notation, HTTP codes, cloud basics.</div>
+              <div class="home-card-desc">IP vs URL, DNS resolution flow, OSI model, CIDR notation, HTTP codes, cloud
+                basics.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
             <a href="reinvent.html" class="home-card">
               <div class="home-card-title">Re:Invent 2024 <span class="home-card-count">4 topics</span></div>
-              <div class="home-card-desc">EKS Auto Mode, Aurora DSQL, S3 Tables — the most architecturally significant launches.</div>
+              <div class="home-card-desc">EKS Auto Mode, Aurora DSQL, S3 Tables — the most architecturally significant
+                launches.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
             <a href="platform-interview.html" class="home-card">
               <div class="home-card-title">Interview Prep <span class="home-card-count">188 questions</span></div>
-              <div class="home-card-desc">Platform Engineering, Mobile CI/CD, Kubernetes, Terraform, AWS, System Design, Behavioral, DevSecOps & Career Guide.</div>
+              <div class="home-card-desc">Platform Engineering, Mobile CI/CD, Kubernetes, Terraform, AWS, System Design,
+                Behavioral, DevSecOps & Career Guide.</div>
               <span class="home-card-arrow">Explore &rarr;</span>
             </a>
           </div>
@@ -884,12 +993,15 @@
           <div class="home-card-grid">
             <a href="Plarform_Prep_Guide.pdf" target="_blank" class="home-card" style="border-left:3px solid #ef4444">
               <div class="home-card-title">Platform Prep Guide <span class="home-card-count">PDF</span></div>
-              <div class="home-card-desc">Complete Platform Engineering preparation guide — printable format for offline study and quick reference.</div>
+              <div class="home-card-desc">Complete Platform Engineering preparation guide — printable format for offline
+                study and quick reference.</div>
               <span class="home-card-arrow">Open PDF &rarr;</span>
             </a>
-            <a href="cloud-interview-questions.pdf" target="_blank" class="home-card" style="border-left:3px solid #ef4444">
+            <a href="cloud-interview-questions.pdf" target="_blank" class="home-card"
+              style="border-left:3px solid #ef4444">
               <div class="home-card-title">Interview Questions <span class="home-card-count">336 Q&amp;A</span></div>
-              <div class="home-card-desc">All 336 interview questions across 27 categories with answers — optimized for print and quick review.</div>
+              <div class="home-card-desc">All 336 interview questions across 27 categories with answers — optimized for
+                print and quick review.</div>
               <span class="home-card-arrow">Open PDF &rarr;</span>
             </a>
           </div>
@@ -901,7 +1013,8 @@
             <div class="home-category-icon" style="background:linear-gradient(135deg,#2563eb,#7c3aed)">Q</div>
             <h2>Top 10 Cloud Architect Interview Questions</h2>
           </div>
-          <p class="home-qa-intro">10 high-frequency Solutions Architect interview questions with STAR-format answers grounded in real experience at Enterprise Pharma, enhanced with key AWS architectural patterns.</p>
+          <p class="home-qa-intro">10 high-frequency Solutions Architect interview questions with STAR-format answers
+            grounded in real experience at Enterprise Pharma, enhanced with key AWS architectural patterns.</p>
           <div class="home-qa-list" id="qaAccordion">
 
             <!-- Q1 -->
@@ -910,27 +1023,53 @@
                 <span class="home-qa-num">1</span>
                 <span class="home-qa-question">How can you make your application scalable for a big traffic day?</span>
                 <span class="home-qa-time">0:00 – 5:27</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <div class="home-qa-framework">&#9670; Framework: Plan ahead, scale at every layer</div>
                   <ul>
                     <li><strong>Pre-warm ALBs</strong> via AWS Support request for known traffic spikes</li>
-                    <li><strong>Auto Scaling Groups:</strong> set min/desired &gt; 1; use Warm Pools for pre-initialized EC2 instances</li>
-                    <li><strong>Scheduled Scaling</strong> when traffic time is predictable (e.g., a product launch window)</li>
+                    <li><strong>Auto Scaling Groups:</strong> set min/desired &gt; 1; use Warm Pools for pre-initialized
+                      EC2 instances</li>
+                    <li><strong>Scheduled Scaling</strong> when traffic time is predictable (e.g., a product launch
+                      window)</li>
                     <li><strong>Lightweight AMIs</strong> reduce provisioning time during burst scale-out</li>
-                    <li><strong>RDS Proxy</strong> for connection pooling — prevents DB overload during traffic surges</li>
+                    <li><strong>RDS Proxy</strong> for connection pooling — prevents DB overload during traffic surges
+                    </li>
                     <li><strong>AWS Countdown:</strong> Simulate and validate parameters with your account team</li>
-                    <li><strong>Limits:</strong> Check and raise soft account limits; consider multi-region/multi-account for extreme scale</li>
+                    <li><strong>Limits:</strong> Check and raise soft account limits; consider
+                      multi-region/multi-account for extreme scale</li>
                   </ul>
                   <div class="home-qa-star">
                     <div class="home-qa-star-label">&#9733; STAR Answer — Enterprise Pharma Mobile CI/CD</div>
                     <table class="home-qa-star-table">
-                      <tr><td>Situation</td><td>Mobile CI/CD pipeline faced burst load during global release windows — multiple teams triggering iOS and Android builds simultaneously, coinciding with quarterly pharma compliance deadlines.</td></tr>
-                      <tr><td>Task</td><td>Ensure the self-hosted macOS runner fleet and supporting AWS infrastructure didn't become bottlenecks on high-traffic release days, while meeting GxP audit requirements.</td></tr>
-                      <tr><td>Action</td><td>Designed a dynamic runner scaling strategy using GitHub Actions runner groups with concurrency limits and queue-aware autoscaling. Fastlane's parallel lane execution combined with dependency caching on S3 flattened burst demand. Deployed Kubernetes HPA tied to custom metrics (queue depth). Implemented scheduled scaling policies so infrastructure was pre-warmed before traffic arrived.</td></tr>
-                      <tr><td>Result</td><td>iOS build time dropped from 45→15 min. Release cycles compressed from 2 days→15 min. Developer NPS reached +45. Zero degradation on peak release days.</td></tr>
+                      <tr>
+                        <td>Situation</td>
+                        <td>Mobile CI/CD pipeline faced burst load during global release windows — multiple teams
+                          triggering iOS and Android builds simultaneously, coinciding with quarterly pharma compliance
+                          deadlines.</td>
+                      </tr>
+                      <tr>
+                        <td>Task</td>
+                        <td>Ensure the self-hosted macOS runner fleet and supporting AWS infrastructure didn't become
+                          bottlenecks on high-traffic release days, while meeting GxP audit requirements.</td>
+                      </tr>
+                      <tr>
+                        <td>Action</td>
+                        <td>Designed a dynamic runner scaling strategy using GitHub Actions runner groups with
+                          concurrency limits and queue-aware autoscaling. Fastlane's parallel lane execution combined
+                          with dependency caching on S3 flattened burst demand. Deployed Kubernetes HPA tied to custom
+                          metrics (queue depth). Implemented scheduled scaling policies so infrastructure was pre-warmed
+                          before traffic arrived.</td>
+                      </tr>
+                      <tr>
+                        <td>Result</td>
+                        <td>iOS build time dropped from 45→15 min. Release cycles compressed from 2 days→15 min.
+                          Developer NPS reached +45. Zero degradation on peak release days.</td>
+                      </tr>
                     </table>
                   </div>
                 </div>
@@ -943,24 +1082,50 @@
                 <span class="home-qa-num">2</span>
                 <span class="home-qa-question">What is an AI agent?</span>
                 <span class="home-qa-time">5:27 – 8:25</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <div class="home-qa-framework">&#9670; Definition &amp; Key Properties</div>
                   <ul>
-                    <li><strong>Definition:</strong> A software program that autonomously chooses the best sequence of actions to complete a goal — distinguishing it from simple conditional workflows or standalone LLMs.</li>
-                    <li><strong>Reasoning Engine:</strong> Uses an LLM to decide which tools to invoke and in what order</li>
-                    <li><strong>Feedback Loop:</strong> Perceives context, acts, observes results, and iterates continuously</li>
-                    <li><strong>AWS Implementation:</strong> Lambda or EC2 for execution, Amazon Bedrock for the LLM, MCP for tool integration</li>
+                    <li><strong>Definition:</strong> A software program that autonomously chooses the best sequence of
+                      actions to complete a goal — distinguishing it from simple conditional workflows or standalone
+                      LLMs.</li>
+                    <li><strong>Reasoning Engine:</strong> Uses an LLM to decide which tools to invoke and in what order
+                    </li>
+                    <li><strong>Feedback Loop:</strong> Perceives context, acts, observes results, and iterates
+                      continuously</li>
+                    <li><strong>AWS Implementation:</strong> Lambda or EC2 for execution, Amazon Bedrock for the LLM,
+                      MCP for tool integration</li>
                   </ul>
                   <div class="home-qa-star">
                     <div class="home-qa-star-label">&#9733; STAR Answer — AutoDocs (SKCloudOps)</div>
                     <table class="home-qa-star-table">
-                      <tr><td>Situation</td><td>While building AutoDocs under SKCloudOps, contributors kept confusing it with a simple API wrapper. Needed a concrete architectural distinction.</td></tr>
-                      <tr><td>Task</td><td>Define what made AutoDocs an agent — and design it so the agentic behavior was opt-in, not mandatory.</td></tr>
-                      <tr><td>Action</td><td>Built a dual-engine architecture: heuristic default requiring no API key, and an AI opt-in mode activating the full agent loop (perception → reasoning → action → feedback). The agent reads a git diff, the LLM decides which files need documentation, generates and writes it back, then evaluates quality and iterates.</td></tr>
-                      <tr><td>Result</td><td>Shipped with 91% statement coverage across 86 tests. The dual-engine pattern became a design reference for the AI CI/CD Guardian action. Cited as a key differentiator in the GitHub Marketplace listing.</td></tr>
+                      <tr>
+                        <td>Situation</td>
+                        <td>While building AutoDocs under SKCloudOps, contributors kept confusing it with a simple API
+                          wrapper. Needed a concrete architectural distinction.</td>
+                      </tr>
+                      <tr>
+                        <td>Task</td>
+                        <td>Define what made AutoDocs an agent — and design it so the agentic behavior was opt-in, not
+                          mandatory.</td>
+                      </tr>
+                      <tr>
+                        <td>Action</td>
+                        <td>Built a dual-engine architecture: heuristic default requiring no API key, and an AI opt-in
+                          mode activating the full agent loop (perception → reasoning → action → feedback). The agent
+                          reads a git diff, the LLM decides which files need documentation, generates and writes it
+                          back, then evaluates quality and iterates.</td>
+                      </tr>
+                      <tr>
+                        <td>Result</td>
+                        <td>Shipped with 91% statement coverage across 86 tests. The dual-engine pattern became a design
+                          reference for the AI CI/CD Guardian action. Cited as a key differentiator in the GitHub
+                          Marketplace listing.</td>
+                      </tr>
                     </table>
                   </div>
                 </div>
@@ -973,27 +1138,76 @@
                 <span class="home-qa-num">3</span>
                 <span class="home-qa-question">How do you achieve disaster recovery for your cloud application?</span>
                 <span class="home-qa-time">8:25 – 10:26</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <div class="home-qa-framework">&#9670; Framework: RTO/RPO drives strategy selection</div>
                   <table class="home-qa-compare">
-                    <thead><tr><th>Strategy</th><th>RTO</th><th>RPO</th><th>Best For</th></tr></thead>
+                    <thead>
+                      <tr>
+                        <th>Strategy</th>
+                        <th>RTO</th>
+                        <th>RPO</th>
+                        <th>Best For</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      <tr><td>Backup &amp; Restore</td><td>Hours</td><td>Hours</td><td>Non-critical / cost-sensitive</td></tr>
-                      <tr><td>Pilot Light</td><td>Min–Hours</td><td>Minutes</td><td>Core services always on</td></tr>
-                      <tr><td>Warm Standby</td><td>Minutes</td><td>Seconds</td><td>Business-critical apps</td></tr>
-                      <tr><td>Multi-site Active-Active</td><td>Near zero</td><td>Near zero</td><td>Enterprise critical / pharma</td></tr>
+                      <tr>
+                        <td>Backup &amp; Restore</td>
+                        <td>Hours</td>
+                        <td>Hours</td>
+                        <td>Non-critical / cost-sensitive</td>
+                      </tr>
+                      <tr>
+                        <td>Pilot Light</td>
+                        <td>Min–Hours</td>
+                        <td>Minutes</td>
+                        <td>Core services always on</td>
+                      </tr>
+                      <tr>
+                        <td>Warm Standby</td>
+                        <td>Minutes</td>
+                        <td>Seconds</td>
+                        <td>Business-critical apps</td>
+                      </tr>
+                      <tr>
+                        <td>Multi-site Active-Active</td>
+                        <td>Near zero</td>
+                        <td>Near zero</td>
+                        <td>Enterprise critical / pharma</td>
+                      </tr>
                     </tbody>
                   </table>
                   <div class="home-qa-star">
                     <div class="home-qa-star-label">&#9733; STAR Answer — Enterprise Pharma DevSecOps Pipeline</div>
                     <table class="home-qa-star-table">
-                      <tr><td>Situation</td><td>Pharma GxP compliance required the DevSecOps pipeline — Vault clusters, GitHub OIDC federation, artifact storage — to meet strict RTO/RPO targets. A pipeline outage during a regulated release window would trigger audit findings.</td></tr>
-                      <tr><td>Task</td><td>Design DR for the CI/CD platform without static credentials or manual recovery runbooks.</td></tr>
-                      <tr><td>Action</td><td>Implemented Warm Standby: Vault clusters replicated across two AWS regions with automated unsealing via AWS KMS. GitHub OIDC federation meant no long-lived secrets. Terraform state in S3 with versioning and cross-region replication. Recovery was a <code>terraform apply</code>, not a runbook.</td></tr>
-                      <tr><td>Result</td><td>Recovery became automated and auditable. Zero static credentials meant no credential-leak exposure during failover. Architecture referenced in pharma compliance documentation as the DR standard.</td></tr>
+                      <tr>
+                        <td>Situation</td>
+                        <td>Pharma GxP compliance required the DevSecOps pipeline — Vault clusters, GitHub OIDC
+                          federation, artifact storage — to meet strict RTO/RPO targets. A pipeline outage during a
+                          regulated release window would trigger audit findings.</td>
+                      </tr>
+                      <tr>
+                        <td>Task</td>
+                        <td>Design DR for the CI/CD platform without static credentials or manual recovery runbooks.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Action</td>
+                        <td>Implemented Warm Standby: Vault clusters replicated across two AWS regions with automated
+                          unsealing via AWS KMS. GitHub OIDC federation meant no long-lived secrets. Terraform state in
+                          S3 with versioning and cross-region replication. Recovery was a <code>terraform apply</code>,
+                          not a runbook.</td>
+                      </tr>
+                      <tr>
+                        <td>Result</td>
+                        <td>Recovery became automated and auditable. Zero static credentials meant no credential-leak
+                          exposure during failover. Architecture referenced in pharma compliance documentation as the DR
+                          standard.</td>
+                      </tr>
                     </table>
                   </div>
                 </div>
@@ -1006,7 +1220,9 @@
                 <span class="home-qa-num">4</span>
                 <span class="home-qa-question">How do you secure your application on the cloud?</span>
                 <span class="home-qa-time">10:26 – 13:11</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
@@ -1014,19 +1230,44 @@
                   <ul>
                     <li><strong>Edge:</strong> AWS WAF — protect against SQL injection, XSS, DDoS</li>
                     <li><strong>Auth:</strong> Amazon Cognito for user auth; OIDC/JWT for machine identity</li>
-                    <li><strong>Transit:</strong> SSL/TLS everywhere; custom certificates via ACM; API Gateway enforces HTTPS</li>
-                    <li><strong>Compute:</strong> IAM roles with least privilege; Amazon Inspector for Lambda vulnerability scanning</li>
-                    <li><strong>Secrets:</strong> AWS Secrets Manager or HashiCorp Vault; never environment variables</li>
+                    <li><strong>Transit:</strong> SSL/TLS everywhere; custom certificates via ACM; API Gateway enforces
+                      HTTPS</li>
+                    <li><strong>Compute:</strong> IAM roles with least privilege; Amazon Inspector for Lambda
+                      vulnerability scanning</li>
+                    <li><strong>Secrets:</strong> AWS Secrets Manager or HashiCorp Vault; never environment variables
+                    </li>
                     <li><strong>Data at rest:</strong> KMS encryption for RDS, S3, EBS</li>
-                    <li><strong>Audit:</strong> CloudTrail, GuardDuty, Security Hub for continuous posture monitoring</li>
+                    <li><strong>Audit:</strong> CloudTrail, GuardDuty, Security Hub for continuous posture monitoring
+                    </li>
                   </ul>
                   <div class="home-qa-star">
-                    <div class="home-qa-star-label">&#9733; STAR Answer — Enterprise Pharma Zero-Static-Credentials Architecture</div>
+                    <div class="home-qa-star-label">&#9733; STAR Answer — Enterprise Pharma Zero-Static-Credentials
+                      Architecture</div>
                     <table class="home-qa-star-table">
-                      <tr><td>Situation</td><td>Both Enterprise Pharma (pharma, GxP) and Societe Generale (financial services) required zero-tolerance security postures. The legacy approach used static AWS access keys in CI/CD pipelines.</td></tr>
-                      <tr><td>Task</td><td>Eliminate all static credentials from the CI/CD pipeline while maintaining developer velocity and meeting compliance.</td></tr>
-                      <tr><td>Action</td><td>Designed Vault + GitHub OIDC zero-static-credentials architecture. Every pipeline authenticated via short-lived OIDC tokens. IAM roles followed least-privilege via Terraform policy-as-code. Built the AI CI/CD Guardian GitHub Action with 42 heuristic patterns across 16 build systems to detect credential leaks.</td></tr>
-                      <tr><td>Result</td><td>Passed pharma compliance audits with zero static-credential findings. Zero-static-credentials pattern became a reusable GitHub Actions template. New service onboarding dropped from 2 weeks→2 hours.</td></tr>
+                      <tr>
+                        <td>Situation</td>
+                        <td>Both Enterprise Pharma (pharma, GxP) and Societe Generale (financial services) required
+                          zero-tolerance security postures. The legacy approach used static AWS access keys in CI/CD
+                          pipelines.</td>
+                      </tr>
+                      <tr>
+                        <td>Task</td>
+                        <td>Eliminate all static credentials from the CI/CD pipeline while maintaining developer
+                          velocity and meeting compliance.</td>
+                      </tr>
+                      <tr>
+                        <td>Action</td>
+                        <td>Designed Vault + GitHub OIDC zero-static-credentials architecture. Every pipeline
+                          authenticated via short-lived OIDC tokens. IAM roles followed least-privilege via Terraform
+                          policy-as-code. Built the AI CI/CD Guardian GitHub Action with 42 heuristic patterns across 16
+                          build systems to detect credential leaks.</td>
+                      </tr>
+                      <tr>
+                        <td>Result</td>
+                        <td>Passed pharma compliance audits with zero static-credential findings.
+                          Zero-static-credentials pattern became a reusable GitHub Actions template. New service
+                          onboarding dropped from 2 weeks→2 hours.</td>
+                      </tr>
                     </table>
                   </div>
                 </div>
@@ -1039,22 +1280,45 @@
                 <span class="home-qa-num">5</span>
                 <span class="home-qa-question">Describe an architecture you designed.</span>
                 <span class="home-qa-time">13:11 – 15:08</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
-                  <div class="home-qa-framework">&#9670; Interviewer's goal: business problem understanding + deep-dive readiness</div>
+                  <div class="home-qa-framework">&#9670; Interviewer's goal: business problem understanding + deep-dive
+                    readiness</div>
                   <ul>
-                    <li>Pick a <strong>real system</strong> — be prepared to answer: How does it scale? How is it secured? What would you do differently?</li>
-                    <li>The interviewer will <strong>probe the edges</strong> of your design with follow-up questions</li>
+                    <li>Pick a <strong>real system</strong> — be prepared to answer: How does it scale? How is it
+                      secured? What would you do differently?</li>
+                    <li>The interviewer will <strong>probe the edges</strong> of your design with follow-up questions
+                    </li>
                   </ul>
                   <div class="home-qa-star">
                     <div class="home-qa-star-label">&#9733; STAR Answer — Enterprise Pharma Mobile CI/CD Platform</div>
                     <table class="home-qa-star-table">
-                      <tr><td>Situation</td><td>Mobile teams at Enterprise Pharma were releasing iOS apps manually — Xcode builds on developer laptops, two-day release cycles, no audit trail, no GxP compliance.</td></tr>
-                      <tr><td>Task</td><td>Design and deliver an end-to-end mobile CI/CD platform meeting pharma compliance, eliminating manual steps, scaling across global teams.</td></tr>
-                      <tr><td>Action</td><td>Architected a self-hosted macOS runner fleet on GitHub Actions with Fastlane orchestrating build/test/sign/deploy. Vault + GitHub OIDC for secrets — Apple certificates fetched at runtime. Build artifacts versioned in S3. Branch protection, multi-party approvals, structured logs to Splunk for GxP audit trail. RDS Proxy for the metadata service.</td></tr>
-                      <tr><td>Result</td><td>Release cycle: 2 days→15 min. Build time: 45→15 min. Onboarding: 2 weeks→2 hours. Developer NPS: +45. Became the standard mobile delivery platform at Enterprise Pharma.</td></tr>
+                      <tr>
+                        <td>Situation</td>
+                        <td>Mobile teams at Enterprise Pharma were releasing iOS apps manually — Xcode builds on
+                          developer laptops, two-day release cycles, no audit trail, no GxP compliance.</td>
+                      </tr>
+                      <tr>
+                        <td>Task</td>
+                        <td>Design and deliver an end-to-end mobile CI/CD platform meeting pharma compliance,
+                          eliminating manual steps, scaling across global teams.</td>
+                      </tr>
+                      <tr>
+                        <td>Action</td>
+                        <td>Architected a self-hosted macOS runner fleet on GitHub Actions with Fastlane orchestrating
+                          build/test/sign/deploy. Vault + GitHub OIDC for secrets — Apple certificates fetched at
+                          runtime. Build artifacts versioned in S3. Branch protection, multi-party approvals, structured
+                          logs to Splunk for GxP audit trail. RDS Proxy for the metadata service.</td>
+                      </tr>
+                      <tr>
+                        <td>Result</td>
+                        <td>Release cycle: 2 days→15 min. Build time: 45→15 min. Onboarding: 2 weeks→2 hours. Developer
+                          NPS: +45. Became the standard mobile delivery platform at Enterprise Pharma.</td>
+                      </tr>
                     </table>
                   </div>
                 </div>
@@ -1065,24 +1329,49 @@
             <div class="home-qa-item">
               <button class="home-qa-toggle" aria-expanded="false">
                 <span class="home-qa-num">6</span>
-                <span class="home-qa-question">Biggest challenge faced during designing your application on the cloud.</span>
+                <span class="home-qa-question">Biggest challenge faced during designing your application on the
+                  cloud.</span>
                 <span class="home-qa-time">15:08 – 16:52</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <div class="home-qa-framework">&#9670; Two strong angles: Scaling or Cost</div>
                   <ul>
-                    <li><strong>Scaling:</strong> When standard Auto Scaling can't react fast enough — Warm Pools and pre-warming solve this</li>
-                    <li><strong>Cost:</strong> Unexpected AWS bills — CloudWatch Insights, Compute Optimizer, Spot Instances, Cost Explorer</li>
+                    <li><strong>Scaling:</strong> When standard Auto Scaling can't react fast enough — Warm Pools and
+                      pre-warming solve this</li>
+                    <li><strong>Cost:</strong> Unexpected AWS bills — CloudWatch Insights, Compute Optimizer, Spot
+                      Instances, Cost Explorer</li>
                   </ul>
                   <div class="home-qa-star">
                     <div class="home-qa-star-label">&#9733; STAR Answer — Vault + OIDC Bootstrap Problem</div>
                     <table class="home-qa-star-table">
-                      <tr><td>Situation</td><td>Integrating Vault into GitHub Actions where runners were ephemeral presented a chicken-and-egg problem: how authenticate a runner to Vault without a pre-placed credential? Static credentials were off the table due to compliance.</td></tr>
-                      <tr><td>Task</td><td>Solve the runner authentication bootstrap without introducing any static secrets — auditable, least-privilege, and reusable across teams.</td></tr>
-                      <tr><td>Action</td><td>Designed a three-hop trust chain: GitHub Actions OIDC JWT → AWS STS AssumeRole (no static keys) → Vault AWS auth backend fetches short-lived Vault token. IAM trust policy scoped to specific repos, branches, and environments. Every hop logged — GitHub audit log, CloudTrail, Vault audit log.</td></tr>
-                      <tr><td>Result</td><td>Zero static credentials in the pipeline. Three-hop trust chain became a reusable composite action, adopted by 6 teams in 3 months. Cited as a resolved finding in GxP compliance audit.</td></tr>
+                      <tr>
+                        <td>Situation</td>
+                        <td>Integrating Vault into GitHub Actions where runners were ephemeral presented a
+                          chicken-and-egg problem: how authenticate a runner to Vault without a pre-placed credential?
+                          Static credentials were off the table due to compliance.</td>
+                      </tr>
+                      <tr>
+                        <td>Task</td>
+                        <td>Solve the runner authentication bootstrap without introducing any static secrets —
+                          auditable, least-privilege, and reusable across teams.</td>
+                      </tr>
+                      <tr>
+                        <td>Action</td>
+                        <td>Designed a three-hop trust chain: GitHub Actions OIDC JWT → AWS STS AssumeRole (no static
+                          keys) → Vault AWS auth backend fetches short-lived Vault token. IAM trust policy scoped to
+                          specific repos, branches, and environments. Every hop logged — GitHub audit log, CloudTrail,
+                          Vault audit log.</td>
+                      </tr>
+                      <tr>
+                        <td>Result</td>
+                        <td>Zero static credentials in the pipeline. Three-hop trust chain became a reusable composite
+                          action, adopted by 6 teams in 3 months. Cited as a resolved finding in GxP compliance audit.
+                        </td>
+                      </tr>
                     </table>
                   </div>
                 </div>
@@ -1095,30 +1384,73 @@
                 <span class="home-qa-num">7</span>
                 <span class="home-qa-question">How do you pick one service versus another?</span>
                 <span class="home-qa-time">16:52 – 17:55</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <div class="home-qa-framework">&#9670; Framework: Requirements-first, then trade-off analysis</div>
                   <ul>
-                    <li>Always <strong>ask for requirements</strong> before recommending: traffic volume, latency SLA, security needs, cost constraints, uptime</li>
+                    <li>Always <strong>ask for requirements</strong> before recommending: traffic volume, latency SLA,
+                      security needs, cost constraints, uptime</li>
                   </ul>
                   <table class="home-qa-compare">
-                    <thead><tr><th>Decision</th><th>Choose A when…</th><th>Choose B when…</th></tr></thead>
+                    <thead>
+                      <tr>
+                        <th>Decision</th>
+                        <th>Choose A when…</th>
+                        <th>Choose B when…</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      <tr><td><strong>API GW vs ALB</strong></td><td>External API, auth, rate limiting</td><td>Internal microservice traffic, WebSockets, gRPC</td></tr>
-                      <tr><td><strong>Serverless vs EC2</strong></td><td>Unpredictable burst, short-lived tasks</td><td>Long-running, stateful, GPU, dedicated compute</td></tr>
-                      <tr><td><strong>EventBridge vs SQS/SNS</strong></td><td>Event routing across services/accounts</td><td>Point-to-point queuing, fan-out pub/sub</td></tr>
-                      <tr><td><strong>EKS vs ECS vs Fargate</strong></td><td>K8s portability, complex workloads</td><td>Simpler container ops; Fargate removes nodes</td></tr>
+                      <tr>
+                        <td><strong>API GW vs ALB</strong></td>
+                        <td>External API, auth, rate limiting</td>
+                        <td>Internal microservice traffic, WebSockets, gRPC</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Serverless vs EC2</strong></td>
+                        <td>Unpredictable burst, short-lived tasks</td>
+                        <td>Long-running, stateful, GPU, dedicated compute</td>
+                      </tr>
+                      <tr>
+                        <td><strong>EventBridge vs SQS/SNS</strong></td>
+                        <td>Event routing across services/accounts</td>
+                        <td>Point-to-point queuing, fan-out pub/sub</td>
+                      </tr>
+                      <tr>
+                        <td><strong>EKS vs ECS vs Fargate</strong></td>
+                        <td>K8s portability, complex workloads</td>
+                        <td>Simpler container ops; Fargate removes nodes</td>
+                      </tr>
                     </tbody>
                   </table>
                   <div class="home-qa-star">
                     <div class="home-qa-star-label">&#9733; STAR Answer — Transit Gateway vs VPC Peering</div>
                     <table class="home-qa-star-table">
-                      <tr><td>Situation</td><td>Needed to connect multiple VPCs across AWS accounts — shared services, dev, staging, prod — with centralized security inspection required by pharma compliance.</td></tr>
-                      <tr><td>Task</td><td>Recommend the right multi-VPC connectivity model that scales, supports centralized audit, and avoids unmanageable operational overhead.</td></tr>
-                      <tr><td>Action</td><td>Evaluated VPC Peering vs Transit Gateway across four axes: operational complexity (N² vs hub-and-spoke), routing (non-transitive vs centralized), cost at scale, and compliance auditability (TGW integrates with Network Firewall for single inspection choke point).</td></tr>
-                      <tr><td>Result</td><td>Standardized on Transit Gateway with shared services VPC. Security team got a single Network Firewall inspection point. Cross-account complexity reduced from N² peering to centralized routing table updates.</td></tr>
+                      <tr>
+                        <td>Situation</td>
+                        <td>Needed to connect multiple VPCs across AWS accounts — shared services, dev, staging, prod —
+                          with centralized security inspection required by pharma compliance.</td>
+                      </tr>
+                      <tr>
+                        <td>Task</td>
+                        <td>Recommend the right multi-VPC connectivity model that scales, supports centralized audit,
+                          and avoids unmanageable operational overhead.</td>
+                      </tr>
+                      <tr>
+                        <td>Action</td>
+                        <td>Evaluated VPC Peering vs Transit Gateway across four axes: operational complexity (N² vs
+                          hub-and-spoke), routing (non-transitive vs centralized), cost at scale, and compliance
+                          auditability (TGW integrates with Network Firewall for single inspection choke point).</td>
+                      </tr>
+                      <tr>
+                        <td>Result</td>
+                        <td>Standardized on Transit Gateway with shared services VPC. Security team got a single Network
+                          Firewall inspection point. Cross-account complexity reduced from N² peering to centralized
+                          routing table updates.</td>
+                      </tr>
                     </table>
                   </div>
                 </div>
@@ -1131,16 +1463,23 @@
                 <span class="home-qa-num">8</span>
                 <span class="home-qa-question">What is your favorite AWS service? How will you improve it?</span>
                 <span class="home-qa-time">17:55 – 19:18</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <div class="home-qa-framework">&#9670; Answer: IAM OIDC Federation / Roles Anywhere</div>
                   <ul>
-                    <li><strong>Why:</strong> It represents a philosophy — workload identity derived from verifiable context rather than a secret you possess. This single capability unlocked the entire zero-static-credentials architecture across Vault, GitHub Actions, and AWS.</li>
-                    <li><strong>Improvement 1:</strong> Richer claim mapping — allow custom OIDC claims to map directly to IAM condition keys, enabling finer-grained policy without Lambda authorizers</li>
-                    <li><strong>Improvement 2:</strong> Claim-level CloudTrail attribution — surface originating OIDC claims in CloudTrail for complete audit chains</li>
-                    <li><strong>Improvement 3:</strong> Cross-provider claim normalization — standardized claim schema for GitHub Actions, GitLab, Buildkite so platform teams can write portable IAM policies</li>
+                    <li><strong>Why:</strong> It represents a philosophy — workload identity derived from verifiable
+                      context rather than a secret you possess. This single capability unlocked the entire
+                      zero-static-credentials architecture across Vault, GitHub Actions, and AWS.</li>
+                    <li><strong>Improvement 1:</strong> Richer claim mapping — allow custom OIDC claims to map directly
+                      to IAM condition keys, enabling finer-grained policy without Lambda authorizers</li>
+                    <li><strong>Improvement 2:</strong> Claim-level CloudTrail attribution — surface originating OIDC
+                      claims in CloudTrail for complete audit chains</li>
+                    <li><strong>Improvement 3:</strong> Cross-provider claim normalization — standardized claim schema
+                      for GitHub Actions, GitLab, Buildkite so platform teams can write portable IAM policies</li>
                   </ul>
                 </div>
               </div>
@@ -1152,15 +1491,21 @@
                 <span class="home-qa-num">9</span>
                 <span class="home-qa-question">What is AWS Service X? (Handling unknown services)</span>
                 <span class="home-qa-time">19:18 – 20:54</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <div class="home-qa-framework">&#9670; Framework: Definition → Properties → Composition</div>
                   <ul>
-                    <li><strong>Example — Lambda:</strong> &ldquo;AWS Lambda is a serverless compute service that runs code without provisioning servers. It scales automatically, is highly available, and you pay only for compute time consumed.&rdquo;</li>
-                    <li><strong>Composition:</strong> Integrates with API Gateway (HTTP trigger), SQS (queue consumer), EventBridge (event-driven), S3 (object events), and Vault via OIDC for secrets</li>
-                    <li><strong>When you don't know:</strong> Be transparent. Reason from first principles — What problem space? What pricing model? How does it compose with IAM, CloudWatch, and VPC?</li>
+                    <li><strong>Example — Lambda:</strong> &ldquo;AWS Lambda is a serverless compute service that runs
+                      code without provisioning servers. It scales automatically, is highly available, and you pay only
+                      for compute time consumed.&rdquo;</li>
+                    <li><strong>Composition:</strong> Integrates with API Gateway (HTTP trigger), SQS (queue consumer),
+                      EventBridge (event-driven), S3 (object events), and Vault via OIDC for secrets</li>
+                    <li><strong>When you don't know:</strong> Be transparent. Reason from first principles — What
+                      problem space? What pricing model? How does it compose with IAM, CloudWatch, and VPC?</li>
                   </ul>
                 </div>
               </div>
@@ -1172,24 +1517,62 @@
                 <span class="home-qa-num">10</span>
                 <span class="home-qa-question">AWS Services Cheat Sheet — Services to know cold</span>
                 <span class="home-qa-time">Reference</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <div class="home-qa-framework">&#9670; Structured definition pattern for each service</div>
                   <table class="home-qa-compare">
-                    <thead><tr><th>Service</th><th>One-line Definition</th></tr></thead>
+                    <thead>
+                      <tr>
+                        <th>Service</th>
+                        <th>One-line Definition</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      <tr><td><strong>API Gateway</strong></td><td>Managed service to create, publish, and secure REST/HTTP/WebSocket APIs at scale</td></tr>
-                      <tr><td><strong>ALB</strong></td><td>Layer 7 load balancer routing HTTP/HTTPS traffic by path, host, or headers to targets</td></tr>
-                      <tr><td><strong>Transit Gateway</strong></td><td>Hub-and-spoke network transit hub connecting VPCs and on-premises networks at scale</td></tr>
-                      <tr><td><strong>EKS</strong></td><td>Managed Kubernetes control plane — run K8s without managing etcd or control plane nodes</td></tr>
-                      <tr><td><strong>Bedrock</strong></td><td>Fully managed service to build generative AI applications using foundation models via API</td></tr>
-                      <tr><td><strong>EventBridge</strong></td><td>Serverless event bus routing events between AWS services, SaaS, and custom applications</td></tr>
-                      <tr><td><strong>RDS Proxy</strong></td><td>Managed database proxy that pools and shares connections to reduce RDS/Aurora load</td></tr>
-                      <tr><td><strong>Secrets Manager</strong></td><td>Managed secrets storage with automatic rotation for RDS, Redshift, and custom secrets</td></tr>
-                      <tr><td><strong>Inspector</strong></td><td>Automated vulnerability scanning for EC2, Lambda, and container images</td></tr>
-                      <tr><td><strong>GuardDuty</strong></td><td>Managed threat detection using ML to analyze CloudTrail, VPC Flow Logs, and DNS logs</td></tr>
+                      <tr>
+                        <td><strong>API Gateway</strong></td>
+                        <td>Managed service to create, publish, and secure REST/HTTP/WebSocket APIs at scale</td>
+                      </tr>
+                      <tr>
+                        <td><strong>ALB</strong></td>
+                        <td>Layer 7 load balancer routing HTTP/HTTPS traffic by path, host, or headers to targets</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Transit Gateway</strong></td>
+                        <td>Hub-and-spoke network transit hub connecting VPCs and on-premises networks at scale</td>
+                      </tr>
+                      <tr>
+                        <td><strong>EKS</strong></td>
+                        <td>Managed Kubernetes control plane — run K8s without managing etcd or control plane nodes</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Bedrock</strong></td>
+                        <td>Fully managed service to build generative AI applications using foundation models via API
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>EventBridge</strong></td>
+                        <td>Serverless event bus routing events between AWS services, SaaS, and custom applications</td>
+                      </tr>
+                      <tr>
+                        <td><strong>RDS Proxy</strong></td>
+                        <td>Managed database proxy that pools and shares connections to reduce RDS/Aurora load</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Secrets Manager</strong></td>
+                        <td>Managed secrets storage with automatic rotation for RDS, Redshift, and custom secrets</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Inspector</strong></td>
+                        <td>Automated vulnerability scanning for EC2, Lambda, and container images</td>
+                      </tr>
+                      <tr>
+                        <td><strong>GuardDuty</strong></td>
+                        <td>Managed threat detection using ML to analyze CloudTrail, VPC Flow Logs, and DNS logs</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -1225,7 +1608,8 @@
             <div class="home-category-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706)">V</div>
             <h2>Quick-Reference Video Breakdown</h2>
           </div>
-          <p class="home-qa-intro">Concise bullet-point summaries of the 9 most-asked questions with video timestamps — ideal for a quick review before your interview.</p>
+          <p class="home-qa-intro">Concise bullet-point summaries of the 9 most-asked questions with video timestamps —
+            ideal for a quick review before your interview.</p>
           <div class="home-qa-list" id="qaVideoAccordion">
 
             <!-- V1 -->
@@ -1234,15 +1618,23 @@
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">1</span>
                 <span class="home-qa-question">How can you make your application scalable for a big traffic day?</span>
                 <span class="home-qa-time">0:00 – 5:27</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <ul>
-                    <li><strong>Load Balancers:</strong> Pre-warm the load balancers by submitting a support request to AWS to handle sudden spikes.</li>
-                    <li><strong>Auto Scaling Groups:</strong> Ensure minimum and desired instance counts are greater than one. Use scheduled scaling if the traffic time is known, and implement a Warm Pool of pre-initialized EC2 instances for faster scaling.</li>
-                    <li><strong>Optimization:</strong> Use lightweight AMIs for faster provisioning. Use a database proxy like RDS Proxy to manage connection pooling and reduce latency.</li>
-                    <li><strong>Preparation:</strong> Run AWS Countdown with your account team to simulate traffic and adjust parameters. Check and raise soft account limits, or use multiple regions/accounts for extreme traffic.</li>
+                    <li><strong>Load Balancers:</strong> Pre-warm the load balancers by submitting a support request to
+                      AWS to handle sudden spikes.</li>
+                    <li><strong>Auto Scaling Groups:</strong> Ensure minimum and desired instance counts are greater
+                      than one. Use scheduled scaling if the traffic time is known, and implement a Warm Pool of
+                      pre-initialized EC2 instances for faster scaling.</li>
+                    <li><strong>Optimization:</strong> Use lightweight AMIs for faster provisioning. Use a database
+                      proxy like RDS Proxy to manage connection pooling and reduce latency.</li>
+                    <li><strong>Preparation:</strong> Run AWS Countdown with your account team to simulate traffic and
+                      adjust parameters. Check and raise soft account limits, or use multiple regions/accounts for
+                      extreme traffic.</li>
                   </ul>
                 </div>
               </div>
@@ -1254,14 +1646,21 @@
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">2</span>
                 <span class="home-qa-question">What is an AI agent?</span>
                 <span class="home-qa-time">5:27 – 8:25</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <ul>
-                    <li><strong>Definition:</strong> An AI agent is a software program that autonomously and independently chooses the best actions to complete a task, distinguishing it from simple conditional workflows or standalone LLMs.</li>
-                    <li><strong>Functionality:</strong> It uses an LLM to determine which tools to invoke, in what order, and how many times to interact with systems (e.g., fetching logs, searching documentation, fixing issues) to achieve a goal.</li>
-                    <li><strong>Implementation:</strong> Examples include deploying agentic code on AWS Lambda or EC2, using Amazon Bedrock for the LLM, and interacting with tools using MCP.</li>
+                    <li><strong>Definition:</strong> An AI agent is a software program that autonomously and
+                      independently chooses the best actions to complete a task, distinguishing it from simple
+                      conditional workflows or standalone LLMs.</li>
+                    <li><strong>Functionality:</strong> It uses an LLM to determine which tools to invoke, in what
+                      order, and how many times to interact with systems (e.g., fetching logs, searching documentation,
+                      fixing issues) to achieve a goal.</li>
+                    <li><strong>Implementation:</strong> Examples include deploying agentic code on AWS Lambda or EC2,
+                      using Amazon Bedrock for the LLM, and interacting with tools using MCP.</li>
                   </ul>
                 </div>
               </div>
@@ -1273,18 +1672,22 @@
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">3</span>
                 <span class="home-qa-question">How do you achieve disaster recovery for your cloud application?</span>
                 <span class="home-qa-time">8:25 – 10:26</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <ul>
-                    <li><strong>Strategy Selection:</strong> The strategy depends on the Recovery Time Objective (RTO) and Recovery Point Objective (RPO).</li>
+                    <li><strong>Strategy Selection:</strong> The strategy depends on the Recovery Time Objective (RTO)
+                      and Recovery Point Objective (RPO).</li>
                     <li><strong>AWS DR Strategies:</strong>
                       <ul class="home-qa-sublist">
                         <li>Backup &amp; Restore (highest RTO/RPO)</li>
                         <li>Pilot Light</li>
                         <li>Warm Standby</li>
-                        <li>Multi-site Active-Active (lowest RTO/RPO, ideal for enterprise critical applications despite higher cost)</li>
+                        <li>Multi-site Active-Active (lowest RTO/RPO, ideal for enterprise critical applications despite
+                          higher cost)</li>
                       </ul>
                     </li>
                   </ul>
@@ -1298,16 +1701,23 @@
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">4</span>
                 <span class="home-qa-question">How do you secure your application on the cloud?</span>
                 <span class="home-qa-time">10:26 – 13:11</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <ul>
                     <li><strong>Defense in Depth:</strong> Implement security at every layer.</li>
-                    <li><strong>Authentication &amp; Encryption:</strong> Use Amazon Cognito for user authentication and ensure data is encrypted in transit using SSL/TLS (e.g., via API Gateway custom certificates in ACM).</li>
-                    <li><strong>Edge Protection:</strong> Use AWS WAF to protect endpoints from common attacks like SQL injection or cross-site scripting.</li>
-                    <li><strong>Application Security:</strong> Use Amazon Inspector to scan Lambda code for vulnerabilities and attach IAM roles to Lambda with least privilege permissions.</li>
-                    <li><strong>Data Protection:</strong> Store secrets in Secrets Manager and use KMS for data at rest encryption in databases.</li>
+                    <li><strong>Authentication &amp; Encryption:</strong> Use Amazon Cognito for user authentication and
+                      ensure data is encrypted in transit using SSL/TLS (e.g., via API Gateway custom certificates in
+                      ACM).</li>
+                    <li><strong>Edge Protection:</strong> Use AWS WAF to protect endpoints from common attacks like SQL
+                      injection or cross-site scripting.</li>
+                    <li><strong>Application Security:</strong> Use Amazon Inspector to scan Lambda code for
+                      vulnerabilities and attach IAM roles to Lambda with least privilege permissions.</li>
+                    <li><strong>Data Protection:</strong> Store secrets in Secrets Manager and use KMS for data at rest
+                      encryption in databases.</li>
                   </ul>
                 </div>
               </div>
@@ -1319,13 +1729,19 @@
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">5</span>
                 <span class="home-qa-question">Describe a system YOU designed.</span>
                 <span class="home-qa-time">13:11 – 15:08</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <ul>
-                    <li><strong>Focus:</strong> Choose a project you actually implemented, even if small. Raj highlights a microservices design using Apigee as the API Gateway integrated with AWS Lambda when AWS API Gateway was not approved.</li>
-                    <li><strong>Interviewer Goal:</strong> The interviewer is looking for your understanding of the business problem, how you worked backwards from it, and your ability to answer deep-dive follow-up questions about scalability and security.</li>
+                    <li><strong>Focus:</strong> Choose a project you actually implemented, even if small. Raj highlights
+                      a microservices design using Apigee as the API Gateway integrated with AWS Lambda when AWS API
+                      Gateway was not approved.</li>
+                    <li><strong>Interviewer Goal:</strong> The interviewer is looking for your understanding of the
+                      business problem, how you worked backwards from it, and your ability to answer deep-dive follow-up
+                      questions about scalability and security.</li>
                   </ul>
                 </div>
               </div>
@@ -1335,15 +1751,21 @@
             <div class="home-qa-item">
               <button class="home-qa-toggle" aria-expanded="false">
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">6</span>
-                <span class="home-qa-question">Biggest challenge faced during designing your application on the cloud.</span>
+                <span class="home-qa-question">Biggest challenge faced during designing your application on the
+                  cloud.</span>
                 <span class="home-qa-time">15:08 – 16:52</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <ul>
-                    <li><strong>Example 1 – Scaling:</strong> Designing for high-scale, high-burst traffic that standard Auto Scaling could not handle, requiring the implementation of warm pools and pre-warming.</li>
-                    <li><strong>Example 2 – Cost Optimization:</strong> Managing higher-than-expected AWS bills by using CloudWatch Insights, Compute Optimizer, Spot Instances for interruptible workloads, and AWS Cost Explorer.</li>
+                    <li><strong>Example 1 – Scaling:</strong> Designing for high-scale, high-burst traffic that standard
+                      Auto Scaling could not handle, requiring the implementation of warm pools and pre-warming.</li>
+                    <li><strong>Example 2 – Cost Optimization:</strong> Managing higher-than-expected AWS bills by using
+                      CloudWatch Insights, Compute Optimizer, Spot Instances for interruptible workloads, and AWS Cost
+                      Explorer.</li>
                   </ul>
                 </div>
               </div>
@@ -1355,13 +1777,17 @@
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">7</span>
                 <span class="home-qa-question">How do you pick one service versus another?</span>
                 <span class="home-qa-time">16:52 – 17:55</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <ul>
-                    <li><strong>Requirements Driven:</strong> You must ask the interviewer for specific system requirements regarding traffic volume, latency, security needs, cost constraints, and uptime.</li>
-                    <li><strong>Comparisons:</strong> Be prepared to contrast API Gateway vs. Load Balancer, Serverless vs. EC2, EventBridge vs. SQS/SNS, and various container services (EKS, ECS, Fargate).</li>
+                    <li><strong>Requirements Driven:</strong> You must ask the interviewer for specific system
+                      requirements regarding traffic volume, latency, security needs, cost constraints, and uptime.</li>
+                    <li><strong>Comparisons:</strong> Be prepared to contrast API Gateway vs. Load Balancer, Serverless
+                      vs. EC2, EventBridge vs. SQS/SNS, and various container services (EKS, ECS, Fargate).</li>
                   </ul>
                 </div>
               </div>
@@ -1373,12 +1799,15 @@
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">8</span>
                 <span class="home-qa-question">What is your favorite AWS service? How will you improve it?</span>
                 <span class="home-qa-time">17:55 – 19:18</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <ul>
-                    <li><strong>Approach:</strong> Pick a service you have used extensively. Improve it by researching the public AWS Roadmap on GitHub and selecting a highly-voted, requested feature to discuss.</li>
+                    <li><strong>Approach:</strong> Pick a service you have used extensively. Improve it by researching
+                      the public AWS Roadmap on GitHub and selecting a highly-voted, requested feature to discuss.</li>
                   </ul>
                 </div>
               </div>
@@ -1390,13 +1819,18 @@
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#f59e0b,#d97706)">9</span>
                 <span class="home-qa-question">What is AWS service X?</span>
                 <span class="home-qa-time">19:18 – 20:54</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <ul>
-                    <li><strong>Approach:</strong> Start with the official definition, then explain its key properties.</li>
-                    <li><strong>Example (Lambda):</strong> &ldquo;AWS Lambda is a serverless compute service that lets you run your code without provisioning or managing any servers… It scales automatically, is highly available, and you pay only for what you use.&rdquo;</li>
+                    <li><strong>Approach:</strong> Start with the official definition, then explain its key properties.
+                    </li>
+                    <li><strong>Example (Lambda):</strong> &ldquo;AWS Lambda is a serverless compute service that lets
+                      you run your code without provisioning or managing any servers… It scales automatically, is highly
+                      available, and you pay only for what you use.&rdquo;</li>
                   </ul>
                 </div>
               </div>
@@ -1411,32 +1845,60 @@
             <div class="home-category-icon" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">⚡</div>
             <h2>The Definitive Interview Compendium</h2>
           </div>
-          <p class="home-qa-intro">Senior-level frameworks for the most high-stakes questions — with "bad vs. delightful" answer contrasts, comparison tables, and the "So What?" layer that separates architects from engineers.</p>
+          <p class="home-qa-intro">Senior-level frameworks for the most high-stakes questions — with "bad vs.
+            delightful" answer contrasts, comparison tables, and the "So What?" layer that separates architects from
+            engineers.</p>
           <div class="home-qa-list" id="qaCompendiumAccordion">
 
             <!-- C1 -->
             <div class="home-qa-item">
               <button class="home-qa-toggle" aria-expanded="false">
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">1</span>
-                <span class="home-qa-question">What is the fundamental difference between High Availability and Disaster Recovery?</span>
+                <span class="home-qa-question">What is the fundamental difference between High Availability and Disaster
+                  Recovery?</span>
                 <span class="home-qa-time">Architecture</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <div class="home-qa-framework">&#9670; The most mis-answered foundational question</div>
                   <table class="home-qa-compare">
-                    <thead><tr><th>Dimension</th><th>High Availability (HA)</th><th>Disaster Recovery (DR)</th></tr></thead>
+                    <thead>
+                      <tr>
+                        <th>Dimension</th>
+                        <th>High Availability (HA)</th>
+                        <th>Disaster Recovery (DR)</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      <tr><td><strong>Scope</strong></td><td>Within a single Region (cross-AZ)</td><td>Across different geographic Regions</td></tr>
-                      <tr><td><strong>Primary Goal</strong></td><td>Minimize downtime during AZ failure</td><td>Restore service after a Region-wide event</td></tr>
-                      <tr><td><strong>AWS Examples</strong></td><td>Multi-AZ EC2, Application Load Balancers</td><td>Route 53 Health Checks, S3 Cross-Region Replication</td></tr>
+                      <tr>
+                        <td><strong>Scope</strong></td>
+                        <td>Within a single Region (cross-AZ)</td>
+                        <td>Across different geographic Regions</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Primary Goal</strong></td>
+                        <td>Minimize downtime during AZ failure</td>
+                        <td>Restore service after a Region-wide event</td>
+                      </tr>
+                      <tr>
+                        <td><strong>AWS Examples</strong></td>
+                        <td>Multi-AZ EC2, Application Load Balancers</td>
+                        <td>Route 53 Health Checks, S3 Cross-Region Replication</td>
+                      </tr>
                     </tbody>
                   </table>
                   <ul style="margin-top:0.75rem">
-                    <li><strong>Bad Answer:</strong> "HA means the app stays up; DR is when it falls back to another region." This conflates the two concepts entirely.</li>
-                    <li><strong>Delightful Answer:</strong> HA is scoped to <strong>AZs within one region</strong>. DR is scoped to <strong>different geographic regions</strong>. Confusing them signals you haven't operated at enterprise scale.</li>
-                    <li><strong>The "So What?" Layer:</strong> A total AZ failure is handled by HA — no human intervention needed. A total regional failure requires DR — a deliberate architectural and operational strategy.</li>
+                    <li><strong>Bad Answer:</strong> "HA means the app stays up; DR is when it falls back to another
+                      region." This conflates the two concepts entirely.</li>
+                    <li><strong>Delightful Answer:</strong> HA is scoped to <strong>AZs within one region</strong>. DR
+                      is scoped to <strong>different geographic regions</strong>. Confusing them signals you haven't
+                      operated at enterprise scale.</li>
+                    <li><strong>The "So What?" Layer:</strong> A total AZ failure is handled by HA — no human
+                      intervention needed. A total regional failure requires DR — a deliberate architectural and
+                      operational strategy.</li>
                   </ul>
                 </div>
               </div>
@@ -1446,19 +1908,30 @@
             <div class="home-qa-item">
               <button class="home-qa-toggle" aria-expanded="false">
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">2</span>
-                <span class="home-qa-question">Walk me through a production-grade 3-tier Highly Available architecture.</span>
+                <span class="home-qa-question">Walk me through a production-grade 3-tier Highly Available
+                  architecture.</span>
                 <span class="home-qa-time">Architecture</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
-                  <div class="home-qa-framework">&#9670; Layer-by-layer HA walkthrough — the "delightful" answer format</div>
+                  <div class="home-qa-framework">&#9670; Layer-by-layer HA walkthrough — the "delightful" answer format
+                  </div>
                   <ul>
-                    <li><strong>External ALB:</strong> Routes traffic across multiple AZs. Inherently HA — no single point of failure.</li>
-                    <li><strong>Web / App Tier (EC2 in ASG):</strong> A single EC2 instance resides in one AZ and is a SPOF. Deploy across ≥2 AZs inside an Auto Scaling Group. If one AZ fails, traffic re-routes to instances in surviving AZs automatically.</li>
-                    <li><strong>Internal ALB:</strong> Decouples the web and app tiers; distributes internal traffic across healthy AZs — identical HA properties to the external ALB.</li>
-                    <li><strong>Data Tier (Amazon DynamoDB):</strong> A regional service that automatically replicates data across three AZs. AZ failure is fully transparent to application code.</li>
-                    <li><strong>So What?</strong> This design ensures a complete data-center failure is a <em>non-event</em> for end users — business continuity with zero manual intervention.</li>
+                    <li><strong>External ALB:</strong> Routes traffic across multiple AZs. Inherently HA — no single
+                      point of failure.</li>
+                    <li><strong>Web / App Tier (EC2 in ASG):</strong> A single EC2 instance resides in one AZ and is a
+                      SPOF. Deploy across ≥2 AZs inside an Auto Scaling Group. If one AZ fails, traffic re-routes to
+                      instances in surviving AZs automatically.</li>
+                    <li><strong>Internal ALB:</strong> Decouples the web and app tiers; distributes internal traffic
+                      across healthy AZs — identical HA properties to the external ALB.</li>
+                    <li><strong>Data Tier (Amazon DynamoDB):</strong> A regional service that automatically replicates
+                      data across three AZs. AZ failure is fully transparent to application code.</li>
+                    <li><strong>So What?</strong> This design ensures a complete data-center failure is a
+                      <em>non-event</em> for end users — business continuity with zero manual intervention.
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -1468,24 +1941,55 @@
             <div class="home-qa-item">
               <button class="home-qa-toggle" aria-expanded="false">
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">3</span>
-                <span class="home-qa-question">Define RTO and RPO. What units are they measured in? Compare all 4 DR strategies.</span>
+                <span class="home-qa-question">Define RTO and RPO. What units are they measured in? Compare all 4 DR
+                  strategies.</span>
                 <span class="home-qa-time">Architecture</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
-                  <div class="home-qa-framework">&#9670; The "trap question" — RPO is always measured in TIME, not data volume</div>
+                  <div class="home-qa-framework">&#9670; The "trap question" — RPO is always measured in TIME, not data
+                    volume</div>
                   <ul>
-                    <li><strong>RTO (Recovery Time Objective):</strong> Max acceptable time the application can be offline. Measured in <em>minutes, hours, or days</em>.</li>
-                    <li><strong>RPO (Recovery Point Objective):</strong> Max acceptable data loss, expressed as a point in <em>time</em>. A common mistake: measuring RPO in megabytes. Wrong. It's always time.</li>
+                    <li><strong>RTO (Recovery Time Objective):</strong> Max acceptable time the application can be
+                      offline. Measured in <em>minutes, hours, or days</em>.</li>
+                    <li><strong>RPO (Recovery Point Objective):</strong> Max acceptable data loss, expressed as a point
+                      in <em>time</em>. A common mistake: measuring RPO in megabytes. Wrong. It's always time.</li>
                   </ul>
                   <table class="home-qa-compare" style="margin-top:0.75rem">
-                    <thead><tr><th>Strategy</th><th>RTO / RPO</th><th>How It Works</th></tr></thead>
+                    <thead>
+                      <tr>
+                        <th>Strategy</th>
+                        <th>RTO / RPO</th>
+                        <th>How It Works</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      <tr><td><strong>Backup &amp; Restore</strong></td><td>Hours / Days</td><td>Data backed up to S3; restored to new region after disaster. Highest RTO/RPO, lowest cost.</td></tr>
-                      <tr><td><strong>Pilot Light</strong></td><td>Minutes / Hours</td><td>Core data (DB) is live and replicated; app servers are "off" (AMIs) until disaster triggers provisioning.</td></tr>
-                      <tr><td><strong>Warm Standby</strong></td><td>Minutes / Minutes</td><td>Scaled-down full environment always running in DR region. Scale up on activation.</td></tr>
-                      <tr><td><strong>Multi-site Active-Active</strong></td><td>Real-time / Real-time</td><td>Full traffic in two+ regions simultaneously. Instant synchronous/asynchronous replication. Highest cost, zero RTO/RPO.</td></tr>
+                      <tr>
+                        <td><strong>Backup &amp; Restore</strong></td>
+                        <td>Hours / Days</td>
+                        <td>Data backed up to S3; restored to new region after disaster. Highest RTO/RPO, lowest cost.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>Pilot Light</strong></td>
+                        <td>Minutes / Hours</td>
+                        <td>Core data (DB) is live and replicated; app servers are "off" (AMIs) until disaster triggers
+                          provisioning.</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Warm Standby</strong></td>
+                        <td>Minutes / Minutes</td>
+                        <td>Scaled-down full environment always running in DR region. Scale up on activation.</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Multi-site Active-Active</strong></td>
+                        <td>Real-time / Real-time</td>
+                        <td>Full traffic in two+ regions simultaneously. Instant synchronous/asynchronous replication.
+                          Highest cost, zero RTO/RPO.</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -1496,16 +2000,22 @@
             <div class="home-qa-item">
               <button class="home-qa-toggle" aria-expanded="false">
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">4</span>
-                <span class="home-qa-question">Contrast Monolithic vs. Microservices. Illustrate a real Microservices flow and explain Event-Driven Architecture.</span>
+                <span class="home-qa-question">Contrast Monolithic vs. Microservices. Illustrate a real Microservices
+                  flow and explain Event-Driven Architecture.</span>
                 <span class="home-qa-time">Architecture</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
-                  <div class="home-qa-framework">&#9670; Show fault isolation and EDA asynchrony — not just definitions</div>
+                  <div class="home-qa-framework">&#9670; Show fault isolation and EDA asynchrony — not just definitions
+                  </div>
                   <ul>
-                    <li><strong>Monolith:</strong> Single tightly coupled unit. One component fails → redeploy everything. No independent scaling.</li>
-                    <li><strong>Microservices:</strong> Independent services, independently deployed, independently scaled, polyglot by design.</li>
+                    <li><strong>Monolith:</strong> Single tightly coupled unit. One component fails → redeploy
+                      everything. No independent scaling.</li>
+                    <li><strong>Microservices:</strong> Independent services, independently deployed, independently
+                      scaled, polyglot by design.</li>
                   </ul>
                   <ul style="margin-top:0.5rem">
                     <li><strong>Real Flow — store.com (ALB Path-Based Routing):</strong>
@@ -1516,15 +2026,37 @@
                         <li>If /browse crashes, /purchase and revenue remain unaffected. That's fault isolation.</li>
                       </ul>
                     </li>
-                    <li><strong>EDA — Bad Answer:</strong> "API Gateway → Lambda → DynamoDB." That is <em>synchronous</em>, not event-driven.</li>
-                    <li><strong>EDA — Delightful:</strong> API Gateway → <strong>SQS</strong> → Lambda → DynamoDB. SQS decouples producer from consumer. Lambda consumes at its own rate. Benefits: independent scaling, built-in retry, no wasted idle capacity.</li>
+                    <li><strong>EDA — Bad Answer:</strong> "API Gateway → Lambda → DynamoDB." That is
+                      <em>synchronous</em>, not event-driven.
+                    </li>
+                    <li><strong>EDA — Delightful:</strong> API Gateway → <strong>SQS</strong> → Lambda → DynamoDB. SQS
+                      decouples producer from consumer. Lambda consumes at its own rate. Benefits: independent scaling,
+                      built-in retry, no wasted idle capacity.</li>
                   </ul>
                   <table class="home-qa-compare" style="margin-top:0.75rem">
-                    <thead><tr><th>Trait</th><th>Synchronous</th><th>EDA (Asynchronous)</th></tr></thead>
+                    <thead>
+                      <tr>
+                        <th>Trait</th>
+                        <th>Synchronous</th>
+                        <th>EDA (Asynchronous)</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      <tr><td>Scaling</td><td>All layers must match</td><td>Components scale independently</td></tr>
-                      <tr><td>Retries</td><td>Hard-coded in client</td><td>Built-in queue retry</td></tr>
-                      <tr><td>Cost</td><td>Over-provision for spikes</td><td>Pay only for events processed</td></tr>
+                      <tr>
+                        <td>Scaling</td>
+                        <td>All layers must match</td>
+                        <td>Components scale independently</td>
+                      </tr>
+                      <tr>
+                        <td>Retries</td>
+                        <td>Hard-coded in client</td>
+                        <td>Built-in queue retry</td>
+                      </tr>
+                      <tr>
+                        <td>Cost</td>
+                        <td>Over-provision for spikes</td>
+                        <td>Pay only for events processed</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -1535,25 +2067,57 @@
             <div class="home-qa-item">
               <button class="home-qa-toggle" aria-expanded="false">
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">5</span>
-                <span class="home-qa-question">Compare SQL vs. NoSQL databases from a Solutions Architect perspective.</span>
+                <span class="home-qa-question">Compare SQL vs. NoSQL databases from a Solutions Architect
+                  perspective.</span>
                 <span class="home-qa-time">Databases</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
-                  <div class="home-qa-framework">&#9670; Distinguish by schema approach and consistency model — not just "relational vs. not"</div>
+                  <div class="home-qa-framework">&#9670; Distinguish by schema approach and consistency model — not just
+                    "relational vs. not"</div>
                   <table class="home-qa-compare">
-                    <thead><tr><th>Property</th><th>SQL (Relational)</th><th>NoSQL (Non-relational)</th></tr></thead>
+                    <thead>
+                      <tr>
+                        <th>Property</th>
+                        <th>SQL (Relational)</th>
+                        <th>NoSQL (Non-relational)</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      <tr><td><strong>Schema</strong></td><td>Schema-on-write — rigid, predefined</td><td>Schema-on-read — flexible, evolving</td></tr>
-                      <tr><td><strong>Consistency</strong></td><td>ACID transactions</td><td>Eventual consistency (configurable)</td></tr>
-                      <tr><td><strong>Scaling</strong></td><td>Vertical primary</td><td>Horizontal by design</td></tr>
-                      <tr><td><strong>Best For</strong></td><td>Complex joins, financial transactions</td><td>High-throughput, low-latency, variable structure</td></tr>
-                      <tr><td><strong>AWS Examples</strong></td><td>Amazon Aurora, RDS</td><td>Amazon DynamoDB</td></tr>
+                      <tr>
+                        <td><strong>Schema</strong></td>
+                        <td>Schema-on-write — rigid, predefined</td>
+                        <td>Schema-on-read — flexible, evolving</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Consistency</strong></td>
+                        <td>ACID transactions</td>
+                        <td>Eventual consistency (configurable)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Scaling</strong></td>
+                        <td>Vertical primary</td>
+                        <td>Horizontal by design</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Best For</strong></td>
+                        <td>Complex joins, financial transactions</td>
+                        <td>High-throughput, low-latency, variable structure</td>
+                      </tr>
+                      <tr>
+                        <td><strong>AWS Examples</strong></td>
+                        <td>Amazon Aurora, RDS</td>
+                        <td>Amazon DynamoDB</td>
+                      </tr>
                     </tbody>
                   </table>
                   <ul style="margin-top:0.75rem">
-                    <li><strong>Architect's Rule:</strong> Never say "NoSQL is better." Choose based on access patterns. If you need ACID joins, SQL wins. If you need single-digit millisecond reads at millions of RPS, DynamoDB wins.</li>
+                    <li><strong>Architect's Rule:</strong> Never say "NoSQL is better." Choose based on access patterns.
+                      If you need ACID joins, SQL wins. If you need single-digit millisecond reads at millions of RPS,
+                      DynamoDB wins.</li>
                   </ul>
                 </div>
               </div>
@@ -1563,33 +2127,59 @@
             <div class="home-qa-item">
               <button class="home-qa-toggle" aria-expanded="false">
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">6</span>
-                <span class="home-qa-question">What are the strategic GenAI use cases? Explain MCP and differentiate A2A, MCP, and RAG.</span>
+                <span class="home-qa-question">What are the strategic GenAI use cases? Explain MCP and differentiate
+                  A2A, MCP, and RAG.</span>
                 <span class="home-qa-time">Generative AI</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
-                  <div class="home-qa-framework">&#9670; Categorize GenAI use cases — "chatbots" alone is a junior answer</div>
+                  <div class="home-qa-framework">&#9670; Categorize GenAI use cases — "chatbots" alone is a junior
+                    answer</div>
                   <ul>
-                    <li><strong>Customer Experience:</strong> Agentic assistants that take action on behalf of users (not just answer questions).</li>
-                    <li><strong>Productivity:</strong> Content creation, automated report generation, search summarization — measurable ROI.</li>
-                    <li><strong>Cutting Edge (MCP):</strong> Automated cost analysis, code-quality evaluation against architectural best practices — agents acting autonomously on cloud infrastructure.</li>
+                    <li><strong>Customer Experience:</strong> Agentic assistants that take action on behalf of users
+                      (not just answer questions).</li>
+                    <li><strong>Productivity:</strong> Content creation, automated report generation, search
+                      summarization — measurable ROI.</li>
+                    <li><strong>Cutting Edge (MCP):</strong> Automated cost analysis, code-quality evaluation against
+                      architectural best practices — agents acting autonomously on cloud infrastructure.</li>
                   </ul>
                   <ul style="margin-top:0.75rem">
-                    <li><strong>Model Context Protocol (MCP):</strong> A standardized JSON-RPC protocol enabling LLMs to interact with tools and data sources without custom-coding every integration.
+                    <li><strong>Model Context Protocol (MCP):</strong> A standardized JSON-RPC protocol enabling LLMs to
+                      interact with tools and data sources without custom-coding every integration.
                       <ul class="home-qa-sublist">
                         <li><strong>Pre-MCP:</strong> Manually define every API URL, header, and payload per tool.</li>
-                        <li><strong>MCP:</strong> MCP Server exposes tool schemas. MCP Client (e.g., VS Code) discovers tools dynamically. LLM chooses which tool to invoke based on purpose — no brittle hard-coded logic.</li>
-                        <li><strong>Key Innovation:</strong> Dynamic Discovery — the protocol feeds tool purpose and schema to the LLM at runtime.</li>
+                        <li><strong>MCP:</strong> MCP Server exposes tool schemas. MCP Client (e.g., VS Code) discovers
+                          tools dynamically. LLM chooses which tool to invoke based on purpose — no brittle hard-coded
+                          logic.</li>
+                        <li><strong>Key Innovation:</strong> Dynamic Discovery — the protocol feeds tool purpose and
+                          schema to the LLM at runtime.</li>
                       </ul>
                     </li>
                   </ul>
                   <table class="home-qa-compare" style="margin-top:0.75rem">
-                    <thead><tr><th>Protocol</th><th>What It Does</th></tr></thead>
+                    <thead>
+                      <tr>
+                        <th>Protocol</th>
+                        <th>What It Does</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      <tr><td><strong>A2A</strong></td><td>Agent-to-Agent communication (orchestration between agents)</td></tr>
-                      <tr><td><strong>MCP</strong></td><td>Standardized protocol connecting agents/LLMs to tools and data</td></tr>
-                      <tr><td><strong>RAG</strong></td><td>Retrieval-Augmented Generation — grounding LLM responses in external data without retraining</td></tr>
+                      <tr>
+                        <td><strong>A2A</strong></td>
+                        <td>Agent-to-Agent communication (orchestration between agents)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>MCP</strong></td>
+                        <td>Standardized protocol connecting agents/LLMs to tools and data</td>
+                      </tr>
+                      <tr>
+                        <td><strong>RAG</strong></td>
+                        <td>Retrieval-Augmented Generation — grounding LLM responses in external data without retraining
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -1600,34 +2190,66 @@
             <div class="home-qa-item">
               <button class="home-qa-toggle" aria-expanded="false">
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">7</span>
-                <span class="home-qa-question">Continuous Delivery vs. Deployment. Describe a senior-level DevOps pipeline. Contrast Traditional CI/CD vs. GitOps.</span>
+                <span class="home-qa-question">Continuous Delivery vs. Deployment. Describe a senior-level DevOps
+                  pipeline. Contrast Traditional CI/CD vs. GitOps.</span>
                 <span class="home-qa-time">DevOps</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
-                  <div class="home-qa-framework">&#9670; Know the human-button distinction and the push vs. pull model</div>
+                  <div class="home-qa-framework">&#9670; Know the human-button distinction and the push vs. pull model
+                  </div>
                   <ul>
-                    <li><strong>Continuous Delivery:</strong> Code is always in a deployable state; a <em>manual trigger</em> pushes to production.</li>
-                    <li><strong>Continuous Deployment:</strong> Every passing build auto-deploys to production. Zero human intervention.</li>
+                    <li><strong>Continuous Delivery:</strong> Code is always in a deployable state; a <em>manual
+                        trigger</em> pushes to production.</li>
+                    <li><strong>Continuous Deployment:</strong> Every passing build auto-deploys to production. Zero
+                      human intervention.</li>
                   </ul>
                   <ul style="margin-top:0.5rem">
                     <li><strong>Senior-Level Pipeline (Source → Build → Test → Deploy):</strong>
                       <ul class="home-qa-sublist">
-                        <li><strong>IaC:</strong> Non-negotiable — Terraform ensures environment consistency across accounts.</li>
-                        <li><strong>Automated Unit Testing:</strong> AWS CodeBuild catches logic errors before staging.</li>
-                        <li><strong>DevSecOps:</strong> Shift security left — secret scanning and vulnerability assessment are pipeline gates, not post-deployment audits.</li>
-                        <li><strong>Multi-Account Strategy:</strong> Dev → Test → Prod isolation minimizes blast radius of any failure.</li>
+                        <li><strong>IaC:</strong> Non-negotiable — Terraform ensures environment consistency across
+                          accounts.</li>
+                        <li><strong>Automated Unit Testing:</strong> AWS CodeBuild catches logic errors before staging.
+                        </li>
+                        <li><strong>DevSecOps:</strong> Shift security left — secret scanning and vulnerability
+                          assessment are pipeline gates, not post-deployment audits.</li>
+                        <li><strong>Multi-Account Strategy:</strong> Dev → Test → Prod isolation minimizes blast radius
+                          of any failure.</li>
                       </ul>
                     </li>
                   </ul>
                   <table class="home-qa-compare" style="margin-top:0.75rem">
-                    <thead><tr><th>Model</th><th>Traditional CI/CD</th><th>GitOps</th></tr></thead>
+                    <thead>
+                      <tr>
+                        <th>Model</th>
+                        <th>Traditional CI/CD</th>
+                        <th>GitOps</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      <tr><td><strong>Direction</strong></td><td>Push — tool pushes config to environment</td><td>Pull — controller in cluster pulls from Git</td></tr>
-                      <tr><td><strong>Truth Source</strong></td><td>CI/CD tool state</td><td>Git repository (declarative)</td></tr>
-                      <tr><td><strong>Controller</strong></td><td>Jenkins, GitHub Actions, Harness</td><td>ArgoCD, Flux</td></tr>
-                      <tr><td><strong>Drift Detection</strong></td><td>Manual or scheduled</td><td>Continuous, automatic reconciliation</td></tr>
+                      <tr>
+                        <td><strong>Direction</strong></td>
+                        <td>Push — tool pushes config to environment</td>
+                        <td>Pull — controller in cluster pulls from Git</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Truth Source</strong></td>
+                        <td>CI/CD tool state</td>
+                        <td>Git repository (declarative)</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Controller</strong></td>
+                        <td>Jenkins, GitHub Actions, Harness</td>
+                        <td>ArgoCD, Flux</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Drift Detection</strong></td>
+                        <td>Manual or scheduled</td>
+                        <td>Continuous, automatic reconciliation</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -1638,28 +2260,57 @@
             <div class="home-qa-item">
               <button class="home-qa-toggle" aria-expanded="false">
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">8</span>
-                <span class="home-qa-question">Why EKS? Explain HPA vs. Cluster Autoscaler vs. Karpenter. Define DaemonSets and Sidecars.</span>
+                <span class="home-qa-question">Why EKS? Explain HPA vs. Cluster Autoscaler vs. Karpenter. Define
+                  DaemonSets and Sidecars.</span>
                 <span class="home-qa-time">Kubernetes</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <div class="home-qa-framework">&#9670; Three layers of scaling, and when each kicks in</div>
                   <ul>
-                    <li><strong>Why EKS:</strong> AWS manages the control plane (API server, etcd) across multiple AZs. Managing this yourself is the hardest part of Kubernetes operations — EKS eliminates it.</li>
+                    <li><strong>Why EKS:</strong> AWS manages the control plane (API server, etcd) across multiple AZs.
+                      Managing this yourself is the hardest part of Kubernetes operations — EKS eliminates it.</li>
                   </ul>
                   <table class="home-qa-compare" style="margin-top:0.75rem">
-                    <thead><tr><th>Scaler</th><th>What It Scales</th><th>Trigger</th><th>Notes</th></tr></thead>
+                    <thead>
+                      <tr>
+                        <th>Scaler</th>
+                        <th>What It Scales</th>
+                        <th>Trigger</th>
+                        <th>Notes</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      <tr><td><strong>HPA</strong></td><td>Pods</td><td>CPU / Memory / custom metrics</td><td>Horizontal Pod Autoscaler — doesn't add nodes</td></tr>
-                      <tr><td><strong>Cluster Autoscaler</strong></td><td>Nodes (via ASG)</td><td>Pending pods with no room</td><td>Works with EC2 Auto Scaling Groups</td></tr>
-                      <tr><td><strong>Karpenter</strong></td><td>Nodes (directly)</td><td>Pending pods with no room</td><td>Bypasses ASGs; provisions right-sized, right-typed node instantly. Faster + cheaper.</td></tr>
+                      <tr>
+                        <td><strong>HPA</strong></td>
+                        <td>Pods</td>
+                        <td>CPU / Memory / custom metrics</td>
+                        <td>Horizontal Pod Autoscaler — doesn't add nodes</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Cluster Autoscaler</strong></td>
+                        <td>Nodes (via ASG)</td>
+                        <td>Pending pods with no room</td>
+                        <td>Works with EC2 Auto Scaling Groups</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Karpenter</strong></td>
+                        <td>Nodes (directly)</td>
+                        <td>Pending pods with no room</td>
+                        <td>Bypasses ASGs; provisions right-sized, right-typed node instantly. Faster + cheaper.</td>
+                      </tr>
                     </tbody>
                   </table>
                   <ul style="margin-top:0.75rem">
-                    <li><strong>DaemonSet:</strong> Ensures one pod per node. Use for cluster-wide agents — log collectors (Fluent Bit), monitoring agents (Prometheus node-exporter).</li>
-                    <li><strong>Sidecar:</strong> Runs alongside the app container in the same pod. Use for pod-specific concerns — service mesh proxy (Envoy), localized log offloading.</li>
-                    <li><strong>Monitoring Stack to name:</strong> Prometheus + Grafana for metrics; Fluent Bit / CloudWatch Container Insights / ELK for logs. Not naming your stack is a red flag.</li>
+                    <li><strong>DaemonSet:</strong> Ensures one pod per node. Use for cluster-wide agents — log
+                      collectors (Fluent Bit), monitoring agents (Prometheus node-exporter).</li>
+                    <li><strong>Sidecar:</strong> Runs alongside the app container in the same pod. Use for pod-specific
+                      concerns — service mesh proxy (Envoy), localized log offloading.</li>
+                    <li><strong>Monitoring Stack to name:</strong> Prometheus + Grafana for metrics; Fluent Bit /
+                      CloudWatch Container Insights / ELK for logs. Not naming your stack is a red flag.</li>
                   </ul>
                 </div>
               </div>
@@ -1669,25 +2320,53 @@
             <div class="home-qa-item">
               <button class="home-qa-toggle" aria-expanded="false">
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">9</span>
-                <span class="home-qa-question">Lambda cold starts, scaling, and security. Differentiate SQS vs. SNS vs. EventBridge.</span>
+                <span class="home-qa-question">Lambda cold starts, scaling, and security. Differentiate SQS vs. SNS vs.
+                  EventBridge.</span>
                 <span class="home-qa-time">Serverless</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
-                  <div class="home-qa-framework">&#9670; CPU is indirect, cold starts are solvable, messaging services are distinct tools</div>
+                  <div class="home-qa-framework">&#9670; CPU is indirect, cold starts are solvable, messaging services
+                    are distinct tools</div>
                   <ul>
-                    <li><strong>Cold Start:</strong> Latency when AWS provisions a new execution environment. Mitigate with <strong>Provisioned Concurrency</strong> (keeps environments warm) or Custom Container Images.</li>
-                    <li><strong>Scaling CPU:</strong> You cannot set Lambda CPU directly. Increase <strong>memory allocation</strong> — AWS scales CPU proportionally. More memory = faster execution = lower cost in pay-per-ms model.</li>
-                    <li><strong>Lambda vs. Fargate:</strong> Lambda scales instantly for burst; Fargate scales slower (node provisioning) but handles tasks exceeding Lambda's 15-minute limit.</li>
-                    <li><strong>Security best practices:</strong> Least-privilege IAM role per function; KMS for environment variable encryption; VPC integration for private resource access.</li>
+                    <li><strong>Cold Start:</strong> Latency when AWS provisions a new execution environment. Mitigate
+                      with <strong>Provisioned Concurrency</strong> (keeps environments warm) or Custom Container
+                      Images.</li>
+                    <li><strong>Scaling CPU:</strong> You cannot set Lambda CPU directly. Increase <strong>memory
+                        allocation</strong> — AWS scales CPU proportionally. More memory = faster execution = lower cost
+                      in pay-per-ms model.</li>
+                    <li><strong>Lambda vs. Fargate:</strong> Lambda scales instantly for burst; Fargate scales slower
+                      (node provisioning) but handles tasks exceeding Lambda's 15-minute limit.</li>
+                    <li><strong>Security best practices:</strong> Least-privilege IAM role per function; KMS for
+                      environment variable encryption; VPC integration for private resource access.</li>
                   </ul>
                   <table class="home-qa-compare" style="margin-top:0.75rem">
-                    <thead><tr><th>Service</th><th>Pattern</th><th>Use Case</th></tr></thead>
+                    <thead>
+                      <tr>
+                        <th>Service</th>
+                        <th>Pattern</th>
+                        <th>Use Case</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      <tr><td><strong>SQS</strong></td><td>Queue — point-to-point</td><td>One producer, one consumer. Decoupling, backpressure, retry.</td></tr>
-                      <tr><td><strong>SNS</strong></td><td>Pub/sub topic — fan-out</td><td>One producer, many consumers. Broadcast notifications.</td></tr>
-                      <tr><td><strong>EventBridge</strong></td><td>Event bus — content-based routing</td><td>Filter and route events from AWS services, SaaS, and custom apps with rules.</td></tr>
+                      <tr>
+                        <td><strong>SQS</strong></td>
+                        <td>Queue — point-to-point</td>
+                        <td>One producer, one consumer. Decoupling, backpressure, retry.</td>
+                      </tr>
+                      <tr>
+                        <td><strong>SNS</strong></td>
+                        <td>Pub/sub topic — fan-out</td>
+                        <td>One producer, many consumers. Broadcast notifications.</td>
+                      </tr>
+                      <tr>
+                        <td><strong>EventBridge</strong></td>
+                        <td>Event bus — content-based routing</td>
+                        <td>Filter and route events from AWS services, SaaS, and custom apps with rules.</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -1698,23 +2377,35 @@
             <div class="home-qa-item">
               <button class="home-qa-toggle" aria-expanded="false">
                 <span class="home-qa-num" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">10</span>
-                <span class="home-qa-question">Interview strategy: The "Question Behind the Question" and critical mistakes to avoid.</span>
+                <span class="home-qa-question">Interview strategy: The "Question Behind the Question" and critical
+                  mistakes to avoid.</span>
                 <span class="home-qa-time">Strategy</span>
-                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                <svg class="home-qa-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </button>
               <div class="home-qa-body">
                 <div class="home-qa-content">
                   <div class="home-qa-framework">&#9670; The "So What?" layer separates architects from engineers</div>
                   <ul>
-                    <li><strong>Trait 1 — The Question Behind the Question:</strong> When asked "What is RPO?", the real test is whether you know it's measured in <em>time</em>, not data volume. Pivot to the underlying principle, not the dictionary definition.</li>
-                    <li><strong>Trait 2 — System Design Pivot:</strong> When asked "What is SQS?", don't just say "It's a queue." Explain how you used SQS to decouple an ordering system and absorb a 10x Black Friday traffic spike without dropping a single order. That's the delight factor.</li>
-                    <li><strong>Trait 3 — Big Picture Thinking:</strong> Show how services interact to solve a business problem. Walk through flows, not definitions.</li>
+                    <li><strong>Trait 1 — The Question Behind the Question:</strong> When asked "What is RPO?", the real
+                      test is whether you know it's measured in <em>time</em>, not data volume. Pivot to the underlying
+                      principle, not the dictionary definition.</li>
+                    <li><strong>Trait 2 — System Design Pivot:</strong> When asked "What is SQS?", don't just say "It's
+                      a queue." Explain how you used SQS to decouple an ordering system and absorb a 10x Black Friday
+                      traffic spike without dropping a single order. That's the delight factor.</li>
+                    <li><strong>Trait 3 — Big Picture Thinking:</strong> Show how services interact to solve a business
+                      problem. Walk through flows, not definitions.</li>
                   </ul>
                   <ul style="margin-top:0.5rem">
-                    <li><strong>❌ Rambling:</strong> Five minutes on a VPC question signals inability to communicate with executives. Use the <strong>3-2-1 trick</strong>: 3 points, 2 minutes, 1 clear summary.</li>
-                    <li><strong>❌ Generic answers:</strong> "I would use the best practices" is not an answer. Name the service, the trade-off, and the operational consequence.</li>
-                    <li><strong>❌ Jumping to solutions:</strong> Always ask for requirements first — RTO, RPO, budget, scale, compliance constraints. Skipping this is a junior mistake.</li>
-                    <li><strong>❌ Calling a service "the best":</strong> A Principal Architect selects services based on specific system requirements — cost, latency, scale — never on preference.</li>
+                    <li><strong>❌ Rambling:</strong> Five minutes on a VPC question signals inability to communicate
+                      with executives. Use the <strong>3-2-1 trick</strong>: 3 points, 2 minutes, 1 clear summary.</li>
+                    <li><strong>❌ Generic answers:</strong> "I would use the best practices" is not an answer. Name the
+                      service, the trade-off, and the operational consequence.</li>
+                    <li><strong>❌ Jumping to solutions:</strong> Always ask for requirements first — RTO, RPO, budget,
+                      scale, compliance constraints. Skipping this is a junior mistake.</li>
+                    <li><strong>❌ Calling a service "the best":</strong> A Principal Architect selects services based on
+                      specific system requirements — cost, latency, scale — never on preference.</li>
                   </ul>
                 </div>
               </div>
@@ -1740,7 +2431,8 @@
   </div>
 
   <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      aria-hidden="true">
       <path d="M3 6h18M3 12h18M3 18h18" />
     </svg>
   </button>
@@ -1772,7 +2464,7 @@
       });
 
       /* Accordion toggle — allows multiple open */
-      document.getElementById('qaAccordion').addEventListener('click', function(e) {
+      document.getElementById('qaAccordion').addEventListener('click', function (e) {
         var btn = e.target.closest('.home-qa-toggle');
         if (!btn) return;
         var item = btn.closest('.home-qa-item');
@@ -1781,7 +2473,7 @@
       });
 
       /* Video breakdown accordion toggle */
-      document.getElementById('qaVideoAccordion').addEventListener('click', function(e) {
+      document.getElementById('qaVideoAccordion').addEventListener('click', function (e) {
         var btn = e.target.closest('.home-qa-toggle');
         if (!btn) return;
         var item = btn.closest('.home-qa-item');
@@ -1790,7 +2482,7 @@
       });
 
       /* Compendium accordion toggle */
-      document.getElementById('qaCompendiumAccordion').addEventListener('click', function(e) {
+      document.getElementById('qaCompendiumAccordion').addEventListener('click', function (e) {
         var btn = e.target.closest('.home-qa-toggle');
         if (!btn) return;
         var item = btn.closest('.home-qa-item');
