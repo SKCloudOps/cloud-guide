@@ -1200,7 +1200,7 @@
 <li><strong>Data at rest:</strong> KMS for RDS, S3, EBS</li>
 <li><strong>Audit:</strong> CloudTrail, GuardDuty, Security Hub</li></ul>
 <div class="wn"><strong>⭐ STAR — Zero-Static-Credentials Architecture</strong><br>
-<strong>S:</strong> Both Takeda (pharma, GxP) and Société Générale (financial) required zero-tolerance security. Legacy used static AWS keys in pipelines.<br>
+<strong>S:</strong> Both client (pharma, GxP) and client (financial) required zero-tolerance security. Legacy used static AWS keys in pipelines.<br>
 <strong>T:</strong> Eliminate all static credentials while maintaining velocity + compliance.<br>
 <strong>A:</strong> Vault + GitHub OIDC — every pipeline authenticates via short-lived OIDC tokens. IAM least-privilege via Terraform policy-as-code. Built AI CI/CD Guardian with 42 heuristic patterns across 16 build systems to detect credential leaks.<br>
 <strong>R:</strong> Passed pharma audit with zero static-credential findings. Pattern became reusable GH Actions template. Onboarding: 2 weeks→2 hours.</div>`, g: "Security", gc: "g-sec"
@@ -1214,7 +1214,7 @@
 <strong>S:</strong> Mobile teams releasing iOS manually — Xcode on laptops, 2-day cycles, no audit trail, no GxP compliance.<br>
 <strong>T:</strong> End-to-end mobile CI/CD platform meeting pharma compliance, eliminating manual steps, scaling globally.<br>
 <strong>A:</strong> Self-hosted macOS runner fleet on GitHub Actions + Fastlane for build/test/sign/deploy. Vault+OIDC for secrets — Apple certs fetched at runtime. Artifacts in S3. Branch protection, multi-party approvals, Splunk logs for GxP audit. RDS Proxy for metadata service.<br>
-<strong>R:</strong> Release: 2 days→15 min. Build: 45→15 min. Onboarding: 2 weeks→2 hours. NPS: +45. Became standard platform at Takeda.</div>`, g: "Arch", gc: "g-aws"
+<strong>R:</strong> Release: 2 days→15 min. Build: 45→15 min. Onboarding: 2 weeks→2 hours. NPS: +45. Became standard platform at client.</div>`, g: "Arch", gc: "g-aws"
           },
 
           {
@@ -1338,7 +1338,7 @@
       {
         s: "Introduction", id: "intro", cls: "c-intro", icon: "👤", items: [
           { q: "How are you / How are you doing?", a: `<p>"I'm doing well, thank you. Excited to be here and looking forward to our conversation."</p>`, g: "Intro", gc: "g-intro" },
-          { q: "Would you like to introduce yourself first?", a: `<p>"I'm a Senior DevOps/Cloud Engineer with 15+ years of experience. Currently embedded at Takeda Pharmaceuticals as part of Cognizant, managing AWS infrastructure, Kubernetes clusters, and CI/CD pipelines at scale. I've led platform engineering initiatives that reduced service onboarding from 2 weeks to 2 hours, and I'm now targeting Cloud/Platform Architect roles where I can drive broader infrastructure strategy."</p>`, g: "Intro", gc: "g-intro" },
+          { q: "Would you like to introduce yourself first?", a: `<p>"I'm a Senior DevOps/Cloud Engineer with 15+ years of experience. Currently embedded at client Pharmaceuticals as part of my employerant, managing AWS infrastructure, Kubernetes clusters, and CI/CD pipelines at scale. I've led platform engineering initiatives that reduced service onboarding from 2 weeks to 2 hours, and I'm now targeting Cloud/Platform Architect roles where I can drive broader infrastructure strategy."</p>`, g: "Intro", gc: "g-intro" },
         ]
       },
       {
@@ -1363,7 +1363,7 @@
           { q: "Internet Gateway is attached to a subnet or a VPC?", a: `<p>IGW attaches to the <strong>VPC</strong>, not a subnet. A subnet becomes "public" when its route table routes 0.0.0.0/0 to the IGW.</p>`, g: "VPC", gc: "g-net" },
           { q: "Are you sure about that?", a: `<p>Yes. IGW is VPC-level. Public vs private is determined entirely by the route table — whether 0.0.0.0/0 points to IGW.</p>`, g: "VPC", gc: "g-net" },
           { q: "Where are the outgoing rules for a private subnet needing internet?", a: `<p>The rule <code>0.0.0.0/0 → NAT GW</code> goes in the <strong>private subnet's route table</strong>. NAT GW lives in the public subnet with its own route to IGW. Flow: private → NAT GW → IGW → internet.</p>`, g: "VPC", gc: "g-net" },
-          { q: "Have you worked with hybrid networking in AWS?", a: `<p>Yes — Site-to-Site VPN and Direct Connect at Takeda's environment.</p>`, g: "VPC", gc: "g-net" },
+          { q: "Have you worked with hybrid networking in AWS?", a: `<p>Yes — Site-to-Site VPN and Direct Connect at client's environment.</p>`, g: "VPC", gc: "g-net" },
           { q: "List all choices to connect on-prem to AWS?", a: `<ul><li><strong>Site-to-Site VPN</strong>: IPSec over internet; quick, lower cost, variable latency</li><li><strong>Direct Connect</strong>: Dedicated fiber; consistent low latency, higher cost</li><li><strong>Direct Connect + VPN</strong>: DX primary, VPN failover</li><li><strong>Transit Gateway + VPN/DX</strong>: Centralized multi-VPC connectivity</li><li><strong>VPN CloudHub</strong>: Hub-and-spoke for multiple remote sites</li></ul>`, g: "Network", gc: "g-net" },
           { q: "Any other networking options?", a: `<ul><li><strong>PrivateLink</strong>: Private service connectivity without internet</li><li><strong>VPC Peering</strong>: Direct VPC-to-VPC (same/cross-account/region)</li><li><strong>Transit Gateway</strong>: Hub for many VPCs + on-prem</li><li><strong>Outposts</strong>: AWS infrastructure in on-prem data centers</li></ul>`, g: "Network", gc: "g-net" },
         ]
@@ -1377,7 +1377,7 @@
       },
       {
         s: "Disaster Recovery", id: "dr", cls: "c-dr", icon: "🔄", items: [
-          { q: "Have you worked with disaster recovery?", a: `<p>Yes — cross-region DR strategies for critical workloads at Takeda on AWS.</p>`, g: "DR", gc: "g-dr" },
+          { q: "Have you worked with disaster recovery?", a: `<p>Yes — cross-region DR strategies for critical workloads at client on AWS.</p>`, g: "DR", gc: "g-dr" },
           { q: "What DR solution would you design?", a: `<ul><li><strong>Backup & Restore</strong>: Cheapest, highest RTO. S3 snapshots, RDS backups.</li><li><strong>Pilot Light</strong>: Core services (DB replication) always on; compute scales on failover.</li><li><strong>Warm Standby</strong>: Scaled-down prod in DR; faster failover.</li><li><strong>Active-Active</strong>: Both regions serve live traffic; lowest RTO/RPO, highest cost.</li></ul>`, g: "DR", gc: "g-dr" },
           { q: "How to design for both regions active at once with separate access control?", a: `<ul><li>Route 53 latency/weighted routing to split traffic</li><li>IAM roles + SCPs for region-specific access</li><li>DynamoDB Global Tables or Aurora Global Database</li><li>Cross-region KMS replication</li><li>Separate accounts per region with cross-account roles</li><li>CI/CD deploying to both regions simultaneously</li></ul>`, g: "DR", gc: "g-dr" },
         ]
@@ -1392,7 +1392,7 @@
       },
       {
         s: "Well-Architected Framework", id: "waf", cls: "c-waf", icon: "🏛", items: [
-          { q: "Have you worked with the Well-Architected Framework?", a: `<p>Yes — reviewed workloads at Takeda to identify gaps in reliability and cost optimization.</p>`, g: "WAF", gc: "g-waf" },
+          { q: "Have you worked with the Well-Architected Framework?", a: `<p>Yes — reviewed workloads at client to identify gaps in reliability and cost optimization.</p>`, g: "WAF", gc: "g-waf" },
           { q: "List all pillars and summarize each?", a: `<ul><li><strong>Operational Excellence</strong>: IaC, observability, runbooks, post-mortems</li><li><strong>Security</strong>: IAM, encryption, threat detection, incident response</li><li><strong>Reliability</strong>: Multi-AZ, auto-scaling, backups, chaos engineering</li><li><strong>Performance Efficiency</strong>: Right-sizing, serverless, caching, benchmarking</li><li><strong>Cost Optimization</strong>: RIs, Spot, rightsizing, lifecycle policies</li><li><strong>Sustainability</strong> (6th): Minimize environmental impact, reduce idle, efficient instances</li></ul>`, g: "WAF", gc: "g-waf" },
         ]
       },
@@ -1466,7 +1466,7 @@
           { q: "Does K8s support blue-green deployment?", a: `<ul><li>No native object, but use standard primitives:</li><li>Deploy green (new) with label <code>version: green</code></li><li>Blue (current) has <code>version: blue</code></li><li>Service selector → blue. Validate green. Switch to green.</li><li>With ArgoCD + Argo Rollouts: automated BlueGreen strategy</li></ul>`, g: "K8s", gc: "g-k8s" },
           { q: "Kubernetes best practices?", a: `<ul><li>Resource requests + limits on all containers</li><li>PodDisruptionBudgets</li><li>NetworkPolicies</li><li>RBAC — least-privilege SAs</li><li>Readiness + liveness probes</li><li>Namespaces for isolation</li><li>Non-root containers</li><li>HPA/VPA for autoscaling</li><li>Consistent labels/annotations</li><li>ConfigMaps/Secrets, not baked configs</li></ul>`, g: "K8s", gc: "g-k8s" },
           { q: "Are K8s Secrets really secrets?", a: `<p>No — just <strong>base64-encoded, not encrypted</strong>. Anyone with <code>kubectl get secret</code> access decodes instantly. Stored in etcd which may not be encrypted by default.</p>`, g: "K8s", gc: "g-k8s" },
-          { q: "How to make K8s Secrets more secure?", a: `<ul><li>Enable <strong>etcd encryption at rest</strong></li><li><strong>External Secrets Operator</strong> + Vault/Secrets Manager</li><li><strong>Sealed Secrets</strong> for GitOps</li><li>Strict RBAC on secret access</li><li>At Takeda: Vault + K8s auth + Vault Agent Injector — secrets injected as files, never stored in K8s</li></ul>`, g: "K8s", gc: "g-k8s" },
+          { q: "How to make K8s Secrets more secure?", a: `<ul><li>Enable <strong>etcd encryption at rest</strong></li><li><strong>External Secrets Operator</strong> + Vault/Secrets Manager</li><li><strong>Sealed Secrets</strong> for GitOps</li><li>Strict RBAC on secret access</li><li>At client: Vault + K8s auth + Vault Agent Injector — secrets injected as files, never stored in K8s</li></ul>`, g: "K8s", gc: "g-k8s" },
           { q: "K8s troubleshooting scenarios?", a: `<ul><li><strong>CrashLoopBackOff</strong>: Bad config, missing env. <code>logs --previous</code></li><li><strong>ImagePullBackOff</strong>: ECR auth, wrong tag. Check IRSA</li><li><strong>Pending</strong>: Insufficient resources, PVC unbound, selector mismatch</li><li><strong>OOMKilled</strong>: Memory limit exceeded</li><li><strong>DNS failure</strong>: CoreDNS overloaded</li><li><strong>Service unreachable</strong>: Wrong selector, port mismatch, NetworkPolicy</li></ul>`, g: "K8s", gc: "g-k8s" },
           { q: "Why do you need Ingress?", a: `<p>Without Ingress, each externally-accessible service needs its own LB — expensive and messy. Ingress consolidates external traffic through a single entry with host/path routing.</p>`, g: "K8s", gc: "g-k8s" },
           { q: "How is Ingress different from Services?", a: `<p><strong>Service</strong>: Internal cluster networking + LB between pods. <strong>Ingress</strong>: L7 routing in front of Services — host/path routing, SSL termination, external traffic management.</p>`, g: "K8s", gc: "g-k8s" },
