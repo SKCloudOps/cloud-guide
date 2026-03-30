@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AWS Compute Selection Guide — EC2 vs ECS vs EKS vs Lambda | Cloud Interview Guide</title>
+    <meta name="description" content="A deep-dive article on choosing the right AWS compute service. Decision framework, trade-off analysis, real-world STAR scenarios, and an interview cheat sheet for EC2, ECS, EKS, and Lambda." />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/devops.css" />
+
+    <meta name="keywords" content="AWS compute services, EC2 vs ECS, EKS vs Lambda, AWS Lambda, compute selection guide, cloud architecture article, ops tax, trade-off matrix" />
+    <meta name="author" content="SKCloudOps" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://skcloudops.github.io/cloud-guide/compute-article.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article" />
+    <meta property="article:section" content="Infrastructure" />
+    <meta property="article:tag" content="AWS compute,EC2,ECS,EKS,Lambda,trade-off matrix,cloud architecture" />
+    <meta property="og:title" content="AWS Compute Selection Guide — EC2 vs ECS vs EKS vs Lambda" />
+    <meta property="og:description" content="A deep-dive article on choosing the right AWS compute service. Decision framework, trade-off analysis, real-world STAR scenarios, and an interview cheat sheet." />
+    <meta property="og:url" content="https://skcloudops.github.io/cloud-guide/compute-article.html" />
+    <meta property="og:site_name" content="Cloud Interview Guide" />
+    <meta property="og:image" content="https://skcloudops.github.io/cloud-guide/assets/compute_services_matrix.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AWS Compute Selection Guide — EC2 vs ECS vs EKS vs Lambda" />
+    <meta name="twitter:description" content="A deep-dive article on choosing the right AWS compute service. Decision framework, trade-off analysis, real-world STAR scenarios, and an interview cheat sheet." />
+    <meta name="twitter:image" content="https://skcloudops.github.io/cloud-guide/assets/compute_services_matrix.png" />
+
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#0f172a">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "AWS Compute Selection Guide — EC2 vs ECS vs EKS vs Lambda",
+          "description": "A deep-dive article on choosing the right AWS compute service with a decision framework, trade-off analysis, real-world STAR scenarios, and an interview cheat sheet.",
+          "url": "https://skcloudops.github.io/cloud-guide/compute-article.html",
+          "image": "https://skcloudops.github.io/cloud-guide/assets/compute_services_matrix.png",
+          "author": {"@type": "Organization", "name": "SKCloudOps", "url": "https://skcloudops.github.io/cloud-guide/"},
+          "publisher": {
+            "@type": "Organization",
+            "name": "SKCloudOps",
+            "url": "https://skcloudops.github.io/cloud-guide/",
+            "logo": {"@type": "ImageObject", "url": "https://skcloudops.github.io/cloud-guide/assets/favicon.svg"}
+          },
+          "dateModified": "2026-03-30",
+          "inLanguage": "en-US",
+          "teaches": "AWS compute selection, EC2, ECS, EKS, Lambda trade-offs, real-world scenarios",
+          "educationalLevel": "Intermediate",
+          "about": [
+            {"@type":"Thing","name":"AWS EC2"},
+            {"@type":"Thing","name":"Amazon ECS"},
+            {"@type":"Thing","name":"Amazon EKS"},
+            {"@type":"Thing","name":"AWS Lambda"},
+            {"@type":"Thing","name":"Cloud Compute Architecture"}
+          ],
+          "isPartOf": {"@type": "WebSite", "name": "Cloud Interview Guide", "url": "https://skcloudops.github.io/cloud-guide/"}
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Cloud Interview Guide", "item": "https://skcloudops.github.io/cloud-guide/"},
+            {"@type": "ListItem", "position": 2, "name": "Infrastructure", "item": "https://skcloudops.github.io/cloud-guide/"},
+            {"@type": "ListItem", "position": 3, "name": "Compute Selection Guide", "item": "https://skcloudops.github.io/cloud-guide/compute-article.html"}
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <style>
+        /* ===== Article Page Styles ===== */
+        .article-main {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem 5rem;
+        }
+
+        /* ── Article Hero ── */
+        .article-hero {
+            margin-bottom: 2.75rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.3rem 0.875rem;
+            font-size: 0.6875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #fff;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 20px;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .article-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.04em;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+
+        .article-hero-lead {
+            font-size: 1.0625rem;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            max-width: 640px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        .article-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .article-meta-item svg {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+        }
+
+        /* ── Article Body ── */
+        .article-body h2 {
+            font-size: 1.625rem;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.03em;
+            margin: 3rem 0 1rem;
+            padding-bottom: 0.625rem;
+            border-bottom: 2px solid var(--border);
+            line-height: 1.25;
+        }
+
+        .article-body h2:first-child {
+            margin-top: 0;
+        }
+
+        .article-body h3 {
+            font-size: 1.1875rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            margin: 2rem 0 0.75rem;
+            line-height: 1.35;
+        }
+
+        .article-body h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 1.75rem 0 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .article-body p {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.125rem;
+        }
+
+        .article-body ul, .article-body ol {
+            margin: 0.75rem 0 1.25rem 1.5rem;
+        }
+
+        .article-body li {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-body li strong {
+            color: var(--text);
+        }
+
+        .article-body strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .article-body em {
+            color: var(--text-secondary);
+        }
+
+        /* ── Inline SVG Diagram Container ── */
+        .article-diagram {
+            margin: 2rem 0;
+            padding: 1.75rem;
+            background: #fafbfc;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .article-diagram-caption {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        /* ── Comparison Table ── */
+        .article-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .article-table th,
+        .article-table td {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-table th {
+            background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(124,58,237,0.04));
+            font-weight: 700;
+            color: var(--text);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .article-table td {
+            color: var(--text-secondary);
+        }
+
+        .article-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .article-table tr:hover td {
+            background: rgba(37,99,235,0.02);
+        }
+
+        /* ── Callout / Tip Blocks ── */
+        .article-callout {
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1.5rem;
+            margin: 1.75rem 0;
+            position: relative;
+        }
+
+        .article-callout h4 {
+            margin: 0 0 0.5rem !important;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .article-callout p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .article-callout p:last-child {
+            margin-bottom: 0;
+        }
+
+        .article-callout.tip {
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            border-left: 4px solid #22c55e;
+        }
+
+        .article-callout.tip h4 {
+            color: #15803d;
+        }
+
+        .article-callout.info {
+            background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+            border-left: 4px solid #3b82f6;
+        }
+
+        .article-callout.info h4 {
+            color: #1d4ed8;
+        }
+
+        .article-callout.warning {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border-left: 4px solid #f59e0b;
+        }
+
+        .article-callout.warning h4 {
+            color: #b45309;
+        }
+
+        /* ── Scenario Cards ── */
+        .scenario-card {
+            background: var(--content-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin: 1.5rem 0;
+            transition: border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .scenario-card:hover {
+            border-color: #c7d2fe;
+            box-shadow: 0 6px 24px rgba(37,99,235,0.08);
+        }
+
+        .scenario-card-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(37,99,235,0.04), rgba(124,58,237,0.02));
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .scenario-num {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: #fff;
+            font-size: 0.8125rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .scenario-card-header strong {
+            font-size: 0.9375rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.01em;
+        }
+
+        .scenario-card-body {
+            padding: 1.25rem 1.5rem;
+        }
+
+        .scenario-card-body p {
+            font-size: 0.9rem;
+            line-height: 1.75;
+            margin-bottom: 0.75rem;
+        }
+
+        .scenario-card-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .scenario-quote {
+            font-style: italic;
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-left: 3px solid var(--accent);
+            padding: 1rem 1.25rem;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin-top: 0.75rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.7;
+        }
+
+        /* ── Service Highlight Cards ── */
+        .service-highlight {
+            background: var(--content-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 1.75rem;
+            margin: 1.25rem 0;
+            border-top: 3px solid transparent;
+            transition: border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .service-highlight:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+
+        .service-highlight.ec2   { border-top-color: #f97316; }
+        .service-highlight.ecs   { border-top-color: #3b82f6; }
+        .service-highlight.eks   { border-top-color: #6366f1; }
+        .service-highlight.lambda { border-top-color: #8b5cf6; }
+
+        .service-highlight h3 {
+            margin-top: 0 !important;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .service-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-radius: 4px;
+            vertical-align: middle;
+        }
+
+        .service-tag.ec2   { background: #ffedd5; color: #9a3412; }
+        .service-tag.ecs   { background: #dbeafe; color: #1e40af; }
+        .service-tag.eks   { background: #e0e7ff; color: #3730a3; }
+        .service-tag.lambda { background: #ede9fe; color: #5b21b6; }
+
+        /* ── Section Divider ── */
+        .article-divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 3rem 0;
+        }
+
+        /* ── Back / Navigation Links ── */
+        .article-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .article-nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.6rem 1.25rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--accent);
+            background: var(--accent-light);
+            border: 1px solid var(--accent-mid);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.15s ease, box-shadow 0.15s ease;
+            letter-spacing: -0.01em;
+        }
+
+        .article-nav-link:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+        }
+
+        /* ── Footer ── */
+        .article-footer {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .article-main { padding: 1.75rem 1.25rem 3rem; }
+            .article-hero h1 { font-size: 1.875rem; }
+            .article-meta { flex-wrap: wrap; gap: 0.75rem; }
+            .scenario-card-body { padding: 1rem 1.25rem; }
+        }
+
+        @media (max-width: 480px) {
+            .article-hero h1 { font-size: 1.5rem; }
+            .article-body h2 { font-size: 1.375rem; }
+            .article-diagram { padding: 1rem; }
+            .service-highlight { padding: 1rem 1.25rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+            <div class="sidebar-header"><a class="sidebar-logo" href="index.html">Cloud Interview Guide</a></div>
+            <nav class="sidebar-nav">
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">Infrastructure</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+                        <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
+                        <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
+                        <a href="compute-article.html" class="sidebar-link active">Compute Article <span class="count">4</span></a>
+                        <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
+                    </div>
+                </div>
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">App Services</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
+                        <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+                        <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+                        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+                    </div>
+                </div>
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">Architecture &amp; Ops</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+                        <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+                        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+                        <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
+                    </div>
+                </div>
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">Foundations</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+                        <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
+                        <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+                        <a href="platform-interview.html" class="sidebar-link">Interview Prep <span class="count">188</span></a>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+        <main class="content-area" role="main">
+            <div class="article-main">
+
+                <!-- ===== Article Hero ===== -->
+                <header class="article-hero">
+                    <div class="article-hero-badge">Infrastructure · Article</div>
+                    <h1>Choosing the Right AWS Compute Service</h1>
+                    <p class="article-hero-lead">
+                        EC2, ECS, EKS, or Lambda? The answer is never "it depends" in an interview. Here's a structured framework to make the right call every time — with real-world scenarios you can use as STAR answers.
+                    </p>
+                    <div class="article-meta">
+                        <span class="article-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            8 min read
+                        </span>
+                        <span class="article-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            SKCloudOps
+                        </span>
+                        <span class="article-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            March 2026
+                        </span>
+                    </div>
+                </header>
+
+                <!-- ===== Article Body ===== -->
+                <div class="article-body">
+
+                    <!-- Section 1: The Decision Framework -->
+                    <h2 id="decision-framework">The Decision Framework</h2>
+
+                    <p>
+                        To choose the right compute service, you need to think like a designer: identify the <strong>"ops tax"</strong> you're willing to pay versus the level of control you actually need. In an interview, the best way to explain this is through a <strong>Trade-off Matrix</strong> focusing on management overhead, cost structure, and scaling behavior.
+                    </p>
+
+                    <!-- Inline SVG Diagram -->
+                    <div class="article-diagram">
+                        <svg viewBox="0 0 800 300" width="100%" height="auto" style="font-family: var(--font-sans);">
+                            <defs>
+                                <linearGradient id="gEc2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316" /><stop offset="100%" stop-color="#ea580c" /></linearGradient>
+                                <linearGradient id="gEcs" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3b82f6" /><stop offset="100%" stop-color="#2563eb" /></linearGradient>
+                                <linearGradient id="gEks" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366f1" /><stop offset="100%" stop-color="#4f46e5" /></linearGradient>
+                                <linearGradient id="gLam" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8b5cf6" /><stop offset="100%" stop-color="#7c3aed" /></linearGradient>
+                                <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+                                </marker>
+                            </defs>
+
+                            <!-- Axis -->
+                            <path d="M 120 250 L 710 250" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrow)" />
+                            <text x="415" y="275" fill="#64748b" font-size="14" font-weight="700" text-anchor="middle">Abstraction Level (Easier Management) →</text>
+                            <text x="415" y="295" fill="#94a3b8" font-size="12" font-weight="500" text-anchor="middle">Control Shift: OS → Container → Function</text>
+
+                            <!-- EC2 -->
+                            <g transform="translate(100, 40)">
+                                <rect width="130" height="180" rx="8" fill="white" stroke="#e2e8f0" stroke-width="2" />
+                                <rect width="130" height="40" rx="8" fill="url(#gEc2)" />
+                                <path d="M 0 30 L 130 30 L 130 40 L 0 40 Z" fill="url(#gEc2)" />
+                                <text x="65" y="25" fill="white" font-size="16" font-weight="800" text-anchor="middle">Amazon EC2</text>
+                                <text x="65" y="70" fill="#1e293b" font-size="12" font-weight="700" text-anchor="middle">Virtual Machines</text>
+                                <rect x="15" y="90" width="100" height="24" rx="4" fill="#fee2e2" />
+                                <text x="65" y="106" fill="#991b1b" font-size="10" font-weight="700" text-anchor="middle">High Ops Effort</text>
+                                <rect x="15" y="120" width="100" height="24" rx="4" fill="#ffedd5" />
+                                <text x="65" y="136" fill="#9a3412" font-size="10" font-weight="700" text-anchor="middle">Scale: Minutes</text>
+                                <text x="65" y="165" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">OS Control</text>
+                            </g>
+
+                            <!-- ECS -->
+                            <g transform="translate(250, 40)">
+                                <rect width="130" height="180" rx="8" fill="white" stroke="#e2e8f0" stroke-width="2" />
+                                <rect width="130" height="40" rx="8" fill="url(#gEcs)" />
+                                <path d="M 0 30 L 130 30 L 130 40 L 0 40 Z" fill="url(#gEcs)" />
+                                <text x="65" y="25" fill="white" font-size="16" font-weight="800" text-anchor="middle">Amazon ECS</text>
+                                <text x="65" y="70" fill="#1e293b" font-size="12" font-weight="700" text-anchor="middle">Containers</text>
+                                <rect x="15" y="90" width="100" height="24" rx="4" fill="#dbeafe" />
+                                <text x="65" y="106" fill="#1e40af" font-size="10" font-weight="700" text-anchor="middle">Med Ops Effort</text>
+                                <rect x="15" y="120" width="100" height="24" rx="4" fill="#bfdbfe" />
+                                <text x="65" y="136" fill="#1e3a8a" font-size="10" font-weight="700" text-anchor="middle">Scale: Seconds</text>
+                                <text x="65" y="165" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">AWS-Native</text>
+                            </g>
+
+                            <!-- EKS -->
+                            <g transform="translate(400, 40)">
+                                <rect width="130" height="180" rx="8" fill="white" stroke="#e2e8f0" stroke-width="2" />
+                                <rect width="130" height="40" rx="8" fill="url(#gEks)" />
+                                <path d="M 0 30 L 130 30 L 130 40 L 0 40 Z" fill="url(#gEks)" />
+                                <text x="65" y="25" fill="white" font-size="16" font-weight="800" text-anchor="middle">Amazon EKS</text>
+                                <text x="65" y="70" fill="#1e293b" font-size="12" font-weight="700" text-anchor="middle">Containers (K8s)</text>
+                                <rect x="15" y="90" width="100" height="24" rx="4" fill="#fee2e2" />
+                                <text x="65" y="106" fill="#991b1b" font-size="10" font-weight="700" text-anchor="middle">High Ops Effort</text>
+                                <rect x="15" y="120" width="100" height="24" rx="4" fill="#e0e7ff" />
+                                <text x="65" y="136" fill="#3730a3" font-size="10" font-weight="700" text-anchor="middle">Scale: Seconds</text>
+                                <text x="65" y="165" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">Multi-Cloud Portability</text>
+                            </g>
+
+                            <!-- Lambda -->
+                            <g transform="translate(550, 40)">
+                                <rect width="130" height="180" rx="8" fill="white" stroke="#e2e8f0" stroke-width="2" />
+                                <rect width="130" height="40" rx="8" fill="url(#gLam)" />
+                                <path d="M 0 30 L 130 30 L 130 40 L 0 40 Z" fill="url(#gLam)" />
+                                <text x="65" y="25" fill="white" font-size="16" font-weight="800" text-anchor="middle">AWS Lambda</text>
+                                <text x="65" y="70" fill="#1e293b" font-size="12" font-weight="700" text-anchor="middle">Functions</text>
+                                <rect x="15" y="90" width="100" height="24" rx="4" fill="#d1fae5" />
+                                <text x="65" y="106" fill="#065f46" font-size="10" font-weight="700" text-anchor="middle">Zero Ops Effort</text>
+                                <rect x="15" y="120" width="100" height="24" rx="4" fill="#ede9fe" />
+                                <text x="65" y="136" fill="#5b21b6" font-size="10" font-weight="700" text-anchor="middle">Scale: Millisecs</text>
+                                <text x="65" y="165" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">Event-Driven</text>
+                            </g>
+                        </svg>
+                        <div class="article-diagram-caption">Fig 1 — AWS Compute Trade-off Matrix: Abstraction vs. Operational Overhead</div>
+                    </div>
+
+                    <table class="article-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>EC2</th>
+                                <th>ECS</th>
+                                <th>EKS</th>
+                                <th>Lambda</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Abstraction</strong></td>
+                                <td>Virtual Machines</td>
+                                <td>Containers (Opinionated)</td>
+                                <td>Containers (Kubernetes)</td>
+                                <td>Functions (Serverless)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Scalability</strong></td>
+                                <td>Minutes (Auto Scaling Groups)</td>
+                                <td>Seconds (Fast)</td>
+                                <td>Seconds (Complex but powerful)</td>
+                                <td>Milliseconds (Instant)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cost Model</strong></td>
+                                <td>Pay per instance (24/7)</td>
+                                <td>Pay per resource (EC2 or Fargate)</td>
+                                <td>Pay per cluster + resources</td>
+                                <td>Pay per execution/duration</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ops Effort</strong></td>
+                                <td>High (Patching, OS, Scaling)</td>
+                                <td>Low/Medium</td>
+                                <td>High (K8s is complex)</td>
+                                <td>Minimal (No infra)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <hr class="article-divider">
+
+                    <!-- Section 2: Core Compute Services -->
+                    <h2 id="core-services">Core Compute Services Deep Dive</h2>
+
+                    <p>Let's break down each service with its ideal use case, cost profile, and the one thing you should always mention in an interview.</p>
+
+                    <div class="service-highlight ec2">
+                        <h3>EC2 — The "Brick and Mortar" <span class="service-tag ec2">VM</span></h3>
+                        <p><strong>Use Case:</strong> Legacy apps, specialized OS requirements, or 24/7 steady-state workloads where you need the absolute lowest unit cost.</p>
+                        <ul>
+                            <li><strong>Cost:</strong> Cheapest for high-utilization (80%+) steady workloads, but most expensive in "human time" (maintenance).</li>
+                            <li><strong>Scaling:</strong> Slowest. You have to wait for the VM to boot and the agent to initialize.</li>
+                        </ul>
+                        <div class="article-callout tip">
+                            <h4>🎯 Interview Tip</h4>
+                            <p>Mention EC2 when the application is not "cloud-native" or requires specific kernel-level tuning that containers can't provide.</p>
+                        </div>
+                    </div>
+
+                    <div class="service-highlight ecs">
+                        <h3>ECS — The "Efficient Factory" <span class="service-tag ecs">Container</span></h3>
+                        <p><strong>Use Case:</strong> Microservices on AWS where you want "Docker made easy." It's the AWS-native way to run containers without the overhead of Kubernetes.</p>
+                        <ul>
+                            <li><strong>Cost:</strong> Balanced. No control plane charge (unlike EKS).</li>
+                            <li><strong>Scaling:</strong> Faster than EC2. Ideal for web APIs and background workers.</li>
+                        </ul>
+                        <div class="article-callout tip">
+                            <h4>🎯 Interview Tip</h4>
+                            <p>Recommend ECS for teams that want to move fast on AWS without needing multi-cloud portability. Use Fargate to remove server management entirely.</p>
+                        </div>
+                    </div>
+
+                    <div class="service-highlight eks">
+                        <h3>EKS — The "Universal Operating System" <span class="service-tag eks">K8s</span></h3>
+                        <p><strong>Use Case:</strong> Large-scale enterprise systems, hybrid-cloud requirements, or when you already have a heavy investment in the Kubernetes ecosystem.</p>
+                        <ul>
+                            <li><strong>Cost:</strong> Includes a $0.10/hour cluster fee. Can be expensive for small setups but scales efficiently for massive fleets.</li>
+                        </ul>
+                        <div class="article-callout tip">
+                            <h4>🎯 Interview Tip</h4>
+                            <p>Highlight EKS for portability. If the company wants to run the same setup on-prem or on another cloud, EKS is the only choice.</p>
+                        </div>
+                    </div>
+
+                    <div class="service-highlight lambda">
+                        <h3>Lambda — The "Electric Switch" <span class="service-tag lambda">Serverless</span></h3>
+                        <p><strong>Use Case:</strong> Event-driven tasks (S3 uploads, DynamoDB streams), small APIs, or "glue code."</p>
+                        <ul>
+                            <li><strong>Cost:</strong> Cheapest for low/variable traffic. <em>Warning:</em> At high, constant volume, Lambda becomes significantly more expensive than EC2 or ECS.</li>
+                            <li><strong>Scaling:</strong> The gold standard. Scales to thousands of concurrent executions in milliseconds.</li>
+                        </ul>
+                        <div class="article-callout tip">
+                            <h4>🎯 Interview Tip</h4>
+                            <p>Use Lambda when traffic is unpredictable or bursty. If nobody uses the app at 3 AM, you pay $0.</p>
+                        </div>
+                    </div>
+
+                    <div class="article-callout info">
+                        <h4>The "Confusing" Comparisons</h4>
+                        <p><strong>ECS vs. EKS:</strong> "Use ECS if you want a simple, AWS-integrated container experience. Use EKS if you need the specific features of the Kubernetes API or multi-cloud flexibility."</p>
+                        <p><strong>Lambda vs. Containers:</strong> "Use Lambda if the task is short-lived (&lt; 15 mins) and event-driven. Use Containers (ECS/EKS) for long-running processes, WebSockets, or when you need consistent sub-millisecond local caching."</p>
+                    </div>
+
+                    <hr class="article-divider">
+
+                    <!-- Section 3: Real-World Scenarios -->
+                    <h2 id="scenarios">Real-World Scenarios (STAR Answers)</h2>
+
+                    <p>To impress an interviewer, you should move past definitions and speak in <strong>patterns and trade-offs</strong>. Here are four "Real-World Scenarios" you can use to explain exactly why you chose one over the others.</p>
+
+                    <div class="scenario-card">
+                        <div class="scenario-card-header">
+                            <span class="scenario-num">1</span>
+                            <strong>The Event-Driven "Image Processor" — Lambda</strong>
+                        </div>
+                        <div class="scenario-card-body">
+                            <p><strong>The Problem:</strong> A social media app where users upload profile pictures. You need to resize them and store them in S3.</p>
+                            <p><strong>The Choice:</strong> AWS Lambda.</p>
+                            <div class="scenario-quote">
+                                "I'd choose Lambda here because the workload is event-driven and bursty. If no one uploads a photo at 2 AM, we pay $0. If a celebrity joins and 10,000 photos hit at once, Lambda scales horizontally in milliseconds. Managing an EC2 server just to 'wait' for an upload is a waste of capital and 'ops' effort."
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scenario-card">
+                        <div class="scenario-card-header">
+                            <span class="scenario-num">2</span>
+                            <strong>The High-Traffic "E-Commerce API" — ECS with Fargate</strong>
+                        </div>
+                        <div class="scenario-card-body">
+                            <p><strong>The Problem:</strong> A standard REST API for a retail website. It needs to be reliable, handle thousands of requests per second, and deploy fast.</p>
+                            <p><strong>The Choice:</strong> ECS (Elastic Container Service).</p>
+                            <div class="scenario-quote">
+                                "For a standard microservice, I'd go with ECS. It offers the best balance of low management overhead and consistent performance. Unlike Lambda, we don't worry about 'Cold Starts.' Unlike EKS, we don't need a dedicated team to manage the Kubernetes control plane. It's the 'Goldilocks' solution for AWS-native teams who want to focus on code, not infrastructure."
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scenario-card">
+                        <div class="scenario-card-header">
+                            <span class="scenario-num">3</span>
+                            <strong>The Enterprise "Multi-Cloud Platform" — EKS</strong>
+                        </div>
+                        <div class="scenario-card-body">
+                            <p><strong>The Problem:</strong> A large financial institution that runs some services on-premise and some in AWS, requiring identical deployment tooling everywhere.</p>
+                            <p><strong>The Choice:</strong> EKS (Elastic Kubernetes Service).</p>
+                            <div class="scenario-quote">
+                                "I'd choose EKS for portability and ecosystem. If the business requirement is to avoid 'Cloud Lock-in' or if we are already using Helm charts and Prometheus for monitoring on-prem, EKS allows us to use the same manifests. It's an investment in a universal API, even though it has a higher management 'tax' than ECS."
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scenario-card">
+                        <div class="scenario-card-header">
+                            <span class="scenario-num">4</span>
+                            <strong>The "Legacy Monolith" or "High-Performance Database" — EC2</strong>
+                        </div>
+                        <div class="scenario-card-body">
+                            <p><strong>The Problem:</strong> A legacy Java application that requires 128GB of RAM and specific kernel tuning, or a self-managed database like Cassandra.</p>
+                            <p><strong>The Choice:</strong> EC2 (Elastic Compute Cloud).</p>
+                            <div class="scenario-quote">
+                                "I'd stick with EC2 when we need full control over the OS or specialized hardware (like GPUs or High-Memory instances). If the application isn't containerized and rewriting it is too expensive, EC2 is the most pragmatic choice. Also, for 24/7 steady-state workloads, Reserved Instances on EC2 provide the absolute lowest 'unit cost' per hour."
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="article-divider">
+
+                    <!-- Section 4: Interview Cheat Sheet -->
+                    <h2 id="cheat-sheet">Interview Cheat Sheet</h2>
+
+                    <p>When the interviewer asks a rapid-fire comparison, use this mental model to frame your response instantly:</p>
+
+                    <table class="article-table">
+                        <thead>
+                            <tr>
+                                <th>If the interviewer asks about...</th>
+                                <th>Your response should be...</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cost for low/variable traffic</td>
+                                <td><strong>Lambda wins</strong> (Pay-per-request).</td>
+                            </tr>
+                            <tr>
+                                <td>Cost for high steady-state</td>
+                                <td><strong>EC2/ECS wins</strong> (Lower hourly rate than Lambda).</td>
+                            </tr>
+                            <tr>
+                                <td>Speed of Scaling</td>
+                                <td><strong>Lambda (ms) &gt; ECS (seconds) &gt; EC2 (minutes).</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Operational Effort</td>
+                                <td><strong>Lambda (Zero) &lt; ECS (Low) &lt; EKS (High).</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="article-callout tip">
+                        <h4>🎯 Pro-Tip for your DevOps Background</h4>
+                        <p>When you answer, mention <strong>"Day 2 Operations."</strong></p>
+                        <p><em>Example: "I chose ECS not just for the initial setup, but because the patching and security overhead is significantly lower than managing an EKS cluster or a fleet of EC2s."</em></p>
+                    </div>
+
+                    <div class="article-callout warning">
+                        <h4>⚠️ Common Mistake in Interviews</h4>
+                        <p>Don't just pick a service — always explain the <strong>trade-off</strong>. Interviewers want to hear: "I chose X <em>over</em> Y because of Z." Naming a service without explaining what you're giving up signals a lack of depth.</p>
+                    </div>
+
+                    <!-- Navigation -->
+                    <nav class="article-nav">
+                        <a href="index.html" class="article-nav-link">⟵ Home Page</a>
+                        <a href="compute.html" class="article-nav-link">Compute Topics ⟶</a>
+                    </nav>
+
+                    <footer class="article-footer">
+                        <p>Cloud Interview Guide · Built by SKCloudOps · Open Source</p>
+                    </footer>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg>
+    </button>
+    <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6" />
+        </svg>
+    </button>
+    <script src="js/page.js"></script>
+</body>
+
+</html>
