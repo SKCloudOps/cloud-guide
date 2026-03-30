@@ -4,14 +4,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AWS Compute Services Guide | EC2, ECS, EKS, Lambda, Auto Scaling - Interview Prep</title>
-    <meta name="description"
-        content="Master AWS compute services for architect interviews. Deep dive into EC2 instance types, ECS vs EKS vs Lambda decision framework, Auto Scaling policies, ALB vs NLB comparison, and placement groups." />
+    <title>AWS Compute Services Guide | EC2 vs ECS vs EKS vs Lambda - Interview Prep</title>
+    <meta name="description" content="Master AWS compute services for architect interviews. Decision matrix and real-world scenarios comparing EC2, ECS, EKS, and Lambda focusing on ops tax, cost, and scale." />
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/devops.css" />
 
-    <meta name="keywords"
-        content="AWS EC2 instance types, ECS vs EKS vs Lambda, AWS Auto Scaling, ALB vs NLB, placement groups, AWS compute services, Fargate, App Runner, Graviton" />
+    <meta name="keywords" content="AWS compute services, EC2 vs ECS, EKS vs Lambda, AWS Lambda, AWS interview scenarios, cloud architecture, ops tax, trade-off matrix" />
     <meta name="author" content="SKCloudOps" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://skcloudops.github.io/cloud-guide/compute.html" />
@@ -19,68 +17,21 @@
     <!-- Open Graph -->
     <meta property="og:type" content="article" />
     <meta property="article:section" content="Infrastructure" />
-    <meta property="article:tag" content="AWS EC2,Auto Scaling,AWS Lambda,ECS,EKS,container orchestration" />
-    <meta property="og:title"
-        content="AWS Compute Services Guide | EC2, ECS, EKS, Lambda, Auto Scaling - Interview Prep" />
-    <meta property="og:description"
-        content="Master AWS compute services for architect interviews. Deep dive into EC2 instance types, ECS vs EKS vs Lambda decision framework, Auto Scaling policies, ALB vs NLB comparison, and placement groups." />
+    <meta property="og:title" content="AWS Compute Services Guide | EC2 vs ECS vs EKS vs Lambda" />
+    <meta property="og:description" content="Master AWS compute services for architect interviews. Decision matrix and real-world scenarios comparing EC2, ECS, EKS, and Lambda focusing on ops tax, cost, and scale." />
     <meta property="og:url" content="https://skcloudops.github.io/cloud-guide/compute.html" />
     <meta property="og:site_name" content="Cloud Interview Guide" />
-    <meta property="og:image" content="https://skcloudops.github.io/cloud-guide/assets/compute-overview.png" />
-    <meta property="og:image:alt" content="AWS Compute Services - EC2, ECS, EKS, Lambda Overview" />
+    <meta property="og:image" content="https://skcloudops.github.io/cloud-guide/assets/compute_services_matrix.png" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title"
-        content="AWS Compute Services Guide | EC2, ECS, EKS, Lambda, Auto Scaling - Interview Prep" />
-    <meta name="twitter:description"
-        content="Master AWS compute services for architect interviews. Deep dive into EC2 instance types, ECS vs EKS vs Lambda decision framework, Auto Scaling policies, ALB vs NLB comparison, and placement groups." />
-    <meta name="twitter:image" content="https://skcloudops.github.io/cloud-guide/assets/compute-overview.png" />
-    <meta name="twitter:image:alt" content="AWS Compute Services - EC2, ECS, EKS, Lambda Overview" />
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <meta name="theme-color" content="#0f172a">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "TechArticle",
-        "headline": "AWS Compute Services Guide",
-        "description": "Complete AWS compute services guide for architect interviews. EC2 instance families, Auto Scaling groups, load balancing, ECS vs EKS container orchestration, and Lambda compute patterns.",
-        "url": "https://skcloudops.github.io/cloud-guide/compute.html",
-        "image": "https://skcloudops.github.io/cloud-guide/assets/compute-overview.png",
-        "author": {"@type": "Organization", "name": "SKCloudOps", "url": "https://skcloudops.github.io/cloud-guide/"},
-        "publisher": {
-          "@type": "Organization",
-          "name": "SKCloudOps",
-          "url": "https://skcloudops.github.io/cloud-guide/",
-          "logo": {"@type": "ImageObject", "url": "https://skcloudops.github.io/cloud-guide/assets/favicon.svg"}
-        },
-        "dateModified": "2026-03-06",
-        "inLanguage": "en-US",
-        "teaches": "EC2 instance types, Auto Scaling strategies, load balancers, ECS vs EKS, Lambda compute",
-        "educationalLevel": "Intermediate",
-        "about": [
-    {"@type":"Thing","name":"AWS EC2"},
-    {"@type":"Thing","name":"Auto Scaling"},
-    {"@type":"Thing","name":"AWS Lambda"},
-    {"@type":"Thing","name":"Amazon ECS"},
-    {"@type":"Thing","name":"Amazon EKS"},
-    {"@type":"Thing","name":"Load Balancing"}
-        ],
-        "isPartOf": {"@type": "WebSite", "name": "Cloud Interview Guide", "url": "https://skcloudops.github.io/cloud-guide/"}
-      },
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {"@type": "ListItem", "position": 1, "name": "Cloud Interview Guide", "item": "https://skcloudops.github.io/cloud-guide/"},
-          {"@type": "ListItem", "position": 2, "name": "Infrastructure", "item": "https://skcloudops.github.io/cloud-guide/"},
-          {"@type": "ListItem", "position": 3, "name": "AWS Compute Services Guide", "item": "https://skcloudops.github.io/cloud-guide/compute.html"}
-        ]
-      }
-    ]
-  }
-  </script></head>
+    <meta name="twitter:title" content="AWS Compute Services Guide - Interview Prep" />
+    <meta name="twitter:description" content="Master AWS compute services for architect interviews. Decision matrix and real-world scenarios comparing EC2, ECS, EKS, and Lambda." />
+    <meta name="twitter:image" content="https://skcloudops.github.io/cloud-guide/assets/compute_services_matrix.png" />
+
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#0f172a">
+</head>
 
 <body>
     <div class="app-layout">
@@ -90,8 +41,7 @@
                 <div class="nav-menu-item">
                     <div class="nav-menu-label">Infrastructure</div>
                     <div class="nav-menu-dropdown">
-                        <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span
-                                class="count">6</span></a>
+                        <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
                         <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
                         <a href="compute.html" class="sidebar-link active">Compute <span class="count">5</span></a>
                         <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
@@ -111,8 +61,7 @@
                     <div class="nav-menu-dropdown">
                         <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
                         <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
-                        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span
-                                class="count">15</span></a>
+                        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
                         <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
                     </div>
                 </div>
@@ -122,8 +71,7 @@
                         <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
                         <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
                         <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
-                        <a href="platform-interview.html" class="sidebar-link">Interview Prep <span
-                                class="count">12</span></a>
+                        <a href="platform-interview.html" class="sidebar-link">Interview Prep <span class="count">188</span></a>
                     </div>
                 </div>
             </nav>
@@ -148,661 +96,331 @@
                 <aside class="toc-sidebar" id="tocSidebar">
                     <div class="toc-title">In This Section</div>
                     <nav class="toc-nav" id="tocNav">
-                        <a href="#instance-types" class="toc-link" data-section="instance-types"><span
-                                class="toc-dot"></span>EC2 Instance Types</a>
-                        <a href="#compute-decision" class="toc-link" data-section="compute-decision"><span
-                                class="toc-dot"></span>Compute Decision Framework</a>
-                        <a href="#auto-scaling" class="toc-link" data-section="auto-scaling"><span
-                                class="toc-dot"></span>Auto Scaling Deep Dive</a>
-                        <a href="#load-balancers" class="toc-link" data-section="load-balancers"><span
-                                class="toc-dot"></span>ALB vs NLB vs CLB vs GWLB</a>
-                        <a href="#placement-groups" class="toc-link" data-section="placement-groups"><span
-                                class="toc-dot"></span>Placement Groups & Tenancy</a>
-                        <a href="#compute-interview-questions" class="toc-link" data-section="compute-interview-questions"><span class="toc-dot"></span>Interview Questions</a>
+                        <a href="#decision-matrix" class="toc-link" data-section="decision-matrix"><span class="toc-dot"></span>The Decision Matrix</a>
+                        <a href="#core-services" class="toc-link" data-section="core-services"><span class="toc-dot"></span>Core Services</a>
+                        <a href="#scenarios" class="toc-link" data-section="scenarios"><span class="toc-dot"></span>Real-World Scenarios</a>
+                        <a href="#interview-cheat-sheet" class="toc-link" data-section="interview-cheat-sheet"><span class="toc-dot"></span>Interview Cheat Sheet</a>
                     </nav>
-                    <div class="toc-keyboard-hint"><kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
-                    </div>
+                    <div class="toc-keyboard-hint"><kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search</div>
                 </aside>
                 <div class="content-panel">
                     <header class="page-hero">
-                        <div class="hero-badge" style="background:linear-gradient(135deg,#ec4899, #be185d)">Compute
-                        </div>
-                        <h1>Compute Interview Guide</h1>
-                        <p class="hero-lead">EC2 instance families, ECS vs EKS vs Lambda, Auto Scaling, load balancers,
-                            and placement groups.</p>
+                        <div class="hero-badge" style="background:linear-gradient(135deg,#10b981, #059669)">Compute</div>
+                        <h1>Compute Services Guide</h1>
+                        <p class="hero-lead">Trade-off Matrix for EC2, ECS, EKS, and Lambda focusing on management overhead, cost structure, and scaling behavior. 
+                           <br/><br/><a href="index.html" style="font-size: 0.9em; text-decoration: underline; color: var(--accent);">⟵ Go to Home Page</a>
+                        </p>
                         <div class="hero-stats">
-                            <div class="stat"><span class="stat-number">5</span><span class="stat-label">Topics</span>
-                            </div>
-                            <div class="stat"><span class="stat-number">4</span><span class="stat-label">Diagrams</span>
-                            </div>
+                            <div class="stat"><span class="stat-number">4</span><span class="stat-label">Topics</span></div>
                         </div>
                     </header>
 
-                    <!-- Hero overview diagram -->
-                    <figure class="hero-diagram">
-                        <img src="assets/compute-overview.png" alt="AWS Compute Services Decision Framework Diagram" />
-                        <figcaption>Compute — Services Decision Framework</figcaption>
-                    </figure>
-
-                    <!-- Topic 1: Instance Types -->
-                    <article id="instance-types" class="topic-card" data-difficulty="intermediate">
+                    <!-- Topic 1: The Decision Matrix -->
+                    <article id="decision-matrix" class="topic-card" data-difficulty="beginner">
                         <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
-                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
-                            </div>
-                            <h2>EC2 Instance Types</h2>
-                            <button class="review-btn" title="Mark as reviewed"
-                                aria-label="Mark Instance Types as reviewed"><svg width="20" height="20"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20 6L9 17l-5-5" />
-                                </svg></button>
+                            <div class="topic-meta"><span class="difficulty-badge beginner">Beginner</span></div>
+                            <h2>The Decision Matrix</h2>
+                            <button class="review-btn" title="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" /></svg></button>
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
-                            <figure class="topic-diagram">
-                                <img src="assets/compute-overview.png" alt="EC2 Instance Types and Families Diagram" />
-                            </figure>
                             <div class="topic-body">
-                                <p>Know the instance family naming: <strong>m5a.xlarge</strong> = m (family) 5
-                                    (generation) a (AMD) . xlarge (size)</p>
-                                <table class="topic-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Family</th>
-                                            <th>Optimized For</th>
-                                            <th>Examples</th>
-                                            <th>Use Cases</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>M (General Purpose)</strong></td>
-                                            <td>Balanced compute/memory</td>
-                                            <td>m7g, m6i, m5</td>
-                                            <td>Web servers, app servers, small DBs</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>C (Compute)</strong></td>
-                                            <td>High CPU performance</td>
-                                            <td>c7g, c6i, c5</td>
-                                            <td>Batch processing, ML inference, gaming servers</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>R (Memory)</strong></td>
-                                            <td>High memory-to-CPU ratio</td>
-                                            <td>r7g, r6i, r5</td>
-                                            <td>In-memory caches, real-time analytics, SAP HANA</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>I (Storage)</strong></td>
-                                            <td>High sequential read/write</td>
-                                            <td>i4i, i3</td>
-                                            <td>Data warehouses, distributed file systems</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>P/G (Accelerated)</strong></td>
-                                            <td>GPU compute</td>
-                                            <td>p5, g5, inf2</td>
-                                            <td>ML training, video encoding, 3D rendering</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>T (Burstable)</strong></td>
-                                            <td>Burst CPU when needed</td>
-                                            <td>t3, t4g</td>
-                                            <td>Dev/test, low-traffic web servers, micro-services</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <p>To choose the right compute service, you need to think like a designer: identify the "ops tax" you’re willing to pay versus the level of control you actually need. In an interview, the best way to explain this is through a <strong>Trade-off Matrix</strong> focusing on management overhead, cost structure, and scaling behavior.</p>
+                                
+                                <!-- Enterprise Diagram: Compute Trade-off Matrix -->
+                                <div class="topic-diagram" style="margin: 2rem 0; padding: 1.5rem; background: #fafafa; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                                    <svg viewBox="0 0 800 300" width="100%" height="auto" style="font-family: var(--font-sans);">
+                                        <defs>
+                                            <linearGradient id="gEc2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316" /><stop offset="100%" stop-color="#ea580c" /></linearGradient>
+                                            <linearGradient id="gEcs" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3b82f6" /><stop offset="100%" stop-color="#2563eb" /></linearGradient>
+                                            <linearGradient id="gEks" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366f1" /><stop offset="100%" stop-color="#4f46e5" /></linearGradient>
+                                            <linearGradient id="gLam" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8b5cf6" /><stop offset="100%" stop-color="#7c3aed" /></linearGradient>
+                                            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+                                            </marker>
+                                        </defs>
 
-                                <h4>Graviton (ARM) — The Cost Optimizer</h4>
-                                <ul>
-                                    <li><strong>20% cheaper</strong> than x86 equivalent (m7g vs m7i)</li>
-                                    <li><strong>40% better price-performance</strong> — most workloads run faster AND
-                                        cheaper</li>
-                                    <li><strong>Suffix "g"</strong> — m7g, c7g, r7g are Graviton-based</li>
-                                    <li><strong>Compatibility:</strong> Linux, containers (Docker/EKS), most languages
-                                        work out of the box. Not for Windows workloads.</li>
-                                </ul>
+                                        <!-- Axis lines -->
+                                        <path d="M 120 250 L 710 250" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrow)" />
+                                        <text x="415" y="275" fill="#64748b" font-size="14" font-weight="700" text-anchor="middle">Abstraction Level (Easier Management) &rarr;</text>
+                                        <text x="415" y="295" fill="#94a3b8" font-size="12" font-weight="500" text-anchor="middle">Control Shift: OS &rarr; Container &rarr; Function</text>
 
-                                <div class="answer-block correct">
-                                    <h4>🎯 Key Takeaway</h4>
-                                    <p><strong>Interview tip:</strong> <em>"I default to Graviton instances (m7g, c7g)
-                                            for 20% cost savings. For burstable workloads like dev/test, T3 instances
-                                            with CPU credits. For memory-intensive like ElastiCache, R-family. I always
-                                            check Compute Optimizer for right-sizing recommendations."</em></p>
+                                        <!-- EC2 -->
+                                        <g transform="translate(100, 40)">
+                                            <rect width="130" height="180" rx="8" fill="white" stroke="#e2e8f0" stroke-width="2" />
+                                            <rect width="130" height="40" rx="8" fill="url(#gEc2)" />
+                                            <path d="M 0 30 L 130 30 L 130 40 L 0 40 Z" fill="url(#gEc2)" />
+                                            <text x="65" y="25" fill="white" font-size="16" font-weight="800" text-anchor="middle">Amazon EC2</text>
+                                            <text x="65" y="70" fill="#1e293b" font-size="12" font-weight="700" text-anchor="middle">Virtual Machines</text>
+                                            
+                                            <rect x="15" y="90" width="100" height="24" rx="4" fill="#fee2e2" />
+                                            <text x="65" y="106" fill="#991b1b" font-size="10" font-weight="700" text-anchor="middle">High Ops Effort</text>
+                                            
+                                            <rect x="15" y="120" width="100" height="24" rx="4" fill="#ffedd5" />
+                                            <text x="65" y="136" fill="#9a3412" font-size="10" font-weight="700" text-anchor="middle">Scale: Minutes</text>
+                                            
+                                            <text x="65" y="165" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">OS Control</text>
+                                        </g>
+
+                                        <!-- ECS -->
+                                        <g transform="translate(250, 40)">
+                                            <rect width="130" height="180" rx="8" fill="white" stroke="#e2e8f0" stroke-width="2" />
+                                            <rect width="130" height="40" rx="8" fill="url(#gEcs)" />
+                                            <path d="M 0 30 L 130 30 L 130 40 L 0 40 Z" fill="url(#gEcs)" />
+                                            <text x="65" y="25" fill="white" font-size="16" font-weight="800" text-anchor="middle">Amazon ECS</text>
+                                            <text x="65" y="70" fill="#1e293b" font-size="12" font-weight="700" text-anchor="middle">Containers</text>
+                                            
+                                            <rect x="15" y="90" width="100" height="24" rx="4" fill="#dbeafe" />
+                                            <text x="65" y="106" fill="#1e40af" font-size="10" font-weight="700" text-anchor="middle">Med Ops Effort</text>
+                                            
+                                            <rect x="15" y="120" width="100" height="24" rx="4" fill="#bfdbfe" />
+                                            <text x="65" y="136" fill="#1e3a8a" font-size="10" font-weight="700" text-anchor="middle">Scale: Seconds</text>
+                                            
+                                            <text x="65" y="165" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">AWS-Native</text>
+                                        </g>
+
+                                        <!-- EKS -->
+                                        <g transform="translate(400, 40)">
+                                            <rect width="130" height="180" rx="8" fill="white" stroke="#e2e8f0" stroke-width="2" />
+                                            <rect width="130" height="40" rx="8" fill="url(#gEks)" />
+                                            <path d="M 0 30 L 130 30 L 130 40 L 0 40 Z" fill="url(#gEks)" />
+                                            <text x="65" y="25" fill="white" font-size="16" font-weight="800" text-anchor="middle">Amazon EKS</text>
+                                            <text x="65" y="70" fill="#1e293b" font-size="12" font-weight="700" text-anchor="middle">Containers (K8s)</text>
+                                            
+                                            <rect x="15" y="90" width="100" height="24" rx="4" fill="#fee2e2" />
+                                            <text x="65" y="106" fill="#991b1b" font-size="10" font-weight="700" text-anchor="middle">High Ops Effort</text>
+                                            
+                                            <rect x="15" y="120" width="100" height="24" rx="4" fill="#e0e7ff" />
+                                            <text x="65" y="136" fill="#3730a3" font-size="10" font-weight="700" text-anchor="middle">Scale: Seconds</text>
+                                            
+                                            <text x="65" y="165" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">Multi-Cloud Portability</text>
+                                        </g>
+
+                                        <!-- Lambda -->
+                                        <g transform="translate(550, 40)">
+                                            <rect width="130" height="180" rx="8" fill="white" stroke="#e2e8f0" stroke-width="2" />
+                                            <rect width="130" height="40" rx="8" fill="url(#gLam)" />
+                                            <path d="M 0 30 L 130 30 L 130 40 L 0 40 Z" fill="url(#gLam)" />
+                                            <text x="65" y="25" fill="white" font-size="16" font-weight="800" text-anchor="middle">AWS Lambda</text>
+                                            <text x="65" y="70" fill="#1e293b" font-size="12" font-weight="700" text-anchor="middle">Functions</text>
+                                            
+                                            <rect x="15" y="90" width="100" height="24" rx="4" fill="#d1fae5" />
+                                            <text x="65" y="106" fill="#065f46" font-size="10" font-weight="700" text-anchor="middle">Zero Ops Effort</text>
+                                            
+                                            <rect x="15" y="120" width="100" height="24" rx="4" fill="#ede9fe" />
+                                            <text x="65" y="136" fill="#5b21b6" font-size="10" font-weight="700" text-anchor="middle">Scale: Millisecs</text>
+                                            
+                                            <text x="65" y="165" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">Event-Driven</text>
+                                        </g>
+                                    </svg>
                                 </div>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Topic 2: Compute Decision -->
-                    <article id="compute-decision" class="topic-card" data-difficulty="advanced">
-                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
-                            <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
-                            <h2>Compute Decision Framework</h2>
-                            <button class="review-btn" title="Mark as reviewed"
-                                aria-label="Mark Compute Decision as reviewed"><svg width="20" height="20"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20 6L9 17l-5-5" />
-                                </svg></button>
-                            <span class="expand-icon" aria-hidden="true"></span>
-                        </div>
-                        <div class="topic-card-body">
-                            <figure class="topic-diagram">
-                                <img src="assets/compute-overview.png" alt="Compute Decision Framework Diagram" />
-                            </figure>
-                            <div class="topic-body">
-                                <p>The #1 question: "When would you use EC2 vs ECS vs EKS vs Lambda vs Fargate?"</p>
-                                <table class="topic-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Service</th>
-                                            <th>You Manage</th>
-                                            <th>AWS Manages</th>
-                                            <th>Best For</th>
-                                            <th>Max Duration</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>EC2</strong></td>
-                                            <td>OS, runtime, scaling, patching</td>
-                                            <td>Hardware</td>
-                                            <td>Full control, GPU, Windows, stateful</td>
-                                            <td>Unlimited</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>ECS on EC2</strong></td>
-                                            <td>EC2 instances, capacity</td>
-                                            <td>Container orchestration</td>
-                                            <td>Teams comfortable with Docker, not K8s</td>
-                                            <td>Unlimited</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>ECS on Fargate</strong></td>
-                                            <td>Container definition only</td>
-                                            <td>Infrastructure, scaling</td>
-                                            <td>Serverless containers, predictable tasks</td>
-                                            <td>Unlimited</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>EKS</strong></td>
-                                            <td>K8s config, nodes (or Auto Mode)</td>
-                                            <td>K8s control plane</td>
-                                            <td>Multi-cloud portability, K8s ecosystem</td>
-                                            <td>Unlimited</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Lambda</strong></td>
-                                            <td>Function code only</td>
-                                            <td>Everything</td>
-                                            <td>Event-driven, short tasks, APIs</td>
-                                            <td>15 minutes</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>App Runner</strong></td>
-                                            <td>Container image or source code</td>
-                                            <td>Build, deploy, scale, LB</td>
-                                            <td>Simple web apps, fastest path to production</td>
-                                            <td>Unlimited</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <h4>Decision Tree</h4>
-                                <ol>
-                                    <li><strong>Short-lived event processing (&lt;15 min)?</strong> → Lambda</li>
-                                    <li><strong>Simple web app, minimal ops?</strong> → App Runner</li>
-                                    <li><strong>Containers, no Kubernetes expertise?</strong> → ECS on Fargate</li>
-                                    <li><strong>Containers, need K8s or multi-cloud?</strong> → EKS (Auto Mode for
-                                        managed)</li>
-                                    <li><strong>Full OS control, GPU, Windows?</strong> → EC2</li>
-                                </ol>
-
-                                <div class="answer-block correct">
-                                    <h4>🎯 Key Takeaway</h4>
-                                    <p><strong>Interview tip:</strong> <em>"I start from serverless and work down:
-                                            Lambda for event-driven, Fargate for containerized workloads without
-                                            managing infrastructure, EKS for teams already invested in Kubernetes. EC2
-                                            only when I need full OS control, specific instance types (GPU), or Windows.
-                                            The trend is moving UP the stack — less infra management."</em></p>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Topic 3: Auto Scaling -->
-                    <article id="auto-scaling" class="topic-card" data-difficulty="intermediate">
-                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
-                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
-                            </div>
-                            <h2>Auto Scaling Deep Dive</h2>
-                            <button class="review-btn" title="Mark as reviewed"
-                                aria-label="Mark Auto Scaling as reviewed"><svg width="20" height="20"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20 6L9 17l-5-5" />
-                                </svg></button>
-                            <span class="expand-icon" aria-hidden="true"></span>
-                        </div>
-                        <div class="topic-card-body">
-                            <figure class="topic-diagram">
-                                <img src="assets/compute-auto-scaling.png" alt="Auto Scaling Deep Dive Diagram" />
-                            </figure>
-                            <div class="topic-body">
-                                <table class="topic-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Policy Type</th>
-                                            <th>How It Works</th>
-                                            <th>Best For</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>Target Tracking</strong></td>
-                                            <td>Set target (e.g., CPU = 50%), ASG adjusts to maintain</td>
-                                            <td>Default — simplest, handles most cases</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Step Scaling</strong></td>
-                                            <td>Different actions at different thresholds (CPU &gt;60: +1, &gt;80: +3)
-                                            </td>
-                                            <td>Fine-grained control, gradual responses</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Simple Scaling</strong></td>
-                                            <td>Add/remove fixed number on alarm</td>
-                                            <td>Legacy — use step or target tracking instead</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Scheduled Scaling</strong></td>
-                                            <td>Set min/max at specific times</td>
-                                            <td>Predictable patterns (business hours, events)</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Predictive Scaling</strong></td>
-                                            <td>ML forecasts demand, pre-scales</td>
-                                            <td>Recurring patterns (daily traffic spikes)</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <h4>Scaling Best Practices</h4>
-                                <ul>
-                                    <li><strong>Scale on the right metric</strong> — CPU is not always best. Use custom
-                                        metrics: request count per target, queue depth (SQS), custom latency.</li>
-                                    <li><strong>Cooldown periods</strong> — Default 300 seconds. Prevents thrashing. Set
-                                        shorter for fast-scaling apps.</li>
-                                    <li><strong>Health checks</strong> — Use ELB health checks (not just EC2 status). An
-                                        instance can be "running" but app is crashed.</li>
-                                    <li><strong>Launch templates &gt; Launch configs</strong> — Templates support
-                                        versioning, mixed instances, Spot integration.</li>
-                                    <li><strong>Warm pools</strong> — Pre-initialize instances for faster scaling
-                                        (useful for apps with long startup times).</li>
-                                </ul>
-
-                                <div class="answer-block correct">
-                                    <h4>🎯 Key Takeaway</h4>
-                                    <p><strong>Interview tip:</strong> <em>"I use Target Tracking as my default scaling
-                                            policy (e.g., CPU at 50%), combined with Predictive Scaling for apps with
-                                            daily patterns. For SQS-driven workloads, I scale on
-                                            ApproximateNumberOfMessagesVisible. I always use ELB health checks over EC2
-                                            status checks — and warm pools if the app takes minutes to start."</em></p>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Topic 4: Load Balancers -->
-                    <article id="load-balancers" class="topic-card" data-difficulty="intermediate">
-                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
-                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span>
-                            </div>
-                            <h2>ALB vs NLB vs CLB vs GWLB</h2>
-                            <button class="review-btn" title="Mark as reviewed"
-                                aria-label="Mark Load Balancers as reviewed"><svg width="20" height="20"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20 6L9 17l-5-5" />
-                                </svg></button>
-                            <span class="expand-icon" aria-hidden="true"></span>
-                        </div>
-                        <div class="topic-card-body">
-                            <figure class="topic-diagram">
-                                <img src="assets/compute-load-balancers.png"
-                                    alt="ALB vs NLB vs CLB vs GWLB Comparison Diagram" />
-                            </figure>
-                            <div class="topic-body">
+                                
                                 <table class="topic-table">
                                     <thead>
                                         <tr>
                                             <th>Feature</th>
-                                            <th>ALB</th>
-                                            <th>NLB</th>
-                                            <th>CLB (Legacy)</th>
-                                            <th>GWLB</th>
+                                            <th>EC2</th>
+                                            <th>ECS</th>
+                                            <th>EKS</th>
+                                            <th>Lambda</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><strong>Layer</strong></td>
-                                            <td>Layer 7 (HTTP/HTTPS)</td>
-                                            <td>Layer 4 (TCP/UDP/TLS)</td>
-                                            <td>Layer 4 & 7</td>
-                                            <td>Layer 3 (IP)</td>
+                                            <td><strong>Abstraction</strong></td>
+                                            <td>Virtual Machines</td>
+                                            <td>Containers (Opinionated)</td>
+                                            <td>Containers (Kubernetes)</td>
+                                            <td>Functions (Serverless)</td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Protocol</strong></td>
-                                            <td>HTTP, HTTPS, gRPC, WebSocket</td>
-                                            <td>TCP, UDP, TLS</td>
-                                            <td>HTTP, TCP</td>
-                                            <td>All IP traffic</td>
+                                            <td><strong>Scalability</strong></td>
+                                            <td>Minutes (Auto Scaling Groups)</td>
+                                            <td>Seconds (Fast)</td>
+                                            <td>Seconds (Complex but powerful)</td>
+                                            <td>Milliseconds (Instant)</td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Performance</strong></td>
-                                            <td>Millions of req/sec</td>
-                                            <td>Millions of packets/sec, static IP</td>
-                                            <td>Limited</td>
-                                            <td>Transparent</td>
+                                            <td><strong>Cost Model</strong></td>
+                                            <td>Pay per instance (24/7)</td>
+                                            <td>Pay per resource (EC2 or Fargate)</td>
+                                            <td>Pay per cluster + resources</td>
+                                            <td>Pay per execution/duration</td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Routing</strong></td>
-                                            <td>Path, host, header, query string, source IP</td>
-                                            <td>Port-based only</td>
-                                            <td>Basic</td>
-                                            <td>N/A</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Static IP</strong></td>
-                                            <td>❌ (use Global Accelerator)</td>
-                                            <td>✅ Elastic IP per AZ</td>
-                                            <td>❌</td>
-                                            <td>❌</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Best For</strong></td>
-                                            <td>Web apps, microservices, API routing</td>
-                                            <td>Ultra-low latency, IoT, gaming, static IP</td>
-                                            <td>Avoid (legacy)</td>
-                                            <td>Third-party firewalls (Palo Alto)</td>
+                                            <td><strong>Ops Effort</strong></td>
+                                            <td>High (Patching, OS, Scaling)</td>
+                                            <td>Low/Medium</td>
+                                            <td>High (K8s is complex)</td>
+                                            <td>Minimal (No infra)</td>
                                         </tr>
                                     </tbody>
                                 </table>
-
-                                <h4>When to Use What</h4>
-                                <ul>
-                                    <li><strong>Web application?</strong> → ALB (path-based routing to different
-                                        services)</li>
-                                    <li><strong>Need static IP / whitelisting?</strong> → NLB (Elastic IP per AZ)</li>
-                                    <li><strong>Non-HTTP protocol (gaming, IoT)?</strong> → NLB (TCP/UDP)</li>
-                                    <li><strong>Third-party security appliance?</strong> → GWLB (transparent inspection)
-                                    </li>
-                                    <li><strong>ALB + static IP?</strong> → NLB in front of ALB, or use Global
-                                        Accelerator</li>
-                                </ul>
-
-                                <div class="answer-block correct">
-                                    <h4>🎯 Key Takeaway</h4>
-                                    <p><strong>Interview tip:</strong> <em>"ALB for 95% of web workloads — it does
-                                            path-based routing, host-based routing, and integrates with WAF. NLB for
-                                            TCP/UDP workloads or when I need static IPs (firewall whitelisting). Never
-                                            CLB for new projects. If I need ALB features + static IP, I put a NLB in
-                                            front of ALB."</em></p>
-                                </div>
                             </div>
                         </div>
                     </article>
 
-                    <!-- Topic 5: Placement Groups -->
-                    <article id="placement-groups" class="topic-card" data-difficulty="advanced">
+                    <!-- Topic 2: Core Services -->
+                    <article id="core-services" class="topic-card" data-difficulty="intermediate">
+                        <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+                            <div class="topic-meta"><span class="difficulty-badge intermediate">Intermediate</span></div>
+                            <h2>Core Compute Services</h2>
+                            <button class="review-btn" title="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" /></svg></button>
+                            <span class="expand-icon" aria-hidden="true"></span>
+                        </div>
+                        <div class="topic-card-body">
+                            <div class="topic-body">
+                                <h3>1. EC2: The "Brick and Mortar"</h3>
+                                <p><strong>Use Case:</strong> Legacy apps, specialized OS requirements, or 24/7 steady-state workloads where you need the absolute lowest unit cost.</p>
+                                <ul>
+                                    <li><strong>Cost:</strong> Cheapest for high-utilization (80%+) steady workloads, but most expensive in "human time" (maintenance).</li>
+                                    <li><strong>Scaling:</strong> Slowest. You have to wait for the VM to boot and the agent to initialize.</li>
+                                </ul>
+                                <div class="answer-block correct">
+                                    <p><strong>🎯 Interview Tip:</strong> Mention EC2 when the application is not "cloud-native" or requires specific kernel-level tuning that containers can't provide.</p>
+                                </div>
+
+                                <h3>2. ECS: The "Efficient Factory"</h3>
+                                <p><strong>Use Case:</strong> Microservices on AWS where you want "Docker made easy." It’s the AWS-native way to run containers without the overhead of Kubernetes.</p>
+                                <ul>
+                                    <li><strong>Cost:</strong> Balanced. No control plane charge (unlike EKS).</li>
+                                    <li><strong>Scaling:</strong> Faster than EC2. Ideal for web APIs and background workers.</li>
+                                </ul>
+                                <div class="answer-block correct">
+                                    <p><strong>🎯 Interview Tip:</strong> Recommend ECS for teams that want to move fast on AWS without needing multi-cloud portability. Use Fargate to remove server management entirely.</p>
+                                </div>
+
+                                <h3>3. EKS: The "Universal Operating System"</h3>
+                                <p><strong>Use Case:</strong> Large-scale enterprise systems, hybrid-cloud requirements, or when you already have a heavy investment in the Kubernetes ecosystem.</p>
+                                <ul>
+                                    <li><strong>Cost:</strong> Includes a $0.10/hour cluster fee. Can be expensive for small setups but scales efficiently for massive fleets.</li>
+                                </ul>
+                                <div class="answer-block correct">
+                                    <p><strong>🎯 Interview Tip:</strong> Highlight EKS for portability. If the company wants to run the same setup on-prem or on another cloud, EKS is the only choice.</p>
+                                </div>
+
+                                <h3>4. Lambda: The "Electric Switch"</h3>
+                                <p><strong>Use Case:</strong> Event-driven tasks (S3 uploads, DynamoDB streams), small APIs, or "glue code."</p>
+                                <ul>
+                                    <li><strong>Cost:</strong> Cheapest for low/variable traffic. <em>Warning:</em> At high, constant volume, Lambda becomes significantly more expensive than EC2 or ECS.</li>
+                                    <li><strong>Scaling:</strong> The gold standard. Scales to thousands of concurrent executions in milliseconds.</li>
+                                </ul>
+                                <div class="answer-block correct">
+                                    <p><strong>🎯 Interview Tip:</strong> Use Lambda when traffic is unpredictable or bursty. If nobody uses the app at 3 AM, you pay $0.</p>
+                                </div>
+                                
+                                <br/>
+                                <h4>How to Answer the "Confusing" Scenarios:</h4>
+                                <ul>
+                                    <li><strong>ECS vs. EKS:</strong> "Use ECS if you want a simple, AWS-integrated container experience. Use EKS if you need the specific features of the Kubernetes API or multi-cloud flexibility."</li>
+                                    <li><strong>Lambda vs. Containers:</strong> "Use Lambda if the task is short-lived (&lt; 15 mins) and event-driven. Use Containers (ECS/EKS) for long-running processes, WebSockets, or when you need consistent sub-millisecond local caching."</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Topic 3: Real-World Scenarios -->
+                    <article id="scenarios" class="topic-card" data-difficulty="advanced">
                         <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
                             <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
-                            <h2>Placement Groups & Tenancy</h2>
-                            <button class="review-btn" title="Mark as reviewed"
-                                aria-label="Mark Placement Groups as reviewed"><svg width="20" height="20"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20 6L9 17l-5-5" />
-                                </svg></button>
+                            <h2>Real-World Scenarios</h2>
+                            <button class="review-btn" title="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" /></svg></button>
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
-                            <figure class="topic-diagram">
-                                <img src="assets/compute-placement-groups.png"
-                                    alt="Placement Groups and Tenancy Diagram" />
-                            </figure>
                             <div class="topic-body">
-                                <table class="topic-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Type</th>
-                                            <th>How</th>
-                                            <th>Use Case</th>
-                                            <th>Trade-off</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>Cluster</strong></td>
-                                            <td>All instances on same rack (same AZ)</td>
-                                            <td>HPC, ML training, low-latency inter-node communication</td>
-                                            <td>If rack fails, all fail</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Spread</strong></td>
-                                            <td>Each instance on different hardware (max 7/AZ)</td>
-                                            <td>Critical instances that must be isolated</td>
-                                            <td>Limited to 7 per AZ</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Partition</strong></td>
-                                            <td>Instances grouped into partitions on separate racks</td>
-                                            <td>HDFS, HBase, Cassandra (partition-aware)</td>
-                                            <td>Must configure partition awareness</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <p>To impress an interviewer, you should move past definitions and speak in patterns and trade-offs. Here are four "Real-World Scenarios" you can use to explain exactly why you chose one over the others.</p>
+                                
+                                <div class="iq-list" style="margin-top:20px;">
+                                    <div class="iq-item open" style="margin-bottom:1.5rem; border:1px solid var(--border); border-radius:8px;">
+                                        <div style="padding:1rem; border-bottom:1px solid var(--border); background:rgba(37,99,235,0.05);">
+                                            <strong>Scenario 1: The Event-Driven "Image Processor" (Lambda)</strong>
+                                        </div>
+                                        <div style="padding:1rem;">
+                                            <p><strong>The Problem:</strong> A social media app where users upload profile pictures. You need to resize them and store them in S3.</p>
+                                            <p><strong>The Choice:</strong> AWS Lambda.</p>
+                                            <p><strong>The "Why" (Interview Answer):</strong> <br><em>"I'd choose Lambda here because the workload is event-driven and bursty. If no one uploads a photo at 2 AM, we pay $0. If a celebrity joins and 10,000 photos hit at once, Lambda scales horizontally in milliseconds. Managing an EC2 server just to 'wait' for an upload is a waste of capital and 'ops' effort."</em></p>
+                                        </div>
+                                    </div>
 
-                                <h4>Tenancy Options</h4>
-                                <table class="topic-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Tenancy</th>
-                                            <th>What</th>
-                                            <th>Cost</th>
-                                            <th>Use Case</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>Shared (default)</strong></td>
-                                            <td>Hardware shared with other customers</td>
-                                            <td>Baseline</td>
-                                            <td>99% of workloads</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Dedicated Instance</strong></td>
-                                            <td>Your instances on dedicated hardware (may share with your other
-                                                instances)</td>
-                                            <td>~2x</td>
-                                            <td>Compliance requiring physical isolation</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Dedicated Host</strong></td>
-                                            <td>Entire physical server is yours</td>
-                                            <td>Highest</td>
-                                            <td>License compliance (per-socket, per-core licenses like Oracle, Windows
-                                                Server)</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                    <div class="iq-item open" style="margin-bottom:1.5rem; border:1px solid var(--border); border-radius:8px;">
+                                        <div style="padding:1rem; border-bottom:1px solid var(--border); background:rgba(37,99,235,0.05);">
+                                            <strong>Scenario 2: The High-Traffic "E-Commerce API" (ECS with Fargate)</strong>
+                                        </div>
+                                        <div style="padding:1rem;">
+                                            <p><strong>The Problem:</strong> A standard REST API for a retail website. It needs to be reliable, handle thousands of requests per second, and deploy fast.</p>
+                                            <p><strong>The Choice:</strong> ECS (Elastic Container Service).</p>
+                                            <p><strong>The "Why" (Interview Answer):</strong> <br><em>"For a standard microservice, I’d go with ECS. It offers the best balance of low management overhead and consistent performance. Unlike Lambda, we don't worry about 'Cold Starts.' Unlike EKS, we don't need a dedicated team to manage the Kubernetes control plane. It’s the 'Goldilocks' solution for AWS-native teams who want to focus on code, not infrastructure."</em></p>
+                                        </div>
+                                    </div>
 
-                                <div class="answer-block correct">
-                                    <h4>🎯 Key Takeaway</h4>
-                                    <p><strong>Interview tip:</strong> <em>"Cluster placement for low-latency HPC (all
-                                            on same rack), Spread placement for critical instances that need hardware
-                                            isolation (max 7/AZ), Partition for distributed systems like Cassandra that
-                                            are partition-aware. Dedicated Hosts specifically for bring-your-own-license
-                                            scenarios."</em></p>
+                                    <div class="iq-item open" style="margin-bottom:1.5rem; border:1px solid var(--border); border-radius:8px;">
+                                        <div style="padding:1rem; border-bottom:1px solid var(--border); background:rgba(37,99,235,0.05);">
+                                            <strong>Scenario 3: The Enterprise "Multi-Cloud Platform" (EKS)</strong>
+                                        </div>
+                                        <div style="padding:1rem;">
+                                            <p><strong>The Problem:</strong> A large financial institution that runs some services on-premise and some in AWS, requiring identical deployment tooling everywhere.</p>
+                                            <p><strong>The Choice:</strong> EKS (Elastic Kubernetes Service).</p>
+                                            <p><strong>The "Why" (Interview Answer):</strong> <br><em>"I’d choose EKS for portability and ecosystem. If the business requirement is to avoid 'Cloud Lock-in' or if we are already using Helm charts and Prometheus for monitoring on-prem, EKS allows us to use the same manifests. It’s an investment in a universal API, even though it has a higher management 'tax' than ECS."</em></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="iq-item open" style="margin-bottom:1.5rem; border:1px solid var(--border); border-radius:8px;">
+                                        <div style="padding:1rem; border-bottom:1px solid var(--border); background:rgba(37,99,235,0.05);">
+                                            <strong>Scenario 4: The "Legacy Monolith" or "High-Performance Database" (EC2)</strong>
+                                        </div>
+                                        <div style="padding:1rem;">
+                                            <p><strong>The Problem:</strong> A legacy Java application that requires 128GB of RAM and specific kernel tuning, or a self-managed database like Cassandra.</p>
+                                            <p><strong>The Choice:</strong> EC2 (Elastic Compute Cloud).</p>
+                                            <p><strong>The "Why" (Interview Answer):</strong> <br><em>"I’d stick with EC2 when we need full control over the OS or specialized hardware (like GPUs or High-Memory instances). If the application isn't containerized and rewriting it is too expensive, EC2 is the most pragmatic choice. Also, for 24/7 steady-state workloads, Reserved Instances on EC2 provide the absolute lowest 'unit cost' per hour."</em></p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </article>
 
-                    <!-- ====== INTERVIEW QUESTIONS ====== -->
-                    <article id="compute-interview-questions" class="topic-card" data-difficulty="advanced"
-                        data-keywords="interview questions compute ec2 ecs eks lambda auto scaling load balancers spot instances">
+                    <!-- Topic 4: Interview Cheat Sheet -->
+                    <article id="interview-cheat-sheet" class="topic-card" data-difficulty="advanced">
                         <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
-                            <div class="topic-meta">
-                                <span class="difficulty-badge advanced">Advanced</span>
-                            </div>
-                            <h2>Interview Questions — Compute</h2>
-                            <button class="review-btn" title="Mark as reviewed"
-                                aria-label="Mark Interview Questions as reviewed"><svg width="20" height="20"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20 6L9 17l-5-5" />
-                                </svg></button>
+                            <div class="topic-meta"><span class="difficulty-badge advanced">Advanced</span></div>
+                            <h2>Quick "Interview Cheat Sheet" for Trade-offs</h2>
+                            <button class="review-btn" title="Mark as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" /></svg></button>
                             <span class="expand-icon" aria-hidden="true"></span>
                         </div>
                         <div class="topic-card-body">
                             <div class="topic-body">
-                                <p>Compute is the backbone of every architecture. These questions test your ability to pick the right compute model and design for scale.</p>
-                                <div class="iq-controls">
-                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.add('open'))">Show All Answers</button>
-                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.remove('open'))">Hide All</button>
-                                </div>
-                                <ol class="iq-list">
-                                    <li class="iq-item">
-                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
-                                            <span class="iq-num"></span>
-                                            <span class="iq-text">Your application gets 10x traffic every Black Friday (from 1,000 to 10,000 requests/second). Design the auto-scaling strategy. Would you use reactive scaling, predictive scaling, or both?</span>
-                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
-                                        </div>
-                                        <div class="iq-answer">
-                                            <div class="iq-answer-inner">
-                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
-                                                <div class="iq-answer-text">Predictive scaling (pre-warm capacity before the event), target tracking for steady-state, and warm pools for fast instance launch. Combine with Spot Instances for cost savings on fault-tolerant tiers.</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="iq-item">
-                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
-                                            <span class="iq-num"></span>
-                                            <span class="iq-text">Compare EC2, ECS on Fargate, EKS, and Lambda for a batch processing workload that runs for 20 minutes every hour. Which would you choose and why?</span>
-                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
-                                        </div>
-                                        <div class="iq-answer">
-                                            <div class="iq-answer-inner">
-                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
-                                                <div class="iq-answer-text">ECS on Fargate (no infrastructure management, pay per task, supports long-running tasks). Lambda has a 15-minute limit so it's out. EC2 wastes money idling 40 min/hr. EKS is overkill for a single batch job.</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="iq-item">
-                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
-                                            <span class="iq-num"></span>
-                                            <span class="iq-text">Explain Spot Instances. Your ML training job takes 6 hours. How would you use Spot to save 70-90% while handling the 2-minute interruption warning?</span>
-                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
-                                        </div>
-                                        <div class="iq-answer">
-                                            <div class="iq-answer-inner">
-                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
-                                                <div class="iq-answer-text">Use checkpointing (save model state to S3 every N minutes). Diversify across 4+ instance types/AZs. Use Spot Fleet or mixed instance ASG. On interruption signal, save checkpoint and terminate gracefully.</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="iq-item">
-                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
-                                            <span class="iq-num"></span>
-                                            <span class="iq-text">When would you choose an NLB over an ALB? A team is using ALB for a gRPC service and experiencing high latency. What's the issue?</span>
-                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
-                                        </div>
-                                        <div class="iq-answer">
-                                            <div class="iq-answer-inner">
-                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
-                                                <div class="iq-answer-text">ALB operates at Layer 7 (HTTP/HTTPS). NLB operates at Layer 4 (TCP/UDP) with ultra-low latency. gRPC uses HTTP/2 — ALB supports it, but NLB with TLS passthrough may have lower overhead. Also consider: NLB supports static IPs.</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="iq-item">
-                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
-                                            <span class="iq-num"></span>
-                                            <span class="iq-text">You need to run an HPC (High-Performance Computing) simulation that requires low-latency, high-bandwidth communication between 50 instances. Which placement group would you use and why?</span>
-                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
-                                        </div>
-                                        <div class="iq-answer">
-                                            <div class="iq-answer-inner">
-                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
-                                                <div class="iq-answer-text">Cluster placement group — packs instances on the same rack for lowest latency and 25 Gbps throughput between instances. Trade-off: if the rack fails, all instances fail. Use EFA (Elastic Fabric Adapter) for HPC networking.</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="iq-item">
-                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
-                                            <span class="iq-num"></span>
-                                            <span class="iq-text">Your organization has Oracle database licenses that require per-socket, per-core licensing. How do you run them on AWS while staying compliant?</span>
-                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
-                                        </div>
-                                        <div class="iq-answer">
-                                            <div class="iq-answer-inner">
-                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
-                                                <div class="iq-answer-text">Dedicated Hosts — you control the physical server, can track sockets/cores for licensing. Dedicated Instances don't give you host-level visibility. Also consider: AWS License Manager for tracking.</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="iq-item">
-                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
-                                            <span class="iq-num"></span>
-                                            <span class="iq-text">An application on EC2 has a cold start problem — new instances take 8 minutes to fully initialize (download config, warm caches, JVM warmup). During scaling events, users see errors. How do you fix it?</span>
-                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
-                                        </div>
-                                        <div class="iq-answer">
-                                            <div class="iq-answer-inner">
-                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
-                                                <div class="iq-answer-text">Auto Scaling warm pools (pre-initialized instances in stopped state, launch in seconds). Also consider: golden AMIs (bake dependencies into the image), lifecycle hooks (delay traffic until health check passes).</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="iq-item">
-                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
-                                            <span class="iq-num"></span>
-                                            <span class="iq-text">A startup is choosing between ECS and EKS. They have a team of 3 developers, 8 microservices, and no Kubernetes experience. What do you recommend?</span>
-                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
-                                        </div>
-                                        <div class="iq-answer">
-                                            <div class="iq-answer-inner">
-                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
-                                                <div class="iq-answer-text">ECS on Fargate — simpler, fully managed, no cluster management. EKS adds operational complexity (control plane upgrades, node management, K8s expertise required). ECS is sufficient until they need K8s-specific features (service mesh, CRDs, multi-cloud).</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="iq-item">
-                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
-                                            <span class="iq-num"></span>
-                                            <span class="iq-text">Explain cross-zone load balancing. An ALB has 10 targets in us-east-1a and 2 targets in us-east-1b. How is traffic distributed with cross-zone enabled vs disabled?</span>
-                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
-                                        </div>
-                                        <div class="iq-answer">
-                                            <div class="iq-answer-inner">
-                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
-                                                <div class="iq-answer-text">Enabled: traffic distributed evenly across all 12 targets (each gets ~8.3%). Disabled: each AZ gets 50% — so 1a targets get 5% each, 1b targets get 25% each (overloaded). ALB enables cross-zone by default (free). NLB charges for cross-zone.</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="iq-item">
-                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
-                                            <span class="iq-num"></span>
-                                            <span class="iq-text">Your company wants to save money on compute. Currently running 100 m5.xlarge instances 24/7. 60% have steady-state usage, 30% are dev/test (business hours only), and 10% are batch processing. Design the purchasing strategy.</span>
-                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
-                                        </div>
-                                        <div class="iq-answer">
-                                            <div class="iq-answer-inner">
-                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
-                                                <div class="iq-answer-text">60 instances → Compute Savings Plans (1yr, up to 66% off). 30 dev/test → scheduled scaling (stop nights/weekends) + On-Demand. 10 batch → Spot Instances (up to 90% off). Consider Graviton (m7g) for additional 20% savings.</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ol>
-                                <div class="answer-block correct">
-                                    <h4>Preparation Strategy</h4>
-                                    <p>Compute questions test your ability to <strong>match the right tool to the workload</strong>. Always start with: "What are the workload characteristics?" — duration, traffic pattern, fault tolerance, compliance requirements. The answer follows from the constraints.</p>
+                                <table class="topic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>If the interviewer asks about...</th>
+                                            <th>Your response should be...</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Cost for low/variable traffic</td>
+                                            <td><strong>Lambda wins</strong> (Pay-per-request).</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cost for high steady-state</td>
+                                            <td><strong>EC2/ECS wins</strong> (Lower hourly rate than Lambda).</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Speed of Scaling</td>
+                                            <td><strong>Lambda (ms) &gt; ECS (seconds) &gt; EC2 (minutes).</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Operational Effort</td>
+                                            <td><strong>Lambda (Zero) &lt; ECS (Low) &lt; EKS (High).</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                                <div class="answer-block correct" style="margin-top:2rem;">
+                                    <h4>🎯 Pro-Tip for your DevOps Background:</h4>
+                                    <p>When you answer, mention <strong>"Day 2 Operations."</strong></p>
+                                    <p><em>Example: "I chose ECS not just for the initial setup, but because the patching and security overhead is significantly lower than managing an EKS cluster or a fleet of EC2s."</em></p>
                                 </div>
                             </div>
                         </div>
@@ -812,14 +430,8 @@
             </div>
         </main>
     </div>
-    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu"><svg width="24" height="24"
-            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M3 6h18M3 12h18M3 18h18" />
-        </svg></button>
-    <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top"><svg
-            width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 15l-6-6-6 6" />
-        </svg></button>
+    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg></button>
+    <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6" /></svg></button>
     <script src="js/page.js"></script>
 </body>
 
