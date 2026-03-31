@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Security Architecture — Comprehensive Reference</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0c0c0b;
+            --card: #141413;
+            --code: #1a1a18;
+            --tp: #e8e6de;
+            --ts: #9c9a8e;
+            --td: #6b6a62;
+            --border: #2a2a26;
+            --coral: #D85A30;
+            --purple: #7F77DD;
+            --teal: #1D9E75;
+            --blue: #378ADD;
+            --amber: #BA7517;
+            --red: #E24B4A;
+            --green: #639922;
+            --gray: #888780;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', 'Helvetica Neue', sans-serif;
+            background: var(--bg);
+            color: var(--tp);
+            min-height: 100vh;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--tp);
+            margin: 28px 0 16px;
+            letter-spacing: -0.02em;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', 'SF Mono', monospace;
+            font-size: 12px;
+            background: var(--code);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        strong {
+            font-weight: 600;
+            color: var(--tp);
+        }
+
+        svg {
+            display: block;
+            margin: 16px 0;
+            width: 100%;
+        }
+
+        svg text {
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        .header {
+            border-bottom: 1px solid var(--border);
+            padding: 28px 32px 24px;
+        }
+
+        .header-tag {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+
+        .header-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--coral);
+        }
+
+        .header-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--coral);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: var(--ts);
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        .nav {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            padding: 0 24px;
+        }
+
+        .nav button {
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            padding: 14px 18px;
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--ts);
+            cursor: pointer;
+            white-space: nowrap;
+            font-family: inherit;
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        .nav button:hover {
+            color: var(--tp);
+        }
+
+        .nav button.active {
+            font-weight: 600;
+        }
+
+        .content {
+            padding: 28px 32px 48px;
+            max-width: 760px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-left-width: 3px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+        }
+
+        .card h4 {
+            margin: 0 0 12px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--tp);
+            letter-spacing: -0.01em;
+        }
+
+        .card-body {
+            font-size: 13.5px;
+            line-height: 1.7;
+            color: var(--ts);
+        }
+
+        .card-body p {
+            margin: 0 0 10px;
+        }
+
+        .card-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-right: 6px;
+            margin-bottom: 8px;
+        }
+
+        .codeblock {
+            background: var(--code);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', 'SF Mono', monospace;
+            overflow-x: auto;
+            line-height: 1.6;
+            color: var(--tp);
+            margin: 12px 0;
+            white-space: pre;
+        }
+
+        .compare {
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .compare-header {
+            display: grid;
+            grid-template-columns: 120px 1fr 1fr;
+            gap: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 8px;
+        }
+
+        .compare-header div {
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .compare-row {
+            display: grid;
+            grid-template-columns: 120px 1fr 1fr;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .compare-row .label {
+            font-weight: 600;
+            color: var(--tp);
+        }
+
+        .compare-row .val {
+            color: var(--ts);
+        }
+
+        .step {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            min-width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--tp);
+            margin-bottom: 4px;
+        }
+
+        .step-detail {
+            font-size: 13px;
+            color: var(--ts);
+            line-height: 1.65;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="header-tag">
+            <div class="header-dot"></div><span class="header-label">AWS Security Architecture</span>
+        </div>
+        <h1>Comprehensive security mechanism flow</h1>
+        <p>Defense-in-depth reference with all architectural diagrams — edge to data layer, IAM OIDC federation, STS
+            chains, SCPs, ABAC, VPC endpoints, WAF rules, and detection pipelines.</p>
+    </div>
+
+    <div class="nav" id="nav">
+        <button class="active" data-tab="overview" style="color:var(--coral);border-bottom-color:var(--coral)">◈ Defense
+            in depth</button>
+        <button data-tab="edge" data-color="var(--coral)">◆ Edge & perimeter</button>
+        <button data-tab="network" data-color="var(--blue)">◇ Network security</button>
+        <button data-tab="identity" data-color="var(--purple)">◉ Identity & access</button>
+        <button data-tab="data" data-color="var(--teal)">◎ Data protection</button>
+        <button data-tab="detection" data-color="var(--amber)">◐ Detection & response</button>
+    </div>
+
+    <div class="content">
+
+        <!-- ==================== OVERVIEW ==================== -->
+        <div class="section active" id="overview">
+
+            <svg viewBox="0 0 680 520">
+                <defs>
+                    <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                        orient="auto-start-reverse">
+                        <path d="M2 1L8 5L2 9" fill="none" stroke="#9c9a8e" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </marker>
+                </defs>
+                <text x="340" y="30" text-anchor="middle" fill="#e8e6de" font-size="14" font-weight="500">Request flow
+                    through defense layers</text>
+                <rect x="255" y="50" width="170" height="44" rx="8" fill="#2c2c2a" stroke="#888780"
+                    stroke-width="0.5" /><text x="340" y="72" text-anchor="middle" dominant-baseline="central"
+                    fill="#D3D1C7" font-size="14" font-weight="500">Internet request</text>
+                <line x1="340" y1="94" x2="340" y2="118" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a1)" />
+                <rect x="60" y="118" width="560" height="72" rx="14" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="340" y="140" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">Layer 1 — Edge &amp; perimeter</text><text x="340"
+                    y="158" text-anchor="middle" dominant-baseline="central" fill="#F0997B" font-size="12">Route 53 →
+                    CloudFront → WAF → Shield (DDoS)</text>
+                <line x1="340" y1="190" x2="340" y2="214" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a1)" />
+                <rect x="60" y="214" width="560" height="72" rx="14" fill="#0a2640" stroke="#378ADD"
+                    stroke-width="0.5" /><text x="340" y="236" text-anchor="middle" dominant-baseline="central"
+                    fill="#B5D4F4" font-size="14" font-weight="500">Layer 2 — Network security</text><text x="340"
+                    y="254" text-anchor="middle" dominant-baseline="central" fill="#85B7EB" font-size="12">VPC → NACLs →
+                    Security groups → PrivateLink</text>
+                <line x1="340" y1="286" x2="340" y2="310" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a1)" />
+                <rect x="60" y="310" width="560" height="72" rx="14" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="340" y="332" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">Layer 3 — Identity &amp; access</text><text x="340"
+                    y="350" text-anchor="middle" dominant-baseline="central" fill="#AFA9EC" font-size="12">IAM → STS →
+                    OIDC federation → SCPs → ABAC</text>
+                <line x1="340" y1="382" x2="340" y2="406" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a1)" />
+                <rect x="60" y="406" width="560" height="72" rx="14" fill="#062e24" stroke="#1D9E75"
+                    stroke-width="0.5" /><text x="340" y="428" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="14" font-weight="500">Layer 4 — Data protection</text><text x="340"
+                    y="446" text-anchor="middle" dominant-baseline="central" fill="#5DCAA5" font-size="12">KMS → S3
+                    encryption → TLS in transit → Secrets Manager</text>
+                <text x="40" y="505" text-anchor="start" fill="#9c9a8e" font-size="12">Continuous monitoring across all
+                    layers:</text>
+                <text x="40" y="518" text-anchor="start" fill="#9c9a8e" font-size="12">CloudTrail → GuardDuty → Config →
+                    Security Hub → EventBridge → SNS</text>
+            </svg>
+
+            <div class="card" style="border-left-color:var(--coral)">
+                <div><span class="tag" style="background:#D85A3018;color:var(--coral)">Defense in depth</span></div>
+                <h4>Key principle</h4>
+                <div class="card-body">
+                    <p>Each layer provides independent protection. A request must pass through every layer. If one layer
+                        is bypassed or compromised, subsequent layers still enforce security. Continuous detection
+                        services monitor across all layers simultaneously.</p>
+                    <p>Policy evaluation at identity layer: explicit deny → SCP boundary → permission boundary →
+                        identity ∩ resource policy intersection. Deny at any point = denied.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== EDGE ==================== -->
+        <div class="section" id="edge">
+
+            <svg viewBox="0 0 680 580">
+                <defs>
+                    <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                        orient="auto-start-reverse">
+                        <path d="M2 1L8 5L2 9" fill="none" stroke="#9c9a8e" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </marker>
+                </defs>
+                <text x="340" y="28" text-anchor="middle" fill="#e8e6de" font-size="14" font-weight="500">Edge security:
+                    request lifecycle</text>
+                <rect x="265" y="46" width="150" height="40" rx="8" fill="#2c2c2a" stroke="#888780"
+                    stroke-width="0.5" /><text x="340" y="66" text-anchor="middle" dominant-baseline="central"
+                    fill="#D3D1C7" font-size="14" font-weight="500">Client request</text>
+                <line x1="340" y1="86" x2="340" y2="110" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a2)" />
+                <rect x="40" y="110" width="600" height="440" rx="20" fill="#2a1208" stroke="#D85A30" stroke-width="0.5"
+                    stroke-dasharray="4 4" /><text x="340" y="136" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">AWS Shield (always-on L3/L4 DDoS protection)</text>
+                <rect x="230" y="152" width="220" height="44" rx="8" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="340" y="174" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">Route 53 DNS resolution</text>
+                <line x1="340" y1="196" x2="340" y2="220" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a2)" />
+                <rect x="70" y="220" width="540" height="310" rx="16" fill="#062e24" stroke="#1D9E75" stroke-width="0.5"
+                    stroke-dasharray="4 4" /><text x="340" y="244" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="14" font-weight="500">CloudFront edge location</text>
+                <rect x="200" y="258" width="240" height="44" rx="8" fill="#062e24" stroke="#1D9E75"
+                    stroke-width="0.5" /><text x="320" y="280" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="14" font-weight="500">TLS termination (ACM)</text>
+                <line x1="320" y1="302" x2="320" y2="326" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a2)" />
+                <rect x="100" y="326" width="460" height="180" rx="14" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="330" y="350" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">AWS WAF rule evaluation</text>
+                <rect x="130" y="364" width="180" height="44" rx="8" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="220" y="376" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">Managed rules</text><text x="220" y="394"
+                    text-anchor="middle" dominant-baseline="central" fill="#F0997B" font-size="12">AWS +
+                    marketplace</text>
+                <rect x="340" y="364" width="190" height="44" rx="8" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="435" y="376" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">Custom rules</text><text x="435" y="394"
+                    text-anchor="middle" dominant-baseline="central" fill="#AFA9EC" font-size="12">Rate / geo /
+                    regex</text>
+                <text x="220" y="430" text-anchor="middle" fill="#9c9a8e" font-size="12">Rule priority (lowest
+                    first)</text>
+                <line x1="220" y1="438" x2="220" y2="460" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a2)" />
+                <line x1="435" y1="438" x2="435" y2="460" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a2)" />
+                <rect x="130" y="462" width="110" height="32" rx="8" fill="#2d1010" stroke="#E24B4A"
+                    stroke-width="0.5" /><text x="185" y="478" text-anchor="middle" dominant-baseline="central"
+                    fill="#F7C1C1" font-size="12">BLOCK</text>
+                <rect x="260" y="462" width="110" height="32" rx="8" fill="#142a06" stroke="#639922"
+                    stroke-width="0.5" /><text x="315" y="478" text-anchor="middle" dominant-baseline="central"
+                    fill="#C0DD97" font-size="12">ALLOW</text>
+                <rect x="390" y="462" width="130" height="32" rx="8" fill="#2a1c04" stroke="#BA7517"
+                    stroke-width="0.5" /><text x="455" y="478" text-anchor="middle" dominant-baseline="central"
+                    fill="#FAC775" font-size="12">CAPTCHA</text>
+                <line x1="315" y1="494" x2="315" y2="548" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a2)" />
+                <rect x="220" y="550" width="200" height="40" rx="8" fill="#2c2c2a" stroke="#888780"
+                    stroke-width="0.5" /><text x="320" y="570" text-anchor="middle" dominant-baseline="central"
+                    fill="#D3D1C7" font-size="14" font-weight="500">Origin (ALB / S3 / API)</text>
+            </svg>
+
+            <div class="card" style="border-left-color:var(--purple)">
+                <div><span class="tag" style="background:#7F77DD18;color:var(--purple)">Rules</span></div>
+                <h4>WAF actions</h4>
+                <div class="card-body">
+                    <p><strong>BLOCK</strong> — 403. <strong>ALLOW</strong> — pass. <strong>COUNT</strong> — log only
+                        (test before enforcement). <strong>CAPTCHA</strong> — challenge. <strong>Challenge</strong> —
+                        silent JS challenge. Deploy new rules in COUNT → analyze logs → flip to BLOCK.</p>
+                    <p>Web ACL budget: 5,000 WCU. Core Rule Set ~700 WCU. Rules consume WCU so you can't stack unlimited
+                        groups.</p>
+                </div>
+            </div>
+
+            <svg viewBox="0 0 680 600">
+                <defs>
+                    <marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                        orient="auto-start-reverse">
+                        <path d="M2 1L8 5L2 9" fill="none" stroke="#9c9a8e" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </marker>
+                </defs>
+                <text x="340" y="28" text-anchor="middle" fill="#e8e6de" font-size="14" font-weight="500">WAF web ACL
+                    rule evaluation order</text>
+                <rect x="215" y="48" width="250" height="44" rx="8" fill="#2c2c2a" stroke="#888780"
+                    stroke-width="0.5" /><text x="340" y="70" text-anchor="middle" dominant-baseline="central"
+                    fill="#D3D1C7" font-size="14" font-weight="500">HTTP request arrives</text>
+                <line x1="340" y1="92" x2="340" y2="118" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a3)" />
+                <!-- P0 -->
+                <rect x="130" y="120" width="280" height="56" rx="8" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="270" y="138" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">Priority 0: IP reputation</text><text x="270"
+                    y="158" text-anchor="middle" dominant-baseline="central" fill="#F0997B" font-size="12">Known
+                    botnets, scanners</text><text x="490" y="148" text-anchor="start" fill="#9c9a8e"
+                    font-size="12">Managed rule group</text>
+                <line x1="270" y1="176" x2="270" y2="202" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a3)" />
+                <!-- P1 -->
+                <rect x="130" y="204" width="280" height="56" rx="8" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="270" y="222" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">Priority 1: Rate limiting</text><text x="270"
+                    y="242" text-anchor="middle" dominant-baseline="central" fill="#AFA9EC" font-size="12">Per-IP
+                    request threshold</text><text x="490" y="232" text-anchor="start" fill="#9c9a8e"
+                    font-size="12">Custom rate rule</text>
+                <line x1="270" y1="260" x2="270" y2="286" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a3)" />
+                <!-- P2 -->
+                <rect x="130" y="288" width="280" height="56" rx="8" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="270" y="306" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">Priority 2: Geo restriction</text><text x="270"
+                    y="326" text-anchor="middle" dominant-baseline="central" fill="#AFA9EC" font-size="12">Country-level
+                    block/allow</text><text x="490" y="316" text-anchor="start" fill="#9c9a8e" font-size="12">Custom geo
+                    rule</text>
+                <line x1="270" y1="344" x2="270" y2="370" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a3)" />
+                <!-- P3 -->
+                <rect x="130" y="372" width="280" height="56" rx="8" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="270" y="390" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">Priority 3: Core rule set</text><text x="270"
+                    y="410" text-anchor="middle" dominant-baseline="central" fill="#F0997B" font-size="12">XSS, SQLi,
+                    SSRF, LFI</text><text x="490" y="400" text-anchor="start" fill="#9c9a8e" font-size="12">AWS managed
+                    CRS</text>
+                <line x1="270" y1="428" x2="270" y2="454" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a3)" />
+                <!-- P4 -->
+                <rect x="130" y="456" width="280" height="56" rx="8" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="270" y="474" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">Priority 4: Bad inputs</text><text x="270" y="494"
+                    text-anchor="middle" dominant-baseline="central" fill="#F0997B" font-size="12">Log4j, Java
+                    deserialization</text><text x="490" y="484" text-anchor="start" fill="#9c9a8e" font-size="12">AWS
+                    managed group</text>
+                <line x1="270" y1="512" x2="270" y2="538" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a3)" />
+                <rect x="130" y="540" width="280" height="44" rx="8" fill="#062e24" stroke="#1D9E75"
+                    stroke-width="0.5" /><text x="270" y="552" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="14" font-weight="500">Default action</text><text x="270" y="570"
+                    text-anchor="middle" dominant-baseline="central" fill="#5DCAA5" font-size="12">ALLOW (if no rule
+                    matched)</text>
+                <text x="68" y="350" text-anchor="middle" fill="#9c9a8e" font-size="12">Any match</text><text x="68"
+                    y="366" text-anchor="middle" fill="#9c9a8e" font-size="12">= stop + act</text>
+            </svg>
+
+            <h3>Shield standard vs advanced</h3>
+            <div class="compare">
+                <div class="compare-header">
+                    <div></div>
+                    <div style="color:#EF9F27">Standard (free)</div>
+                    <div style="color:#85B7EB">Advanced ($3k/mo)</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">Scope</div>
+                    <div class="val">L3/L4 DDoS</div>
+                    <div class="val">L3/L4 + L7 application-layer</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">DRT</div>
+                    <div class="val">No access</div>
+                    <div class="val">24/7 DDoS Response Team</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">Cost protect</div>
+                    <div class="val">None</div>
+                    <div class="val">Scaling credits for DDoS spikes</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">WAF</div>
+                    <div class="val">Separate charge</div>
+                    <div class="val">Included at no extra cost</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">Detection</div>
+                    <div class="val">Automatic inline</div>
+                    <div class="val">ML anomaly + health-based</div>
+                </div>
+            </div>
+
+            <div class="card" style="border-left-color:var(--coral)">
+                <div><span class="tag" style="background:#D85A3018;color:var(--coral)">Interview</span></div>
+                <h4>Shield Advanced critical detail</h4>
+                <div class="card-body">
+                    <p>Shield Advanced requires Route 53 health checks on protected resources. Without health checks, it
+                        can't distinguish DDoS from legitimate traffic spikes.</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left-color:var(--teal)">
+                <div><span class="tag" style="background:#1D9E7518;color:var(--teal)">5 mechanisms</span></div>
+                <h4>CloudFront security features</h4>
+                <div class="card-body">
+                    <p><strong>TLS termination</strong> — ACM free certs, TLS 1.2/1.3, TLSv1.2_2021 policy.
+                        <strong>Origin Access Control (OAC)</strong> — replaces OAI, IAM-based S3 auth, supports
+                        SSE-KMS. <strong>Signed URLs/cookies</strong> — RSA key pairs in Key Groups. <strong>Geo
+                            restrictions</strong> — binary allow/deny by country. <strong>Field-level
+                            encryption</strong> — encrypt POST fields at edge with your public key.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== NETWORK ==================== -->
+        <div class="section" id="network">
+
+            <svg viewBox="0 0 680 540">
+                <defs>
+                    <marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                        orient="auto-start-reverse">
+                        <path d="M2 1L8 5L2 9" fill="none" stroke="#9c9a8e" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </marker>
+                </defs>
+                <text x="340" y="28" text-anchor="middle" fill="#e8e6de" font-size="14" font-weight="500">Network
+                    security: request path through VPC</text>
+                <rect x="270" y="46" width="140" height="40" rx="8" fill="#2c2c2a" stroke="#888780"
+                    stroke-width="0.5" /><text x="340" y="66" text-anchor="middle" dominant-baseline="central"
+                    fill="#D3D1C7" font-size="14" font-weight="500">Internet</text>
+                <line x1="340" y1="86" x2="340" y2="108" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a4)" />
+                <rect x="245" y="110" width="190" height="40" rx="8" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="340" y="130" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">Internet gateway</text>
+                <line x1="340" y1="150" x2="340" y2="170" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a4)" />
+                <rect x="40" y="170" width="600" height="340" rx="18" fill="#0a2640" stroke="#378ADD" stroke-width="0.5"
+                    stroke-dasharray="4 4" /><text x="340" y="194" text-anchor="middle" dominant-baseline="central"
+                    fill="#B5D4F4" font-size="14" font-weight="500">VPC (10.0.0.0/16)</text>
+                <rect x="240" y="206" width="200" height="40" rx="8" fill="#2c2c2a" stroke="#888780"
+                    stroke-width="0.5" /><text x="340" y="226" text-anchor="middle" dominant-baseline="central"
+                    fill="#D3D1C7" font-size="14" font-weight="500">Route table evaluation</text>
+                <line x1="340" y1="246" x2="340" y2="266" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a4)" />
+                <rect x="200" y="268" width="240" height="56" rx="8" fill="#2a1c04" stroke="#BA7517"
+                    stroke-width="0.5" /><text x="320" y="286" text-anchor="middle" dominant-baseline="central"
+                    fill="#FAC775" font-size="14" font-weight="500">NACL (stateless)</text><text x="320" y="304"
+                    text-anchor="middle" dominant-baseline="central" fill="#EF9F27" font-size="12">Numbered rules,
+                    subnet-level</text>
+                <line x1="320" y1="324" x2="320" y2="346" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a4)" />
+                <rect x="60" y="348" width="260" height="140" rx="12" fill="#062e24" stroke="#1D9E75" stroke-width="0.5"
+                    stroke-dasharray="4 4" /><text x="190" y="370" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="14" font-weight="500">Public subnet</text>
+                <rect x="80" y="382" width="220" height="44" rx="8" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="190" y="404" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">Security group (stateful)</text>
+                <rect x="100" y="438" width="180" height="36" rx="8" fill="#0a2640" stroke="#378ADD"
+                    stroke-width="0.5" /><text x="190" y="456" text-anchor="middle" dominant-baseline="central"
+                    fill="#B5D4F4" font-size="12">ALB / NLB</text>
+                <rect x="360" y="348" width="260" height="140" rx="12" fill="#062e24" stroke="#1D9E75"
+                    stroke-width="0.5" stroke-dasharray="4 4" /><text x="490" y="370" text-anchor="middle"
+                    dominant-baseline="central" fill="#9FE1CB" font-size="14" font-weight="500">Private subnet</text>
+                <rect x="380" y="382" width="220" height="44" rx="8" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="490" y="404" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">Security group (stateful)</text>
+                <rect x="390" y="438" width="90" height="36" rx="8" fill="#0a2640" stroke="#378ADD"
+                    stroke-width="0.5" /><text x="435" y="456" text-anchor="middle" dominant-baseline="central"
+                    fill="#B5D4F4" font-size="12">App (EKS)</text>
+                <rect x="500" y="438" width="90" height="36" rx="8" fill="#0a2640" stroke="#378ADD"
+                    stroke-width="0.5" /><text x="545" y="456" text-anchor="middle" dominant-baseline="central"
+                    fill="#B5D4F4" font-size="12">RDS</text>
+                <path d="M280 456 L358 456" fill="none" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a4)" />
+                <text x="340" y="520" text-anchor="middle" fill="#9c9a8e" font-size="12">VPC flow logs capture all ENI
+                    traffic → CloudWatch / S3 for analysis</text>
+            </svg>
+
+            <h3>NACLs vs security groups</h3>
+            <div class="compare">
+                <div class="compare-header">
+                    <div></div>
+                    <div style="color:#EF9F27">NACL (stateless)</div>
+                    <div style="color:#85B7EB">Security group (stateful)</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">Scope</div>
+                    <div class="val">Subnet boundary</div>
+                    <div class="val">ENI (instance/pod) level</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">State</div>
+                    <div class="val">Stateless — eval both dirs</div>
+                    <div class="val">Stateful — return auto-allowed</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">Rules</div>
+                    <div class="val">Allow + deny</div>
+                    <div class="val">Allow only (implicit deny)</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">Order</div>
+                    <div class="val">Numbered, lowest first</div>
+                    <div class="val">All rules evaluated together</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">Default</div>
+                    <div class="val">Allow all (custom VPC)</div>
+                    <div class="val">Deny all inbound</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">Association</div>
+                    <div class="val">1 NACL per subnet</div>
+                    <div class="val">Up to 5 SGs per ENI</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">Ref SGs</div>
+                    <div class="val">No</div>
+                    <div class="val">Yes (SG chaining)</div>
+                </div>
+            </div>
+
+            <div class="card" style="border-left-color:var(--amber)">
+                <div><span class="tag" style="background:#BA751718;color:var(--amber)">Interview trap</span></div>
+                <h4>Ephemeral port gotcha</h4>
+                <div class="card-body">
+                    <p>NACLs are stateless: allow inbound 443, but response goes back on random port 1024-65535.
+                        Outbound rules must allow that range. SGs don't have this problem — stateful means return
+                        traffic auto-allowed.</p>
+                </div>
+            </div>
+
+            <svg viewBox="0 0 680 480">
+                <defs>
+                    <marker id="a5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                        orient="auto-start-reverse">
+                        <path d="M2 1L8 5L2 9" fill="none" stroke="#9c9a8e" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </marker>
+                </defs>
+                <text x="340" y="28" text-anchor="middle" fill="#e8e6de" font-size="14" font-weight="500">Security group
+                    chaining: micro-segmentation</text>
+                <rect x="270" y="48" width="140" height="36" rx="8" fill="#2c2c2a" stroke="#888780"
+                    stroke-width="0.5" /><text x="340" y="66" text-anchor="middle" dominant-baseline="central"
+                    fill="#D3D1C7" font-size="14" font-weight="500">Internet (0.0.0.0/0)</text>
+                <line x1="340" y1="84" x2="340" y2="114" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a5)" />
+                <rect x="140" y="116" width="400" height="80" rx="12" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="340" y="140" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">sg-alb</text>
+                <rect x="160" y="152" width="360" height="32" rx="6" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="340" y="168" text-anchor="middle" dominant-baseline="central"
+                    fill="#F0997B" font-size="12">Inbound: 443 from 0.0.0.0/0</text>
+                <line x1="340" y1="196" x2="340" y2="226" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a5)" />
+                <text x="560" y="214" text-anchor="start" fill="#9c9a8e" font-size="12">Only HTTPS in</text>
+                <rect x="140" y="228" width="400" height="80" rx="12" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="340" y="252" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">sg-app (EKS pods)</text>
+                <rect x="160" y="264" width="360" height="32" rx="6" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="340" y="280" text-anchor="middle" dominant-baseline="central"
+                    fill="#AFA9EC" font-size="12">Inbound: 8080 from sg-alb only</text>
+                <line x1="340" y1="308" x2="340" y2="338" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a5)" />
+                <text x="560" y="326" text-anchor="start" fill="#9c9a8e" font-size="12">References sg-alb</text>
+                <rect x="140" y="340" width="400" height="80" rx="12" fill="#062e24" stroke="#1D9E75"
+                    stroke-width="0.5" /><text x="340" y="364" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="14" font-weight="500">sg-db (RDS Aurora)</text>
+                <rect x="160" y="376" width="360" height="32" rx="6" fill="#062e24" stroke="#1D9E75"
+                    stroke-width="0.5" /><text x="340" y="392" text-anchor="middle" dominant-baseline="central"
+                    fill="#5DCAA5" font-size="12">Inbound: 3306 from sg-app only</text>
+                <text x="560" y="388" text-anchor="start" fill="#9c9a8e" font-size="12">References sg-app</text>
+                <text x="340" y="448" text-anchor="middle" fill="#9c9a8e" font-size="12">Compromise of ALB cannot reach
+                    DB directly — must traverse app layer</text>
+                <text x="340" y="466" text-anchor="middle" fill="#9c9a8e" font-size="12">SG references auto-update when
+                    instances scale (no IP management)</text>
+            </svg>
+
+            <div class="card" style="border-left-color:var(--teal)">
+                <div><span class="tag" style="background:#1D9E7518;color:var(--teal)">Architecture decision</span></div>
+                <h4>PrivateLink vs VPC peering vs Transit Gateway</h4>
+                <div class="card-body">
+                    <p><strong>PrivateLink</strong> — service-level private access across accounts (one-directional, no
+                        IP overlap, per-service).</p>
+                    <p><strong>VPC peering</strong> — bidirectional VPC-to-VPC (non-transitive, no CIDR overlap).</p>
+                    <p><strong>Transit Gateway</strong> — hub-and-spoke across many VPCs and on-prem (transitive,
+                        centralized routing, supports overlapping CIDRs via route tables).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== IDENTITY ==================== -->
+        <div class="section" id="identity">
+
+            <svg viewBox="0 0 680 600">
+                <defs>
+                    <marker id="a6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                        orient="auto-start-reverse">
+                        <path d="M2 1L8 5L2 9" fill="none" stroke="#9c9a8e" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </marker>
+                </defs>
+                <text x="340" y="28" text-anchor="middle" fill="#e8e6de" font-size="14" font-weight="500">GitHub OIDC
+                    federation: keyless AWS access</text>
+                <rect x="40" y="50" width="200" height="56" rx="8" fill="#2c2c2a" stroke="#888780" stroke-width="0.5" />
+                <text x="140" y="68" text-anchor="middle" dominant-baseline="central" fill="#D3D1C7" font-size="14"
+                    font-weight="500">GitHub Actions</text><text x="140" y="88" text-anchor="middle"
+                    dominant-baseline="central" fill="#B4B2A9" font-size="12">Workflow triggered</text>
+                <line x1="140" y1="106" x2="140" y2="134" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a6)" />
+                <rect x="40" y="136" width="200" height="56" rx="8" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="140" y="154" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">GitHub OIDC provider</text><text x="140" y="174"
+                    text-anchor="middle" dominant-baseline="central" fill="#F0997B" font-size="12">Issues JWT
+                    token</text>
+                <rect x="290" y="116" width="250" height="96" rx="10" fill="#1e1a3d" stroke="#7F77DD" stroke-width="0.5"
+                    stroke-dasharray="4 4" /><text x="415" y="138" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">JWT claims</text><text x="415" y="158"
+                    text-anchor="middle" dominant-baseline="central" fill="#AFA9EC" font-size="12">iss:
+                    token.actions.githubusercontent.com</text><text x="415" y="176" text-anchor="middle"
+                    dominant-baseline="central" fill="#AFA9EC" font-size="12">sub:
+                    repo:org/repo:ref:refs/heads/main</text><text x="415" y="194" text-anchor="middle"
+                    dominant-baseline="central" fill="#AFA9EC" font-size="12">aud: sts.amazonaws.com</text>
+                <line x1="240" y1="164" x2="288" y2="164" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a6)" />
+                <line x1="140" y1="192" x2="140" y2="240" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a6)" />
+                <rect x="40" y="242" width="200" height="56" rx="8" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="140" y="260" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">STS</text><text x="140" y="280" text-anchor="middle"
+                    dominant-baseline="central" fill="#AFA9EC" font-size="12">AssumeRoleWithWebIdentity</text>
+                <rect x="290" y="232" width="250" height="76" rx="10" fill="#062e24" stroke="#1D9E75" stroke-width="0.5"
+                    stroke-dasharray="4 4" /><text x="415" y="254" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="14" font-weight="500">Trust policy validates</text><text x="415" y="274"
+                    text-anchor="middle" dominant-baseline="central" fill="#5DCAA5" font-size="12">Condition:
+                    token.actions... == iss</text><text x="415" y="292" text-anchor="middle" dominant-baseline="central"
+                    fill="#5DCAA5" font-size="12">Condition: sub matches repo/branch</text>
+                <line x1="240" y1="270" x2="288" y2="270" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a6)" />
+                <line x1="140" y1="298" x2="140" y2="334" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a6)" />
+                <rect x="40" y="336" width="200" height="56" rx="8" fill="#062e24" stroke="#1D9E75"
+                    stroke-width="0.5" /><text x="140" y="354" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="14" font-weight="500">Temp credentials</text><text x="140" y="374"
+                    text-anchor="middle" dominant-baseline="central" fill="#5DCAA5" font-size="12">AccessKey + Secret +
+                    Token</text>
+                <rect x="290" y="336" width="250" height="56" rx="10" fill="#2d1010" stroke="#E24B4A"
+                    stroke-width="0.5" /><text x="415" y="354" text-anchor="middle" dominant-baseline="central"
+                    fill="#F7C1C1" font-size="14" font-weight="500">What this eliminates</text><text x="415" y="374"
+                    text-anchor="middle" dominant-baseline="central" fill="#F09595" font-size="12">No IAM user, no
+                    static keys</text>
+                <line x1="240" y1="364" x2="288" y2="364" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a6)" />
+                <line x1="140" y1="392" x2="140" y2="426" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a6)" />
+                <rect x="40" y="428" width="200" height="56" rx="8" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="140" y="446" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">AWS API calls</text><text x="140" y="466"
+                    text-anchor="middle" dominant-baseline="central" fill="#AFA9EC" font-size="12">Deploy, push,
+                    manage</text>
+                <line x1="140" y1="484" x2="140" y2="514" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a6)" />
+                <rect x="40" y="516" width="500" height="44" rx="8" fill="#2c2c2a" stroke="#888780"
+                    stroke-width="0.5" /><text x="290" y="538" text-anchor="middle" dominant-baseline="central"
+                    fill="#D3D1C7" font-size="14" font-weight="500">Credentials auto-expire (default 1h, max 12h)</text>
+                <text x="340" y="586" text-anchor="middle" fill="#9c9a8e" font-size="12">Zero static credentials in
+                    GitHub Secrets = zero credential rotation burden</text>
+            </svg>
+
+            <div class="card" style="border-left-color:var(--coral)">
+                <div><span class="tag" style="background:#D85A3018;color:var(--coral)">Security</span></div>
+                <h4>Trust policy scoping</h4>
+                <div class="card-body">
+                    <div class="codeblock">"Condition": {
+                        "StringLike": {
+                        "token.actions.githubusercontent.com:sub":
+                        "repo:SKCloudOps/*:ref:refs/heads/main"
+                        },
+                        "StringEquals": {
+                        "token.actions.githubusercontent.com:aud":
+                        "sts.amazonaws.com"
+                        }
+                        }</div>
+                    <p>Scope to org + branch + environment. Add <code>environment</code> claim for prod. Use
+                        <code>sts:TagSession</code> to carry repo/SHA into CloudTrail.</p>
+                </div>
+            </div>
+
+            <svg viewBox="0 0 680 560">
+                <defs>
+                    <marker id="a7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                        orient="auto-start-reverse">
+                        <path d="M2 1L8 5L2 9" fill="none" stroke="#9c9a8e" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </marker>
+                </defs>
+                <text x="340" y="28" text-anchor="middle" fill="#e8e6de" font-size="14" font-weight="500">STS
+                    assume-role chain: cross-account access</text>
+                <rect x="40" y="48" width="280" height="160" rx="16" fill="#0a2640" stroke="#378ADD" stroke-width="0.5"
+                    stroke-dasharray="4 4" /><text x="180" y="72" text-anchor="middle" dominant-baseline="central"
+                    fill="#B5D4F4" font-size="14" font-weight="500">DevOps account (111111)</text>
+                <rect x="60" y="88" width="240" height="56" rx="8" fill="#1e1a3d" stroke="#7F77DD" stroke-width="0.5" />
+                <text x="180" y="106" text-anchor="middle" dominant-baseline="central" fill="#CECBF6" font-size="14"
+                    font-weight="500">Role: ci-cd-deployer</text><text x="180" y="126" text-anchor="middle"
+                    dominant-baseline="central" fill="#AFA9EC" font-size="12">Trust: GitHub OIDC</text>
+                <rect x="60" y="156" width="240" height="36" rx="8" fill="#062e24" stroke="#1D9E75"
+                    stroke-width="0.5" /><text x="180" y="174" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="12">+ optional session policy</text>
+                <path d="M300 116 L360 116 L360 186 L400 186" fill="none" stroke="#9c9a8e" stroke-width="1.5"
+                    marker-end="url(#a7)" /><text x="370" y="146" text-anchor="middle" fill="#9c9a8e"
+                    font-size="12">AssumeRole</text>
+                <rect x="380" y="48" width="260" height="160" rx="16" fill="#062e24" stroke="#1D9E75" stroke-width="0.5"
+                    stroke-dasharray="4 4" /><text x="510" y="72" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="14" font-weight="500">Staging account (222222)</text>
+                <rect x="400" y="88" width="220" height="56" rx="8" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="510" y="106" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">Role: staging-deploy</text><text x="510" y="126"
+                    text-anchor="middle" dominant-baseline="central" fill="#AFA9EC" font-size="12">Trust:
+                    arn:...ci-cd-deployer</text>
+                <rect x="400" y="156" width="220" height="36" rx="8" fill="#062e24" stroke="#1D9E75"
+                    stroke-width="0.5" /><text x="510" y="174" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="12">Permissions: EKS + ECR</text>
+                <line x1="510" y1="208" x2="510" y2="250" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a7)" />
+                <text x="560" y="234" text-anchor="start" fill="#9c9a8e" font-size="12">Chain hop 2</text>
+                <rect x="380" y="252" width="260" height="160" rx="16" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" stroke-dasharray="4 4" /><text x="510" y="276" text-anchor="middle"
+                    dominant-baseline="central" fill="#F5C4B3" font-size="14" font-weight="500">Prod account
+                    (333333)</text>
+                <rect x="400" y="292" width="220" height="56" rx="8" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="510" y="310" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">Role: prod-deploy</text><text x="510" y="330"
+                    text-anchor="middle" dominant-baseline="central" fill="#F0997B" font-size="12">Trust:
+                    arn:...staging-deploy</text>
+                <rect x="400" y="360" width="220" height="36" rx="8" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="510" y="378" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="12">Permissions: EKS only</text>
+                <rect x="40" y="440" width="600" height="100" rx="12" fill="#2c2c2a" stroke="#888780"
+                    stroke-width="0.5" /><text x="340" y="464" text-anchor="middle" dominant-baseline="central"
+                    fill="#D3D1C7" font-size="14" font-weight="500">Role chaining constraints</text><text x="340"
+                    y="486" text-anchor="middle" dominant-baseline="central" fill="#B4B2A9" font-size="12">Max session:
+                    1 hour when chaining (cannot extend with DurationSeconds)</text><text x="340" y="506"
+                    text-anchor="middle" dominant-baseline="central" fill="#B4B2A9" font-size="12">CloudTrail: each hop
+                    logged with sourceIdentity for full audit trail</text><text x="340" y="526" text-anchor="middle"
+                    dominant-baseline="central" fill="#B4B2A9" font-size="12">Effective permissions = intersection of
+                    all roles in the chain</text>
+            </svg>
+
+            <svg viewBox="0 0 680 580">
+                <defs>
+                    <marker id="a8" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                        orient="auto-start-reverse">
+                        <path d="M2 1L8 5L2 9" fill="none" stroke="#9c9a8e" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </marker>
+                </defs>
+                <text x="340" y="28" text-anchor="middle" fill="#e8e6de" font-size="14" font-weight="500">SCP hierarchy:
+                    organizational guardrails</text>
+                <rect x="230" y="48" width="220" height="56" rx="8" fill="#2c2c2a" stroke="#888780"
+                    stroke-width="0.5" /><text x="340" y="66" text-anchor="middle" dominant-baseline="central"
+                    fill="#D3D1C7" font-size="14" font-weight="500">Organization root</text><text x="340" y="86"
+                    text-anchor="middle" dominant-baseline="central" fill="#B4B2A9" font-size="12">SCP:
+                    FullAWSAccess</text>
+                <path d="M280 104 L280 130 L160 130 L160 156" fill="none" stroke="#9c9a8e" stroke-width="1.5"
+                    marker-end="url(#a8)" />
+                <path d="M400 104 L400 130 L520 130 L520 156" fill="none" stroke="#9c9a8e" stroke-width="1.5"
+                    marker-end="url(#a8)" />
+                <rect x="40" y="158" width="240" height="56" rx="8" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="160" y="176" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">OU: Production</text><text x="160" y="196"
+                    text-anchor="middle" dominant-baseline="central" fill="#F0997B" font-size="12">SCP:
+                    DenyNonApprovedRegions</text>
+                <rect x="400" y="158" width="240" height="56" rx="8" fill="#062e24" stroke="#1D9E75"
+                    stroke-width="0.5" /><text x="520" y="176" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="14" font-weight="500">OU: Sandbox</text><text x="520" y="196"
+                    text-anchor="middle" dominant-baseline="central" fill="#5DCAA5" font-size="12">SCP:
+                    DenyExpensiveServices</text>
+                <path d="M110 214 L110 260" fill="none" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a8)" />
+                <path d="M210 214 L210 260" fill="none" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a8)" />
+                <rect x="40" y="262" width="130" height="56" rx="8" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="105" y="280" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">Takeda prod</text><text x="105" y="300"
+                    text-anchor="middle" dominant-baseline="central" fill="#F0997B" font-size="12">Account 333</text>
+                <rect x="190" y="262" width="130" height="56" rx="8" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="255" y="280" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">Shared svcs</text><text x="255" y="300"
+                    text-anchor="middle" dominant-baseline="central" fill="#F0997B" font-size="12">Account 444</text>
+                <line x1="105" y1="318" x2="105" y2="360" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a8)" />
+                <rect x="40" y="362" width="600" height="196" rx="14" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="340" y="388" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">Effective permission calculation</text>
+                <rect x="60" y="404" width="180" height="40" rx="8" fill="#2c2c2a" stroke="#888780"
+                    stroke-width="0.5" /><text x="150" y="424" text-anchor="middle" dominant-baseline="central"
+                    fill="#D3D1C7" font-size="14" font-weight="500">Root SCP</text>
+                <line x1="240" y1="424" x2="266" y2="424" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a8)" />
+                <text x="282" y="428" text-anchor="middle" dominant-baseline="central" fill="#9c9a8e"
+                    font-size="14">∩</text>
+                <line x1="296" y1="424" x2="316" y2="424" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a8)" />
+                <rect x="318" y="404" width="180" height="40" rx="8" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="408" y="424" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">OU SCP</text>
+                <line x1="498" y1="424" x2="524" y2="424" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a8)" />
+                <text x="540" y="428" text-anchor="middle" dominant-baseline="central" fill="#9c9a8e"
+                    font-size="14">∩</text>
+                <rect x="60" y="460" width="180" height="40" rx="8" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="150" y="480" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">Account SCP</text>
+                <line x1="240" y1="480" x2="266" y2="480" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a8)" />
+                <text x="282" y="484" text-anchor="middle" dominant-baseline="central" fill="#9c9a8e"
+                    font-size="14">∩</text>
+                <line x1="296" y1="480" x2="316" y2="480" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a8)" />
+                <rect x="318" y="460" width="180" height="40" rx="8" fill="#062e24" stroke="#1D9E75"
+                    stroke-width="0.5" /><text x="408" y="480" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="14" font-weight="500">Identity policy</text>
+                <line x1="498" y1="480" x2="524" y2="480" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a8)" />
+                <text x="545" y="484" text-anchor="middle" dominant-baseline="central" fill="#9c9a8e"
+                    font-size="14">=</text>
+                <rect x="60" y="520" width="560" height="28" rx="8" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="340" y="534" text-anchor="middle" dominant-baseline="central"
+                    fill="#AFA9EC" font-size="12">Effective permissions (must be allowed at EVERY level)</text>
+                <text x="340" y="574" text-anchor="middle" fill="#9c9a8e" font-size="12">SCPs are deny guardrails — they
+                    cannot grant permissions, only restrict</text>
+            </svg>
+
+            <h3>ABAC vs RBAC</h3>
+            <div class="compare">
+                <div class="compare-header">
+                    <div></div>
+                    <div style="color:#EF9F27">RBAC (traditional)</div>
+                    <div style="color:#85B7EB">ABAC (recommended)</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">Model</div>
+                    <div class="val">Role per job function</div>
+                    <div class="val">Tag principal + tag resource</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">Scale</div>
+                    <div class="val">N roles × M resources = N*M</div>
+                    <div class="val">1 policy covers all projects</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">New project</div>
+                    <div class="val">Create new role + policy</div>
+                    <div class="val">Just tag the resources</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">Condition</div>
+                    <div class="val">Static ARN matching</div>
+                    <div class="val">Dynamic tag matching</div>
+                </div>
+                <div class="compare-row">
+                    <div class="label">IAM limit</div>
+                    <div class="val">High risk (5120 char)</div>
+                    <div class="val">Low risk (single policy)</div>
+                </div>
+            </div>
+
+            <div class="card" style="border-left-color:var(--blue)">
+                <div><span class="tag" style="background:#378ADD18;color:var(--blue)">Implementation</span></div>
+                <h4>ABAC condition keys</h4>
+                <div class="card-body">
+                    <div class="codeblock">"Condition": {
+                        "StringEquals": {
+                        "aws:ResourceTag/Project":
+                        "${aws:PrincipalTag/Project}"
+                        }
+                        }</div>
+                    <p><code>aws:PrincipalTag</code> — tags on caller. <code>aws:ResourceTag</code> — tags on target.
+                        <code>aws:RequestTag</code> — enforce at creation. <code>aws:TagKeys</code> — prevent tag
+                        escalation.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== DATA ==================== -->
+        <div class="section" id="data">
+
+            <div class="card" style="border-left-color:var(--teal)">
+                <div><span class="tag" style="background:#1D9E7518;color:var(--teal)">Encryption at rest</span></div>
+                <h4>KMS envelope encryption</h4>
+                <div class="card-body">
+                    <p><strong>CMK</strong> stored in HSMs, never leaves KMS unencrypted.
+                        <strong>GenerateDataKey</strong> returns plaintext DEK + encrypted DEK. Plaintext DEK encrypts
+                        data, then discarded. To decrypt: send encrypted DEK to KMS → get plaintext DEK → decrypt data.
+                    </p>
+                    <p>Key policies control access. Automatic annual rotation (old versions retained). Grants for
+                        temporary scoped access.</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left-color:var(--blue)">
+                <div><span class="tag" style="background:#378ADD18;color:var(--blue)">SSE</span></div>
+                <h4>S3 encryption options</h4>
+                <div class="card-body">
+                    <p><strong>SSE-S3:</strong> AWS manages keys. AES-256. Default. No audit trail.
+                        <strong>SSE-KMS:</strong> KMS CMK. CloudTrail logs every operation. $0.03/10K requests.
+                        <strong>SSE-C:</strong> You provide key per request. Rare use case.</p>
+                    <p>Enforce: deny PutObject without <code>x-amz-server-side-encryption: aws:kms</code> header.</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left-color:var(--purple)">
+                <div><span class="tag" style="background:#7F77DD18;color:var(--purple)">Credentials</span></div>
+                <h4>Secrets Manager</h4>
+                <div class="card-body">
+                    <p>KMS-encrypted. Auto-rotation via Lambda for RDS/Redshift/DocumentDB. Version staging labels
+                        (AWSCURRENT, AWSPENDING, AWSPREVIOUS) for zero-downtime rotation. Cross-account via resource
+                        policy. EKS integration via External Secrets Operator or CSI driver.</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left-color:var(--coral)">
+                <div><span class="tag" style="background:#D85A3018;color:var(--coral)">In transit</span></div>
+                <h4>TLS in transit</h4>
+                <div class="card-body">
+                    <p>ACM free public certs + auto-renewal. Private CA via ACM PCA. CloudFront: TLS 1.2/1.3 at edge.
+                        ALB: termination + re-encrypt. EKS: service mesh mTLS. Enforce <code>aws:SecureTransport</code>
+                        in bucket policy.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== DETECTION ==================== -->
+        <div class="section" id="detection">
+
+            <svg viewBox="0 0 680 460">
+                <defs>
+                    <marker id="a9" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                        orient="auto-start-reverse">
+                        <path d="M2 1L8 5L2 9" fill="none" stroke="#9c9a8e" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </marker>
+                </defs>
+                <text x="340" y="28" text-anchor="middle" fill="#e8e6de" font-size="14" font-weight="500">Detection,
+                    monitoring &amp; automated response</text>
+                <text x="340" y="56" text-anchor="middle" fill="#9c9a8e" font-size="12">Data sources (continuous
+                    ingestion)</text>
+                <rect x="40" y="68" width="130" height="44" rx="8" fill="#2c2c2a" stroke="#888780" stroke-width="0.5" />
+                <text x="105" y="90" text-anchor="middle" dominant-baseline="central" fill="#D3D1C7" font-size="14"
+                    font-weight="500">CloudTrail</text>
+                <rect x="190" y="68" width="130" height="44" rx="8" fill="#2c2c2a" stroke="#888780"
+                    stroke-width="0.5" /><text x="255" y="90" text-anchor="middle" dominant-baseline="central"
+                    fill="#D3D1C7" font-size="14" font-weight="500">VPC flow logs</text>
+                <rect x="340" y="68" width="130" height="44" rx="8" fill="#2c2c2a" stroke="#888780"
+                    stroke-width="0.5" /><text x="405" y="90" text-anchor="middle" dominant-baseline="central"
+                    fill="#D3D1C7" font-size="14" font-weight="500">DNS logs</text>
+                <rect x="490" y="68" width="150" height="44" rx="8" fill="#2c2c2a" stroke="#888780"
+                    stroke-width="0.5" /><text x="565" y="90" text-anchor="middle" dominant-baseline="central"
+                    fill="#D3D1C7" font-size="14" font-weight="500">S3 / CW logs</text>
+                <line x1="105" y1="112" x2="105" y2="156" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a9)" />
+                <line x1="255" y1="112" x2="255" y2="156" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a9)" />
+                <line x1="405" y1="112" x2="405" y2="156" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a9)" />
+                <line x1="565" y1="112" x2="565" y2="156" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a9)" />
+                <text x="340" y="148" text-anchor="middle" fill="#9c9a8e" font-size="12">Detection &amp; compliance
+                    engines</text>
+                <rect x="40" y="158" width="140" height="56" rx="8" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="110" y="176" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="14" font-weight="500">GuardDuty</text><text x="110" y="194"
+                    text-anchor="middle" dominant-baseline="central" fill="#F0997B" font-size="12">ML threat
+                    detection</text>
+                <rect x="200" y="158" width="140" height="56" rx="8" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="270" y="176" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">Config</text><text x="270" y="194"
+                    text-anchor="middle" dominant-baseline="central" fill="#AFA9EC" font-size="12">Compliance
+                    rules</text>
+                <rect x="360" y="158" width="140" height="56" rx="8" fill="#2a1c04" stroke="#BA7517"
+                    stroke-width="0.5" /><text x="430" y="176" text-anchor="middle" dominant-baseline="central"
+                    fill="#FAC775" font-size="14" font-weight="500">Inspector</text><text x="430" y="194"
+                    text-anchor="middle" dominant-baseline="central" fill="#EF9F27" font-size="12">Vuln scanning</text>
+                <rect x="520" y="158" width="120" height="56" rx="8" fill="#062e24" stroke="#1D9E75"
+                    stroke-width="0.5" /><text x="580" y="176" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="14" font-weight="500">Macie</text><text x="580" y="194"
+                    text-anchor="middle" dominant-baseline="central" fill="#5DCAA5" font-size="12">Data discovery</text>
+                <line x1="110" y1="214" x2="110" y2="240" stroke="#9c9a8e" stroke-width="1" />
+                <line x1="270" y1="214" x2="270" y2="240" stroke="#9c9a8e" stroke-width="1" />
+                <line x1="430" y1="214" x2="430" y2="240" stroke="#9c9a8e" stroke-width="1" />
+                <line x1="580" y1="214" x2="580" y2="240" stroke="#9c9a8e" stroke-width="1" />
+                <path d="M110 240 L340 260" fill="none" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a9)" />
+                <path d="M270 240 L340 260" fill="none" stroke="#9c9a8e" stroke-width="1.5" />
+                <path d="M430 240 L340 260" fill="none" stroke="#9c9a8e" stroke-width="1.5" />
+                <path d="M580 240 L340 260" fill="none" stroke="#9c9a8e" stroke-width="1.5" />
+                <rect x="210" y="262" width="260" height="56" rx="8" fill="#0a2640" stroke="#378ADD"
+                    stroke-width="0.5" /><text x="340" y="280" text-anchor="middle" dominant-baseline="central"
+                    fill="#B5D4F4" font-size="14" font-weight="500">Security Hub</text><text x="340" y="298"
+                    text-anchor="middle" dominant-baseline="central" fill="#85B7EB" font-size="12">Aggregated findings +
+                    scoring</text>
+                <line x1="340" y1="318" x2="340" y2="342" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a9)" />
+                <rect x="210" y="344" width="260" height="44" rx="8" fill="#1e1a3d" stroke="#7F77DD"
+                    stroke-width="0.5" /><text x="340" y="366" text-anchor="middle" dominant-baseline="central"
+                    fill="#CECBF6" font-size="14" font-weight="500">EventBridge rules</text>
+                <path d="M240 388 L120 418" fill="none" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a9)" />
+                <path d="M340 388 L340 418" fill="none" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a9)" />
+                <path d="M440 388 L560 418" fill="none" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a9)" />
+                <rect x="40" y="420" width="160" height="36" rx="8" fill="#062e24" stroke="#1D9E75"
+                    stroke-width="0.5" /><text x="120" y="438" text-anchor="middle" dominant-baseline="central"
+                    fill="#9FE1CB" font-size="12">Lambda remediation</text>
+                <rect x="260" y="420" width="160" height="36" rx="8" fill="#2a1208" stroke="#D85A30"
+                    stroke-width="0.5" /><text x="340" y="438" text-anchor="middle" dominant-baseline="central"
+                    fill="#F5C4B3" font-size="12">SNS / PagerDuty</text>
+                <rect x="480" y="420" width="160" height="36" rx="8" fill="#2a1c04" stroke="#BA7517"
+                    stroke-width="0.5" /><text x="560" y="438" text-anchor="middle" dominant-baseline="central"
+                    fill="#FAC775" font-size="12">SSM automation</text>
+            </svg>
+
+            <div class="card" style="border-left-color:var(--coral)">
+                <div><span class="tag" style="background:#D85A3018;color:var(--coral)">ML-based</span></div>
+                <h4>GuardDuty</h4>
+                <div class="card-body">
+                    <p>Analyzes CloudTrail, VPC flow logs, DNS logs via ML + threat intel. Finding types:
+                        reconnaissance, instance compromise (C&C), account compromise. EKS audit log monitoring for K8s
+                        threats. S3 protection for unusual data access.</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left-color:var(--purple)">
+                <div><span class="tag" style="background:#7F77DD18;color:var(--purple)">Compliance</span></div>
+                <h4>AWS Config</h4>
+                <div class="card-body">
+                    <p>Records config changes. ~300+ managed rules. Conformance packs (PCI-DSS, CIS). Auto-remediation
+                        via SSM Automation. Cross-account aggregator for compliance dashboard.</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left-color:var(--blue)">
+                <div><span class="tag" style="background:#378ADD18;color:var(--blue)">Aggregation</span></div>
+                <h4>Security Hub</h4>
+                <div class="card-body">
+                    <p>Single pane: normalizes findings from GuardDuty, Config, Inspector, Macie, IAM Access Analyzer
+                        into ASFF. Security score per standard. Custom actions → EventBridge.</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left-color:var(--teal)">
+                <div><span class="tag" style="background:#1D9E7518;color:var(--teal)">Architecture</span></div>
+                <h4>Automated remediation pattern</h4>
+                <div class="card-body">
+                    <p>GuardDuty detects compromised EC2 → EventBridge rule → Lambda → removes from all SGs → attaches
+                        forensic SG → takes EBS snapshot → sends SNS alert. Total time: under 60 seconds.</p>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /content -->
+
+    <script>
+        document.querySelectorAll('.nav button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.nav button').forEach(b => {
+                    b.classList.remove('active');
+                    b.style.color = '';
+                    b.style.borderBottomColor = 'transparent';
+                });
+                btn.classList.add('active');
+                const color = btn.dataset.color || 'var(--coral)';
+                btn.style.color = color;
+                btn.style.borderBottomColor = color;
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

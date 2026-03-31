@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS Compute Services — Decision Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --aws-orange: #FF9900;
+    --aws-blue: #232F3E;
+    --aws-blue-mid: #37475A;
+    --bg: #F8F8F8;
+    --surface: #FFFFFF;
+    --surface2: #F2F3F3;
+    --border: #D5D9D9;
+    --border-light: #EAEDED;
+    --text: #0F1111;
+    --text-mid: #232F3E;
+    --text-muted: #565959;
+    --text-light: #879596;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+    --shadow: 0 4px 12px rgba(0,0,0,0.10);
+    --ec2: #E07B39;
+    --ecs: #C7131F;
+    --eks: #2563EB;
+    --lambda: #B0460F;
+    --green: #1D8102;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Noto Sans', -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
+
+  /* NAV */
+  .topbar { background: var(--aws-blue); padding: 0 24px; height: 48px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
+  .aws-logo { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
+  .aws-logo span { color: var(--aws-orange); }
+  .topbar-div { width: 1px; height: 22px; background: rgba(255,255,255,0.2); }
+  .topbar-label { color: rgba(255,255,255,0.8); font-size: 13px; font-weight: 500; }
+  .topbar-chips { margin-left: auto; display: flex; gap: 6px; }
+  .topbar-chip { background: rgba(255,153,0,0.15); color: var(--aws-orange); border: 1px solid rgba(255,153,0,0.3); border-radius: 3px; padding: 2px 9px; font-size: 11px; font-weight: 700; }
+
+  /* HERO */
+  .hero { background: linear-gradient(135deg, #1A2533 0%, #2E3E52 55%, #253040 100%); padding: 52px 0 48px; position: relative; overflow: hidden; }
+  .hero::before { content:''; position:absolute; inset:0; background-image: linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px); background-size:36px 36px; pointer-events:none; }
+  .hero-inner { position: relative; z-index: 1; }
+  .breadcrumb { font-size: 12px; color: rgba(255,255,255,0.45); margin-bottom: 14px; display: flex; align-items: center; gap: 5px; }
+  .hero h1 { font-size: clamp(24px, 3.5vw, 40px); font-weight: 700; color: #fff; letter-spacing: -0.02em; line-height: 1.18; margin-bottom: 14px; max-width: 660px; }
+  .hero h1 em { font-style: normal; color: var(--aws-orange); }
+  .hero-sub { font-size: 15px; color: rgba(255,255,255,0.68); max-width: 560px; line-height: 1.65; margin-bottom: 26px; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .hero-tag { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); color: rgba(255,255,255,0.7); border-radius: 3px; padding: 3px 11px; font-size: 12px; }
+
+  /* LAYOUT */
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+  .page { padding: 40px 0 80px; }
+  .section { margin-bottom: 50px; }
+
+  /* SECTION HEAD */
+  .sec-head { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; padding-bottom: 12px; border-bottom: 2px solid var(--border-light); }
+  .sec-bar { width: 4px; height: 22px; background: var(--aws-orange); border-radius: 2px; flex-shrink: 0; }
+  .sec-head h2 { font-size: 19px; font-weight: 700; color: var(--aws-blue); letter-spacing: -0.01em; }
+  .sec-head span { font-size: 12px; color: var(--text-light); margin-left: auto; }
+
+  /* CALLOUT */
+  .callout { background: #EDF4FF; border: 1px solid #B6D3FF; border-left: 4px solid #3B7DDD; border-radius: 6px; padding: 14px 16px; font-size: 13px; color: var(--text-mid); line-height: 1.6; margin-bottom: 28px; display: flex; gap: 10px; }
+  .callout-ico { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout strong { color: var(--aws-blue); }
+
+  /* FLOW DIAGRAM */
+  .flow-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow-sm); padding: 32px 24px; overflow: auto; }
+  .diagram-svg { width: 100%; max-width: 920px; margin: 0 auto; display: block; min-width: 680px; }
+
+  /* CARDS */
+  .cards-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+  @media(max-width:760px){.cards-grid{grid-template-columns:1fr;}}
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow-sm); overflow: hidden; transition: box-shadow 0.2s, transform 0.15s; }
+  .card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+  .card-top { height: 4px; }
+  .card.ec2 .card-top { background: var(--ec2); }
+  .card.ecs .card-top { background: var(--ecs); }
+  .card.eks .card-top { background: var(--eks); }
+  .card.lmb .card-top { background: var(--lambda); }
+  .card-body { padding: 22px; }
+  .card-hd { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+  .card-ico { width: 42px; height: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; border: 1px solid var(--border-light); }
+  .card.ec2 .card-ico { background: #FFF3E6; }
+  .card.ecs .card-ico { background: #FFF0F0; }
+  .card.eks .card-ico { background: #EEF3FF; }
+  .card.lmb .card-ico { background: #FFF5EE; }
+  .card-name { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+  .card.ec2 .card-name { color: var(--ec2); }
+  .card.ecs .card-name { color: var(--ecs); }
+  .card.eks .card-name { color: var(--eks); }
+  .card.lmb .card-name { color: var(--lambda); }
+  .card-sub { font-size: 11px; color: var(--text-muted); }
+  .card-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; align-self: flex-start; white-space: nowrap; margin-top: 2px; }
+  .card.ec2 .card-tag { background:#FFF3E6; color:var(--ec2); border:1px solid rgba(224,123,57,.2); }
+  .card.ecs .card-tag { background:#FFF0F0; color:var(--ecs); border:1px solid rgba(199,19,31,.2); }
+  .card.eks .card-tag { background:#EEF3FF; color:var(--eks); border:1px solid rgba(37,99,235,.2); }
+  .card.lmb .card-tag { background:#FFF5EE; color:var(--lambda); border:1px solid rgba(176,70,15,.2); }
+  .card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.65; margin-bottom: 16px; }
+  .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .metric { background: var(--surface2); border: 1px solid var(--border-light); border-radius: 6px; padding: 9px 11px; }
+  .m-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-light); margin-bottom: 2px; }
+  .m-val { font-size: 13px; font-weight: 700; color: var(--text-mid); }
+  .sbar { height: 4px; background: var(--border-light); border-radius: 100px; margin-top: 4px; overflow: hidden; }
+  .sfill { height: 100%; border-radius: 100px; }
+  .card.ec2 .sfill { background: var(--ec2); }
+  .card.ecs .sfill { background: var(--ecs); }
+  .card.eks .sfill { background: var(--eks); }
+  .card.lmb .sfill { background: var(--lambda); }
+  .tip { border-radius: 6px; padding: 11px 13px; font-size: 13px; color: var(--text-mid); line-height: 1.6; border-left: 3px solid; }
+  .card.ec2 .tip { background:#FFF9F5; border-color:var(--ec2); }
+  .card.ecs .tip { background:#FFF8F8; border-color:var(--ecs); }
+  .card.eks .tip { background:#F5F8FF; border-color:var(--eks); }
+  .card.lmb .tip { background:#FFF8F5; border-color:var(--lambda); }
+  .tip-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; display: block; }
+  .card.ec2 .tip-lbl { color:var(--ec2); }
+  .card.ecs .tip-lbl { color:var(--ecs); }
+  .card.eks .tip-lbl { color:var(--eks); }
+  .card.lmb .tip-lbl { color:var(--lambda); }
+
+  /* TABLE */
+  .tbl-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow-sm); overflow: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 640px; }
+  thead { background: var(--aws-blue); }
+  th { padding: 12px 16px; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(255,255,255,0.75); text-align: left; white-space: nowrap; }
+  th:first-child { color: rgba(255,255,255,0.5); }
+  th.th-ec2 { color: #FFB84D; } th.th-ecs { color: #FF9999; } th.th-eks { color: #93B4FF; } th.th-lmb { color: #FFCC99; }
+  td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid var(--border-light); color: var(--text-muted); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: var(--surface2); }
+  tr:hover td { background: #EEF3FF; }
+  td:first-child { font-weight: 600; color: var(--aws-blue); font-size: 12px; white-space: nowrap; background: #F7F8FA !important; border-right: 1px solid var(--border-light); }
+  .chip { display: inline-block; padding: 1px 8px; border-radius: 3px; font-size: 11px; font-weight: 700; }
+  .chip-ec2  { background:#FFF3E6; color:var(--ec2);    border:1px solid rgba(224,123,57,.25); }
+  .chip-ecs  { background:#FFF0F0; color:var(--ecs);    border:1px solid rgba(199,19,31,.25); }
+  .chip-eks  { background:#EEF3FF; color:var(--eks);    border:1px solid rgba(37,99,235,.25); }
+  .chip-lmb  { background:#FFF5EE; color:var(--lambda); border:1px solid rgba(176,70,15,.25); }
+  .winner { font-size: 10px; font-weight: 700; color: var(--green); background: #EFF9EF; border: 1px solid #8ECC8E; border-radius: 3px; padding: 1px 6px; margin-left: 5px; vertical-align: middle; }
+
+  /* SCENARIOS */
+  .sc-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+  @media(max-width:760px){.sc-grid{grid-template-columns:1fr;}}
+  .sc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow-sm); padding: 22px; display: flex; flex-direction: column; gap: 10px; transition: box-shadow 0.2s; }
+  .sc:hover { box-shadow: var(--shadow); }
+  .sc-top { display: flex; align-items: center; justify-content: space-between; }
+  .sc-num { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); background: var(--surface2); border: 1px solid var(--border-light); border-radius: 3px; padding: 2px 8px; }
+  .sc-svc { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 3px; }
+  .s-ec2  .sc-svc { background:#FFF3E6; color:var(--ec2);    border:1px solid rgba(224,123,57,.25); }
+  .s-ecs  .sc-svc { background:#FFF0F0; color:var(--ecs);    border:1px solid rgba(199,19,31,.25); }
+  .s-eks  .sc-svc { background:#EEF3FF; color:var(--eks);    border:1px solid rgba(37,99,235,.25); }
+  .s-lmb  .sc-svc { background:#FFF5EE; color:var(--lambda); border:1px solid rgba(176,70,15,.25); }
+  .sc-title { font-size: 15px; font-weight: 700; color: var(--aws-blue); letter-spacing: -0.01em; }
+  .sc-pl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-light); margin-bottom: 3px; }
+  .sc-prob { font-size: 13px; color: var(--text-muted); }
+  .sc-why { font-size: 13px; color: var(--text-mid); line-height: 1.65; padding: 11px 13px; background: var(--surface2); border-radius: 6px; border-left: 3px solid var(--border); font-style: italic; }
+  .s-ec2  .sc-why { border-color:var(--ec2); }
+  .s-ecs  .sc-why { border-color:var(--ecs); }
+  .s-eks  .sc-why { border-color:var(--eks); }
+  .s-lmb  .sc-why { border-color:var(--lambda); }
+
+  /* CHEAT */
+  .cheat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media(max-width:760px){.cheat-grid{grid-template-columns:1fr;}}
+  .cheat { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow-sm); padding: 20px; border-top: 3px solid var(--aws-orange); }
+  .cheat-q { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; line-height: 1.5; }
+  .cheat-a { font-size: 14px; font-weight: 700; color: var(--aws-blue); line-height: 1.4; }
+
+  /* FOOTER */
+  footer { background: var(--aws-blue); border-top: 3px solid var(--aws-orange); padding: 22px 0; text-align: center; font-size: 12px; color: rgba(255,255,255,0.42); letter-spacing: 0.03em; }
+  footer strong { color: rgba(255,255,255,0.65); }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  .hero { animation: fadeUp 0.45s ease both; }
+  .card { animation: fadeUp 0.4s ease both; }
+  .card:nth-child(1){animation-delay:.05s} .card:nth-child(2){animation-delay:.11s} .card:nth-child(3){animation-delay:.17s} .card:nth-child(4){animation-delay:.23s}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topbar">
+  <div class="aws-logo">aws<span>.</span></div>
+  <div class="topbar-div"></div>
+  <div class="topbar-label">Compute Services — Decision Guide</div>
+  <div class="topbar-chips">
+    <span class="topbar-chip">EC2</span>
+    <span class="topbar-chip">ECS</span>
+    <span class="topbar-chip">EKS</span>
+    <span class="topbar-chip">Lambda</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div class="breadcrumb">AWS Documentation › Compute › Decision Guide</div>
+    <h1>Choosing the Right<br><em>AWS Compute Service</em></h1>
+    <p class="hero-sub">A complete architectural decision guide covering EC2, ECS, EKS, and Lambda — with trade-off analysis, real-world scenarios, and interview-ready reasoning.</p>
+    <div class="hero-tags">
+      <span class="hero-tag">Operations Overhead</span>
+      <span class="hero-tag">Cost Optimization</span>
+      <span class="hero-tag">Scaling Behavior</span>
+      <span class="hero-tag">Multi-Cloud Portability</span>
+      <span class="hero-tag">Day 2 Operations</span>
+    </div>
+  </div>
+</section>
+
+<!-- BODY -->
+<div class="page">
+<div class="wrap">
+
+  <div class="callout">
+    <div class="callout-ico">💡</div>
+    <div><strong>Architect's Principle:</strong> Identify the <em>ops tax</em> you're willing to pay versus the level of control you actually need. The best interview answers move past definitions and into patterns, trade-offs, and Day 2 operations reasoning.</div>
+  </div>
+
+  <!-- 1. DECISION FLOW -->
+  <section class="section">
+    <div class="sec-head">
+      <div class="sec-bar"></div>
+      <h2>Decision Flow</h2>
+      <span>Answer 3 questions to reach the right service</span>
+    </div>
+    <div class="flow-box">
+      <svg class="diagram-svg" viewBox="0 0 920 510" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans', sans-serif">
+        <defs>
+          <marker id="arr"      markerWidth="8" markerHeight="8" refX="6" refY="3.5" orient="auto"><path d="M0,0 L0,7 L8,3.5z" fill="#94A3B8"/></marker>
+          <marker id="arr-lmb"  markerWidth="8" markerHeight="8" refX="6" refY="3.5" orient="auto"><path d="M0,0 L0,7 L8,3.5z" fill="#B0460F"/></marker>
+          <marker id="arr-eks"  markerWidth="8" markerHeight="8" refX="6" refY="3.5" orient="auto"><path d="M0,0 L0,7 L8,3.5z" fill="#2563EB"/></marker>
+          <marker id="arr-ec2"  markerWidth="8" markerHeight="8" refX="6" refY="3.5" orient="auto"><path d="M0,0 L0,7 L8,3.5z" fill="#E07B39"/></marker>
+          <marker id="arr-ecs"  markerWidth="8" markerHeight="8" refX="6" refY="3.5" orient="auto"><path d="M0,0 L0,7 L8,3.5z" fill="#C7131F"/></marker>
+          <filter id="s" x="-8%" y="-8%" width="116%" height="130%"><feDropShadow dx="0" dy="1" stdDeviation="2.5" flood-color="rgba(0,0,0,0.10)"/></filter>
+        </defs>
+
+        <!-- START node -->
+        <rect x="310" y="16" width="220" height="48" rx="24" fill="#232F3E" filter="url(#s)"/>
+        <text x="420" y="34"  text-anchor="middle" fill="rgba(255,255,255,0.5)"  font-size="9.5" font-weight="700" letter-spacing="1.5">WORKLOAD</text>
+        <text x="420" y="52"  text-anchor="middle" fill="#fff" font-size="13.5" font-weight="700">New deployment needed</text>
+
+        <!-- arrow → Q1 -->
+        <line x1="420" y1="64" x2="420" y2="102" stroke="#CBD5E1" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Q1 diamond -->
+        <polygon points="420,106 538,146 420,186 302,146" fill="#FFFFFF" stroke="#D5D9D9" stroke-width="1.5" filter="url(#s)"/>
+        <text x="420" y="140" text-anchor="middle" fill="#232F3E" font-size="13" font-weight="700">Event-driven</text>
+        <text x="420" y="158" text-anchor="middle" fill="#565959" font-size="12">or bursty traffic?</text>
+
+        <!-- YES → Lambda -->
+        <line x1="538" y1="146" x2="706" y2="146" stroke="#B0460F" stroke-width="1.5" marker-end="url(#arr-lmb)"/>
+        <text x="620" y="136" text-anchor="middle" fill="#B0460F" font-size="11" font-weight="800">YES</text>
+        <rect x="706" y="110" width="190" height="72" rx="8" fill="#FFF5EE" stroke="#B0460F" stroke-width="1.5" filter="url(#s)"/>
+        <rect x="706" y="110" width="190" height="5" rx="2" fill="#B0460F"/>
+        <text x="714" y="132" fill="#B0460F"  font-size="12" font-weight="800">⚡  AWS Lambda</text>
+        <text x="714" y="150" fill="#565959"  font-size="11.5">Serverless · Pay per execution</text>
+        <text x="714" y="167" fill="#879596"  font-size="10.5">Millisecond scaling · $0 at idle</text>
+
+        <!-- NO → Q2 -->
+        <line x1="420" y1="186" x2="420" y2="224" stroke="#CBD5E1" stroke-width="1.5" marker-end="url(#arr)"/>
+        <text x="430" y="211" fill="#879596" font-size="11" font-weight="700">NO</text>
+
+        <!-- Q2 diamond -->
+        <polygon points="420,228 538,268 420,308 302,268" fill="#FFFFFF" stroke="#D5D9D9" stroke-width="1.5" filter="url(#s)"/>
+        <text x="420" y="261" text-anchor="middle" fill="#232F3E" font-size="13" font-weight="700">Kubernetes or</text>
+        <text x="420" y="279" text-anchor="middle" fill="#565959" font-size="12">multi-cloud required?</text>
+
+        <!-- YES → EKS -->
+        <line x1="538" y1="268" x2="706" y2="268" stroke="#2563EB" stroke-width="1.5" marker-end="url(#arr-eks)"/>
+        <text x="620" y="258" text-anchor="middle" fill="#2563EB" font-size="11" font-weight="800">YES</text>
+        <rect x="706" y="232" width="190" height="72" rx="8" fill="#EEF3FF" stroke="#2563EB" stroke-width="1.5" filter="url(#s)"/>
+        <rect x="706" y="232" width="190" height="5" rx="2" fill="#2563EB"/>
+        <text x="714" y="254" fill="#2563EB"  font-size="12" font-weight="800">⚙  Amazon EKS</text>
+        <text x="714" y="272" fill="#565959"  font-size="11.5">Kubernetes · Portable</text>
+        <text x="714" y="289" fill="#879596"  font-size="10.5">$0.10/hr cluster · Helm-compatible</text>
+
+        <!-- NO → Q3 -->
+        <line x1="420" y1="308" x2="420" y2="346" stroke="#CBD5E1" stroke-width="1.5" marker-end="url(#arr)"/>
+        <text x="430" y="333" fill="#879596" font-size="11" font-weight="700">NO</text>
+
+        <!-- Q3 diamond -->
+        <polygon points="420,350 538,390 420,430 302,390" fill="#FFFFFF" stroke="#D5D9D9" stroke-width="1.5" filter="url(#s)"/>
+        <text x="420" y="383" text-anchor="middle" fill="#232F3E" font-size="13" font-weight="700">Legacy app or</text>
+        <text x="420" y="401" text-anchor="middle" fill="#565959" font-size="12">OS-level control needed?</text>
+
+        <!-- YES → EC2 -->
+        <line x1="538" y1="390" x2="706" y2="390" stroke="#E07B39" stroke-width="1.5" marker-end="url(#arr-ec2)"/>
+        <text x="620" y="380" text-anchor="middle" fill="#E07B39" font-size="11" font-weight="800">YES</text>
+        <rect x="706" y="354" width="190" height="72" rx="8" fill="#FFF3E6" stroke="#E07B39" stroke-width="1.5" filter="url(#s)"/>
+        <rect x="706" y="354" width="190" height="5" rx="2" fill="#E07B39"/>
+        <text x="714" y="376" fill="#E07B39"  font-size="12" font-weight="800">🧱  Amazon EC2</text>
+        <text x="714" y="394" fill="#565959"  font-size="11.5">VMs · Full OS control</text>
+        <text x="714" y="411" fill="#879596"  font-size="10.5">Best at ≥80% utilization (RI)</text>
+
+        <!-- NO → ECS -->
+        <line x1="420" y1="430" x2="420" y2="464" stroke="#C7131F" stroke-width="1.5" marker-end="url(#arr-ecs)"/>
+        <text x="430" y="452" fill="#879596" font-size="11" font-weight="700">NO</text>
+        <rect x="252" y="464" width="336" height="34" rx="8" fill="#FFF0F0" stroke="#C7131F" stroke-width="1.5" filter="url(#s)"/>
+        <text x="420" y="484" text-anchor="middle" fill="#C7131F" font-size="13.5" font-weight="800">🏭  Amazon ECS  —  Goldilocks Choice</text>
+        <text x="420" y="498" text-anchor="middle" fill="#879596" font-size="10.5">Managed containers · No K8s overhead · No control plane fee</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 2. CARDS -->
+  <section class="section">
+    <div class="sec-head">
+      <div class="sec-bar"></div>
+      <h2>Service Deep Dives</h2>
+      <span>Metrics, use cases &amp; interview tips</span>
+    </div>
+    <div class="cards-grid">
+
+      <div class="card ec2">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <div class="card-hd">
+            <div class="card-ico">🧱</div>
+            <div style="flex:1">
+              <div class="card-name">Amazon EC2</div>
+              <div class="card-sub">Elastic Compute Cloud — Virtual Machines</div>
+            </div>
+            <div class="card-tag">Brick &amp; Mortar</div>
+          </div>
+          <p class="card-desc">Best for legacy apps, specialized OS requirements, GPU workloads, or 24/7 steady-state services. Use Reserved Instances for the lowest unit cost at high utilization.</p>
+          <div class="metrics">
+            <div class="metric">
+              <div class="m-label">Scaling Speed</div>
+              <div class="m-val">Minutes</div>
+              <div class="sbar"><div class="sfill" style="width:18%"></div></div>
+            </div>
+            <div class="metric">
+              <div class="m-label">Ops Effort</div>
+              <div class="m-val">High</div>
+              <div class="sbar"><div class="sfill" style="width:90%"></div></div>
+            </div>
+            <div class="metric">
+              <div class="m-label">Cost Model</div>
+              <div class="m-val">Per instance 24/7</div>
+            </div>
+            <div class="metric">
+              <div class="m-label">Sweet Spot</div>
+              <div class="m-val">≥80% utilization</div>
+            </div>
+          </div>
+          <div class="tip">
+            <span class="tip-lbl">💡 Interview Tip</span>
+            Mention EC2 when the app is not cloud-native or requires kernel tuning. Reference Reserved Instances for 24/7 steady workloads — lowest unit cost. Lead with "Day 2 Ops" cost of patching.
+          </div>
+        </div>
+      </div>
+
+      <div class="card ecs">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <div class="card-hd">
+            <div class="card-ico">🏭</div>
+            <div style="flex:1">
+              <div class="card-name">Amazon ECS</div>
+              <div class="card-sub">Elastic Container Service — AWS-Native Containers</div>
+            </div>
+            <div class="card-tag">Efficient Factory</div>
+          </div>
+          <p class="card-desc">AWS-native container orchestration without Kubernetes overhead. Pairs with Fargate to eliminate all server management. No control plane fee unlike EKS. Ideal for standard REST microservices.</p>
+          <div class="metrics">
+            <div class="metric">
+              <div class="m-label">Scaling Speed</div>
+              <div class="m-val">Seconds</div>
+              <div class="sbar"><div class="sfill" style="width:62%"></div></div>
+            </div>
+            <div class="metric">
+              <div class="m-label">Ops Effort</div>
+              <div class="m-val">Low / Medium</div>
+              <div class="sbar"><div class="sfill" style="width:32%"></div></div>
+            </div>
+            <div class="metric">
+              <div class="m-label">Control Plane</div>
+              <div class="m-val">Free</div>
+            </div>
+            <div class="metric">
+              <div class="m-label">Cold Starts</div>
+              <div class="m-val">None</div>
+            </div>
+          </div>
+          <div class="tip">
+            <span class="tip-lbl">💡 Interview Tip</span>
+            Frame as the "Goldilocks" solution. Better than Lambda for steady workloads (no cold starts), simpler than EKS for AWS-only teams (no K8s tax). Mention Fargate to eliminate EC2 patching.
+          </div>
+        </div>
+      </div>
+
+      <div class="card eks">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <div class="card-hd">
+            <div class="card-ico">⚙️</div>
+            <div style="flex:1">
+              <div class="card-name">Amazon EKS</div>
+              <div class="card-sub">Elastic Kubernetes Service — Managed Kubernetes</div>
+            </div>
+            <div class="card-tag">Universal OS</div>
+          </div>
+          <p class="card-desc">For enterprise systems with hybrid-cloud or heavy Kubernetes ecosystem investment. Use identical Helm charts, Prometheus setups, and manifests across on-prem and cloud. Maximum portability.</p>
+          <div class="metrics">
+            <div class="metric">
+              <div class="m-label">Scaling Speed</div>
+              <div class="m-val">Seconds</div>
+              <div class="sbar"><div class="sfill" style="width:65%"></div></div>
+            </div>
+            <div class="metric">
+              <div class="m-label">Ops Effort</div>
+              <div class="m-val">High</div>
+              <div class="sbar"><div class="sfill" style="width:80%"></div></div>
+            </div>
+            <div class="metric">
+              <div class="m-label">Control Plane</div>
+              <div class="m-val">$0.10/hr</div>
+            </div>
+            <div class="metric">
+              <div class="m-label">Multi-Cloud</div>
+              <div class="m-val">Yes ✓</div>
+            </div>
+          </div>
+          <div class="tip">
+            <span class="tip-lbl">💡 Interview Tip</span>
+            Lead with portability. If the company needs to avoid cloud lock-in or runs Helm/Prometheus on-prem, EKS is the only choice. Frame $0.10/hr as an investment in a universal Kubernetes API.
+          </div>
+        </div>
+      </div>
+
+      <div class="card lmb">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <div class="card-hd">
+            <div class="card-ico">⚡</div>
+            <div style="flex:1">
+              <div class="card-name">AWS Lambda</div>
+              <div class="card-sub">Serverless Functions — Event-Driven Compute</div>
+            </div>
+            <div class="card-tag">Electric Switch</div>
+          </div>
+          <p class="card-desc">Purpose-built for event-driven tasks — S3 uploads, DynamoDB streams, API glue code. Scales to thousands of concurrent executions in milliseconds. Zero cost at zero traffic.</p>
+          <div class="metrics">
+            <div class="metric">
+              <div class="m-label">Scaling Speed</div>
+              <div class="m-val">Milliseconds</div>
+              <div class="sbar"><div class="sfill" style="width:99%"></div></div>
+            </div>
+            <div class="metric">
+              <div class="m-label">Ops Effort</div>
+              <div class="m-val">Minimal</div>
+              <div class="sbar"><div class="sfill" style="width:5%"></div></div>
+            </div>
+            <div class="metric">
+              <div class="m-label">Max Duration</div>
+              <div class="m-val">15 minutes</div>
+            </div>
+            <div class="metric">
+              <div class="m-label">Idle Cost</div>
+              <div class="m-val">$0.00</div>
+            </div>
+          </div>
+          <div class="tip">
+            <span class="tip-lbl">💡 Interview Tip</span>
+            "If nobody uses it at 3 AM, you pay $0." Always add the counter: at high constant volume, Lambda becomes significantly more expensive than EC2/ECS — demonstrating this earns respect.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. TABLE -->
+  <section class="section">
+    <div class="sec-head">
+      <div class="sec-bar"></div>
+      <h2>Trade-off Matrix</h2>
+      <span>Side-by-side across key architectural dimensions</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th class="th-ec2">🧱 EC2</th>
+            <th class="th-ecs">🏭 ECS</th>
+            <th class="th-eks">⚙ EKS</th>
+            <th class="th-lmb">⚡ Lambda</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Abstraction Level</td><td>Virtual Machines</td><td>Containers (Opinionated)</td><td>Containers (Kubernetes)</td><td>Functions (Serverless)</td></tr>
+          <tr><td>Scaling Speed</td><td>Minutes (ASG boot)</td><td>Seconds (fast)</td><td>Seconds (complex)</td><td>Milliseconds <span class="winner">Fastest</span></td></tr>
+          <tr><td>Cost Model</td><td>Per instance, 24/7</td><td>Per resource (EC2/Fargate)</td><td>$0.10/hr + resources</td><td>Per execution/duration</td></tr>
+          <tr><td>Best Traffic</td><td>Steady 24/7 (≥80% util)</td><td>Steady or variable</td><td>Large-scale, mixed</td><td>Bursty / unpredictable <span class="winner">Cheapest</span></td></tr>
+          <tr><td>Ops Effort</td><td>High — OS, patching, ASG</td><td>Low / Medium</td><td>High — K8s complexity</td><td>Minimal — no infra <span class="winner">Lowest</span></td></tr>
+          <tr><td>Multi-Cloud</td><td>No</td><td>AWS-only</td><td>Yes — K8s API everywhere <span class="winner">Only Option</span></td><td>No</td></tr>
+          <tr><td>Cold Starts</td><td>N/A</td><td>None</td><td>None</td><td>Yes (mitigated via Provisioned Concurrency)</td></tr>
+          <tr><td>Control Plane Fee</td><td>None</td><td>Free <span class="winner">Advantage</span></td><td>$0.10/hr (~$72/mo)</td><td>None</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 4. SCENARIOS -->
+  <section class="section">
+    <div class="sec-head">
+      <div class="sec-bar"></div>
+      <h2>Real-World Scenarios</h2>
+      <span>Interview-ready architectural reasoning</span>
+    </div>
+    <div class="sc-grid">
+
+      <div class="sc s-lmb">
+        <div class="sc-top"><span class="sc-num">Scenario 01</span><span class="sc-svc">⚡ AWS Lambda</span></div>
+        <div class="sc-title">Event-Driven Image Processor</div>
+        <div class="sc-pl">The Problem</div>
+        <div class="sc-prob">Social media app: users upload profile pictures that need resizing and S3 storage on every upload.</div>
+        <div class="sc-why">"Lambda because the workload is event-driven and bursty. Zero traffic at 2 AM = $0. If 10,000 photos hit at once, Lambda scales horizontally in milliseconds. Running EC2 to wait for uploads wastes capital."</div>
+      </div>
+
+      <div class="sc s-ecs">
+        <div class="sc-top"><span class="sc-num">Scenario 02</span><span class="sc-svc">🏭 ECS + Fargate</span></div>
+        <div class="sc-title">High-Traffic E-Commerce API</div>
+        <div class="sc-pl">The Problem</div>
+        <div class="sc-prob">Standard REST API for retail. Needs reliability, thousands of req/sec, and fast CI/CD deploy cycles.</div>
+        <div class="sc-why">"ECS is the Goldilocks solution. No cold starts like Lambda, no K8s control plane to manage like EKS. Best balance for AWS-native teams who want to focus on code, not infrastructure."</div>
+      </div>
+
+      <div class="sc s-eks">
+        <div class="sc-top"><span class="sc-num">Scenario 03</span><span class="sc-svc">⚙️ Amazon EKS</span></div>
+        <div class="sc-title">Enterprise Multi-Cloud Platform</div>
+        <div class="sc-pl">The Problem</div>
+        <div class="sc-prob">Financial institution running on-prem and AWS, requiring identical deployment tooling across both environments.</div>
+        <div class="sc-why">"EKS for portability. Already using Helm charts and Prometheus on-prem, so EKS lets us use the same manifests. It's an investment in a universal API — worth the $0.10/hr control plane cost."</div>
+      </div>
+
+      <div class="sc s-ec2">
+        <div class="sc-top"><span class="sc-num">Scenario 04</span><span class="sc-svc">🧱 Amazon EC2</span></div>
+        <div class="sc-title">Legacy Monolith / Self-Managed DB</div>
+        <div class="sc-pl">The Problem</div>
+        <div class="sc-prob">Legacy Java app requiring 128GB RAM and specific kernel tuning, or a self-managed Cassandra cluster.</div>
+        <div class="sc-why">"EC2 when full OS control is required and containerizing is too costly. For 24/7 steady-state, Reserved Instances deliver the absolute lowest unit cost per hour — no alternative beats that."</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 5. CHEAT SHEET -->
+  <section class="section">
+    <div class="sec-head">
+      <div class="sec-bar"></div>
+      <h2>Interview Quick Reference</h2>
+      <span>Six answers to close the interview strong</span>
+    </div>
+    <div class="cheat-grid">
+      <div class="cheat">
+        <div class="cheat-q">Cost for low or variable traffic?</div>
+        <div class="cheat-a">Lambda wins — pay per request only.</div>
+      </div>
+      <div class="cheat">
+        <div class="cheat-q">Cost for high steady-state workloads?</div>
+        <div class="cheat-a">EC2 or ECS — lower consistent hourly rate.</div>
+      </div>
+      <div class="cheat">
+        <div class="cheat-q">Fastest scaling speed?</div>
+        <div class="cheat-a">Lambda (ms) › ECS (sec) › EC2 (min)</div>
+      </div>
+      <div class="cheat">
+        <div class="cheat-q">Lowest operational effort?</div>
+        <div class="cheat-a">Lambda &lt; ECS &lt; EKS — zero to high.</div>
+      </div>
+      <div class="cheat">
+        <div class="cheat-q">ECS vs EKS — quick decision?</div>
+        <div class="cheat-a">ECS = AWS-native; EKS = K8s portability.</div>
+      </div>
+      <div class="cheat">
+        <div class="cheat-q">Lambda vs Containers?</div>
+        <div class="cheat-a">&lt;15 min event-driven → Lambda. Long-running / WebSockets → Containers.</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <strong>AWS Compute Decision Guide</strong> · Platform &amp; Cloud Architecture Reference · Think in trade-offs, lead with Day 2 Operations
+  </div>
+</footer>
+
+</body>
+</html>
