@@ -2589,6 +2589,97 @@ iptables -A INPUT -p tcp --dport 8080 -j ACCEPT</div><div class="nt">On AWS: als
         gc: `g-sec`,
         section: `Kubernetes & Containers`,
         a: `<ul><li><strong>RBAC:</strong> Least-privilege roles, no wildcards.</li><li><strong>Network Policies:</strong> Default-deny ingress/egress globally, map strict explicit connections.</li><li><strong>Image Scanning:</strong> Never deploy \`:latest\`. Enforce Mutating Admission Webhooks (like Kyverno) absolutely rejecting images exhibiting CRITICAL CVEs.</li><li><strong>Node Security:</strong> EKS private control-plane endpoints, nodes living solely in private subnets, SSM instead of SSH.</li></ul>`
+      },
+      {
+        q: `Difference between RUN, CMD, and ENTRYPOINT?`,
+        g: `Docker`,
+        gc: `g-dk`,
+        section: `Kubernetes & Containers`,
+        a: `<ul><li><strong>RUN:</strong> Executes commands directly inside the container <em>during the image build phase</em> (e.g., \`RUN apt-get install\`).</li><li><strong>ENTRYPOINT:</strong> The immutable executable configured to run when the container starts. Difficult to override at runtime.</li><li><strong>CMD:</strong> Default arguments passed directly into the \`ENTRYPOINT\`. Easily overridden dynamically when running \`docker run <image> <new_cmd>\`.</li></ul>`
+      },
+      {
+        q: `How do you pass environment variables to containers?`,
+        g: `Docker`,
+        gc: `g-dk`,
+        section: `Kubernetes & Containers`,
+        a: `<p>1. <strong>Locally:</strong> Inject via \`docker run -e key=value ...\` or passing a \`--env-file .env\` flag.<br>2. <strong>Docker Compose:</strong> Defining them beneath the \`environment:\` stanza or sourcing from an \`env_file\`.<br>3. <strong>Kubernetes:</strong> Explicitly mapping them identically inside the Pod YAML spec (\`env:\` array) or mapping entire \`ConfigMaps\` and \`Secrets\` holistically via \`envFrom:\`.</p>`
+      },
+      {
+        q: `Difference between ARG and ENV?`,
+        g: `Docker`,
+        gc: `g-dk`,
+        section: `Kubernetes & Containers`,
+        a: `<table><thead><tr><th>ARG</th><th>ENV</th></tr></thead><tbody><tr><td>Exists strictly <em>during the build phase</em> only.</td><td>Persists natively inside the final running container.</td></tr><tr><td>Passed dynamically via \`docker build --build-arg\`.</td><td>Passed dynamically via \`docker run -e\`.</td></tr><tr><td>Cannot be interrogated by the running application.</td><td>Read easily by the application via standard OS environment variables.</td></tr></tbody></table>`
+      },
+      {
+        q: `What is a multi-stage Docker build?`,
+        g: `Docker`,
+        gc: `g-dk`,
+        section: `Kubernetes & Containers`,
+        a: `<p>A paradigm employing multiple \`FROM\` statements situated inside a single \`Dockerfile\`. The primary (builder) stage incorporates heavy compilers (like the Go toolchain or Node \`devDependencies\`) to violently compile identical source code. The subsequent final stage imports a pristine, lightweight baseline OS inherently copying <em>only</em> the compiled binary executable from the initial stage, violently slashing the final image footprint from GBs to MBs.</p>`
+      },
+      {
+        q: `How do you reduce Docker image size?`,
+        g: `Docker`,
+        gc: `g-dk`,
+        section: `Kubernetes & Containers`,
+        a: `<ul><li>Implement <strong>multi-stage builds</strong> to strip compilers.</li><li>Adopt minimal foundational base images (e.g., \`alpine\`, \`distroless\`, or \`scratch\`).</li><li>Chain \`RUN\` instructions functionally utilizing \`&&\` so package managers solely emit a single discrete layer.</li><li>Systematically eradicate cached APK/APT repository artifacts post-installation within identically the same layer (\`rm -rf /var/lib/apt/lists/*\`).</li><li>Write a draconian \`.dockerignore\` file.</li></ul>`
+      },
+      {
+        q: `How does Docker build cache work?`,
+        g: `Docker`,
+        gc: `g-dk`,
+        section: `Kubernetes & Containers`,
+        a: `<p>Docker constructs images progressively as a succession of individually immutable layers. Upon invocation, Docker checks whether the corresponding instruction identically matches a securely cached layer previously built. If yes, it leverages the cache instantly spanning seconds instead of minutes. <strong>Crucial caveat:</strong> The exact instant one line changes (or a \`COPY\` instruction registers altered file checksums), Docker intrinsically invalidates the cache universally for <em>all</em> subsequent downstream layers.</p>`
+      },
+      {
+        q: `How do you optimize Dockerfile for CI/CD speed?`,
+        g: `Docker`,
+        gc: `g-dk`,
+        section: `Kubernetes & Containers`,
+        a: `<p>Intelligently structure layers symmetrically to maximize Cache Hits.<br>1. Always \`COPY package.json\` distinctively <em>before</em> copying universally fluctuating source code.<br>2. Execute \`RUN npm install\` purely against the \`package.json\`.<br>3. <em>Finally</em> \`COPY src/ .\`.<br>This guarantees that rapidly iterating developers mutating source code files will <strong>never</strong> needlessly trigger dependency re-installations.</p>`
+      },
+      {
+        q: `How do you handle secrets in Docker builds?`,
+        g: `Sec`,
+        gc: `g-sec`,
+        section: `Kubernetes & Containers`,
+        a: `<p><strong>Never</strong> inject keys via standard \`ARG\` or \`ENV\` because they universally persist forever irreversibly baked into the image history manifest (\`docker history\`).<br>Instead, utilize Docker's \`BuildKit\` secrets mechanism: invoke \`RUN --mount=type=secret,id=my_secret\` to temporarily expose the secret singularly within that exact localized step natively without permanently embedding it into subsequent filesystem layers.</p>`
+      },
+      {
+        q: `How do you debug a container that exits immediately?`,
+        g: `Debug`,
+        gc: `g-k8s`,
+        section: `Kubernetes & Containers`,
+        a: `<p>If the PID 1 process executes fully and successfully returns \`0\`, the container structurally dies immediately as designed. <br>1. Force-restart explicitly intercepting the broken entrypoint: \`docker run -it --entrypoint /bin/sh <image>\`.<br>2. Interrogate the structural breakdown via \`docker logs <container_id>\`.<br>3. If it requires a persistently hung process, append a long-running tail command: \`CMD ["tail", "-f", "/dev/null"]\`.</p>`
+      },
+      {
+        q: `What are Dockerfile security best practices?`,
+        g: `Sec`,
+        gc: `g-sec`,
+        section: `Kubernetes & Containers`,
+        a: `<ul><li>Intentionally execute a \`USER non-root\` directive mitigating root-level container escalation boundaries.</li><li>Mandate trusted base environments universally specifying static SHA256 image hashes, not volatile \`:latest\` tags.</li><li>Prohibit \`COPY . .\` injecting malicious local \`.env\` keys outright.</li><li>Impose Read-Only Root Filesystems limiting write operations singularly to volatile \`/tmp\` partitions.</li></ul>`
+      },
+      {
+        q: `What is the purpose of .dockerignore?`,
+        g: `Docker`,
+        gc: `g-dk`,
+        section: `Kubernetes & Containers`,
+        a: `<p>Fundamentally acts inversely parallel to \`.gitignore\`. It universally blocks massive useless directories (like \`node_modules\`, \`.git\`, or localized \`build/\` files) from persistently being injected explicitly into the Docker build context daemon. It structurally protects against accidentally shipping developers' \`.env\` plaintext credentials violently into globally public images.</p>`
+      },
+      {
+        q: `Why is COPY . . risky in CI/CD pipelines?`,
+        g: `Docker`,
+        gc: `g-dk`,
+        section: `Kubernetes & Containers`,
+        a: `<p>If \`.dockerignore\` isn't flawlessly configured, \`COPY . .\` indiscriminately dumps exactly everything into the container. Most catastrophically, this accidentally ships \`.git/\` history (expanding the image by megabytes) and highly classified developer \`.env\` files/AWs keys straight into the finalized public image layers, radically expanding potential cyber-attack vulnerability vectors.</p>`
+      },
+      {
+        q: `How do you ensure deterministic Docker builds?`,
+        g: `Docker`,
+        gc: `g-dk`,
+        section: `Kubernetes & Containers`,
+        a: `<p>1. Universally bind foundational \`FROM\` targets explicitly directly against irreversible SHA256 cryptographic digests, utterly ignoring arbitrarily floating \`:1.0\` semantic tags.<br>2. Persistently enforce explicit standard package locking (\`npm ci\` over \`npm install\`).<br>3. Remove unpredictable temporal directives indiscriminately pulling \`apt-get upgrade\` independently during the build process.</p>`
       }
     ]
   },
