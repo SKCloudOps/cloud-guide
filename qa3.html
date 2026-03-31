@@ -81,365 +81,287 @@
     /* TOPBAR */
     .top {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 1000;
-      height: 46px;
-      background: var(--aws-surface2);
+      height: 52px;
+      background: #fff;
       border-bottom: 1px solid var(--aws-border);
       display: flex;
       align-items: center;
-      padding: 0 18px;
-      gap: 16px
+      padding: 0 20px;
+      gap: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06)
     }
 
     .top .logo {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 14px;
+      gap: 9px;
+      font-size: 15px;
       font-weight: 700;
-      color: var(--t1)
+      color: var(--t1);
+      white-space: nowrap
     }
-
-    .top .logo svg {
-      width: 24px;
-      height: 24px
-    }
-
-    .top .crumb {
-      font-size: 12px;
-      color: var(--t4)
-    }
-
-    .top .crumb a {
-      color: var(--blue-l);
-      text-decoration: none
-    }
-
-    .top .crumb .sep {
-      margin: 0 6px
-    }
-
-    .top .right {
-      margin-left: auto;
+    .top .logo svg { width: 26px; height: 26px }
+    .top .domain-crumb {
       display: flex;
       align-items: center;
-      gap: 12px
+      gap: 6px;
+      font-size: 13px;
+      color: var(--t4);
+      padding: 4px 10px;
+      background: var(--aws-nav);
+      border-radius: 20px;
+      border: 1px solid var(--aws-border)
     }
-
-    .top .search-box {
-      position: relative
-    }
-
+    .top .domain-crumb .dc-icon { font-size: 14px }
+    .top .domain-crumb .dc-name { color: var(--t2); font-weight: 600 }
+    .top .right { margin-left: auto; display: flex; align-items: center; gap: 12px }
+    .top .search-box { position: relative }
     .top .search-box input {
-      width: 280px;
-      height: 30px;
+      width: 260px; height: 32px;
       border: 1px solid var(--aws-border);
-      border-radius: var(--r);
+      border-radius: 20px;
       background: var(--aws-nav);
       color: var(--t2);
-      padding: 0 10px 0 30px;
-      font-family: var(--f);
-      font-size: 12px;
-      outline: none;
-      transition: border 0.2s
+      padding: 0 14px 0 34px;
+      font-family: var(--f); font-size: 13px;
+      outline: none; transition: border 0.2s, box-shadow 0.2s
     }
-
     .top .search-box input:focus {
-      border-color: var(--blue-l);
-      box-shadow: 0 0 0 2px rgba(68, 185, 214, 0.2)
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(255,153,0,0.1)
     }
-
     .top .search-box .si {
-      position: absolute;
-      left: 9px;
-      top: 50%;
+      position: absolute; left: 11px; top: 50%;
       transform: translateY(-50%);
-      color: var(--t4);
-      font-size: 13px
+      color: var(--t4); font-size: 14px
     }
-
     .top .badge {
-      background: var(--orange);
-      color: #000;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: var(--r);
+      background: var(--orange); color: #000;
+      font-size: 11px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px;
       letter-spacing: 0.04em
     }
 
-    /* SIDEBAR */
+    /* SIDEBAR - DOMAIN NAV */
     .side {
       position: fixed;
-      top: 46px;
-      left: 0;
+      top: 52px; left: 0;
       width: var(--sw);
-      height: calc(100vh - 46px);
-      background: var(--aws-nav);
+      height: calc(100vh - 52px);
+      background: #f8f9fb;
       border-right: 1px solid var(--aws-border);
       overflow-y: auto;
       z-index: 900;
-      padding: 10px 0;
+      padding: 14px 0 20px;
       scrollbar-width: thin
     }
+    .side::-webkit-scrollbar { width: 3px }
+    .side::-webkit-scrollbar-thumb { background: var(--aws-border); border-radius: 2px }
 
-    .side::-webkit-scrollbar {
-      width: 4px
-    }
-
-    .side::-webkit-scrollbar-thumb {
-      background: var(--aws-border);
-      border-radius: 2px
-    }
-
-    .side .st {
-      padding: 10px 16px 4px;
-      font-size: 10px;
-      font-weight: 700;
+    .side .nav-header {
+      padding: 2px 18px 10px;
+      font-size: 10px; font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--t4);
+      letter-spacing: 0.12em;
+      color: var(--t4)
+    }
+    .side .nav-item {
       display: flex;
       align-items: center;
-      gap: 6px
-    }
-
-    .side .st .c {
-      background: var(--aws-surface3);
-      padding: 1px 5px;
-      border-radius: 8px;
-      font-size: 9px;
-      color: var(--t3)
-    }
-
-    .side a {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 5px 16px;
-      font-size: 12px;
-      color: var(--t3);
-      text-decoration: none;
+      gap: 10px;
+      padding: 9px 18px;
+      font-size: 13.5px;
+      color: var(--t2);
       cursor: pointer;
       border-left: 3px solid transparent;
-      transition: all 0.12s;
-      line-height: 1.35
+      transition: all 0.13s;
+      user-select: none;
+      border-radius: 0 6px 6px 0;
+      margin: 1px 8px 1px 0
     }
-
-    .side a:hover {
+    .side .nav-item:hover {
       background: var(--aws-hover);
       color: var(--t1)
     }
-
-    .side a.act {
-      background: rgba(255, 153, 0, 0.07);
+    .side .nav-item.active {
+      background: rgba(255,153,0,0.09);
       color: var(--orange);
       border-left-color: var(--orange);
       font-weight: 600
     }
-
-    .side a .n {
-      font-family: var(--m);
-      font-size: 10px;
-      color: var(--t4);
-      min-width: 22px
+    .side .nav-item .ni-icon {
+      font-size: 17px;
+      width: 26px;
+      text-align: center;
+      flex-shrink: 0
     }
-
-    .side a.act .n {
-      color: var(--orange)
-    }
-
-    .side a .t {
+    .side .nav-item .ni-text {
+      flex: 1;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis
     }
-
-    .side .div {
+    .side .nav-item .ni-count {
+      font-size: 11px;
+      background: var(--aws-surface3);
+      color: var(--t4);
+      padding: 1px 7px;
+      border-radius: 10px;
+      font-family: var(--m);
+      flex-shrink: 0
+    }
+    .side .nav-item.active .ni-count {
+      background: rgba(255,153,0,0.15);
+      color: var(--orange)
+    }
+    .side .nav-sep {
       height: 1px;
       background: var(--aws-border);
-      margin: 8px 16px
+      margin: 8px 18px
     }
 
     /* MAIN */
     .mn {
       margin-left: var(--sw);
-      margin-top: 46px;
-      min-height: calc(100vh - 46px)
+      margin-top: 52px;
+      min-height: calc(100vh - 52px);
+      background: var(--aws-dark)
     }
 
-    /* HERO */
-    .hero {
-      padding: 48px 48px 40px;
+    /* DOMAIN BANNER */
+    .dom-banner {
+      padding: 28px 48px 22px;
       border-bottom: 1px solid var(--aws-border);
-      background: linear-gradient(180deg, rgba(255, 153, 0, 0.03) 0%, transparent 100%)
-    }
-
-    .hero .lab {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--orange);
-      margin-bottom: 6px;
+      background: linear-gradient(135deg, rgba(255,153,0,0.04) 0%, rgba(0,115,187,0.03) 100%);
       display: flex;
       align-items: center;
-      gap: 8px
+      gap: 18px;
+      position: sticky;
+      top: 52px;
+      z-index: 800;
+      backdrop-filter: blur(8px);
+      background-color: rgba(255,255,255,0.95)
     }
-
-    .hero .lab::before {
-      content: '';
-      width: 14px;
-      height: 2px;
-      background: var(--orange);
-      border-radius: 1px
+    .dom-banner .db-icon {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0
     }
-
-    .hero h1 {
-      font-size: 30px;
-      font-weight: 700;
-      color: var(--t1);
-      letter-spacing: -0.025em;
-      margin-bottom: 12px
+    .dom-banner .db-info h2 {
+      font-size: 22px; font-weight: 700;
+      color: var(--t1); letter-spacing: -0.02em
     }
-
-    .hero p {
-      font-size: 16px;
-      color: var(--t3);
-      max-width: 780px;
-      line-height: 1.7
+    .dom-banner .db-info p {
+      font-size: 14px; color: var(--t4); margin-top: 2px
     }
-
-    .hero .stats {
+    .dom-banner .db-actions {
+      margin-left: auto;
       display: flex;
-      gap: 28px;
-      margin-top: 20px
+      align-items: center;
+      gap: 10px
+    }
+    .btn {
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-family: var(--f);
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; border: 1px solid;
+      transition: all 0.15s;
+      display: inline-flex; align-items: center; gap: 6px
+    }
+    .btn-p { background: var(--orange); color: #000; border-color: var(--orange-h) }
+    .btn-p:hover { background: var(--orange-h) }
+    .btn-s { background: #fff; color: var(--t2); border-color: var(--aws-border) }
+    .btn-s:hover { background: var(--aws-hover) }
+    .db-count {
+      font-family: var(--m); font-size: 12px;
+      color: var(--t4); padding: 4px 12px;
+      border: 1px solid var(--aws-border);
+      border-radius: 20px; background: #fff
     }
 
-    .hero .stats div {
-      display: flex;
-      flex-direction: column
+    /* CONTENT AREA */
+    .ct {
+      padding: 28px 48px 100px;
+      max-width: 940px
     }
 
-    .hero .stats .v {
-      font-size: 22px;
-      font-weight: 800;
+    /* HOME SCREEN - domain grid */
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+      padding: 32px 48px 80px
+    }
+    .home-card {
+      background: #fff;
+      border: 1px solid var(--aws-border);
+      border-radius: 12px;
+      padding: 22px 20px;
+      cursor: pointer;
+      transition: all 0.18s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04)
+    }
+    .home-card:hover {
+      border-color: var(--orange);
+      box-shadow: 0 4px 20px rgba(255,153,0,0.12);
+      transform: translateY(-2px)
+    }
+    .home-card .hc-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 14px
+    }
+    .home-card h3 {
+      font-size: 15px; font-weight: 700;
+      color: var(--t1); margin-bottom: 6px;
+      line-height: 1.3
+    }
+    .home-card p {
+      font-size: 13px; color: var(--t4); line-height: 1.5
+    }
+    .home-card .hc-count {
+      margin-top: 14px;
+      font-size: 12px; font-weight: 600;
       color: var(--orange);
       font-family: var(--m)
     }
-
-    .hero .stats .l {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--t4);
-      margin-top: 2px
+    .home-hero {
+      padding: 40px 48px 0;
+      background: linear-gradient(135deg, rgba(255,153,0,0.04), rgba(0,115,187,0.03))
     }
-
-    /* CONTROLS */
-    .ctrl {
-      padding: 10px 44px;
-      border-bottom: 1px solid var(--aws-border);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--aws-surface);
-      position: sticky;
-      top: 46px;
-      z-index: 800
+    .home-hero h1 {
+      font-size: 28px; font-weight: 700;
+      color: var(--t1); letter-spacing: -0.02em;
+      margin-bottom: 8px
     }
-
-    .btn {
-      padding: 5px 14px;
-      border-radius: var(--r);
-      font-family: var(--f);
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1px solid;
-      transition: all 0.15s;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px
+    .home-hero p {
+      font-size: 16px; color: var(--t3);
+      max-width: 640px; line-height: 1.65
     }
-
-    .btn-p {
-      background: var(--orange);
-      color: #000;
-      border-color: var(--orange-h)
+    .home-hero .hh-stats {
+      display: flex; gap: 32px; margin-top: 20px; padding-bottom: 28px;
+      border-bottom: 1px solid var(--aws-border)
     }
-
-    .btn-p:hover {
-      background: var(--orange-h)
+    .home-hero .hh-stats div { display: flex; flex-direction: column }
+    .home-hero .hh-stats .sv {
+      font-size: 24px; font-weight: 800;
+      color: var(--orange); font-family: var(--m)
     }
-
-    .btn-s {
-      background: transparent;
-      color: var(--t2);
-      border-color: var(--aws-border)
+    .home-hero .hh-stats .sl {
+      font-size: 11px; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--t4); margin-top: 2px
     }
-
-    .btn-s:hover {
-      background: var(--aws-hover)
-    }
-
-    .ctrl .sp {
-      flex: 1
-    }
-
-    .ctrl .info {
-      font-size: 11px;
+    .dom-grid-label {
+      padding: 22px 48px 10px;
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
       color: var(--t4)
-    }
-
-    /* CONTENT */
-    .ct {
-      padding: 0 48px 120px;
-      max-width: 1020px
-    }
-
-    /* SECTION */
-    .sec {
-      scroll-margin-top: 110px
-    }
-
-    .sec-h {
-      padding: 36px 0 22px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      border-bottom: 2px solid var(--aws-border);
-      margin-bottom: 20px
-    }
-
-    .sec-i {
-      width: 42px;
-      height: 42px;
-      border-radius: var(--rl);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 19px;
-      flex-shrink: 0
-    }
-
-    .sec-h h2 {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--t1)
-    }
-
-    .sec-h .sc {
-      margin-left: auto;
-      font-family: var(--m);
-      font-size: 11px;
-      color: var(--t4);
-      background: var(--aws-surface3);
-      padding: 3px 10px;
-      border-radius: var(--r)
     }
 
     .c-aws .sec-i {
@@ -970,90 +892,65 @@
       }
     }
 
-    .resizer {
-      width: 5px;
-      cursor: ew-resize;
-      position: fixed;
-      left: var(--sw);
-      top: 46px;
-      bottom: 0;
-      z-index: 999;
-      background: transparent;
-      transition: background 0.2s;
-    }
-    .resizer:hover, .resizer.dragging {
-      background: var(--orange);
-    }
-    body.closed .resizer {
-      display: none;
-    }
-    .side {
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0s;
-    }
-    .mn {
-      transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    body.closed .side {
-      transform: translateX(-100%);
-    }
-    body.closed .mn {
-      margin-left: 0 !important;
-    }
-    body.dragging .mn, body.dragging .side {
-      transition: none !important;
-    }
-    #toggle-side:hover {
-      background: var(--aws-hover) !important;
-    }
+    .mn { transition: margin-left 0.3s ease }
   </style>
 </head>
 
 <body>
 
+  <!-- TOPBAR -->
   <div class="top">
     <div class="logo">
-      <button id="toggle-side" title="Toggle Sidebar" style="background:none;border:none;color:var(--t1);cursor:pointer;display:flex;align-items:center;padding:4px;margin-right:4px;border-radius:4px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-      </button>
       <svg viewBox="0 0 24 24" fill="none">
         <rect width="24" height="24" rx="3" fill="#232f3e" />
         <path d="M6 15.5c0 0 3 2 6 2s6-2 6-2" stroke="#FF9900" stroke-width="1.5" stroke-linecap="round" />
         <path d="M16.5 16l2 1.2" stroke="#FF9900" stroke-width="1.5" stroke-linecap="round" />
         <circle cx="12" cy="11" r="2.5" fill="#FF9900" />
       </svg>
-      <span>DevOps Knowledge Base</span>
+      <span>DevOps KB</span>
     </div>
-    <div class="crumb"><a href="#">Interview Prep</a><span class="sep">›</span> Complete Q&A Reference</div>
+    <div class="domain-crumb" id="domain-crumb" style="display:none">
+      <span class="dc-icon" id="crumb-icon"></span>
+      <span class="dc-name" id="crumb-name"></span>
+    </div>
     <div class="right">
-      <div class="search-box"><span class="si">⌕</span><input type="text" placeholder="Search all questions..."
-          oninput="filter(this.value)"></div>
-      <span class="badge">139 ITEMS</span>
+      <div class="search-box"><span class="si">⌕</span><input type="text" id="search-input" placeholder="Search questions..." oninput="doSearch(this.value)"></div>
+      <span class="badge" id="top-badge">Loading…</span>
     </div>
   </div>
 
+  <!-- SIDEBAR -->
   <nav class="side" id="side"></nav>
-  <div id="drag-handle" class="resizer"></div>
 
-  <div class="mn">
-    <div class="hero">
-      <div class="lab">Complete Interview Reference</div>
-      <h1>DevOps & Cloud Engineer — Complete Q&A Knowledge Base</h1>
-      <p>Comprehensive reference combining architect-level compendium, STAR-format deep dives, video quick-reference,
-        technical screening questions, and mock interview prep across AWS architecture, EKS, networking, security,
-        Terraform, Docker, Kubernetes, Grafana, Ansible, Linux, and career strategy.</p>
-      <div class="stats">
-        <div><span class="v" id="stat-total">139</span><span class="l">Questions</span></div>
-        <div><span class="v" id="stat-domains">23</span><span class="l">Domains</span></div>
-        <div><span class="v">4</span><span class="l">Sources</span></div>
+  <!-- MAIN -->
+  <div class="mn" id="mn">
+    <div id="view-home"></div>
+    <div id="view-domain" style="display:none">
+      <div class="dom-banner" id="dom-banner">
+        <div class="db-icon" id="dom-icon"></div>
+        <div class="db-info">
+          <h2 id="dom-title"></h2>
+          <p id="dom-subtitle"></p>
+        </div>
+        <div class="db-actions">
+          <button class="btn btn-p" onclick="allCards(true)">▾ Expand All</button>
+          <button class="btn btn-s" onclick="allCards(false)">▴ Collapse All</button>
+          <span class="db-count" id="dom-count"></span>
+        </div>
       </div>
+      <div class="ct" id="ct"></div>
     </div>
-    <div class="ctrl">
-      <button class="btn btn-p" onclick="all(true)">▾ Expand All</button>
-      <button class="btn btn-s" onclick="all(false)">▴ Collapse All</button>
-      <span class="sp"></span>
-      <span class="info" id="vc">Showing 139 of 139</span>
+    <div id="view-search" style="display:none">
+      <div class="dom-banner">
+        <div class="db-icon" style="background:rgba(68,185,214,0.12);color:#44b9d6">⌕</div>
+        <div class="db-info"><h2>Search Results</h2><p id="search-status"></p></div>
+        <div class="db-actions">
+          <button class="btn btn-p" onclick="allCards(true)">▾ Expand All</button>
+          <button class="btn btn-s" onclick="allCards(false)">▴ Collapse All</button>
+        </div>
+      </div>
+      <div class="ct" id="ct-search"></div>
     </div>
-    <div class="ct" id="ct"></div>
   </div>
 
   <script>
@@ -3209,81 +3106,162 @@ git branch -a  # list all</div>`,
       }
     ]
   }
-]; // Build sidebar + content
-    let qnum = 0, sideHTML = '', ctHTML = '';
-    D.forEach((sec, si) => {
-      sideHTML += `<div class="st">${sec.s} <span class="c">${sec.items.length}</span></div>`;
-      ctHTML += `<div class="sec ${sec.cls}" id="${sec.id}"><div class="sec-h"><div class="sec-i">${sec.icon}</div><h2>${sec.s}</h2><span class="sc">${sec.items.length} Qs</span></div>`;
-      sec.items.forEach((it, ii) => {
-        qnum++;
-        const qid = `q${qnum}`;
-        const n = String(qnum).padStart(2, '0');
-        sideHTML += `<a data-t="${qid}" onclick="go('${qid}')"><span class="n">${n}</span><span class="t">${it.q}</span></a>`;
-        ctHTML += `<div class="qa" id="${qid}"><div class="qh" onclick="tog(this)"><span class="qv">▸</span><span class="qn">Q${n}</span><span class="qt">${it.q}</span><span class="qg ${it.gc}">${it.g}</span></div><div class="qb"><div class="qw">${it.a}</div></div></div>`;
+]; // ─── MENU-BASED NAVIGATION ───
+
+    // Count total questions
+    const totalQs = D.reduce((s, sec) => s + sec.items.length, 0);
+    document.getElementById('top-badge').textContent = `${totalQs} Q&As`;
+
+    // Colour palette for icon backgrounds (cycles)
+    const palettes = [
+      ['rgba(0,115,187,0.15)','#44b9d6'],
+      ['rgba(50,109,230,0.15)','#6b8df5'],
+      ['rgba(255,153,0,0.12)','#ff9900'],
+      ['rgba(27,158,75,0.12)','#1b9e4b'],
+      ['rgba(140,107,204,0.12)','#8c6bcc'],
+      ['rgba(209,50,18,0.10)','#ff6644'],
+      ['rgba(0,161,201,0.12)','#00a1c9'],
+      ['rgba(68,185,214,0.12)','#44b9d6'],
+    ];
+
+    // ── Build Sidebar ──
+    const side = document.getElementById('side');
+    let sideHTML = `<div class="nav-header">Domains</div>
+      <div class="nav-item active" data-idx="-1" onclick="showHome()">
+        <span class="ni-icon">🏠</span>
+        <span class="ni-text">Overview</span>
+        <span class="ni-count">${D.length}</span>
+      </div>
+      <div class="nav-sep"></div>`;
+    D.forEach((sec, i) => {
+      const [bg, clr] = palettes[i % palettes.length];
+      sideHTML += `<div class="nav-item" data-idx="${i}" onclick="showDomain(${i})">
+        <span class="ni-icon" style="background:${bg};color:${clr};border-radius:6px;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-size:14px">${sec.icon}</span>
+        <span class="ni-text">${sec.s}</span>
+        <span class="ni-count">${sec.items.length}</span>
+      </div>`;
+    });
+    side.innerHTML = sideHTML;
+
+    // ── Build Home overview ──
+    let homeHTML = `<div class="home-hero">
+      <h1>DevOps &amp; Cloud Engineer</h1>
+      <p>Complete interview knowledge base — ${totalQs} questions across ${D.length} domains covering AWS, Kubernetes, Terraform, Security, CI/CD, and more.</p>
+      <div class="hh-stats">
+        <div><span class="sv">${totalQs}</span><span class="sl">Questions</span></div>
+        <div><span class="sv">${D.length}</span><span class="sl">Domains</span></div>
+        <div><span class="sv">4</span><span class="sl">Sources</span></div>
+      </div>
+    </div>
+    <div class="dom-grid-label">Select a domain to study</div>
+    <div class="home-grid">`;
+    D.forEach((sec, i) => {
+      const [bg, clr] = palettes[i % palettes.length];
+      homeHTML += `<div class="home-card" onclick="showDomain(${i})">
+        <div class="hc-icon" style="background:${bg};color:${clr}">${sec.icon}</div>
+        <h3>${sec.s}</h3>
+        <p>Click to explore all ${sec.items.length} questions in this domain.</p>
+        <div class="hc-count">${sec.items.length} questions →</div>
+      </div>`;
+    });
+    homeHTML += '</div>';
+    document.getElementById('view-home').innerHTML = homeHTML;
+
+    // ── Card renderer ──
+    function renderCards(items, container) {
+      let html = '';
+      items.forEach((it, i) => {
+        const n = String(i + 1).padStart(2, '0');
+        html += `<div class="qa">
+          <div class="qh" onclick="tog(this)">
+            <span class="qv">▸</span>
+            <span class="qn">Q${n}</span>
+            <span class="qt">${it.q}</span>
+            <span class="qg ${it.gc}">${it.g}</span>
+          </div>
+          <div class="qb"><div class="qw">${it.a}</div></div>
+        </div>`;
       });
-      ctHTML += `</div>`;
-      if (si < D.length - 1) sideHTML += `<div class="div"></div>`;
-    });
-    document.getElementById('side').innerHTML = sideHTML;
-    document.getElementById('ct').innerHTML = ctHTML;
-    
-    // Update dynamic statistics
-    const totalQs = qnum;
-    document.querySelector('.badge').textContent = `${totalQs} ITEMS`;
-    document.getElementById('vc').textContent = `Showing ${totalQs} of ${totalQs}`;
+      container.innerHTML = html;
+      container.querySelectorAll('.qa').forEach((c, i) => { c.style.animationDelay = `${i * 0.015}s` });
+    }
 
-    // Stagger animation
-    document.querySelectorAll('.qa').forEach((c, i) => { c.style.animationDelay = `${i * 0.012}s` });
+    // ── Show Home ──
+    function showHome() {
+      document.getElementById('view-home').style.display = '';
+      document.getElementById('view-domain').style.display = 'none';
+      document.getElementById('view-search').style.display = 'none';
+      document.getElementById('domain-crumb').style.display = 'none';
+      document.getElementById('search-input').value = '';
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.querySelector('.nav-item[data-idx="-1"]').classList.add('active');
+    }
 
+    // ── Show Domain ──
+    function showDomain(i) {
+      const sec = D[i];
+      const [bg, clr] = palettes[i % palettes.length];
+      document.getElementById('view-home').style.display = 'none';
+      document.getElementById('view-domain').style.display = '';
+      document.getElementById('view-search').style.display = 'none';
+
+      // Update banner
+      const icon = document.getElementById('dom-icon');
+      icon.textContent = sec.icon;
+      icon.style.background = bg;
+      icon.style.color = clr;
+      document.getElementById('dom-title').textContent = sec.s;
+      document.getElementById('dom-subtitle').textContent = `${sec.items.length} questions in this domain`;
+      document.getElementById('dom-count').textContent = `${sec.items.length} Qs`;
+
+      // Update breadcrumb
+      document.getElementById('crumb-icon').textContent = sec.icon;
+      document.getElementById('crumb-name').textContent = sec.s;
+      document.getElementById('domain-crumb').style.display = 'flex';
+
+      // Render cards
+      renderCards(sec.items, document.getElementById('ct'));
+
+      // Update sidebar
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.querySelector(`.nav-item[data-idx="${i}"]`).classList.add('active');
+
+      // Scroll to top
+      document.getElementById('mn').scrollTop = 0;
+      window.scrollTo(0,0);
+      document.getElementById('search-input').value = '';
+    }
+
+    // ── Search (cross-domain) ──
+    function doSearch(v) {
+      const q = v.trim().toLowerCase();
+      if (!q) { showHome(); return; }
+
+      document.getElementById('view-home').style.display = 'none';
+      document.getElementById('view-domain').style.display = 'none';
+      document.getElementById('view-search').style.display = '';
+      document.getElementById('domain-crumb').style.display = 'none';
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+      const matches = [];
+      D.forEach(sec => {
+        sec.items.forEach(it => {
+          if (it.q.toLowerCase().includes(q) || it.a.toLowerCase().includes(q) || it.g.toLowerCase().includes(q)) {
+            matches.push(it);
+          }
+        });
+      });
+
+      document.getElementById('search-status').textContent = `${matches.length} result${matches.length !== 1 ? 's' : ''} for "${v}"`;
+      renderCards(matches, document.getElementById('ct-search'));
+    }
+
+    // ── Accordion helpers ──
     function tog(h) { h.closest('.qa').classList.toggle('on') }
-    function all(e) { document.querySelectorAll('.qa').forEach(c => { e ? c.classList.add('on') : c.classList.remove('on') }) }
-    function go(id) { const el = document.getElementById(id); if (!el) return; el.scrollIntoView({ behavior: 'smooth', block: 'start' }); el.classList.add('on'); document.querySelectorAll('.side a').forEach(l => l.classList.remove('act')); const link = document.querySelector(`.side a[data-t="${id}"]`); if (link) link.classList.add('act') }
-    function filter(v) { const q = v.toLowerCase(); let vis = 0; document.querySelectorAll('.qa').forEach(c => { const m = c.textContent.toLowerCase().includes(q); c.style.display = m ? '' : 'none'; if (m) { vis++; if (q) c.classList.add('on') } }); document.querySelectorAll('.sec').forEach(s => { s.style.display = s.querySelectorAll('.qa:not([style*="display: none"])').length || !q ? '' : 'none' }); document.getElementById('vc').textContent = `Showing ${vis} of ${totalQs}` }
-    
-    // Update hero stats
-    if(document.getElementById('stat-total')) document.getElementById('stat-total').textContent = totalQs;
-    if(document.getElementById('stat-domains')) document.getElementById('stat-domains').textContent = D.length;
+    function allCards(e) { document.querySelectorAll('.qa').forEach(c => { e ? c.classList.add('on') : c.classList.remove('on') }) }
 
-    // Scroll spy
-    const obs = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) { const id = e.target.id; document.querySelectorAll('.side a').forEach(l => { l.classList.toggle('act', l.dataset.t === id) }) } }) }, { rootMargin: '-100px 0px -60% 0px' });
-    document.querySelectorAll('.qa').forEach(c => obs.observe(c));
-
-    // Sidebar Toggle
-    let isSideClosed = false;
-    document.getElementById('toggle-side').addEventListener('click', () => {
-      isSideClosed = !isSideClosed;
-      document.body.classList.toggle('closed', isSideClosed);
-    });
-
-    // Sidebar Resize
-    const resizer = document.getElementById('drag-handle');
-    let isDragging = false;
-    
-    resizer.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      document.body.classList.add('dragging');
-      resizer.classList.add('dragging');
-      document.body.style.cursor = 'ew-resize';
-      document.body.style.userSelect = 'none';
-    });
-    
-    window.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      let newWidth = e.clientX;
-      if (newWidth < 150) newWidth = 150;
-      if (newWidth > 600) newWidth = 600;
-      document.documentElement.style.setProperty('--sw', newWidth + 'px');
-    });
-    
-    window.addEventListener('mouseup', () => {
-      if (isDragging) {
-        isDragging = false;
-        document.body.classList.remove('dragging');
-        resizer.classList.remove('dragging');
-        document.body.style.cursor = '';
-        document.body.style.userSelect = '';
-      }
-    });
+    // ── Init: show home ──
+    showHome();
   </script>
 </body>
 
