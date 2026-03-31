@@ -1667,6 +1667,18 @@ iptables -A INPUT -p tcp --dport 8080 -j ACCEPT</div><div class="nt">On AWS: als
         gc: `g-cost`,
         section: `AWS Architecture & Core Compute`,
         a: `<ul><li>Configure <strong>Karpenter</strong> to consolidate sparsely-utilized large nodes down into smaller, strictly-fitted nodes.</li><li>Re-evaluate Pod <strong>Requests & Limits</strong>; developers frequently over-request resources padding their ego, starving the cluster.</li><li>Implement <strong>VPA (Vertical Pod Autoscaler)</strong> in estimation mode to scientifically gauge what exact requests the pods actually require.</li></ul>`
+      },
+      {
+        q: `What is Azure App Service?`,
+        g: `Azure`,
+        gc: `g-aws`,
+        a: `<p><strong>Azure App Service</strong> is a fully managed PaaS for hosting web apps, REST APIs, and mobile backends. It supports multiple runtimes (Node, Python, .NET, Java, PHP). Key features: auto-scaling, custom domains, SSL, deployment slots, and built-in CI/CD integration via GitHub Actions or Azure DevOps. Equivalent concept to AWS Elastic Beanstalk or App Runner.</p>`
+      },
+      {
+        q: `How do you switch between deployment slots in Azure App Service?`,
+        g: `Azure`,
+        gc: `g-aws`,
+        a: `<p>Azure App Service <strong>deployment slots</strong> allow you to host different environments (staging, production) under the same app plan.</p><ul><li><strong>Swap:</strong> <code>az webapp deployment slot swap --slot staging --target-slot production</code> — atomic swap with no downtime</li><li><strong>Portal:</strong> App Service → Deployment Slots → Swap</li><li><strong>Why slots matter:</strong> Staging warms up before swap. If prod breaks, swap back instantly. Auto-swap can trigger on successful deployment.</li><li><strong>Slot-specific settings:</strong> Connection strings marked as "slot setting" do NOT swap — ensures staging DB stays in staging after swap.</li></ul>`
       }
     ]
   },
@@ -2584,6 +2596,109 @@ iptables -A INPUT -p tcp --dport 8080 -j ACCEPT</div><div class="nt">On AWS: als
         gc: `g-dk`,
         section: `Kubernetes & Containers`,
         a: `<p>1. Universally bind foundational \`FROM\` targets explicitly directly against irreversible SHA256 cryptographic digests, utterly ignoring arbitrarily floating \`:1.0\` semantic tags.<br>2. Persistently enforce explicit standard package locking (\`npm ci\` over \`npm install\`).<br>3. Remove unpredictable temporal directives indiscriminately pulling \`apt-get upgrade\` independently during the build process.</p>`
+      },
+      {
+        q: `Explain Docker architecture.`,
+        g: `Docker`,
+        gc: `g-dk`,
+        a: `<p>Docker uses a <strong>client-server architecture</strong>:</p><ul><li><strong>Docker Client</strong> (<code>docker</code> CLI) — sends commands via REST API</li><li><strong>Docker Daemon</strong> (<code>dockerd</code>) — listens for API requests, manages images, containers, networks, and volumes</li><li><strong>Docker Registry</strong> (Docker Hub / ECR) — stores and distributes images</li><li><strong>containerd</strong> — low-level container runtime; manages container lifecycle</li><li><strong>runc</strong> — OCI runtime that actually creates/runs containers using Linux namespaces + cgroups</li></ul><div class="nt">Flow: <code>docker run</code> → Docker Client → Daemon → containerd → runc → container process</div>`
+      },
+      {
+        q: `Write a basic Dockerfile.`,
+        g: `Docker`,
+        gc: `g-dk`,
+        a: `<div class="cb">FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+EXPOSE 3000
+CMD ["node", "server.js"]</div><ul><li><strong>FROM</strong> — base image (alpine = minimal footprint)</li><li><strong>WORKDIR</strong> — sets working directory inside container</li><li><strong>COPY package*.json first</strong> — leverages layer cache; dependencies only reinstall when package.json changes</li><li><strong>RUN npm ci</strong> — reproducible install (uses lockfile, fails if out of sync)</li><li><strong>EXPOSE</strong> — documents the port (does not publish it)</li><li><strong>CMD</strong> — default command when container starts</li></ul>`
+      },
+      {
+        q: `If a Docker image is built and you manually install missing packages inside a container, how will you convert it into a new Docker image?`,
+        g: `Docker`,
+        gc: `g-dk`,
+        a: `<p>Use <code>docker commit</code> to snapshot the container's current state into a new image:</p><div class="cb"># While container is running or stopped
+docker commit &lt;container_id&gt; my-new-image:v2
+
+# With author and message
+docker commit -a "yourname" -m "added curl and wget" &lt;container_id&gt; my-new-image:v2
+
+# Push to registry
+docker tag my-new-image:v2 myrepo/my-new-image:v2
+docker push myrepo/my-new-image:v2</div><div class="wn">⚠️ Best practice: Always update the Dockerfile instead. <code>docker commit</code> creates an opaque layer — not reproducible, hard to audit, and breaks CI/CD pipelines.</div>`
+      },
+      {
+        q: `Difference between CMD, ENTRYPOINT, and RUN in Docker.`,
+        g: `Docker`,
+        gc: `g-dk`,
+        a: `<table><thead><tr><th>Instruction</th><th>When it runs</th><th>Purpose</th><th>Overridable?</th></tr></thead><tbody><tr><td><strong>RUN</strong></td><td>Build time</td><td>Executes commands to build image layers (install packages, compile code)</td><td>N/A — part of image</td></tr><tr><td><strong>CMD</strong></td><td>Container start</td><td>Default arguments/command. Easily overridden by <code>docker run &lt;image&gt; &lt;override&gt;</code></td><td>Yes — fully replaced</td></tr><tr><td><strong>ENTRYPOINT</strong></td><td>Container start</td><td>Fixed executable — defines what the container IS. CMD becomes arguments to it.</td><td>Only with <code>--entrypoint</code> flag</td></tr></tbody></table><div class="cb"># Together: ENTRYPOINT + CMD
+ENTRYPOINT ["python", "app.py"]
+CMD ["--port", "8080"]   # default arg, overridable
+
+# docker run myimg --port 9090  → runs: python app.py --port 9090</div>`
+      },
+      {
+        q: `What is kubeconfig in Kubernetes?`,
+        g: `K8s`,
+        gc: `g-k8s`,
+        a: `<p><strong>kubeconfig</strong> is a YAML file (default: <code>~/.kube/config</code>) that <code>kubectl</code> uses to authenticate and communicate with Kubernetes clusters.</p><ul><li><strong>clusters</strong> — API server endpoints and CA certificates</li><li><strong>users</strong> — credentials (client cert, token, OIDC)</li><li><strong>contexts</strong> — named combination of cluster + user + namespace</li></ul><div class="cb"># Switch context (cluster)
+kubectl config use-context my-eks-cluster
+
+# View current context
+kubectl config current-context
+
+# Merge multiple kubeconfigs
+KUBECONFIG=~/.kube/config:~/.kube/eks-config kubectl config view --merge --flatten</div><div class="nt">In EKS: run <code>aws eks update-kubeconfig --name &lt;cluster&gt; --region &lt;region&gt;</code> to auto-populate kubeconfig.</div>`
+      },
+      {
+        q: `How do you handle secrets in Kubernetes?`,
+        g: `K8s`,
+        gc: `g-k8s`,
+        a: `<p>Kubernetes <strong>Secrets</strong> store sensitive data (passwords, tokens, certs). Base64-encoded — <em>not encrypted by default</em>.</p><ul><li><strong>Native Secret:</strong> <code>kubectl create secret generic db-pass --from-literal=password=s3cr3t</code></li><li><strong>Mount as env var or volume</strong> in pod spec</li><li><strong>Enable Encryption at Rest:</strong> Configure <code>EncryptionConfiguration</code> with KMS provider in kube-apiserver</li><li><strong>External Secrets Operator (ESO):</strong> Syncs secrets from AWS Secrets Manager / Azure Key Vault into K8s Secrets automatically</li><li><strong>CSI Secrets Store Driver:</strong> Mounts secrets directly from vault as files — never stored in etcd</li></ul><div class="nt">Best practice: Never commit secrets to Git. Use ESO + Secrets Manager for production.</div>`
+      },
+      {
+        q: `How do you manage environment variables in Kubernetes?`,
+        g: `K8s`,
+        gc: `g-k8s`,
+        a: `<p>Three main approaches:</p><ul><li><strong>Hardcoded in pod spec</strong> (dev/non-sensitive only): <code>env: [{name: APP_ENV, value: production}]</code></li><li><strong>ConfigMap</strong> — for non-sensitive config: <code>envFrom: [{configMapRef: {name: app-config}}]</code></li><li><strong>Secret</strong> — for sensitive values: <code>envFrom: [{secretRef: {name: db-secret}}]</code></li></ul><div class="nt">Use <code>valueFrom.fieldRef</code> to inject pod metadata (pod name, namespace) as env vars — useful for logging context.</div>`
+      },
+      {
+        q: `How do you fetch secrets from Azure Key Vault and use them in Kubernetes?`,
+        g: `K8s`,
+        gc: `g-k8s`,
+        a: `<p>Two main approaches when using AKS (or any K8s with Azure identity):</p><ul><li><strong>Azure Key Vault Provider for Secrets Store CSI Driver:</strong><ol><li>Install the CSI driver addon on AKS</li><li>Create a <code>SecretProviderClass</code> referencing Key Vault + secret names</li><li>Mount as volume in pod — secrets appear as files</li><li>Optionally sync to K8s Secret object via <code>secretObjects</code> in SecretProviderClass</li></ol></li><li><strong>External Secrets Operator (ESO):</strong> Define <code>ExternalSecret</code> CRD → ESO polls Key Vault → creates/updates K8s Secret automatically</li></ul><div class="cb">apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: azure-keyvault-secret
+spec:
+  provider: azure
+  parameters:
+    keyvaultName: my-kv
+    objects: |
+      - objectName: db-password
+        objectType: secret</div>`
+      },
+      {
+        q: `What is Ingress and how do you use it?`,
+        g: `K8s`,
+        gc: `g-k8s`,
+        a: `<p><strong>Ingress</strong> is a Kubernetes API object that manages external HTTP/HTTPS access to services inside the cluster. It provides routing rules, TLS termination, and host/path-based routing — a single entry point instead of exposing every service with a LoadBalancer.</p><ul><li><strong>Requires an Ingress Controller</strong> (e.g., NGINX, AWS ALB Controller, Traefik) — Ingress alone does nothing</li><li><strong>Path routing:</strong> <code>/api → api-service</code>, <code>/web → frontend-service</code></li><li><strong>Host routing:</strong> <code>api.example.com → api-service</code>, <code>app.example.com → frontend-service</code></li><li><strong>TLS:</strong> reference a Secret containing cert+key</li></ul><div class="cb">apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: app.example.com
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service: {name: api-svc, port: {number: 80}}</div>`
       }
     ]
   },
@@ -2841,6 +2956,26 @@ resource "aws_instance" "server" {
         gc: `g-iac`,
         section: `Infrastructure as Code & CI/CD`,
         a: `<p>Look at \`kubectl rollout status deployment <name>\`. If stuck, a new ReplicaSet was created but its pods cannot become \`Ready\`.<br>1. Failing Readiness Probes (app is booting but returning 500s).<br>2. \`ImagePullBackOff\` (spelled the image tag incorrectly, or missing ECR auth).<br>3. Kubernetes halted the rollout because \`maxUnavailable\` constraints were hit and no new pods could pass health checks to proceed.</p>`
+      },
+      {
+        q: `If Terraform state file has older entries and infra was created manually, how will you add it to Terraform?`,
+        g: `Terraform`,
+        gc: `g-tf`,
+        a: `<p>Use <code>terraform import</code> to bring manually created resources under Terraform management:</p><div class="cb"># General syntax
+terraform import &lt;resource_type&gt;.&lt;name&gt; &lt;resource_id&gt;
+
+# Example: import an existing EC2 instance
+terraform import aws_instance.web i-0abc123def456
+
+# After import, generate/write matching HCL config
+# Run plan to verify no unintended changes
+terraform plan</div><ul><li>Write the matching resource block in <code>.tf</code> before importing — Terraform needs the config to reconcile against</li><li><strong>Terraform 1.5+:</strong> Use <code>import</code> blocks in HCL for declarative, code-reviewed imports</li><li>After import, run <code>terraform plan</code> — a clean plan (no changes) means state matches reality</li><li>For bulk imports: use <code>terraformer</code> (open-source tool) to reverse-engineer existing infra into HCL + state</li></ul>`
+      },
+      {
+        q: `If there are 1000+ changes to be managed in Terraform state, how will you handle it?`,
+        g: `Terraform`,
+        gc: `g-tf`,
+        a: `<p>Managing large Terraform state requires splitting and structuring to reduce blast radius and improve performance:</p><ul><li><strong>Split into smaller state files (state isolation):</strong> Break monolithic state into workspaces or separate root modules per domain (networking, compute, security). Each has its own isolated state.</li><li><strong>Use <code>terraform state mv</code>:</strong> Move resources between states without destroying and recreating them</li><li><strong>Targeted applies:</strong> <code>terraform apply -target=aws_instance.web</code> — only applies specific resources. Use sparingly; can cause drift.</li><li><strong>Remote state with locking:</strong> S3 + DynamoDB (AWS) prevents concurrent modifications in team environments</li><li><strong>State surgery tools:</strong> <code>terraform state rm</code> (remove from state without destroying infra), <code>terraform state pull/push</code> for manual edits</li></ul><div class="nt">At 1000+ resources, the real fix is module decomposition — never let a single state file grow unbounded. Each team/domain should own their own state.</div>`
       }
     ]
   },
@@ -3103,6 +3238,77 @@ git branch -a  # list all</div>`,
         gc: `g-git`,
         section: `Linux, Scripting & Git`,
         a: `<p><strong>Trunk-Based Development</strong> with robust feature flags. It mandates that developers frequently merge extremely small, testable chunks sequentially into the \`main\` trunk branch multiple times per day. It directly avoids the catastrophic "Merge Hell" commonly seen in complex GitFlow releases and is the absolute prerequisite philosophy for functioning Continuous Deployment.</p>`
+      },
+      {
+        q: `Explain the booting process of Linux.`,
+        g: `Linux`,
+        gc: `g-lnx`,
+        a: `<p>Linux boot sequence — 6 stages:</p><ol><li><strong>BIOS/UEFI</strong> — Power-on self-test (POST), locates bootable device</li><li><strong>Bootloader (GRUB2)</strong> — Loads the kernel into memory from <code>/boot</code>, passes kernel parameters</li><li><strong>Kernel initialization</strong> — Kernel decompresses itself, initializes hardware drivers, mounts root filesystem (read-only first)</li><li><strong>initramfs / initrd</strong> — Temporary root filesystem with tools needed to mount the real root FS (handles LVM, LUKS, etc.)</li><li><strong>init / systemd (PID 1)</strong> — First process started by kernel. Systemd reads unit files, starts services in parallel based on dependencies</li><li><strong>Runlevel / Target</strong> — Systemd reaches the target (e.g., <code>multi-user.target</code> or <code>graphical.target</code>), spawns login prompt</li></ol><div class="nt">Key command: <code>systemd-analyze blame</code> — shows which services slowed down boot.</div>`
+      },
+      {
+        q: `What are services in Linux?`,
+        g: `Linux`,
+        gc: `g-lnx`,
+        a: `<p>A <strong>service</strong> (daemon) is a background process managed by the init system (systemd). It runs without user interaction.</p><div class="cb"># Start / stop / restart
+systemctl start nginx
+systemctl stop nginx
+systemctl restart nginx
+
+# Enable at boot / disable
+systemctl enable nginx
+systemctl disable nginx
+
+# Check status
+systemctl status nginx
+
+# List all services
+systemctl list-units --type=service</div><p>Services are defined as <strong>unit files</strong> in <code>/etc/systemd/system/</code> or <code>/lib/systemd/system/</code>. They specify ExecStart, dependencies, restart policies, and the user they run as.</p>`
+      },
+      {
+        q: `How do you check open ports in Linux?`,
+        g: `Linux`,
+        gc: `g-lnx`,
+        a: `<div class="cb"># ss — modern replacement for netstat
+ss -tlnp        # TCP listening ports with process name
+ss -ulnp        # UDP listening ports
+
+# netstat (legacy, may need net-tools)
+netstat -tlnp
+
+# lsof — list open files/sockets
+lsof -i :80     # what's using port 80
+lsof -i TCP -P -n
+
+# nmap — scan from outside
+nmap -sT localhost</div><ul><li><code>-t</code> TCP, <code>-u</code> UDP, <code>-l</code> listening, <code>-n</code> numeric, <code>-p</code> show process</li><li>Best for quick check: <code>ss -tlnp | grep LISTEN</code></li></ul>`
+      },
+      {
+        q: `Explain the Linux file system structure.`,
+        g: `Linux`,
+        gc: `g-lnx`,
+        a: `<table><thead><tr><th>Directory</th><th>Purpose</th></tr></thead><tbody><tr><td><code>/</code></td><td>Root — top of the entire hierarchy</td></tr><tr><td><code>/bin</code></td><td>Essential user binaries (ls, cp, bash)</td></tr><tr><td><code>/sbin</code></td><td>System binaries (fsck, ifconfig) — for root</td></tr><tr><td><code>/etc</code></td><td>System-wide configuration files</td></tr><tr><td><code>/home</code></td><td>User home directories</td></tr><tr><td><code>/var</code></td><td>Variable data: logs, spool, tmp persisted across reboots</td></tr><tr><td><code>/tmp</code></td><td>Temporary files, cleared on reboot</td></tr><tr><td><code>/proc</code></td><td>Virtual FS — kernel/process info (e.g., <code>/proc/cpuinfo</code>)</td></tr><tr><td><code>/sys</code></td><td>Virtual FS — hardware/driver info exposed by kernel</td></tr><tr><td><code>/usr</code></td><td>User programs, libraries, docs (bulk of installed software)</td></tr><tr><td><code>/opt</code></td><td>Optional/third-party software (e.g., custom installs)</td></tr><tr><td><code>/boot</code></td><td>Bootloader, kernel image, initramfs</td></tr><tr><td><code>/dev</code></td><td>Device files (block/char devices)</td></tr><tr><td><code>/mnt</code>, <code>/media</code></td><td>Mount points for external/removable storage</td></tr></tbody></table>`
+      },
+      {
+        q: `Command to check OS version in Linux?`,
+        g: `Linux`,
+        gc: `g-lnx`,
+        a: `<div class="cb"># Most reliable — works on all distros
+cat /etc/os-release
+
+# Short version
+lsb_release -a
+
+# Kernel version
+uname -r
+
+# Full system info
+uname -a
+
+# RHEL/CentOS specific
+cat /etc/redhat-release
+
+# Debian/Ubuntu specific
+cat /etc/debian_version</div><p>For scripting, <code>/etc/os-release</code> is the standard — it's a key=value file that all modern distros provide.</p>`
       }
     ]
   }

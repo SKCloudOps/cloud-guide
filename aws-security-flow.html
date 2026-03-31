@@ -554,7 +554,8 @@
                         <strong>Origin Access Control (OAC)</strong> — replaces OAI, IAM-based S3 auth, supports
                         SSE-KMS. <strong>Signed URLs/cookies</strong> — RSA key pairs in Key Groups. <strong>Geo
                             restrictions</strong> — binary allow/deny by country. <strong>Field-level
-                            encryption</strong> — encrypt POST fields at edge with your public key.</p>
+                            encryption</strong> — encrypt POST fields at edge with your public key.
+                    </p>
                 </div>
             </div>
         </div>
@@ -814,7 +815,8 @@
                         }
                         }</div>
                     <p>Scope to org + branch + environment. Add <code>environment</code> claim for prod. Use
-                        <code>sts:TagSession</code> to carry repo/SHA into CloudTrail.</p>
+                        <code>sts:TagSession</code> to carry repo/SHA into CloudTrail.
+                    </p>
                 </div>
             </div>
 
@@ -910,7 +912,7 @@
                 <path d="M210 214 L210 260" fill="none" stroke="#9c9a8e" stroke-width="1.5" marker-end="url(#a8)" />
                 <rect x="40" y="262" width="130" height="56" rx="8" fill="#2a1208" stroke="#D85A30"
                     stroke-width="0.5" /><text x="105" y="280" text-anchor="middle" dominant-baseline="central"
-                    fill="#F5C4B3" font-size="14" font-weight="500">Takeda prod</text><text x="105" y="300"
+                    fill="#F5C4B3" font-size="14" font-weight="500">Phrma prod</text><text x="105" y="300"
                     text-anchor="middle" dominant-baseline="central" fill="#F0997B" font-size="12">Account 333</text>
                 <rect x="190" y="262" width="130" height="56" rx="8" fill="#2a1208" stroke="#D85A30"
                     stroke-width="0.5" /><text x="255" y="280" text-anchor="middle" dominant-baseline="central"
@@ -999,7 +1001,8 @@
                         }</div>
                     <p><code>aws:PrincipalTag</code> — tags on caller. <code>aws:ResourceTag</code> — tags on target.
                         <code>aws:RequestTag</code> — enforce at creation. <code>aws:TagKeys</code> — prevent tag
-                        escalation.</p>
+                        escalation.
+                    </p>
                 </div>
             </div>
         </div>
@@ -1026,7 +1029,8 @@
                 <div class="card-body">
                     <p><strong>SSE-S3:</strong> AWS manages keys. AES-256. Default. No audit trail.
                         <strong>SSE-KMS:</strong> KMS CMK. CloudTrail logs every operation. $0.03/10K requests.
-                        <strong>SSE-C:</strong> You provide key per request. Rare use case.</p>
+                        <strong>SSE-C:</strong> You provide key per request. Rare use case.
+                    </p>
                     <p>Enforce: deny PutObject without <code>x-amz-server-side-encryption: aws:kms</code> header.</p>
                 </div>
             </div>
