@@ -1,0 +1,2168 @@
+# DevOps Interview — Complete Knowledge Base
+
+## ⚡ ⚡ Architect Compendium
+
+### Q: What is the fundamental difference between High Availability and Disaster Recovery?
+
+<div class="fw">The most mis-answered foundational question</div>
+<table><thead><tr><th>Dimension</th><th>High Availability (HA)</th><th>Disaster Recovery (DR)</th></tr></thead><tbody>
+<tr><td><strong>Scope</strong></td><td>Within a single Region (cross-AZ)</td><td>Across different geographic Regions</td></tr>
+<tr><td><strong>Primary Goal</strong></td><td>Minimize downtime during AZ failure</td><td>Restore service after Region-wide event</td></tr>
+<tr><td><strong>AWS Examples</strong></td><td>Multi-AZ EC2, ALB</td><td>Route 53 Health Checks, S3 CRR</td></tr>
+</tbody></table>
+<ul><li><span class="bad">❌ Bad:</span> "HA means the app stays up; DR is when it falls back to another region."</li>
+<li><span class="good">✓ Delightful:</span> HA is scoped to <strong>AZs within one region</strong>. DR is scoped to <strong>different geographic regions</strong>. Confusing them signals you haven't operated at enterprise scale.</li>
+<li><strong>So What?</strong> A total AZ failure = HA handles it, no human intervention. A total region failure = DR, a deliberate architectural strategy.</li></ul>
+
+---
+
+### Q: Walk me through a production-grade 3-tier Highly Available architecture.
+
+<div class="fw">Layer-by-layer HA walkthrough — the "delightful" answer format</div>
+<ul><li><strong>External ALB:</strong> Routes across AZs. Inherently HA — no SPOF.</li>
+<li><strong>Web/App Tier (EC2 in ASG):</strong> Single EC2 = SPOF. Deploy across ≥2 AZs in ASG. AZ fails → traffic re-routes automatically.</li>
+<li><strong>Internal ALB:</strong> Decouples web and app tiers with identical HA properties.</li>
+<li><strong>Data Tier (DynamoDB):</strong> Regional service, auto-replicates across 3 AZs. AZ failure is transparent.</li>
+<li><strong>So What?</strong> Complete data-center failure = <em>non-event</em> for users. Zero manual intervention.</li></ul>
+
+---
+
+### Q: Define RTO and RPO. Compare all 4 DR strategies.
+
+<div class="fw">The "trap question" — RPO is always measured in TIME, not data volume</div>
+<ul><li><strong>RTO:</strong> Max acceptable time offline. Measured in minutes/hours/days.</li>
+<li><strong>RPO:</strong> Max acceptable data loss as a point in <em>time</em>. Common mistake: measuring in megabytes. Wrong — it's always time.</li></ul>
+<table><thead><tr><th>Strategy</th><th>RTO / RPO</th><th>How It Works</th></tr></thead><tbody>
+<tr><td><strong>Backup & Restore</strong></td><td>Hours / Days</td><td>S3 backups restored to new region. Highest RTO, lowest cost.</td></tr>
+<tr><td><strong>Pilot Light</strong></td><td>Min / Hours</td><td>Core DB live + replicated; app servers "off" until trigger.</td></tr>
+<tr><td><strong>Warm Standby</strong></td><td>Min / Min</td><td>Scaled-down full env always running. Scale up on activation.</td></tr>
+<tr><td><strong>Active-Active</strong></td><td>Real-time</td><td>Full traffic in 2+ regions. Zero RTO/RPO, highest cost.</td></tr>
+</tbody></table>
+
+---
+
+### Q: Contrast Monolithic vs. Microservices. Explain Event-Driven Architecture.
+
+<div class="fw">Show fault isolation and EDA asynchrony — not just definitions</div>
+<ul><li><strong>Monolith:</strong> Single coupled unit. One fail → redeploy everything. No independent scaling.</li>
+<li><strong>Microservices:</strong> Independent services, independently deployed/scaled, polyglot.</li></ul>
+<ul><li><strong>Real Flow — store.com (ALB Path-Based):</strong>
+<ul><li><code>/browse</code> → EC2+DynamoDB (Python)</li><li><code>/purchase</code> → EKS+Aurora (Go) — isolated for integrity</li><li><code>/return</code> → Lambda (serverless, spiky)</li><li>If /browse crashes, /purchase + revenue unaffected. <em>Fault isolation.</em></li></ul></li>
+<li><span class="bad">❌ Bad EDA:</span> "API GW → Lambda → DynamoDB." That's <em>synchronous</em>.</li>
+<li><span class="good">✓ Delightful EDA:</span> API GW → <strong>SQS</strong> → Lambda → DynamoDB. SQS decouples. Independent scaling, built-in retry, no idle waste.</li></ul>
+<table><thead><tr><th>Trait</th><th>Synchronous</th><th>EDA (Async)</th></tr></thead><tbody>
+<tr><td>Scaling</td><td>All layers must match</td><td>Components scale independently</td></tr>
+<tr><td>Retries</td><td>Hard-coded in client</td><td>Built-in queue retry</td></tr>
+<tr><td>Cost</td><td>Over-provision for spikes</td><td>Pay only for events processed</td></tr>
+</tbody></table>
+
+---
+
+### Q: Compare SQL vs. NoSQL from a Solutions Architect perspective.
+
+<div class="fw">Distinguish by schema approach and consistency model</div>
+<table><thead><tr><th>Property</th><th>SQL (Relational)</th><th>NoSQL</th></tr></thead><tbody>
+<tr><td><strong>Schema</strong></td><td>Schema-on-write — rigid</td><td>Schema-on-read — flexible</td></tr>
+<tr><td><strong>Consistency</strong></td><td>ACID transactions</td><td>Eventual (configurable)</td></tr>
+<tr><td><strong>Scaling</strong></td><td>Vertical primary</td><td>Horizontal by design</td></tr>
+<tr><td><strong>Best For</strong></td><td>Complex joins, financial txns</td><td>High-throughput, low-latency, variable</td></tr>
+<tr><td><strong>AWS</strong></td><td>Aurora, RDS</td><td>DynamoDB</td></tr>
+</tbody></table>
+<ul><li><strong>Architect's Rule:</strong> Never say "NoSQL is better." Choose based on access patterns. ACID joins → SQL. Single-digit ms at millions RPS → DynamoDB.</li></ul>
+
+---
+
+### Q: Strategic GenAI use cases. Explain MCP. Differentiate A2A, MCP, and RAG.
+
+<div class="fw">Categorize GenAI use cases — "chatbots" alone is a junior answer</div>
+<ul><li><strong>Customer Experience:</strong> Agentic assistants that take action (not just answer)</li>
+<li><strong>Productivity:</strong> Content creation, report gen, search summarization — measurable ROI</li>
+<li><strong>Cutting Edge (MCP):</strong> Automated cost analysis, code-quality evaluation against architectural best practices</li></ul>
+<ul><li><strong>Model Context Protocol (MCP):</strong> Standardized JSON-RPC protocol for LLMs to interact with tools without custom-coding each integration.
+<ul><li><strong>Pre-MCP:</strong> Manually define every API URL, header, payload per tool</li>
+<li><strong>MCP:</strong> Server exposes schemas. Client discovers dynamically. LLM chooses tool based on purpose.</li>
+<li><strong>Key Innovation:</strong> Dynamic Discovery at runtime</li></ul></li></ul>
+<table><thead><tr><th>Protocol</th><th>What It Does</th></tr></thead><tbody>
+<tr><td><strong>A2A</strong></td><td>Agent-to-Agent communication (orchestration between agents)</td></tr>
+<tr><td><strong>MCP</strong></td><td>Standardized protocol connecting agents/LLMs to tools and data</td></tr>
+<tr><td><strong>RAG</strong></td><td>Retrieval-Augmented Generation — grounding LLM in external data without retraining</td></tr>
+</tbody></table>
+
+---
+
+### Q: Continuous Delivery vs. Deployment. Senior-level pipeline. CI/CD vs. GitOps.
+
+<div class="fw">Know the human-button distinction and the push vs. pull model</div>
+<ul><li><strong>Delivery:</strong> Always deployable; <em>manual trigger</em> to prod.</li>
+<li><strong>Deployment:</strong> Every passing build auto-deploys. Zero human intervention.</li></ul>
+<ul><li><strong>Senior Pipeline (Source→Build→Test→Deploy):</strong>
+<ul><li><strong>IaC:</strong> Non-negotiable — Terraform for consistency</li><li><strong>Automated Testing:</strong> CodeBuild catches errors pre-staging</li><li><strong>DevSecOps:</strong> Shift-left — secret scanning + vuln assessment as pipeline gates</li><li><strong>Multi-Account:</strong> Dev→Test→Prod isolation minimizes blast radius</li></ul></li></ul>
+<table><thead><tr><th>Model</th><th>Traditional CI/CD</th><th>GitOps</th></tr></thead><tbody>
+<tr><td><strong>Direction</strong></td><td>Push — tool pushes to env</td><td>Pull — controller pulls from Git</td></tr>
+<tr><td><strong>Truth Source</strong></td><td>CI/CD tool state</td><td>Git repo (declarative)</td></tr>
+<tr><td><strong>Controller</strong></td><td>Jenkins, GH Actions, Harness</td><td>ArgoCD, Flux</td></tr>
+<tr><td><strong>Drift</strong></td><td>Manual/scheduled</td><td>Continuous auto-reconciliation</td></tr>
+</tbody></table>
+
+---
+
+### Q: Why EKS? HPA vs. Cluster Autoscaler vs. Karpenter. DaemonSets and Sidecars.
+
+<div class="fw">Three layers of scaling, and when each kicks in</div>
+<ul><li><strong>Why EKS:</strong> AWS manages control plane (API server, etcd) across AZs. Managing this yourself is the hardest part of K8s ops — EKS eliminates it.</li></ul>
+<table><thead><tr><th>Scaler</th><th>What It Scales</th><th>Trigger</th><th>Notes</th></tr></thead><tbody>
+<tr><td><strong>HPA</strong></td><td>Pods</td><td>CPU/Memory/custom</td><td>Doesn't add nodes</td></tr>
+<tr><td><strong>Cluster AS</strong></td><td>Nodes (via ASG)</td><td>Pending pods</td><td>Works with EC2 ASGs</td></tr>
+<tr><td><strong>Karpenter</strong></td><td>Nodes (directly)</td><td>Pending pods</td><td>Bypasses ASGs; right-sized instantly. Faster + cheaper.</td></tr>
+</tbody></table>
+<ul><li><strong>DaemonSet:</strong> One pod per node. Cluster-wide agents — Fluent Bit, node-exporter.</li>
+<li><strong>Sidecar:</strong> Same pod as app. Pod-specific — Envoy proxy, log offloading.</li>
+<li><strong>Monitoring stack:</strong> Prometheus+Grafana (metrics), Fluent Bit/CloudWatch Insights/ELK (logs). Not naming yours is a red flag.</li></ul>
+
+---
+
+### Q: Lambda cold starts, scaling, security. SQS vs. SNS vs. EventBridge.
+
+<div class="fw">CPU is indirect, cold starts are solvable, messaging services are distinct</div>
+<ul><li><strong>Cold Start:</strong> Latency on new execution env. Mitigate: <strong>Provisioned Concurrency</strong> or Custom Container Images.</li>
+<li><strong>CPU:</strong> Can't set directly. Increase <strong>memory</strong> → AWS scales CPU proportionally. More memory = faster = lower cost.</li>
+<li><strong>Lambda vs Fargate:</strong> Lambda = instant burst. Fargate = slower but handles >15 min tasks.</li>
+<li><strong>Security:</strong> Least-privilege IAM per function, KMS for env vars, VPC integration.</li></ul>
+<table><thead><tr><th>Service</th><th>Pattern</th><th>Use Case</th></tr></thead><tbody>
+<tr><td><strong>SQS</strong></td><td>Queue (point-to-point)</td><td>1:1 decoupling, backpressure, retry</td></tr>
+<tr><td><strong>SNS</strong></td><td>Pub/sub (fan-out)</td><td>1:many broadcast notifications</td></tr>
+<tr><td><strong>EventBridge</strong></td><td>Event bus (content-based)</td><td>Filter/route from AWS, SaaS, custom apps</td></tr>
+</tbody></table>
+
+---
+
+### Q: Interview strategy: The 'Question Behind the Question' and critical mistakes.
+
+<div class="fw">The "So What?" layer separates architects from engineers</div>
+<ul><li><strong>Trait 1 — Question Behind the Question:</strong> When asked "What is RPO?", the real test is whether you know it's measured in <em>time</em>, not data volume. Pivot to the underlying principle.</li>
+<li><strong>Trait 2 — System Design Pivot:</strong> Don't say "SQS is a queue." Explain how you used SQS to decouple an ordering system and absorb a 10x Black Friday spike. That's the delight factor.</li>
+<li><strong>Trait 3 — Big Picture:</strong> Show how services interact to solve a business problem. Walk through flows, not definitions.</li></ul>
+<ul><li><span class="bad">❌ Rambling:</span> 5 min on a VPC question = can't communicate with executives. Use <strong>3-2-1</strong>: 3 points, 2 minutes, 1 summary.</li>
+<li><span class="bad">❌ Generic:</span> "I would use best practices" is not an answer. Name service, trade-off, consequence.</li>
+<li><span class="bad">❌ Jumping to solutions:</span> Ask requirements first — RTO, RPO, budget, scale, compliance. Skipping = junior.</li>
+<li><span class="bad">❌ "The best" service:</span> A Principal Architect selects based on requirements — cost, latency, scale — never preference.</li></ul>
+
+---
+
+## ⭐ STAR Interview Deep Dives
+
+### Q: How can you make your application scalable for a big traffic day?
+
+<div class="fw">Framework: Plan ahead, scale at every layer</div>
+<ul><li><strong>Pre-warm ALBs</strong> via AWS Support request for known traffic spikes</li>
+<li><strong>Auto Scaling Groups:</strong> min/desired >1; use Warm Pools for pre-initialized instances</li>
+<li><strong>Scheduled Scaling</strong> when traffic time is predictable</li>
+<li><strong>Lightweight AMIs</strong> reduce provisioning time during burst scale-out</li>
+<li><strong>RDS Proxy</strong> for connection pooling — prevents DB overload</li>
+<li><strong>AWS Countdown:</strong> Simulate with your account team</li>
+<li><strong>Limits:</strong> Check and raise soft limits; consider multi-region for extreme scale</li></ul>
+<div class="wn"><strong>⭐ STAR — Enterprise Pharma Mobile CI/CD</strong><br>
+<strong>S:</strong> Mobile CI/CD burst load during global release windows — multiple teams triggering iOS/Android builds during quarterly pharma compliance deadlines.<br>
+<strong>T:</strong> Ensure self-hosted macOS runner fleet + AWS infra didn't bottleneck on high-traffic release days while meeting GxP audit requirements.<br>
+<strong>A:</strong> Dynamic runner scaling via GitHub Actions runner groups with concurrency limits + queue-aware autoscaling. Fastlane parallel lanes + S3 dependency caching. K8s HPA on custom queue-depth metrics. Scheduled pre-warming policies.<br>
+<strong>R:</strong> iOS build: 45→15 min. Release cycle: 2 days→15 min. Developer NPS: +45. Zero degradation on peak days.</div>
+
+---
+
+### Q: What is an AI agent?
+
+<div class="fw">Definition & Key Properties</div>
+<ul><li><strong>Definition:</strong> Software that autonomously chooses the best sequence of actions to complete a goal — distinct from conditional workflows or standalone LLMs.</li>
+<li><strong>Reasoning Engine:</strong> Uses LLM to decide which tools to invoke and in what order</li>
+<li><strong>Feedback Loop:</strong> Perceives context → acts → observes results → iterates</li>
+<li><strong>AWS:</strong> Lambda/EC2 for execution, Bedrock for LLM, MCP for tool integration</li></ul>
+<div class="wn"><strong>⭐ STAR — AutoDocs (SKCloudOps)</strong><br>
+<strong>S:</strong> Contributors confused AutoDocs with a simple API wrapper — needed clear architectural distinction.<br>
+<strong>T:</strong> Define what makes it an agent and design agentic behavior as opt-in.<br>
+<strong>A:</strong> Dual-engine: heuristic default (no API key) + AI opt-in activating full agent loop (perception→reasoning→action→feedback). Agent reads git diff, LLM decides which files need docs, generates, evaluates quality, iterates.<br>
+<strong>R:</strong> 91% statement coverage, 86 tests. Dual-engine pattern became reference for AI CI/CD Guardian. Key differentiator on GitHub Marketplace.</div>
+
+---
+
+### Q: How do you achieve disaster recovery for your cloud application? (STAR)
+
+<div class="fw">Framework: RTO/RPO drives strategy selection</div>
+<table><thead><tr><th>Strategy</th><th>RTO</th><th>RPO</th><th>Best For</th></tr></thead><tbody>
+<tr><td>Backup & Restore</td><td>Hours</td><td>Hours</td><td>Non-critical / cost-sensitive</td></tr>
+<tr><td>Pilot Light</td><td>Min–Hours</td><td>Minutes</td><td>Core services always on</td></tr>
+<tr><td>Warm Standby</td><td>Minutes</td><td>Seconds</td><td>Business-critical apps</td></tr>
+<tr><td>Active-Active</td><td>Near zero</td><td>Near zero</td><td>Enterprise critical / pharma</td></tr>
+</tbody></table>
+<div class="wn"><strong>⭐ STAR — Pharma DevSecOps Pipeline DR</strong><br>
+<strong>S:</strong> GxP compliance required CI/CD platform (Vault clusters, GitHub OIDC, artifacts) to meet strict RTO/RPO. Pipeline outage during regulated release = audit findings.<br>
+<strong>T:</strong> Design DR without static credentials or manual runbooks.<br>
+<strong>A:</strong> Warm Standby: Vault replicated across 2 regions with KMS auto-unseal. GitHub OIDC = no long-lived secrets. Terraform state in S3 with versioning + CRR. Recovery = <code>terraform apply</code>, not a runbook.<br>
+<strong>R:</strong> Automated + auditable recovery. Zero static-credential exposure during failover. Architecture became DR standard in pharma compliance docs.</div>
+
+---
+
+### Q: How do you secure your application on the cloud? (STAR)
+
+<div class="fw">Framework: Defense in Depth — every layer</div>
+<ul><li><strong>Edge:</strong> AWS WAF — SQL injection, XSS, DDoS</li>
+<li><strong>Auth:</strong> Cognito for users; OIDC/JWT for machine identity</li>
+<li><strong>Transit:</strong> SSL/TLS everywhere; ACM certificates; API Gateway enforces HTTPS</li>
+<li><strong>Compute:</strong> IAM least privilege; Inspector for Lambda scanning</li>
+<li><strong>Secrets:</strong> Secrets Manager or Vault — never env vars</li>
+<li><strong>Data at rest:</strong> KMS for RDS, S3, EBS</li>
+<li><strong>Audit:</strong> CloudTrail, GuardDuty, Security Hub</li></ul>
+<div class="wn"><strong>⭐ STAR — Zero-Static-Credentials Architecture</strong><br>
+<strong>S:</strong> Both client (pharma, GxP) and client (financial) required zero-tolerance security. Legacy used static AWS keys in pipelines.<br>
+<strong>T:</strong> Eliminate all static credentials while maintaining velocity + compliance.<br>
+<strong>A:</strong> Vault + GitHub OIDC — every pipeline authenticates via short-lived OIDC tokens. IAM least-privilege via Terraform policy-as-code. Built AI CI/CD Guardian with 42 heuristic patterns across 16 build systems to detect credential leaks.<br>
+<strong>R:</strong> Passed pharma audit with zero static-credential findings. Pattern became reusable GH Actions template. Onboarding: 2 weeks→2 hours.</div>
+
+---
+
+### Q: Describe an architecture you designed. (STAR)
+
+<div class="fw">Interviewer goal: business problem understanding + deep-dive readiness</div>
+<ul><li>Pick a <strong>real system</strong> — be prepared for: How does it scale? How secured? What would you change?</li>
+<li>Interviewer will <strong>probe the edges</strong> with follow-ups</li></ul>
+<div class="wn"><strong>⭐ STAR — Enterprise Pharma Mobile CI/CD Platform</strong><br>
+<strong>S:</strong> Mobile teams releasing iOS manually — Xcode on laptops, 2-day cycles, no audit trail, no GxP compliance.<br>
+<strong>T:</strong> End-to-end mobile CI/CD platform meeting pharma compliance, eliminating manual steps, scaling globally.<br>
+<strong>A:</strong> Self-hosted macOS runner fleet on GitHub Actions + Fastlane for build/test/sign/deploy. Vault+OIDC for secrets — Apple certs fetched at runtime. Artifacts in S3. Branch protection, multi-party approvals, Splunk logs for GxP audit. RDS Proxy for metadata service.<br>
+<strong>R:</strong> Release: 2 days→15 min. Build: 45→15 min. Onboarding: 2 weeks→2 hours. NPS: +45. Became standard platform at client.</div>
+
+---
+
+### Q: Biggest challenge faced during designing your application on the cloud. (STAR)
+
+<div class="fw">Two strong angles: Scaling or Cost</div>
+<ul><li><strong>Scaling:</strong> When standard ASG can't react fast enough — Warm Pools + pre-warming</li>
+<li><strong>Cost:</strong> Unexpected bills — CloudWatch Insights, Compute Optimizer, Spot, Cost Explorer</li></ul>
+<div class="wn"><strong>⭐ STAR — Vault + OIDC Bootstrap Problem</strong><br>
+<strong>S:</strong> Ephemeral GitHub Actions runners + Vault = chicken-and-egg: how authenticate without a pre-placed credential? Static creds off the table for compliance.<br>
+<strong>T:</strong> Solve runner auth bootstrap with zero static secrets — auditable, least-privilege, reusable.<br>
+<strong>A:</strong> Three-hop trust chain: GH Actions OIDC JWT → AWS STS AssumeRole (no static keys) → Vault AWS auth backend → short-lived Vault token. IAM trust scoped to repos/branches/envs. Every hop logged (GH audit, CloudTrail, Vault audit).<br>
+<strong>R:</strong> Zero static credentials. Three-hop chain became reusable composite action, adopted by 6 teams in 3 months. Cited as resolved finding in GxP audit.</div>
+
+---
+
+### Q: How do you pick one service versus another? (STAR)
+
+<div class="fw">Framework: Requirements-first, then trade-off analysis</div>
+<ul><li>Always <strong>ask for requirements</strong> first: traffic volume, latency SLA, security, cost, uptime</li></ul>
+<table><thead><tr><th>Decision</th><th>Choose A when…</th><th>Choose B when…</th></tr></thead><tbody>
+<tr><td><strong>API GW vs ALB</strong></td><td>External API, auth, rate limiting</td><td>Internal microservice, WebSocket, gRPC</td></tr>
+<tr><td><strong>Serverless vs EC2</strong></td><td>Burst, short-lived tasks</td><td>Long-running, stateful, GPU</td></tr>
+<tr><td><strong>EventBridge vs SQS/SNS</strong></td><td>Cross-service/account routing</td><td>Point-to-point queue, fan-out pub/sub</td></tr>
+<tr><td><strong>EKS vs ECS vs Fargate</strong></td><td>K8s portability, complex workloads</td><td>Simpler ops; Fargate = no nodes</td></tr>
+</tbody></table>
+<div class="wn"><strong>⭐ STAR — Transit Gateway vs VPC Peering</strong><br>
+<strong>S:</strong> Connect multiple VPCs (shared services, dev, staging, prod) with centralized security inspection for pharma compliance.<br>
+<strong>T:</strong> Recommend multi-VPC model that scales, supports audit, avoids operational overhead.<br>
+<strong>A:</strong> Evaluated across 4 axes: complexity (N² vs hub), routing (non-transitive vs centralized), cost, compliance (TGW + Network Firewall = single inspection point).<br>
+<strong>R:</strong> Standardized on TGW + shared services VPC. Security team got single firewall inspection point. Cross-account complexity → centralized route table updates.</div>
+
+---
+
+### Q: What is your favorite AWS service? How will you improve it?
+
+<div class="fw">Answer: IAM OIDC Federation / Roles Anywhere</div>
+<ul><li><strong>Why:</strong> Represents a philosophy — workload identity from verifiable context, not a possessed secret. This single capability unlocked the entire zero-static-credentials architecture across Vault, GitHub Actions, and AWS.</li>
+<li><strong>Improvement 1:</strong> Richer claim mapping — custom OIDC claims → IAM condition keys directly, no Lambda authorizers</li>
+<li><strong>Improvement 2:</strong> Claim-level CloudTrail attribution — surface originating OIDC claims for complete audit chains</li>
+<li><strong>Improvement 3:</strong> Cross-provider claim normalization — standardized schema for GitHub/GitLab/Buildkite so platform teams write portable IAM policies</li></ul>
+
+---
+
+### Q: What is AWS Service X? (Handling unknown services)
+
+<div class="fw">Framework: Definition → Properties → Composition</div>
+<ul><li><strong>Example — Lambda:</strong> "Serverless compute that runs code without provisioning servers. Scales automatically, HA, pay per compute time."</li>
+<li><strong>Composition:</strong> API Gateway (HTTP), SQS (queue), EventBridge (events), S3 (object events), Vault via OIDC</li>
+<li><strong>When you don't know:</strong> Be transparent. Reason from first principles — problem space, pricing model, how it composes with IAM/CloudWatch/VPC.</li></ul>
+
+---
+
+### Q: AWS Services Cheat Sheet — Services to know cold
+
+<div class="fw">Structured definition pattern for each service</div>
+<table><thead><tr><th>Service</th><th>One-line Definition</th></tr></thead><tbody>
+<tr><td><strong>API Gateway</strong></td><td>Managed REST/HTTP/WebSocket API creation, publishing, and security at scale</td></tr>
+<tr><td><strong>ALB</strong></td><td>Layer 7 LB routing HTTP/S by path, host, or headers to targets</td></tr>
+<tr><td><strong>Transit Gateway</strong></td><td>Hub-and-spoke transit hub connecting VPCs + on-prem at scale</td></tr>
+<tr><td><strong>EKS</strong></td><td>Managed K8s control plane — no etcd or CP node management</td></tr>
+<tr><td><strong>Bedrock</strong></td><td>Managed GenAI service for building apps with foundation models via API</td></tr>
+<tr><td><strong>EventBridge</strong></td><td>Serverless event bus routing events between AWS, SaaS, and custom apps</td></tr>
+<tr><td><strong>RDS Proxy</strong></td><td>Managed DB proxy pooling connections to reduce RDS/Aurora load</td></tr>
+<tr><td><strong>Secrets Manager</strong></td><td>Managed secrets storage with automatic rotation</td></tr>
+<tr><td><strong>Inspector</strong></td><td>Automated vulnerability scanning for EC2, Lambda, container images</td></tr>
+<tr><td><strong>GuardDuty</strong></td><td>ML-based threat detection analyzing CloudTrail, Flow Logs, DNS</td></tr>
+</tbody></table>
+
+---
+
+## ▶ Video Quick-Reference
+
+### Q: Scalability for big traffic day (Quick Reference)
+
+<ul><li><strong>Load Balancers:</strong> Pre-warm via AWS Support request for sudden spikes</li>
+<li><strong>ASG:</strong> Min/desired >1. Scheduled scaling for known times. Warm Pool of pre-initialized instances.</li>
+<li><strong>Optimization:</strong> Lightweight AMIs for faster provisioning. RDS Proxy for connection pooling.</li>
+<li><strong>Preparation:</strong> AWS Countdown with account team. Check/raise soft limits. Multi-region for extreme traffic.</li></ul>
+
+---
+
+### Q: AI agent definition (Quick Reference)
+
+<ul><li>Autonomously chooses best actions to complete a task — distinct from conditional workflows or standalone LLMs.</li>
+<li>Uses LLM to determine which tools, in what order, how many times to interact.</li>
+<li>Implementation: Lambda/EC2, Bedrock for LLM, MCP for tool integration.</li></ul>
+
+---
+
+### Q: Disaster recovery strategies (Quick Reference)
+
+<ul><li>Strategy depends on RTO and RPO.</li>
+<li>Backup & Restore (highest RTO/RPO) → Pilot Light → Warm Standby → Multi-site Active-Active (lowest, ideal for enterprise despite higher cost).</li></ul>
+
+---
+
+### Q: Cloud security (Quick Reference)
+
+<ul><li>Defense in depth at every layer.</li>
+<li>Cognito for auth + SSL/TLS via ACM + API Gateway.</li>
+<li>WAF for edge protection (SQLi, XSS).</li>
+<li>Inspector for Lambda scanning + IAM least privilege.</li>
+<li>Secrets Manager + KMS for data at rest.</li></ul>
+
+---
+
+### Q: Describe a system YOU designed (Quick Reference)
+
+<ul><li>Choose a project you actually implemented.</li>
+<li>Interviewer wants: business problem understanding, how you worked backwards, ability to answer deep-dive follow-ups on scalability and security.</li></ul>
+
+---
+
+### Q: Biggest cloud design challenge (Quick Reference)
+
+<ul><li><strong>Scaling:</strong> High-burst traffic beyond standard ASG — implement warm pools + pre-warming.</li>
+<li><strong>Cost:</strong> Unexpected AWS bills — CloudWatch Insights, Compute Optimizer, Spot, Cost Explorer.</li></ul>
+
+---
+
+### Q: Picking one service over another (Quick Reference)
+
+<ul><li>Ask for requirements: traffic volume, latency, security, cost, uptime.</li>
+<li>Be ready to contrast: API GW vs ALB, Serverless vs EC2, EventBridge vs SQS/SNS, EKS vs ECS vs Fargate.</li></ul>
+
+---
+
+### Q: Favorite AWS service + improvements (Quick Reference)
+
+<ul><li>Pick a service you've used extensively.</li>
+<li>Research the public AWS Roadmap on GitHub — pick a highly-voted feature request to discuss.</li></ul>
+
+---
+
+### Q: Handling unknown AWS services (Quick Reference)
+
+<ul><li>Start with official definition, then key properties.</li>
+<li>Example (Lambda): "Serverless compute, no server management, auto-scales, HA, pay-per-use."</li>
+<li>When you don't know: be transparent, reason from first principles.</li></ul>
+
+---
+
+## 👤 Introduction & Career Strategy
+
+### Q: How are you / How are you doing?
+
+<p>"I'm doing well, thank you. Excited to be here and looking forward to our conversation."</p>
+
+---
+
+### Q: Would you like to introduce yourself first?
+
+<p>"I'm a Senior DevOps/Cloud Engineer with 15+ years of experience. Currently embedded at client Pharmaceuticals as part of my employerant, managing AWS infrastructure, Kubernetes clusters, and CI/CD pipelines at scale. I've led platform engineering initiatives that reduced service onboarding from 2 weeks to 2 hours, and I'm now targeting Cloud/Platform Architect roles where I can drive broader infrastructure strategy."</p>
+
+---
+
+### Q: What's AI vs purely you?
+
+<p>Architecture decisions, cross-team communication, security review, incident response, stakeholder conversations = human judgment. AI accelerates execution; I own thinking + accountability.</p>
+
+---
+
+### Q: Aspirations in next 5 years?
+
+<p>Move into <strong>Platform/Cloud Architect</strong> in 2-3 years. Own platform strategy — golden paths, cloud standards, org-wide infra decisions. In 5 years: leading platform engineering at Director/Principal level.</p>
+
+---
+
+### Q: How to reduce friction between DevOps and developers?
+
+<ul><li>Self-service <strong>internal developer platforms</strong></li><li>Golden path templates (TF modules, Helm charts, pipeline templates)</li><li>Clear documentation + runbooks</li><li>Embed with dev teams periodically</li><li>Shift-left (IaC, scanning, observability early)</li><li>Feedback loops — developer NPS, retros, office hours</li></ul>
+
+---
+
+### Q: Goals after 5-10 years? How do you see DevOps industry?
+
+<p>Principal Architect or Engineering Director. DevOps evolves into <strong>Platform Engineering</strong> + Developer Experience. AI automates repetitive parts; need for deep systems understanding + architectural judgment grows.</p>
+
+---
+
+### Q: Advice for freshers wanting DevOps career?
+
+<ul><li>Start with Linux + networking</li><li>Learn one cloud deeply (AWS)</li><li>Hands-on Kubernetes</li><li>Terraform from day one</li><li>Build in public — GitHub, open source, blog</li><li>Understand <em>why</em> tools exist</li><li>First cert (CKA, AWS SAA) + real projects</li><li>Find a community</li></ul>
+
+---
+
+### Q: Anything you'd like to ask?
+
+<p>"Could you share the biggest platform engineering challenges your team is currently working through? I'd love to understand where I could have the most impact."</p>
+
+---
+
+## ☁ AWS Architecture & Core Compute
+
+### Q: How would you architect a fully available and fault-tolerant application on AWS?
+
+<ul><li><strong>Compute</strong>: EKS multi-AZ node groups or ASG with EC2</li><li><strong>Networking</strong>: VPC with public/private subnets across 2+ AZs; ALB for distribution</li><li><strong>Database</strong>: RDS Multi-AZ or Aurora with read replicas</li><li><strong>Storage</strong>: S3 with versioning and cross-region replication</li><li><strong>DNS</strong>: Route 53 with health checks and failover routing</li><li><strong>Caching</strong>: ElastiCache</li><li><strong>Observability</strong>: CloudWatch, Grafana, SNS alerting</li><li><strong>Security</strong>: IAM least-privilege, SGs, NACLs, Secrets Manager, WAF</li></ul>
+
+---
+
+### Q: Are you sure about that?
+
+<p>Yes. IGW is VPC-level. Public vs private is determined entirely by the route table — whether 0.0.0.0/0 points to IGW.</p>
+
+---
+
+### Q: Have you worked with hybrid networking in AWS?
+
+<p>Yes — Site-to-Site VPN and Direct Connect at client's environment.</p>
+
+---
+
+### Q: Why do you think it is so?
+
+<p>VPC Peering has no routing hub concept — each peer is a direct 1:1 relationship with no transitivity. TGW was purpose-built to solve mesh complexity at enterprise scale.</p>
+
+---
+
+### Q: Have you worked with disaster recovery?
+
+<p>Yes — cross-region DR strategies for critical workloads at client on AWS.</p>
+
+---
+
+### Q: What DR solution would you design?
+
+<ul><li><strong>Backup & Restore</strong>: Cheapest, highest RTO. S3 snapshots, RDS backups.</li><li><strong>Pilot Light</strong>: Core services (DB replication) always on; compute scales on failover.</li><li><strong>Warm Standby</strong>: Scaled-down prod in DR; faster failover.</li><li><strong>Active-Active</strong>: Both regions serve live traffic; lowest RTO/RPO, highest cost.</li></ul>
+
+---
+
+### Q: How to design for both regions active at once with separate access control?
+
+<ul><li>Route 53 latency/weighted routing to split traffic</li><li>IAM roles + SCPs for region-specific access</li><li>DynamoDB Global Tables or Aurora Global Database</li><li>Cross-region KMS replication</li><li>Separate accounts per region with cross-account roles</li><li>CI/CD deploying to both regions simultaneously</li></ul>
+
+---
+
+### Q: Have you worked with the Well-Architected Framework?
+
+<p>Yes — reviewed workloads at client to identify gaps in reliability and cost optimization.</p>
+
+---
+
+### Q: List all pillars and summarize each?
+
+<ul><li><strong>Operational Excellence</strong>: IaC, observability, runbooks, post-mortems</li><li><strong>Security</strong>: IAM, encryption, threat detection, incident response</li><li><strong>Reliability</strong>: Multi-AZ, auto-scaling, backups, chaos engineering</li><li><strong>Performance Efficiency</strong>: Right-sizing, serverless, caching, benchmarking</li><li><strong>Cost Optimization</strong>: RIs, Spot, rightsizing, lifecycle policies</li><li><strong>Sustainability</strong> (6th): Minimize environmental impact, reduce idle, efficient instances</li></ul>
+
+---
+
+### Q: Challenges with open source?
+
+<ul><li>No built-in remote run — use GitHub Actions</li><li>Basic workspace management</li><li>No built-in policy (OPA/Sentinel) — use Checkov</li><li>State locking via S3+DynamoDB works but needs setup</li></ul>
+
+---
+
+### Q: Will you still go through all iterations?
+
+<p>Yes — plan is non-negotiable. For true emergencies, break-glass process with direct apply + mandatory post-incident review.</p>
+
+---
+
+### Q: How ensure devs don't overwrite each other's work?
+
+<p><strong>DynamoDB state locking</strong>. Concurrent apply fails with lock error. Workspaces isolate per env. PRs require plan review.</p>
+
+---
+
+### Q: Info on enterprise workspaces?
+
+<p>TFC/Enterprise workspaces: separate variables, RBAC, run history, VCS triggers, fully isolated state, audit logs. Much more powerful than OSS workspaces.</p>
+
+---
+
+### Q: How much of your work is driven by AI?
+
+<p>~40-50% AI-assisted — code generation, boilerplate, docs, troubleshooting research, PR descriptions, test cases.</p>
+
+---
+
+### Q: Do you use Cursor or Claude?
+
+<p>Claude for code review, Terraform modules, documentation, interview prep. GitHub Copilot for IDE coding.</p>
+
+---
+
+### Q: Fetch all EC2 across all accounts and regions?
+
+<p>Organizations API → list-accounts → AssumeRole per account → DescribeRegions → DescribeInstances per region. Alt: Config Aggregator or Resource Explorer.</p>
+
+---
+
+### Q: EC2 within a specific OU?
+
+<p><code>list-accounts-for-parent</code> with OU ID. Recursively for nested OUs. Same assume + describe pattern.</p>
+
+---
+
+### Q: What does 3/3 status check mean?
+
+<p>1: System (AWS infra). 2: Instance (OS). 3: <strong>Attached EBS</strong> (volume health/I/O). Third failure = volumes impaired.</p>
+
+---
+
+### Q: Share AMI with child accounts?
+
+<ul><li><code>modify-image-attribute --launch-permission</code></li><li>Org-wide via OrganizationArn</li><li>AWS RAM (recommended)</li></ul><div class="wn">⚠ Encrypted: share KMS key. Default keys can't be shared — re-encrypt with CMK. Share snapshots too.</div>
+
+---
+
+### Q: Shared AMI instance launches and terminates?
+
+<ul><li>KMS access denied</li><li>Missing snapshot perms</li><li>IAM role/profile missing</li><li>UserData failures</li><li>Instance limits / subnet mismatch</li></ul>
+
+---
+
+### Q: Diagnose shared AMI issues?
+
+<ul><li>State Transition Reason</li><li>get-console-output / screenshot</li><li>Test in source account</li><li>CloudTrail for denied errors</li><li>Validate KMS + snapshot sharing</li></ul>
+
+---
+
+### Q: 3-tier architecture steps?
+
+<p><strong>1.</strong> VPC, 6 subnets (2 pub + 2 priv app + 2 priv DB), IGW, NAT. <strong>2.</strong> ALB in public. <strong>3.</strong> App ASG in private. <strong>4.</strong> RDS Multi-AZ in private DB. <strong>5.</strong> NACLs, Flow Logs, WAF, CloudWatch.</p>
+
+---
+
+### Q: Get PID?
+
+<div class="cb">ps aux | grep name / pidof name / pgrep -f / lsof -i :port / top</div>
+
+---
+
+### Q: Check system performance?
+
+<ul><li><code>top/htop</code>, <code>vmstat 1</code>, <code>iostat -x 1</code></li><li><code>free -h</code>, <code>df -h</code>, <code>sar</code></li><li><code>uptime</code>, <code>mpstat -P ALL</code></li></ul>
+
+---
+
+### Q: Full permissions?
+
+<div class="cb">chmod 777 file / chmod -R 777 folder/</div><div class="wn">⚠ Security risk. Use 755/644 + chown/chgrp instead.</div>
+
+---
+
+### Q: Soft vs hard link?
+
+<p><strong>Soft</strong>: pointer to path (<code>ln -s</code>), cross-FS, breaks if deleted. <strong>Hard</strong>: same inode (<code>ln</code>), no cross-FS, survives deletion.</p>
+
+---
+
+### Q: Open firewall?
+
+<div class="cb">firewall-cmd --permanent --add-port=8080/tcp && --reload  # RHEL
+ufw allow 8080/tcp  # Ubuntu
+iptables -A INPUT -p tcp --dport 8080 -j ACCEPT</div><div class="nt">On AWS: also configure EC2 Security Group.</div>
+
+---
+
+### Q: netstat -ntlp?
+
+<ul><li><code>-n</code> numeric, <code>-t</code> TCP, <code>-l</code> listening, <code>-p</code> show PID</li></ul><p>Modern: <code>ss -ntlp</code></p>
+
+---
+
+### Q: How do you implement DR in AWS?
+
+<ul><li>Determine RTO / RPO first.</li><li><strong>Backup & Restore:</strong> Cross-region snapshots holding state. Slower RTO.</li><li><strong>Pilot Light:</strong> Database replicated cross-region, infrastructure ready but idle. Data is safe but requires scale-up time.</li><li><strong>Warm Standby:</strong> A scaled-down version of full prod constantly running.</li><li><strong>Active-Active:</strong> Multi-region routing with Route 53 latency logic and DynamoDB global syncing for near-zero downtime.</li></ul>
+
+---
+
+### Q: What is RTO and RPO?
+
+<ul><li><strong>RTO (Recovery Time Objective):</strong> The maximum acceptable length of downtime. Answers "How quickly must the application be back online?" (e.g., 4 hours).</li><li><strong>RPO (Recovery Point Objective):</strong> The maximum acceptable tolerance for data loss, measured in <em>time</em>. Answers "How much past data can we afford to lose?" (e.g., 15 minutes of transactions).</li></ul>
+
+---
+
+### Q: How do you design multi-region architecture?
+
+<ul><li><strong>DNS Layer:</strong> Route 53 health checks and Geolocation/Latency routing policies.</li><li><strong>Compute Layer:</strong> Independent, duplicated EKS clusters or ASGs in each region. Completely stateless.</li><li><strong>Data Layer (The Hard Part):</strong> Use Global services like DynamoDB Global Tables or Aurora Global Database. Centralized asynchronous replication.</li><li><strong>Edge Layer:</strong> CloudFront and Global Accelerator to seamlessly handle user routing over the AWS backbone.</li></ul>
+
+---
+
+### Q: How do you control AWS costs at scale?
+
+<ul><li>Mandatory infrastructure tagging policies using AWS Organizations SCPs.</li><li>Adopt Savings Plans and Reserved Instances for baseline compute demands.</li><li>Leverage Spot Instances for stateless batch jobs and EKS ephemeral workloads (via Karpenter).</li><li>Use Compute Optimizer to identify over-provisioned resources.</li><li>S3 Object Lifecycle policies to move historical data to Glacier Deep Archive.</li></ul>
+
+---
+
+### Q: What is AWS Well-Architected Framework?
+
+<p>A set of industry best practices guiding the resilient design of cloud workloads across six pillars:</p><ul><li><strong>Operational Excellence:</strong> Automation and runbooks.</li><li><strong>Security:</strong> IAM least-privilege, encryption.</li><li><strong>Reliability:</strong> Multi-AZ, graceful failure mitigation.</li><li><strong>Performance Efficiency:</strong> Serverless scaling, correct instance types.</li><li><strong>Cost Optimization:</strong> Resource lifecycle limits and spot instances.</li><li><strong>Sustainability:</strong> Maximizing utilization to minimize energy footprint.</li></ul>
+
+---
+
+### Q: How do you operate AWS for enterprise workloads?
+
+<ul><li>Use AWS Control Tower for standardized account provisioning with built-in guardrails.</li><li>Strict immutable infrastructure deployments using Terraform or CDK.</li><li>Centralized observability via dedicated logging accounts pulling CloudTrail, Flow Logs, and centralized Grafana/Datadog.</li><li>Establish an Internal Developer Platform (IDP) with self-service templates prioritizing security by default.</li></ul>
+
+---
+
+### Q: How do you optimize EC2 cost in AWS?
+
+<ul><li><strong>Rightsizing:</strong> Downgrade oversized instances using AWS Compute Optimizer data.</li><li><strong>Architecture:</strong> Migrate workloads to Graviton based (ARM) processors for higher performance at lower cost.</li><li><strong>Purchasing Models:</strong> Commit to Compute Savings Plans for base load, use Spot Instances for fault-tolerant workers.</li><li><strong>Automation:</strong> Install scheduled lambda functions to stop dev/test EC2 instances over the weekend.</li></ul>
+
+---
+
+### Q: What is Vertex AI in GCP and where would you use it?
+
+<p>Vertex AI is Google Cloud's premier unified Machine Learning operations (MLOps) platform. Equivalent to AWS SageMaker, it consolidates data engineering, large-language model (LLM) tuning, training, and fully-managed model endpoint deployment under one enterprise umbrella.</p>
+
+---
+
+### Q: How would you deploy GPU workloads on AWS?
+
+<ul><li>Provision raw heavily-accelerated <code>p4</code>, <code>p5</code>, or <code>g5</code> EC2 instances equipped with Deep Learning AMIs.</li><li>Under Kubernetes/EKS: Exclusively taint GPU nodes, deploy the Nvidia Device DaemonSet plugin, and explicitly mandate <code>nvidia.com/gpu: 1</code> limits directly into your container specifications.</li></ul>
+
+---
+
+### Q: Spot vs On-Demand vs Reserved - when to use each
+
+<ul><li><strong>Reserved / Savings Plans:</strong> 24/7 baseline operational infrastructure (Production databases, foundational controllers).</li><li><strong>Spot:</strong> Ephemeral, stateless, interruption-tolerant processing pools (Data pipelines, EKS compute-intensive worker nodes handled via Karpenter).</li><li><strong>On-Demand:</strong> Sudden, unpredictable workloads possessing zero historical baselines, or instances destined for imminent deletion.</li></ul>
+
+---
+
+### Q: S3 costs tripled - how to investigate and fix
+
+<ul><li>Interrogate AWS Cost Explorer analyzing exact API vectors (Are costs surging due to storage GBs, external egress Transfer, or runaway LIST mechanisms?).</li><li>Investigate S3 Storage Lens diagnosing potentially millions of lingering, orphaned multi-part uploads accumulating space. Fix via enforcing immediate multipart lifecycle-abort rules.</li><li>Activate Intelligently Tiering comprehensively transitioning untouched analytical archives out into zero-touch Glacier layers.</li></ul>
+
+---
+
+### Q: Your entire production workload runs in a single AWS region, and management asks you to design a multi-region disaster recovery strategy with minimal downtime. How would you approach it?
+
+<p>I would implement a <strong>Warm Standby</strong> or <strong>Active-Active</strong> architecture. 1. Decouple state entirely from compute. 2. Transition databases to <strong>Aurora Global Databases</strong> and DynamoDB Global Tables for sub-second asynchronous cross-region replication. 3. Define all infrastructure strictly in Terraform. 4. Deploy stateless EKS clusters in the secondary region. 5. Route traffic intelligently using Route 53 Latency/Failover records.</p>
+
+---
+
+### Q: Your cluster is facing high resource utilization. How will you optimize it?
+
+<ul><li>Configure <strong>Karpenter</strong> to consolidate sparsely-utilized large nodes down into smaller, strictly-fitted nodes.</li><li>Re-evaluate Pod <strong>Requests & Limits</strong>; developers frequently over-request resources padding their ego, starving the cluster.</li><li>Implement <strong>VPA (Vertical Pod Autoscaler)</strong> in estimation mode to scientifically gauge what exact requests the pods actually require.</li></ul>
+
+---
+
+### Q: What is Azure App Service?
+
+<p><strong>Azure App Service</strong> is a fully managed PaaS for hosting web apps, REST APIs, and mobile backends. It supports multiple runtimes (Node, Python, .NET, Java, PHP). Key features: auto-scaling, custom domains, SSL, deployment slots, and built-in CI/CD integration via GitHub Actions or Azure DevOps. Equivalent concept to AWS Elastic Beanstalk or App Runner.</p>
+
+---
+
+### Q: How do you switch between deployment slots in Azure App Service?
+
+<p>Azure App Service <strong>deployment slots</strong> allow you to host different environments (staging, production) under the same app plan.</p><ul><li><strong>Swap:</strong> <code>az webapp deployment slot swap --slot staging --target-slot production</code> — atomic swap with no downtime</li><li><strong>Portal:</strong> App Service → Deployment Slots → Swap</li><li><strong>Why slots matter:</strong> Staging warms up before swap. If prod breaks, swap back instantly. Auto-swap can trigger on successful deployment.</li><li><strong>Slot-specific settings:</strong> Connection strings marked as "slot setting" do NOT swap — ensures staging DB stays in staging after swap.</li></ul>
+
+---
+
+## 🌐 AWS Networking & Load Balancing
+
+### Q: How would you make a subnet public or private?
+
+<ul><li><strong>Public</strong>: Route table with <code>0.0.0.0/0 → IGW</code></li><li><strong>Private</strong>: No IGW route. Outbound via NAT GW in public subnet: <code>0.0.0.0/0 → NAT GW</code></li></ul>
+
+---
+
+### Q: Internet Gateway is attached to a subnet or a VPC?
+
+<p>IGW attaches to the <strong>VPC</strong>, not a subnet. A subnet becomes "public" when its route table routes 0.0.0.0/0 to the IGW.</p>
+
+---
+
+### Q: Where are the outgoing rules for a private subnet needing internet?
+
+<p>The rule <code>0.0.0.0/0 → NAT GW</code> goes in the <strong>private subnet's route table</strong>. NAT GW lives in the public subnet with its own route to IGW. Flow: private → NAT GW → IGW → internet.</p>
+
+---
+
+### Q: List all choices to connect on-prem to AWS?
+
+<ul><li><strong>Site-to-Site VPN</strong>: IPSec over internet; quick, lower cost, variable latency</li><li><strong>Direct Connect</strong>: Dedicated fiber; consistent low latency, higher cost</li><li><strong>Direct Connect + VPN</strong>: DX primary, VPN failover</li><li><strong>Transit Gateway + VPN/DX</strong>: Centralized multi-VPC connectivity</li><li><strong>VPN CloudHub</strong>: Hub-and-spoke for multiple remote sites</li></ul>
+
+---
+
+### Q: Any other networking options?
+
+<ul><li><strong>PrivateLink</strong>: Private service connectivity without internet</li><li><strong>VPC Peering</strong>: Direct VPC-to-VPC (same/cross-account/region)</li><li><strong>Transit Gateway</strong>: Hub for many VPCs + on-prem</li><li><strong>Outposts</strong>: AWS infrastructure in on-prem data centers</li></ul>
+
+---
+
+### Q: Why do you need Transit Gateway when we have VPC Peering?
+
+<p>VPC Peering is <strong>non-transitive</strong>. A↔B and B↔C doesn't mean A↔C. With 10 VPCs = up to 45 peerings. TGW is a central hub — each VPC connects once, TGW handles all routing.</p>
+
+---
+
+### Q: How is Transit Gateway beneficial vs VPC Peering?
+
+<ul><li><strong>Scalability</strong>: 1 attachment/VPC vs N*(N-1)/2 peerings</li><li><strong>Centralized routing</strong>: Single route table</li><li><strong>Cross-account/region</strong>: Native support</li><li><strong>On-prem</strong>: Accepts VPN + DX attachments</li><li><strong>Simplified ops</strong>: One place for all traffic management</li></ul>
+
+---
+
+### Q: Types of load balancers and when to use each?
+
+<ul><li><strong>ALB</strong>: Layer 7, HTTP/S. Microservices, path/host routing, WebSocket, gRPC.</li><li><strong>NLB</strong>: Layer 4, TCP/UDP. Ultra-low latency, static IP, non-HTTP protocols.</li><li><strong>GWLB</strong>: Layer 3. Inline appliances (firewalls, IDS/IPS).</li><li><strong>CLB</strong>: Legacy. Avoid for new workloads.</li></ul>
+
+---
+
+### Q: API Gateway vs ALB — when to use each?
+
+<ul><li><strong>API GW</strong>: Serverless (Lambda), auth (Cognito/JWT), rate limiting, API versioning. Higher per-request cost.</li><li><strong>ALB</strong>: Container/EC2 backends, high throughput, WebSocket. Lower cost at scale.</li></ul><p>Rule: API GW for public APIs with auth; ALB for internal services and high-volume container traffic.</p>
+
+---
+
+### Q: CloudFormation template for EC2 + ALB?
+
+<ul><li>VPC, 2+ subnets in different AZs, IGW, routes</li><li>ALB SG (80/443 from 0.0.0.0/0), EC2 SG (from ALB only)</li><li>3 ALB resources: LoadBalancer, TargetGroup, Listener</li><li>EC2 Instance with UserData</li><li>Outputs for ALB DNS, Parameters for reuse</li></ul>
+
+---
+
+### Q: VPC peering with overlapping CIDRs?
+
+<p><strong>No</strong>. Alternatives: PrivateLink, Transit Gateway + NAT, re-address (secondary CIDR), app-layer proxies.</p>
+
+---
+
+### Q: What is VPC endpoint (Interface vs Gateway)?
+
+<table><thead><tr><th>Gateway Endpoint</th><th>Interface Endpoint (PrivateLink)</th></tr></thead><tbody><tr><td>Modifies the VPC Route Table.</td><td>Creates an Elastic Network Interface (ENI) with a private IP.</td></tr><tr><td>Only supports S3 and DynamoDB.</td><td>Supports almost all AWS services and 3rd-party SaaS.</td></tr><tr><td>Free of charge.</td><td>Billed hourly + per GB data processed.</td></tr></tbody></table>
+
+---
+
+### Q: How does PrivateLink work?
+
+<p>AWS PrivateLink enables highly secure, direct connections between VPCs, supported AWS services, and on-premises networks <strong>without traversing the public internet</strong>. It achieves this by creating Interface Endpoints (ENIs) directly within your VPC subnets. Traffic flows entirely over the secure AWS global backbone.</p>
+
+---
+
+### Q: What is hybrid connectivity in AWS?
+
+<p>Connecting an on-premises data center securely and transparently into AWS VPCs. Common implementations include Site-to-Site VPN (encrypted over the internet), AWS Direct Connect (dedicated physical fiber connection), AWS Client VPN for remote users, and managing routing centrally via Transit Gateway.</p>
+
+---
+
+### Q: Difference between Direct Connect and VPN?
+
+<table><thead><tr><th>Feature</th><th>Direct Connect (DX)</th><th>Site-to-Site VPN</th></tr></thead><tbody><tr><td>Medium</td><td>Dedicated physical fiber link</td><td>Over the public internet</td></tr><tr><td>Bandwidth</td><td>Consistent, 1-100 Gbps</td><td>Variable, max ~1.25 Gbps per tunnel</td></tr><tr><td>Latency</td><td>Low and reliable</td><td>Variable (internet weather)</td></tr><tr><td>Lead Time</td><td>Weeks/Months (requires colocation)</td><td>Minutes to deploy</td></tr></tbody></table>
+
+---
+
+### Q: How does ALB handle millions of requests?
+
+<p>ALB inherently scales automatically by adding processing nodes directly behind the scenes. However, sudden instantaneous spikes can overwhelm it before it scales. For known, massive traffic events (e.g., Black Friday launch), you must submit a ticket to AWS Support for <strong>pre-warming</strong> to ensure sufficient ALB capacity is pre-provisioned.</p>
+
+---
+
+### Q: What is connection draining (deregistration delay)?
+
+<p>When an EC2 instance in a Target Group becomes unhealthy or is scaling down, <strong>Connection Draining</strong> prevents the ALB from severing active connections immediately. The ALB stops sending <em>new</em> requests but waits for <em>in-flight</em> requests to complete up to a configured threshold (default 300 seconds) before fully deregistering the instance.</p>
+
+---
+
+### Q: Difference between Security Group vs NACL
+
+<table><thead><tr><th>Security Group (SG)</th><th>Network ACL (NACL)</th></tr></thead><tbody><tr><td>Operates at the <strong>Instance / ENI</strong> layer.</td><td>Operates at the <strong>Subnet</strong> layer.</td></tr><tr><td><strong>Stateful:</strong> Inbound traffic allowed auto-allows return traffic.</td><td><strong>Stateless:</strong> Return traffic must be explicitly allowed.</td></tr><tr><td>Default: Deny all inbound, Allow all outbound.</td><td>Default: Allow all inbound, Allow all outbound.</td></tr><tr><td>Only supports ALLOW rules.</td><td>Supports both ALLOW and DENY rules.</td></tr></tbody></table>
+
+---
+
+### Q: Explain end-to-end request flow: 👉 Internet → AWS → Application
+
+<p><strong>1. Request:</strong> User types URL. <strong>2. DNS:</strong> Route 53 resolves domain to CloudFront. <strong>3. CDN:</strong> CloudFront serves static cache or proxies to backend. <strong>4. Security:</strong> WAF inspects traffic at CloudFront. <strong>5. Entry:</strong> Request hits Internet Gateway. <strong>6. Proxy:</strong> Reaches ALB in public subnet. <strong>7. App:</strong> ALB routes to EC2/EKS in private subnet. <strong>8. Data:</strong> App queries RDS in isolated DB subnet.</p>
+
+---
+
+### Q: What are the types of Load Balancers in AWS and how do they work?
+
+<ul><li><strong>Application Load Balancer (ALB):</strong> Layer 7. Deeply inspects HTTP/S protocols. Routes based on path, host, or HTTP headers. Ideal for microservices.</li><li><strong>Network Load Balancer (NLB):</strong> Layer 4. Handles TCP/UDP traffic. Ultra-low latency, handles millions of requests/sec instantly, supports static IPs.</li><li><strong>Gateway Load Balancer (GWLB):</strong> Layer 3/4. Designed specifically to run and scale inline 3rd-party virtual appliances (like Palo Alto firewalls).</li></ul>
+
+---
+
+### Q: Security Groups vs NACLs - and the follow-up question 80% miss
+
+<p>The core disparity lies in persistent state mapping. SGs operate statelessly at the ENI boundary (inbound ALLOW implicitly guarantees symmetric outbound return traffic). A typical 80% trap-failure occurs when engineers write a strict NACL inbound rule expecting an HTTP response to function, critically failing to explicitly map an asymmetric outbound NACL ALLOW handling the broad Ephemeral internal port range (1024-65535).</p>
+
+---
+
+### Q: VPC Peering vs Transit Gateway decision framework
+
+<p>Use <strong>VPC Peering</strong> exclusively for isolated, minor setups involving &lt;5 VPCs commanding extreme bandwidth with absolutely zero necessity for lateral hub routing (totally free traffic routing). Command <strong>Transit Gateway (TGW)</strong> immediately for enterprise footprints. TGW solves explosive non-transitive mesh complexity, unifies Direct Connect attachments gracefully, and centralizes security inspection appliances structurally.</p>
+
+---
+
+### Q: Why does AWS reserve 5 IP addresses in every subnet, and what are they used for?
+
+<ul><li><code>.0</code> structurally designates the fundamental Network address identifying the subnet.</li><li><code>.1</code> intrinsically allocated strictly to the VPC hardware routing appliance boundary.</li><li><code>.2</code> heavily utilized exclusively by the internal Amazon DNS (Route 53 Resolver endpoint).</li><li><code>.3</code> systemically reserved for nebulous future AWS feature additions.</li><li><code>.255</code> systematically represents the ubiquitous Network Broadcast frame limit capability.</li></ul>
+
+---
+
+## 🔒 AWS IAM & Security
+
+### Q: Security best practices across each area?
+
+<ul><li><strong>IAM</strong>: Least privilege, no root, MFA, OIDC federation</li><li><strong>Network</strong>: Private subnets, SGs > NACLs, PrivateLink</li><li><strong>Data</strong>: KMS at rest, TLS in transit, Secrets Manager</li><li><strong>Compute</strong>: IMDSv2, SSM instead of SSH</li><li><strong>Container</strong>: Non-root, read-only FS, ECR scanning</li><li><strong>Logging</strong>: CloudTrail all regions, Flow Logs, GuardDuty, Security Hub</li><li><strong>Patching</strong>: SSM Patch Manager, AMI baking pipelines</li></ul>
+
+---
+
+### Q: Bare minimum to keep cloud secure?
+
+<ul><li>CloudTrail + GuardDuty everywhere</li><li>MFA on all humans, especially root</li><li>No public S3 — block at account level</li><li>No long-lived keys — use OIDC/roles</li><li>VPC Flow Logs</li><li>Encrypt all storage at rest</li><li>SCPs via Organizations</li></ul>
+
+---
+
+### Q: How to extend access without compromising security?
+
+<p><strong>IAM OIDC Federation</strong> — federate with IdP (Okta, Azure AD, GitHub Actions). Users/workloads assume roles with short-lived tokens. No static credentials, full auditability.</p>
+
+---
+
+### Q: Do you know what service that is?
+
+<p><strong>AWS IAM Identity Center (SSO)</strong> for humans, <strong>OIDC-based IAM roles</strong> for workloads (GitHub Actions OIDC, EKS IRSA).</p>
+
+---
+
+### Q: Have you worked with cross-account KMS?
+
+<p>Yes — sharing KMS keys across accounts for encrypted AMIs, S3, Secrets Manager.</p>
+
+---
+
+### Q: How do you facilitate that connectivity?
+
+<p>KMS key in <strong>source account</strong> must have a key policy granting destination account permission to use it.</p>
+
+---
+
+### Q: What configuration is required?
+
+<ul><li><strong>Key Policy</strong> (source): Allow destination principal for kms:Decrypt, kms:GenerateDataKey, etc.</li><li><strong>IAM Policy</strong> (destination): Role/user must also have IAM policy permitting KMS actions on that key ARN.</li></ul><p>Both sides must grant — key policy alone isn't enough without matching IAM policy.</p>
+
+---
+
+### Q: Do you take care of Docker image security?
+
+<p>Yes — ECR scanning (Trivy-based) + optionally Snyk. Images with critical/high CVEs blocked from promotion.</p>
+
+---
+
+### Q: Are K8s Secrets really secrets?
+
+<p>No — just <strong>base64-encoded, not encrypted</strong>. Anyone with <code>kubectl get secret</code> access decodes instantly. Stored in etcd which may not be encrypted by default.</p>
+
+---
+
+### Q: How to make K8s Secrets more secure?
+
+<ul><li>Enable <strong>etcd encryption at rest</strong></li><li><strong>External Secrets Operator</strong> + Vault/Secrets Manager</li><li><strong>Sealed Secrets</strong> for GitOps</li><li>Strict RBAC on secret access</li><li>At client: Vault + K8s auth + Vault Agent Injector — secrets injected as files, never stored in K8s</li></ul>
+
+---
+
+### Q: Where are secrets stored?
+
+<p>In Secrets Manager or Vault. Fetched dynamically via <code>aws_secretsmanager_secret_version</code> data source. Never hardcoded in tfvars or state.</p>
+
+---
+
+### Q: How ensure secrets aren't exposed?
+
+<ul><li>.gitignore sensitive tfvars</li><li>Pipeline injects from Vault/Secrets Manager</li><li>S3 state encrypted with KMS + IAM-restricted</li><li>State never stored locally</li><li>State access audited via CloudTrail</li></ul>
+
+---
+
+### Q: Multi-account IAM role via CloudFormation?
+
+<ul><li><strong>StackSets</strong>: Deploy across accounts/OUs, auto-deploy to new accounts</li><li><strong>Service-Managed</strong>: Organizations trusted access, no manual roles</li><li><strong>Self-Managed</strong>: Requires admin + execution roles (bootstrap)</li></ul>
+
+---
+
+### Q: Managing secrets in Ansible?
+
+<ul><li>Ansible Vault (AES-256)</li><li>External: Vault, Secrets Manager via lookup</li><li>Env vars: lookup('env', ...)</li></ul>
+
+---
+
+### Q: Securely run playbooks with secrets?
+
+<ul><li>--vault-password-file (chmod 600)</li><li>--ask-vault-pass</li><li>Vault IDs per env</li><li>CI/CD: pipeline secret → temp file</li><li>Tower/AWX: encrypted creds</li><li>no_log: true</li></ul>
+
+---
+
+### Q: How does AWS IAM evaluate policies?
+
+<ul><li><strong>Explicit Deny</strong> overwrites everything.</li><li><strong>Explicit Allow</strong> grants access if there's no Deny.</li><li><strong>Default Deny</strong> (Implicit Deny) applies if neither exists.</li><li><strong>Context order:</strong> Organizations SCP > Resource-based Policy > Identity-based Policy > IAM Permissions Boundary > Session Policy.</li></ul>
+
+---
+
+### Q: What is policy evaluation logic order?
+
+<p>The precise step-by-step logic is:</p><ol><li>By default, all requests are implicitly denied.</li><li>Evaluate all applicable policies (SCP, Identity, Resource, Boundary, Session).</li><li>If <strong>any</strong> applicable policy has an <code>Effect: Deny</code>, the request is definitively denied.</li><li>If no Deny exists, but an <code>Effect: Allow</code> exists in the applicable policies (considering boundaries), it is allowed.</li><li>If no Allow matches, the default implicit deny takes over.</li></ol>
+
+---
+
+### Q: Difference between identity-based and resource-based policies?
+
+<table><thead><tr><th>Identity-based</th><th>Resource-based</th></tr></thead><tbody><tr><td>Attached to IAM User, Group, or Role.</td><td>Attached to a resource (S3 bucket, SQS, KMS key).</td></tr><tr><td>Specifies what the identity can do.</td><td>Specifies who can access the resource and how.</td></tr><tr><td>Cannot grant cross-account access on its own.</td><td>Crucial for granting cross-account access.</td></tr></tbody></table>
+
+---
+
+### Q: How does AWS STS work internally?
+
+<p>AWS Security Token Service (STS) issues short-lived, temporary credentials (Access Key, Secret Key, Session Token). Flow:</p><ul><li>Client calls <code>AssumeRole</code>.</li><li>STS verifies the requester's identity policy and the target role's trust policy.</li><li>If both allow, STS dynamically generates temporary credentials valid for 15 mins to 12 hours.</li><li>These credentials are automatically rotated and expire.</li></ul>
+
+---
+
+### Q: How do you implement cross-account access securely?
+
+<ul><li>Never share long-lived IAM user keys across accounts.</li><li>Create an IAM Role in the <strong>Target Account</strong> with a <em>Trust Policy</em> allowing the Source Account to assume it.</li><li>In the <strong>Source Account</strong>, attach an IAM Policy to an entity allowing <code>sts:AssumeRole</code> to the Target ARN.</li><li><strong>Crucial:</strong> Use <code>ExternalId</code> in the Trust Policy to prevent the Confused Deputy problem.</li></ul>
+
+---
+
+### Q: What is AWS Organizations and SCP?
+
+<ul><li><strong>AWS Organizations</strong>: Service to centrally manage and govern multiple AWS accounts, enabling consolidated billing and logical grouping (OUs).</li><li><strong>Service Control Policies (SCPs)</strong>: Guardrails applied at the Root, OU, or Account level. They define the <em>maximum available permissions</em> globally across the accounts, regardless of how permissive the IAM policies inside those accounts are.</li></ul>
+
+---
+
+### Q: How do Service Control Policies work?
+
+<p>SCPs act as a filter. They <strong>do not grant permissions</strong>. Even if an IAM Administrator in a child account has <code>AdministratorAccess</code>, if an SCP applied to their account denies <code>s3:*</code>, that admin cannot access S3. The SCP intercepts the API call before standard IAM evaluation.</p>
+
+---
+
+### Q: How do you enforce security guardrails in AWS?
+
+<ul><li><strong>Preventive Guardrails</strong>: Use AWS Organizations SCPs to block prohibited actions globally (e.g., denying creation of VPC internet gateways).</li><li><strong>Proactive Guardrails</strong>: IAM Permissions Boundaries to limit the maximum permissions developers can grant to roles they create.</li><li><strong>Detective Guardrails</strong>: AWS Config rules to flag or auto-remediate non-compliant resources (e.g., untagged EC2s, public S3 buckets).</li></ul>
+
+---
+
+### Q: How do you secure S3 buckets at scale?
+
+<ul><li>Enable <strong>Block Public Access</strong> at the Account or Organization level.</li><li>Enforce encryption at rest (SSE-KMS) via Bucket Policies.</li><li>Use Macie for automated PII discovery.</li><li>Enable Server Access Logging / CloudTrail data events to monitor access patterns.</li><li>Implement strict IAM Least Privilege and Resource-based Bucket Policies.</li></ul>
+
+---
+
+### Q: How do you prevent data exfiltration from S3?
+
+<ul><li>Ensure traffic to S3 stays private via <strong>VPC Gateway Endpoints</strong>.</li><li>Apply a VPC Endpoint Policy restricting access exclusively to your own specific buckets.</li><li>Create a Bucket Policy that only accepts traffic from that specific VPC Endpoint.</li><li>Use SCPs to prevent IAM users from creating bucket policies that share data outside the Organization.</li></ul>
+
+---
+
+### Q: What is AWS Shield vs WAF?
+
+<table><thead><tr><th>AWS Shield</th><th>AWS WAF</th></tr></thead><tbody><tr><td>Layer 3 and 4 DDoS protection.</td><td>Layer 7 HTTP/S application firewall.</td></tr><tr><td>Standard (free) guards against SYN floods/UDP reflection.</td><td>Protects against SQL injection, XSS, bad bots.</td></tr><tr><td>Advanced (paid) offers custom mitigation and billing protection.</td><td>Relies on customizable rule sets and managed rules.</td></tr></tbody></table>
+
+---
+
+### Q: How does AWS WAF protect applications?
+
+<p>WAF attaches to ALBs, API Gateway, or CloudFront. It inspects incoming HTTP/S requests against configured Web ACLs (rules). It can block or count requests based on geo-location, IP range, rate limiting, suspected SQL injection patterns, or custom header matching before the traffic reaches the backend.</p>
+
+---
+
+### Q: How do you detect compromised IAM credentials?
+
+<ul><li>Enable <strong>AWS GuardDuty</strong> — it uses ML algorithms to detect anomalous API activity (e.g., login from an unexpected geographical location, mass resource deletion, or disabling CloudTrail).</li><li>Configure AWS Budgets to alert on sudden cost spikes (crypto mining behavior).</li><li>Enforce MFA dynamically using IAM condition keys.</li></ul>
+
+---
+
+### Q: How would you restrict pod-to-pod communication using Calico Network Policies?
+
+<p>You establish a Zero-Trust namespace boundary. Deploy a `NetworkPolicy` mapping to specific pod selectors that institutes a <strong>Default Deny</strong> for all ingress and egress. Then, add granular exceptions strictly authorizing traffic solely between Pods harboring the precise explicit matching labels (e.g., allow `db-pod` ingress only from `backend-pod`).</p>
+
+---
+
+### Q: How do you secure AWS credentials in production environments?
+
+<p><strong>Zero static credentials.</strong> Environments rely completely on intrinsic workload identities. Applications within EKS employ IRSA. EC2 instances employ Instance Profiles. GitHub Actions pipelines implement IAM OIDC Federation. At no point does a human generate or store an Access Key geometrically diminishing exfiltration threats.</p>
+
+---
+
+### Q: How do you implement least privilege access across environments?
+
+<ul><li>Strict Multi-Account Organizational segmentation (Dev, Stg, Prod Accounts).</li><li>AWS IAM Service Control Policies (SCPs) placing hard ceilings universally (e.g. denying Region usage, demanding encryption).</li><li>Production developer access functionally suppressed to Read-Only; all mutations rigorously forced manually through the CI/CD principal pipeline.</li></ul>
+
+---
+
+### Q: What are OWASP Top 10 aligned security rules?
+
+<p>Categorical rules shielding applications against globally profound vulnerabilities: Injection (SQLi), Flawed Access Controls, SSRF (Server-Side Request Forgery), and Cross-Site Scripting (XSS). In AWS, deploying the Managed Rule Groups identically mapping to the OWASP Top 10 straight onto the WAF eliminates superficial application exploitation angles automatically.</p>
+
+---
+
+## ☸ Kubernetes & Containers
+
+### Q: Any specific reason you'd use EKS and not ECS?
+
+<p>EKS gives the full Kubernetes API — portable, vendor-neutral, ecosystem-rich. When the org already uses K8s tooling (Helm, ArgoCD, Kyverno, Prometheus), EKS is the natural fit. Supports multi-cloud portability.</p>
+
+---
+
+### Q: Why do you think ECS won't be a good choice in that scenario?
+
+<p>ECS is AWS-proprietary. For advanced scheduling, custom controllers, CRDs, or GitOps workflows, ECS falls short. No Helm, no ArgoCD, no KEDA, no Istio natively.</p>
+
+---
+
+### Q: Don't you think ECS also provides that kind of stuff which EKS does?
+
+<p>ECS has improved — Fargate, service discovery, task-level IAM. But it lacks K8s control plane extensibility. No custom operators, admission webhooks, or CRDs. Ecosystem depth isn't comparable.</p>
+
+---
+
+### Q: Scenario where ECS will be better suited compared to EKS?
+
+<ul><li>Simple microservices with no K8s expertise on team</li><li>Teams wanting AWS-managed everything with minimal overhead</li><li>Fargate workloads — no node management</li><li>Smaller orgs without a platform team</li></ul>
+
+---
+
+### Q: Which one is cheaper — EKS or ECS?
+
+<p>ECS (especially Fargate) is generally cheaper for smaller workloads. EKS charges $0.10/hr per cluster (~$72/mo) plus node costs. ECS has no control plane fee.</p>
+
+---
+
+### Q: Why is ECS cheaper?
+
+<p>No control plane cost, no etcd overhead. Fargate = pay only for usage, no idle node capacity. For sporadic/low-traffic workloads, significantly cheaper.</p>
+
+---
+
+### Q: Do you create Docker images or get them from developers?
+
+<p>Both — I own Dockerfiles for platform services. For app services, developers own Dockerfiles but I enforce standards through pipeline gates and base image policies.</p>
+
+---
+
+### Q: Docker best practices for image creation?
+
+<ul><li>Minimal base (alpine, distroless)</li><li>Multi-stage builds</li><li>Non-root user</li><li>Pin versions — never <code>latest</code> in prod</li><li>.dockerignore</li><li>Minimize layers</li><li>No secrets in image or ENV</li><li>Immutable — use env vars/mounted configs</li></ul>
+
+---
+
+### Q: Where do you host Docker images?
+
+<p>AWS ECR — private repos, IAM integrated, native to EKS/ECS.</p>
+
+---
+
+### Q: How do you control number of images in ECR?
+
+<p>ECR <strong>Lifecycle Policies</strong> — rules like "keep last 10 tagged" or "expire untagged >7 days." Per repository.</p>
+
+---
+
+### Q: Practices to ensure ECR images aren't orphaned?
+
+<ul><li>Lifecycle policies for untagged</li><li>Tag with Git SHA + semver</li><li>Only scanned images promoted to prod</li><li>Separate repos per env with promotion pipelines</li><li>Periodic audits via ECR API</li></ul>
+
+---
+
+### Q: How ensure Docker image works same on dev machine and EKS?
+
+<ul><li>Consistent base images via internal registry</li><li><code>--platform linux/amd64</code> (important for Apple Silicon)</li><li>Multi-arch builds (<code>buildx</code>)</li><li>Pipeline rebuilds from source — local image ≠ deployed image</li><li>Integration tests against pipeline-built image</li></ul>
+
+---
+
+### Q: How ensure developer scans locally AND pipeline has control?
+
+<ul><li><code>make scan</code> target with Trivy locally</li><li>Pipeline mandatory scanning gate</li><li>Pre-commit hooks with Hadolint</li><li>Policy: devs validate locally; pipeline enforces</li></ul>
+
+---
+
+### Q: How to reduce Docker image size?
+
+<ul><li>Multi-stage builds</li><li>Distroless/alpine base</li><li>Remove build tools in same RUN layer</li><li>No unnecessary packages</li><li><code>--no-install-recommends</code></li><li><code>docker history</code> + <code>dive</code> to find large layers</li></ul>
+
+---
+
+### Q: How do you update EKS clusters?
+
+<ul><li>Update <strong>control plane</strong> first (AWS manages)</li><li>Rolling update <strong>managed node groups</strong></li><li>Update <strong>add-ons</strong> (CoreDNS, kube-proxy, VPC CNI)</li><li>Health checks at each step</li></ul>
+
+---
+
+### Q: How to ensure zero downtime during EKS upgrade?
+
+<ul><li><strong>PodDisruptionBudgets</strong> on all critical workloads</li><li>Rolling node group upgrades (new up, old drain)</li><li>2+ replicas with anti-affinity across AZs</li><li>Smoke test after control plane before node upgrade</li><li>Test on staging first</li></ul>
+
+---
+
+### Q: If application stops working, what are next steps?
+
+<ul><li><code>kubectl get pods</code>, <code>describe pod</code></li><li><code>kubectl logs --previous</code></li><li><code>kubectl get events --sort-by='.lastTimestamp'</code></li><li>Check resource limits (OOMKilled, CPU throttle)</li><li><code>kubectl rollout history</code> → <code>rollout undo</code></li><li>Check node health</li></ul>
+
+---
+
+### Q: Have you worked with stateful applications on K8s?
+
+<p>Yes — Redis cluster as StatefulSet with PVs (EBS CSI driver) and headless service for stable DNS.</p>
+
+---
+
+### Q: Why deploy it on Kubernetes?
+
+<p>Application team wanted operational consistency — all services via same GitOps pipeline. In hindsight, ElastiCache would've been simpler and more operationally sound.</p>
+
+---
+
+### Q: But you didn't question them — as DevOps you should push back?
+
+<p>Agreed. Should have done cost-benefit analysis: EKS-hosted Redis (operational overhead, storage, backup) vs ElastiCache (managed, auto-failover, minimal ops). Platform engineers should proactively challenge, not just execute.</p>
+
+---
+
+### Q: Does K8s support blue-green deployment?
+
+<ul><li>No native object, but use standard primitives:</li><li>Deploy green (new) with label <code>version: green</code></li><li>Blue (current) has <code>version: blue</code></li><li>Service selector → blue. Validate green. Switch to green.</li><li>With ArgoCD + Argo Rollouts: automated BlueGreen strategy</li></ul>
+
+---
+
+### Q: Kubernetes best practices?
+
+<ul><li>Resource requests + limits on all containers</li><li>PodDisruptionBudgets</li><li>NetworkPolicies</li><li>RBAC — least-privilege SAs</li><li>Readiness + liveness probes</li><li>Namespaces for isolation</li><li>Non-root containers</li><li>HPA/VPA for autoscaling</li><li>Consistent labels/annotations</li><li>ConfigMaps/Secrets, not baked configs</li></ul>
+
+---
+
+### Q: K8s troubleshooting scenarios?
+
+<ul><li><strong>CrashLoopBackOff</strong>: Bad config, missing env. <code>logs --previous</code></li><li><strong>ImagePullBackOff</strong>: ECR auth, wrong tag. Check IRSA</li><li><strong>Pending</strong>: Insufficient resources, PVC unbound, selector mismatch</li><li><strong>OOMKilled</strong>: Memory limit exceeded</li><li><strong>DNS failure</strong>: CoreDNS overloaded</li><li><strong>Service unreachable</strong>: Wrong selector, port mismatch, NetworkPolicy</li></ul>
+
+---
+
+### Q: Why do you need Ingress?
+
+<p>Without Ingress, each externally-accessible service needs its own LB — expensive and messy. Ingress consolidates external traffic through a single entry with host/path routing.</p>
+
+---
+
+### Q: How is Ingress different from Services?
+
+<p><strong>Service</strong>: Internal cluster networking + LB between pods. <strong>Ingress</strong>: L7 routing in front of Services — host/path routing, SSL termination, external traffic management.</p>
+
+---
+
+### Q: What tool for deploying applications?
+
+<p>ArgoCD for GitOps-based K8s deployments.</p>
+
+---
+
+### Q: Only ArgoCD or Helm + ArgoCD?
+
+<p>Helm + ArgoCD. ArgoCD manages GitOps sync; Helm handles templating and packaging.</p>
+
+---
+
+### Q: Why add Helm complexity?
+
+<p>Helm solves <strong>environment-specific configuration</strong> — single chart with templated values, overridden per env. Versioning + rollback of entire stacks. Community chart ecosystem saves time.</p>
+
+---
+
+### Q: Experience with probes?
+
+<p>Hands-on with all three types for production workloads.</p>
+
+---
+
+### Q: How are probes different from each other?
+
+<ul><li><strong>Liveness</strong>: Is container alive? Fails → <strong>restart</strong>. Deadlock detection.</li><li><strong>Readiness</strong>: Can it serve traffic? Fails → <strong>removed from endpoints</strong>. No restart.</li><li><strong>Startup</strong>: Done starting? Disables other probes until pass. For slow starters.</li></ul>
+
+---
+
+### Q: Why are probes needed?
+
+<p>Without them, K8s sends traffic to uninitialized pods (errors) or keeps sending to deadlocked pods (failures). Configure realistic <code>initialDelaySeconds</code>, <code>failureThreshold</code>, <code>periodSeconds</code> from actual benchmarks.</p>
+
+---
+
+### Q: What are ECS and ECR?
+
+<p><strong>ECS</strong>: Managed orchestration (EC2/Fargate). Concepts: Task Defs → Tasks → Services. <strong>ECR</strong>: Managed Docker registry with scanning, lifecycle policies, KMS encryption.</p>
+
+---
+
+### Q: How to create and push Docker images to ECR?
+
+<div class="cb">1. Create Dockerfile
+2. aws ecr create-repository --repository-name my-app
+3. aws ecr get-login-password | docker login ...
+4. docker build -t my-app .
+5. docker tag my-app:latest &lt;acct&gt;.dkr.ecr.&lt;region&gt;.amazonaws.com/my-app:latest
+6. docker push ...</div>
+
+---
+
+### Q: Optimize a 450MB Docker image?
+
+<ul><li>Alpine/distroless base</li><li>Multi-stage builds (400MB → &lt;50MB)</li><li>Combine RUN, .dockerignore</li><li>--no-install-recommends, production deps only</li><li>Layer ordering for cache</li></ul>
+
+---
+
+### Q: Docker vs Kubernetes in orchestration?
+
+<p><strong>Docker</strong>: Runtime + toolset. Builds/runs containers. <strong>K8s</strong>: Orchestration at scale — scheduling, scaling, healing, discovery, updates. Complementary.</p>
+
+---
+
+### Q: What is a pod in Kubernetes?
+
+<p>Smallest unit — 1+ containers sharing network (same IP/localhost), storage, lifecycle. Ephemeral. Use Deployments to manage.</p>
+
+---
+
+### Q: Container vs Pod?
+
+<p>Container = single process. Pod = wrapper for 1+ containers with shared networking + volumes. K8s manages at pod level. Scale by adding pods.</p>
+
+---
+
+### Q: Load balancing in Kubernetes?
+
+<ul><li>ClusterIP (default, iptables/IPVS)</li><li>NodePort (static port per node)</li><li>LoadBalancer (cloud LB)</li><li>Ingress (L7 routing)</li><li>kube-proxy maintains rules</li></ul>
+
+---
+
+### Q: What is HPA (Horizontal Pod Autoscaler)?
+
+<p>HPA dynamically adjusts the raw number of replicas deployed within a Kubernetes Deployment, ReplicaSet, or StatefulSet based on observed metrics (traditionally CPU utilization spikes passing a set threshold). It ensures peak load is serviced cleanly, then aggressively scales down instances afterward to suppress expenditure.</p>
+
+---
+
+### Q: Explain the Docker commands used inside a Dockerfile
+
+<ul><li><code>FROM</code>: Pulls down the base operating system image (Alpine/Ubuntu).</li><li><code>COPY</code>: Ingests specific files from the host repository into the container filesystem.</li><li><code>RUN</code>: Executes arbitrary terminal commands sequentially <em>during the build phase/layer construction</em> (e.g., npm install).</li><li><code>EXPOSE</code>: Purely documentation—dictates the intended default listening ports.</li><li><code>CMD/ENTRYPOINT</code>: Dictates the exact command executed when the completed container instance actually spins up.</li></ul>
+
+---
+
+### Q: What is Pod Intent in Kubernetes?
+
+<p>Pod Intent refers to the <em>Desired State</em> conceptually defined in a high-level controller (like a Deployment or StatefulSet). Instead of managing Pods manually, you declare your intent (e.g. "Ensure exactly 3 replicas of this image run at all times"). The Kubernetes Control Plane continuously evaluates the cluster state and actively reconciles the actual state to match your declared intent.</p>
+
+---
+
+### Q: How does Rollback Deployment work internally?
+
+<p>When you trigger `kubectl rollout undo`, Kubernetes does not physically build anything. The Deployment controller simply drops the replica count of the current ReplicaSet to 0, and restores the replica count of the previous version's ReplicaSet (which was retained in the cluster history) back to the desired number. This makes rollbacks incredibly fast.</p>
+
+---
+
+### Q: Difference between HPA, KEDA, and Karpenter?
+
+<ul><li><strong>HPA (Horizontal Pod Autoscaler):</strong> Native K8s resource. Scales <em>Pods</em> up/down mostly based on internal resource utilization (CPU/Memory).</li><li><strong>KEDA:</strong> Event-driven autoscaler. Scales <em>Pods</em> up/down based on external system metrics (e.g. RabbitMQ queue length, Kafka lag). Can scale to 0.</li><li><strong>Karpenter:</strong> Node autoscaler. Directly provisions raw EC2 <em>Nodes</em> into the cluster in seconds when pods are waiting to schedule, bypassing standard ASGs.</li></ul>
+
+---
+
+### Q: Why do we still need HPA if Karpenter is being used?
+
+<p>Because they scale entirely different dimensions. HPA observes application load and requests more <strong>Pods</strong>. Karpenter observes cluster capacity and requests more <strong>Nodes</strong>. Without HPA, Kubernetes won't know it needs more application instances. Karpenter purely reacts when HPA creates pods that cannot fit on existing hardware.</p>
+
+---
+
+### Q: How does Service A communicate with Service B inside Kubernetes?
+
+<p>Via internal DNS managed by CoreDNS. Service A requests `http://service-b.namespace.svc.cluster.local`. CoreDNS resolves this to Service B's virtual ClusterIP. The request is intercepted by `kube-proxy` (via iptables/IPVS) sitting on every node, which transparently load-balances the traffic to the healthy backing Pods representing Service B.</p>
+
+---
+
+### Q: How does a pod securely connect to S3 without hardcoding credentials?
+
+<ul><li>Use <strong>IAM Roles for Service Accounts (IRSA)</strong> in EKS.</li><li>Associate an AWS IAM Role via an OIDC provider with a specific Kubernetes ServiceAccount.</li><li>Attach the ServiceAccount to the Pod. EKS automatically injects a projected token file and environment variables into the Pod.</li><li>The AWS SDK uses that token to dynamically acquire temporary STS credentials.</li></ul>
+
+---
+
+### Q: How do you implement RBAC policies in Kubernetes?
+
+<p>Define a <strong>Role</strong> (namespace-scoped) or <strong>ClusterRole</strong> (cluster-scoped) enumerating authorized API `verbs` (get, list, create) against discrete `resources` (pods, secrets). Subsequently, execute a <strong>RoleBinding</strong> or <strong>ClusterRoleBinding</strong> structurally linking that Role to distinct Subjects (User, Group, or ServiceAccount).</p>
+
+---
+
+### Q: What are multiple tainted nodes in Kubernetes and when are they used?
+
+<p>Taints are protective wards painted onto Nodes preventing general pods from scheduling there. For instance, applying `sku=gpu:NoSchedule` on expensive GPU EC2 instances ensures mundane web-server pods don't cannibalize ML resources. Only machine-learning pods carrying the corresponding explicit <em>Toleration</em> can bypass the taint.</p>
+
+---
+
+### Q: If I want to run two applications in the same EKS cluster but keep them isolated, how would you design it?
+
+<ul><li>Deploy them into radically separate <strong>Namespaces</strong>.</li><li>Apply strict <strong>Network Policies</strong> to outright terminate cross-namespace network communication.</li><li>Establish strict <strong>RBAC</strong> so developers of App A cannot interrogate App B's secrets.</li><li>Optionally force hard physical isolation using node Taints, labeling specific worker nodes exclusively for App A.</li></ul>
+
+---
+
+### Q: What are dedicated nodes in Kubernetes?
+
+<p>Nodes isolated administratively for specialized workloads, distinct hardware requirements, or rigorous compliance separations. Orchestrated via NodeAffinity (forcing pods to those nodes) paired with Taints (repulsing extraneous pods away from those nodes).</p>
+
+---
+
+### Q: What is a CSI Driver (Container Storage Interface)?
+
+<p>The standardized abstraction layer enabling external storage vendors (AWS EBS, EFS, NetApp) to plug into Kubernetes seamlessly. It replaces deprecated "in-tree" storage plugin architectures, allowing independent capability updates (e.g., EBS volume snapshotting) without updating the core Kubernetes binary.</p>
+
+---
+
+### Q: Which Storage Classes are commonly used in Kubernetes?
+
+<ul><li><code>gp3</code> (EBS): Ideal for single-pod stateful sets demanding robust performance block storage (ReadWriteOnce).</li><li><code>efs-sc</code> (EFS): Elastic File System optimized for multi-pod synchronized parallel access (ReadWriteMany).</li><li><code>io2</code>: Mission-critical, ultra-low latency databases.</li></ul>
+
+---
+
+### Q: What would you do if Amazon EKS runs out of IP addresses? How can you resolve it?
+
+<p>By default, EKS allocates a unique VPC IP to every pod. If the subnet exhausts IPs via IP exhaustion: <ul><li>Enable <strong>Prefix Delegation</strong> on the VPC CNI (allocates /28 blocks instead of dragging individual IPs).</li><li>Utilize <strong>Custom Networking</strong> to tether secondary, massive CGNAT subnets purely for pod assignments.</li><li>Migrate the cluster permanently to an IPv6 framework.</li></ul></p>
+
+---
+
+### Q: What is an IngressClass in Kubernetes, and which ingress controller is typically used with Amazon EKS?
+
+<p><code>IngressClass</code> conceptually acts as a routing tag, directing an Ingress resource precisely to its appropriate Controller when multiple controllers execute in one cluster. In EKS, the industry-standard is the <strong>AWS Load Balancer Controller</strong> (which dynamically spawns native AWS ALBs) alongside NGINX ingress.</p>
+
+---
+
+### Q: If you have 4 microservices, would you deploy them in 4 separate pods or in a single pod? Why?
+
+<p><strong>4 separate pods.</strong> Combining independent services into one pod violates fundamental decoupling. Separate pods guarantee total fault isolation (Service A crashing won't take down B), permit autonomous scaling heuristics (HPA), allow disparate deployments, and enforce distinct resource limits. Sidecars (logs/proxies) are the only valid multi-container pattern.</p>
+
+---
+
+### Q: CrashLoopBackOff on EKS - step-by-step investigation
+
+<p>1. <code>kubectl describe pod</code> evaluating Events (Detecting immediate Liveness probe timeout cascades or critical OOMKilled evictions).<br>2. <code>kubectl logs &lt;pod&gt; --previous</code> structurally surfacing exactly what internal panic immediately preceded the previous crash instance.<br>3. Verifying explicit configuration absence via missing explicit Secrets/ConfigMaps.</p>
+
+---
+
+### Q: Pods in one Kubernetes namespace can communicate internally, but pods in another namespace cannot reach them even though services are exposed. How would you troubleshoot this networking issue?
+
+<p>The most probable cause is a highly restrictive <strong>NetworkPolicy</strong> operating within the destination namespace preventing cross-namespace ingress. I would execute `kubectl get networkpolicy -n <dest-ns>`, and verify if a default-deny policy exists without an explicit exception allowing ingress from the source namespace's labels.</p>
+
+---
+
+### Q: Your CI/CD pipeline successfully builds and deploys a container image, but the Kubernetes deployment keeps pulling the old image version. What could be causing this?
+
+<p>Usually caused by recycling the exact same `:latest` or identical static image tag. Kubernetes caches images locally on nodes. If the pod specification's `imagePullPolicy` defaults to `IfNotPresent` (which it does for non-latest tags), the Kubelet will simply boot the stale cached image. <strong>Fix:</strong> Always use unique immutable tags (like Git SHAs) per build, or force `imagePullPolicy: Always`.</p>
+
+---
+
+### Q: Your application is under heavy traffic but Kubernetes HPA is not scaling pods even though CPU usage is above the configured threshold. How would you debug this?
+
+<p>First, verify if the <strong>Metrics Server</strong> is installed and functioning (`kubectl top pods`). Second, verify that the deployment's Pod template actually specifies <strong>CPU Resource Requests</strong>; HPA literally cannot calculate a utilization percentage if there is no baseline request to divide against. If both exist, examine `kubectl describe hpa` for specific controller error events.</p>
+
+---
+
+### Q: New worker nodes are successfully joining an EKS cluster, but pods remain stuck in Pending state. What could be the possible reasons?
+
+<p>1. Exhaustion of VPC IP addresses (the AWS VPC CNI cannot assign secondary IPs to the new nodes).<br>2. The new nodes possess specific <strong>Taints</strong> (e.g., GPU nodes) that the pods lack Tolerations for.<br>3. Strict <strong>PodAntiAffinity</strong> rules or `nodeSelectors` aggressively preventing scheduling on those particular newly joined instance types.</p>
+
+---
+
+### Q: A pod is in CrashLoopBackOff state. How will you troubleshoot step by step?
+
+<p>1. Check pod status: `kubectl describe pod <pod_name>` -> Look at 'Events' for Liveness/Readiness probe failures or OOMKilled errors.<br>2. Check current logs: `kubectl logs <pod_name>`.<br>3. Check previous crashed instance logs: `kubectl logs <pod_name> --previous`.<br>4. Check configurations: Missing Environment variables, missing ConfigMaps, or incorrect secrets causing the entrypoint script to exit 1.</p>
+
+---
+
+### Q: Your application is not accessible via Ingress. What could be the issue?
+
+<p>Work backwards from internet to pod:<br>1. <strong>DNS/LB:</strong> Does the Route53 domain point to the ALB target group/Ingress LB IP?<br>2. <strong>Ingress Object:</strong> `kubectl describe ingress` - check if the host and path rules map exactly to the target Service.<br>3. <strong>Service:</strong> `kubectl describe svc` - check if it has `Endpoints`. If Endpoints are empty, the Service Selector's labels do not match the Pod labels.<br>4. <strong>Pods:</strong> Are the pods actually legally healthy (passing Readiness probes)?</p>
+
+---
+
+### Q: Pods are not getting scheduled on nodes. What will you check?
+
+<p>Run `kubectl describe pod <pending_pod>`. The Scheduler events will explicitly print why it failed. Common causes:<br>1. <strong>Insufficient Resources:</strong> No node has enough free CPU/Memory to satisfy the pod's `requests`.<br>2. <strong>Taints/Tolerations:</strong> Nodes are tainted (e.g., `NoSchedule`) and the pod lacks the matched toleration.<br>3. <strong>NodeAffinity/Selector:</strong> The pod is demanding an explicit label (e.g., `disktype=ssd`) that no healthy node possesses.</p>
+
+---
+
+### Q: One node in the cluster is NotReady. How do you investigate and fix it?
+
+<p>1. `kubectl describe node <node_name>` -> check 'Conditions' (MemoryPressure, DiskPressure, PIDPressure).<br>2. If unhelpful, SSH or Session Manager into the node. Check Kubelet service status (`systemctl status kubelet`) and logs (`journalctl -u kubelet`).<br>3. Common infrastructure causes: Node ran out of physical disk space `/var/lib/docker` (DiskPressure), or the underlying EC2 instance was abruptly terminated/network partitioned.</p>
+
+---
+
+### Q: Application inside pod is slow despite sufficient resources. Where will you debug?
+
+<p>If CPU/Mem are not throttling, the bottleneck is external IO:<br>1. <strong>Database Latency:</strong> Slow queries, missing indexes, or connection pool exhaustion.<br>2. <strong>Network Latency:</strong> CoreDNS lookup delays, or excessively traversing cross-AZ network hops.<br>3. <strong>Disk IOPS limits:</strong> The underlying EBS volume attached to the node hit its burst IOPS ceiling, causing the kernel to physically sleep the app's threads.</p>
+
+---
+
+### Q: You need to scale applications automatically. How does HPA work internally?
+
+<p>The Horizontal Pod Autoscaler runs as a control loop (default 15s). It queries the <strong>Metrics Server</strong> API `metrics.k8s.io` to fetch the current CPU/Memory usage of all pods in the target Deployment. It compares the current usage average against your target percentage (e.g., Target 80%). If reality > target, it algebraically computes the required replica count, and directly modifies the Deployment's `.spec.replicas` up to `maxReplicas`.</p>
+
+---
+
+### Q: Config changes are made, but pods are not picking up updates. Why?
+
+<p>If a `ConfigMap` or `Secret` is updated, pods using them as <strong>Environment Variables</strong> will NEVER pick up the changes unless the pod is physically restarted (deleted/recreated). If mounted as a <strong>Volume</strong>, the symlinked files update dynamically after a cache delay (~1 minute), but the application binary itself must be programmed to "hot-reload" files (like NGINX or Promtail), otherwise it stays ignorant of the file change.</p>
+
+---
+
+### Q: You need to secure your Kubernetes cluster. What best practices will you follow?
+
+<ul><li><strong>RBAC:</strong> Least-privilege roles, no wildcards.</li><li><strong>Network Policies:</strong> Default-deny ingress/egress globally, map strict explicit connections.</li><li><strong>Image Scanning:</strong> Never deploy `:latest`. Enforce Mutating Admission Webhooks (like Kyverno) absolutely rejecting images exhibiting CRITICAL CVEs.</li><li><strong>Node Security:</strong> EKS private control-plane endpoints, nodes living solely in private subnets, SSM instead of SSH.</li></ul>
+
+---
+
+### Q: Difference between RUN, CMD, and ENTRYPOINT?
+
+<ul><li><strong>RUN:</strong> Executes commands directly inside the container <em>during the image build phase</em> (e.g., `RUN apt-get install`).</li><li><strong>ENTRYPOINT:</strong> The immutable executable configured to run when the container starts. Difficult to override at runtime.</li><li><strong>CMD:</strong> Default arguments passed directly into the `ENTRYPOINT`. Easily overridden dynamically when running `docker run <image> <new_cmd>`.</li></ul>
+
+---
+
+### Q: How do you pass environment variables to containers?
+
+<p>1. <strong>Locally:</strong> Inject via `docker run -e key=value ...` or passing a `--env-file .env` flag.<br>2. <strong>Docker Compose:</strong> Defining them beneath the `environment:` stanza or sourcing from an `env_file`.<br>3. <strong>Kubernetes:</strong> Explicitly mapping them identically inside the Pod YAML spec (`env:` array) or mapping entire `ConfigMaps` and `Secrets` holistically via `envFrom:`.</p>
+
+---
+
+### Q: Difference between ARG and ENV?
+
+<table><thead><tr><th>ARG</th><th>ENV</th></tr></thead><tbody><tr><td>Exists strictly <em>during the build phase</em> only.</td><td>Persists natively inside the final running container.</td></tr><tr><td>Passed dynamically via `docker build --build-arg`.</td><td>Passed dynamically via `docker run -e`.</td></tr><tr><td>Cannot be interrogated by the running application.</td><td>Read easily by the application via standard OS environment variables.</td></tr></tbody></table>
+
+---
+
+### Q: What is a multi-stage Docker build?
+
+<p>A paradigm employing multiple `FROM` statements situated inside a single `Dockerfile`. The primary (builder) stage incorporates heavy compilers (like the Go toolchain or Node `devDependencies`) to violently compile identical source code. The subsequent final stage imports a pristine, lightweight baseline OS inherently copying <em>only</em> the compiled binary executable from the initial stage, violently slashing the final image footprint from GBs to MBs.</p>
+
+---
+
+### Q: How do you reduce Docker image size?
+
+<ul><li>Implement <strong>multi-stage builds</strong> to strip compilers.</li><li>Adopt minimal foundational base images (e.g., `alpine`, `distroless`, or `scratch`).</li><li>Chain `RUN` instructions functionally utilizing `&&` so package managers solely emit a single discrete layer.</li><li>Systematically eradicate cached APK/APT repository artifacts post-installation within identically the same layer (`rm -rf /var/lib/apt/lists/*`).</li><li>Write a draconian `.dockerignore` file.</li></ul>
+
+---
+
+### Q: How does Docker build cache work?
+
+<p>Docker constructs images progressively as a succession of individually immutable layers. Upon invocation, Docker checks whether the corresponding instruction identically matches a securely cached layer previously built. If yes, it leverages the cache instantly spanning seconds instead of minutes. <strong>Crucial caveat:</strong> The exact instant one line changes (or a `COPY` instruction registers altered file checksums), Docker intrinsically invalidates the cache universally for <em>all</em> subsequent downstream layers.</p>
+
+---
+
+### Q: How do you optimize Dockerfile for CI/CD speed?
+
+<p>Intelligently structure layers symmetrically to maximize Cache Hits.<br>1. Always `COPY package.json` distinctively <em>before</em> copying universally fluctuating source code.<br>2. Execute `RUN npm install` purely against the `package.json`.<br>3. <em>Finally</em> `COPY src/ .`.<br>This guarantees that rapidly iterating developers mutating source code files will <strong>never</strong> needlessly trigger dependency re-installations.</p>
+
+---
+
+### Q: How do you handle secrets in Docker builds?
+
+<p><strong>Never</strong> inject keys via standard `ARG` or `ENV` because they universally persist forever irreversibly baked into the image history manifest (`docker history`).<br>Instead, utilize Docker's `BuildKit` secrets mechanism: invoke `RUN --mount=type=secret,id=my_secret` to temporarily expose the secret singularly within that exact localized step natively without permanently embedding it into subsequent filesystem layers.</p>
+
+---
+
+### Q: How do you debug a container that exits immediately?
+
+<p>If the PID 1 process executes fully and successfully returns `0`, the container structurally dies immediately as designed. <br>1. Force-restart explicitly intercepting the broken entrypoint: `docker run -it --entrypoint /bin/sh <image>`.<br>2. Interrogate the structural breakdown via `docker logs <container_id>`.<br>3. If it requires a persistently hung process, append a long-running tail command: `CMD ["tail", "-f", "/dev/null"]`.</p>
+
+---
+
+### Q: What are Dockerfile security best practices?
+
+<ul><li>Intentionally execute a `USER non-root` directive mitigating root-level container escalation boundaries.</li><li>Mandate trusted base environments universally specifying static SHA256 image hashes, not volatile `:latest` tags.</li><li>Prohibit `COPY . .` injecting malicious local `.env` keys outright.</li><li>Impose Read-Only Root Filesystems limiting write operations singularly to volatile `/tmp` partitions.</li></ul>
+
+---
+
+### Q: What is the purpose of .dockerignore?
+
+<p>Fundamentally acts inversely parallel to `.gitignore`. It universally blocks massive useless directories (like `node_modules`, `.git`, or localized `build/` files) from persistently being injected explicitly into the Docker build context daemon. It structurally protects against accidentally shipping developers' `.env` plaintext credentials violently into globally public images.</p>
+
+---
+
+### Q: Why is COPY . . risky in CI/CD pipelines?
+
+<p>If `.dockerignore` isn't flawlessly configured, `COPY . .` indiscriminately dumps exactly everything into the container. Most catastrophically, this accidentally ships `.git/` history (expanding the image by megabytes) and highly classified developer `.env` files/AWs keys straight into the finalized public image layers, radically expanding potential cyber-attack vulnerability vectors.</p>
+
+---
+
+### Q: How do you ensure deterministic Docker builds?
+
+<p>1. Universally bind foundational `FROM` targets explicitly directly against irreversible SHA256 cryptographic digests, utterly ignoring arbitrarily floating `:1.0` semantic tags.<br>2. Persistently enforce explicit standard package locking (`npm ci` over `npm install`).<br>3. Remove unpredictable temporal directives indiscriminately pulling `apt-get upgrade` independently during the build process.</p>
+
+---
+
+### Q: Explain Docker architecture.
+
+<p>Docker uses a <strong>client-server architecture</strong>:</p><ul><li><strong>Docker Client</strong> (<code>docker</code> CLI) — sends commands via REST API</li><li><strong>Docker Daemon</strong> (<code>dockerd</code>) — listens for API requests, manages images, containers, networks, and volumes</li><li><strong>Docker Registry</strong> (Docker Hub / ECR) — stores and distributes images</li><li><strong>containerd</strong> — low-level container runtime; manages container lifecycle</li><li><strong>runc</strong> — OCI runtime that actually creates/runs containers using Linux namespaces + cgroups</li></ul><div class="nt">Flow: <code>docker run</code> → Docker Client → Daemon → containerd → runc → container process</div>
+
+---
+
+### Q: Write a basic Dockerfile.
+
+<div class="cb">FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+EXPOSE 3000
+CMD ["node", "server.js"]</div><ul><li><strong>FROM</strong> — base image (alpine = minimal footprint)</li><li><strong>WORKDIR</strong> — sets working directory inside container</li><li><strong>COPY package*.json first</strong> — leverages layer cache; dependencies only reinstall when package.json changes</li><li><strong>RUN npm ci</strong> — reproducible install (uses lockfile, fails if out of sync)</li><li><strong>EXPOSE</strong> — documents the port (does not publish it)</li><li><strong>CMD</strong> — default command when container starts</li></ul>
+
+---
+
+### Q: If a Docker image is built and you manually install missing packages inside a container, how will you convert it into a new Docker image?
+
+<p>Use <code>docker commit</code> to snapshot the container's current state into a new image:</p><div class="cb"># While container is running or stopped
+docker commit &lt;container_id&gt; my-new-image:v2
+
+# With author and message
+docker commit -a "yourname" -m "added curl and wget" &lt;container_id&gt; my-new-image:v2
+
+# Push to registry
+docker tag my-new-image:v2 myrepo/my-new-image:v2
+docker push myrepo/my-new-image:v2</div><div class="wn">⚠️ Best practice: Always update the Dockerfile instead. <code>docker commit</code> creates an opaque layer — not reproducible, hard to audit, and breaks CI/CD pipelines.</div>
+
+---
+
+### Q: Difference between CMD, ENTRYPOINT, and RUN in Docker.
+
+<table><thead><tr><th>Instruction</th><th>When it runs</th><th>Purpose</th><th>Overridable?</th></tr></thead><tbody><tr><td><strong>RUN</strong></td><td>Build time</td><td>Executes commands to build image layers (install packages, compile code)</td><td>N/A — part of image</td></tr><tr><td><strong>CMD</strong></td><td>Container start</td><td>Default arguments/command. Easily overridden by <code>docker run &lt;image&gt; &lt;override&gt;</code></td><td>Yes — fully replaced</td></tr><tr><td><strong>ENTRYPOINT</strong></td><td>Container start</td><td>Fixed executable — defines what the container IS. CMD becomes arguments to it.</td><td>Only with <code>--entrypoint</code> flag</td></tr></tbody></table><div class="cb"># Together: ENTRYPOINT + CMD
+ENTRYPOINT ["python", "app.py"]
+CMD ["--port", "8080"]   # default arg, overridable
+
+# docker run myimg --port 9090  → runs: python app.py --port 9090</div>
+
+---
+
+### Q: What is kubeconfig in Kubernetes?
+
+<p><strong>kubeconfig</strong> is a YAML file (default: <code>~/.kube/config</code>) that <code>kubectl</code> uses to authenticate and communicate with Kubernetes clusters.</p><ul><li><strong>clusters</strong> — API server endpoints and CA certificates</li><li><strong>users</strong> — credentials (client cert, token, OIDC)</li><li><strong>contexts</strong> — named combination of cluster + user + namespace</li></ul><div class="cb"># Switch context (cluster)
+kubectl config use-context my-eks-cluster
+
+# View current context
+kubectl config current-context
+
+# Merge multiple kubeconfigs
+KUBECONFIG=~/.kube/config:~/.kube/eks-config kubectl config view --merge --flatten</div><div class="nt">In EKS: run <code>aws eks update-kubeconfig --name &lt;cluster&gt; --region &lt;region&gt;</code> to auto-populate kubeconfig.</div>
+
+---
+
+### Q: How do you handle secrets in Kubernetes?
+
+<p>Kubernetes <strong>Secrets</strong> store sensitive data (passwords, tokens, certs). Base64-encoded — <em>not encrypted by default</em>.</p><ul><li><strong>Native Secret:</strong> <code>kubectl create secret generic db-pass --from-literal=password=s3cr3t</code></li><li><strong>Mount as env var or volume</strong> in pod spec</li><li><strong>Enable Encryption at Rest:</strong> Configure <code>EncryptionConfiguration</code> with KMS provider in kube-apiserver</li><li><strong>External Secrets Operator (ESO):</strong> Syncs secrets from AWS Secrets Manager / Azure Key Vault into K8s Secrets automatically</li><li><strong>CSI Secrets Store Driver:</strong> Mounts secrets directly from vault as files — never stored in etcd</li></ul><div class="nt">Best practice: Never commit secrets to Git. Use ESO + Secrets Manager for production.</div>
+
+---
+
+### Q: How do you manage environment variables in Kubernetes?
+
+<p>Three main approaches:</p><ul><li><strong>Hardcoded in pod spec</strong> (dev/non-sensitive only): <code>env: [{name: APP_ENV, value: production}]</code></li><li><strong>ConfigMap</strong> — for non-sensitive config: <code>envFrom: [{configMapRef: {name: app-config}}]</code></li><li><strong>Secret</strong> — for sensitive values: <code>envFrom: [{secretRef: {name: db-secret}}]</code></li></ul><div class="nt">Use <code>valueFrom.fieldRef</code> to inject pod metadata (pod name, namespace) as env vars — useful for logging context.</div>
+
+---
+
+### Q: How do you fetch secrets from Azure Key Vault and use them in Kubernetes?
+
+<p>Two main approaches when using AKS (or any K8s with Azure identity):</p><ul><li><strong>Azure Key Vault Provider for Secrets Store CSI Driver:</strong><ol><li>Install the CSI driver addon on AKS</li><li>Create a <code>SecretProviderClass</code> referencing Key Vault + secret names</li><li>Mount as volume in pod — secrets appear as files</li><li>Optionally sync to K8s Secret object via <code>secretObjects</code> in SecretProviderClass</li></ol></li><li><strong>External Secrets Operator (ESO):</strong> Define <code>ExternalSecret</code> CRD → ESO polls Key Vault → creates/updates K8s Secret automatically</li></ul><div class="cb">apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: azure-keyvault-secret
+spec:
+  provider: azure
+  parameters:
+    keyvaultName: my-kv
+    objects: |
+      - objectName: db-password
+        objectType: secret</div>
+
+---
+
+### Q: What is Ingress and how do you use it?
+
+<p><strong>Ingress</strong> is a Kubernetes API object that manages external HTTP/HTTPS access to services inside the cluster. It provides routing rules, TLS termination, and host/path-based routing — a single entry point instead of exposing every service with a LoadBalancer.</p><ul><li><strong>Requires an Ingress Controller</strong> (e.g., NGINX, AWS ALB Controller, Traefik) — Ingress alone does nothing</li><li><strong>Path routing:</strong> <code>/api → api-service</code>, <code>/web → frontend-service</code></li><li><strong>Host routing:</strong> <code>api.example.com → api-service</code>, <code>app.example.com → frontend-service</code></li><li><strong>TLS:</strong> reference a Secret containing cert+key</li></ul><div class="cb">apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: app.example.com
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service: {name: api-svc, port: {number: 80}}</div>
+
+---
+
+## 🏗 Infrastructure as Code & CI/CD
+
+### Q: Have you worked with IaC?
+
+<p>Yes — Terraform primary, CloudFormation for AWS-native (Control Tower, Service Catalog).</p>
+
+---
+
+### Q: When CloudFormation vs Terraform?
+
+<ul><li><strong>CFN</strong>: 100% AWS, Control Tower, StackSets, Service Catalog, no TF expertise</li><li><strong>Terraform</strong>: Multi-cloud, provider-agnostic, richer modules, better state mgmt, more expressive HCL</li></ul>
+
+---
+
+### Q: Will you still choose Terraform?
+
+<p>Yes — unless hard CFN requirement (StackSets, etc.). Terraform's ecosystem, modularity, and provider breadth make it the stronger long-term investment.</p>
+
+---
+
+### Q: How would you architect a Terraform directory structure?
+
+<div class="cb">terraform/
+├── modules/ (vpc, eks, rds, iam)
+├── environments/
+│   ├── dev/ (main.tf, variables.tf, terraform.tfvars)
+│   ├── staging/
+│   └── prod/
+├── global/ (shared IAM, S3)
+└── backend.tf (remote state)</div><p>Each env is its own root — prevents blast radius.</p>
+
+---
+
+### Q: Open source or enterprise Terraform?
+
+<p>Open source (OpenTofu for newer projects). Sufficient for our use cases.</p>
+
+---
+
+### Q: Do you write locally and deploy directly to prod?
+
+<p>No — local → feature branch → PR → CI runs <code>terraform plan</code> → review → merge triggers <code>terraform apply</code> via GitHub Actions.</p>
+
+---
+
+### Q: How to rollback infrastructure with Terraform?
+
+<ul><li><strong>Git revert</strong> + re-apply</li><li><strong>State snapshots</strong>: S3 versioning → restore previous state</li><li><strong>Targeted destroy</strong> + re-apply previous config</li><li>Best practice: small incremental PRs reduce rollback scope</li></ul>
+
+---
+
+### Q: Ansible in real projects?
+
+<ul><li>Config mgmt (packages, users, security)</li><li>Deployment (rolling updates)</li><li>Post-Terraform provisioning</li><li>Patch management</li><li>Environment setup</li></ul>
+
+---
+
+### Q: How did you deploy SSL?
+
+<ul><li><strong>ACM + ALB</strong>: Free cert, auto-renew, ALB terminates SSL</li><li><strong>Certbot</strong>: Let's Encrypt for direct EC2</li><li><strong>cert-manager</strong>: K8s automated issuance</li></ul><p>Best: HTTPS redirect, HSTS, disable TLS 1.0/1.1.</p>
+
+---
+
+### Q: How do you design zero-downtime deployments in AWS?
+
+<ul><li>Use managed rolling updates in EC2 Auto Scaling Groups or Kubernetes Deployments. Ensure pod/instance health checks map properly to load balancers.</li><li>Leverage Blue-Green patterns for high-risk changes, redirecting traffic via Route 53 weights or ALB listener rules.</li><li>Decouple databases: use schema expansions (additive changes only) before deploying new application code that depends on those changes.</li></ul>
+
+---
+
+### Q: What is blue-green deployment in AWS?
+
+<p>A strategy where two identical environments (Blue and Green) run concurrently. The current version runs on Blue. New code is deployed to Green and tested safely. When ready, the load balancer or DNS is swapped to instantly direct all user traffic to Green. If issues arise, rolling back is as simple as flipping the toggle back to Blue.</p>
+
+---
+
+### Q: What is canary deployment?
+
+<p>Deploying a new application version natively to a small subset of live users before rolling it out globally. The load balancer (e.g., ALB weighted target groups) points 5% of traffic to the new version. Observability tools monitor error rates and latency. If thresholds remain pristine, traffic incrementally increases to 100%.</p>
+
+---
+
+### Q: Explain a Terraform folder structure you have used in projects
+
+<div class="cb">├── modules/        # Reusable standard components (vpc, eks, rds)
+├── environments/
+│   ├── dev/        # main.tf, variables.tf, terraform.tfvars
+│   ├── staging/
+│   └── prod/       # Each env has its own isolated remote state
+├── global/         # Shared resources (IAM, Route53, S3 backend buckets)
+└── backend.tf      # State locking configuration</div>
+
+---
+
+### Q: How will you create 5 EC2 instances with different IAM roles and instance types using Terraform?
+
+<p>Use a <code>for_each</code> loop iterating over a robust map variable. Do not use <code>count</code>, as removing indices destroys subsequent resources.</p><div class="cb">variable "servers" {
+  type = map(object({ type = string, role = string }))
+}
+resource "aws_instance" "server" {
+  for_each      = var.servers
+  instance_type = each.value.type
+  iam_instance_profile = each.value.role
+}</div>
+
+---
+
+### Q: How do you handle Terraform versioning in a project?
+
+<ul><li>Define exact <code>required_version</code> blocks inside the Terraform configuration to block incompatible binaries.</li><li>Define strict provider versions in the <code>required_providers</code> block.</li><li>Use <code>tfenv</code> or <code>asdf</code> locally so developers are transparently assigned the correct CLI binary on a per-project basis.</li><li>In the CI/CD pipeline, run container images pinned to the specific version.</li></ul>
+
+---
+
+### Q: You want to delete only an EC2 instance from Terraform — which argument/command will you use?
+
+<p>To surgically destroy a single resource without affecting the rest of the infrastructure, use state targeting: <br><code>terraform destroy -target=aws_instance.my_server</code>. <br><em>Note:</em> Targeting circumvents Terraform's complete lifecycle understanding and is an anti-pattern for normal automation; it's reserved for exceptional troubleshooting.</p>
+
+---
+
+### Q: Which deployment strategies have you implemented? (Rolling, Blue-Green, Canary, etc.)
+
+<ul><li><strong>Rolling (Default):</strong> EKS pod deployments. Best for rapid iteration where 100% backward compatibility is guaranteed.</li><li><strong>Canary:</strong> Istio/ALB routing. Used for critical tier-1 microservices where exposing large user bases to untested changes is risky.</li><li><strong>Blue-Green:</strong> Database-intensive platforms where rollbacks must be instantaneous via DNS/LB flips to avoid long draining states.</li></ul>
+
+---
+
+### Q: What is a Terraform module and why do we use it?
+
+<p>A module is a logical container for multiple interconnected resources grouping them into a single highly-reusable abstraction. We use them to enforce standard organizational security practices (i.e. "Golden Paths")—ensuring that every time developers request an S3 bucket, it is automatically bundled with KMS encryption and proper block public access rules.</p>
+
+---
+
+### Q: What is the difference between data block and resource block in Kubernetes/Terraform?
+
+<ul><li><strong>Resource block:</strong> Used to declare, provision, and maintain new infrastructure components exclusively driven by your Terraform state.</li><li><strong>Data block:</strong> Read-only mechanism allowing Terraform to query and absorb existing infrastructure parameters dynamically (e.g. querying the most recent Amazon Linux AMI ID, or fetching an existing VPC ID).</li></ul>
+
+---
+
+### Q: Which CI/CD pipeline have you used (Declarative / Scripted) and why?
+
+<p><strong>Declarative Pipelines</strong> (like GitHub Actions YAML or GitLab CI) over scripted variants. Declarative inherently treats the pipeline definition as code, residing directly beside application code. It mitigates pipeline configuration drift, standardizes peer reviews for CI/CD alterations, and provides robust visual integrations straight into Git repositories.</p>
+
+---
+
+### Q: You created an S3 bucket using Terraform, now you want to manage it manually from AWS Console.
+
+<p>Do not simply delete the module, as <code>terraform apply</code> will destroy the actual bucket. Instead, strictly sever Terraform's linkage to the resource by running:<br><code>terraform state rm aws_s3_bucket.my_bucket_name</code><br>This removes the structural metadata from the remote state while leaving the bucket perfectly unharmed in AWS.</p>
+
+---
+
+### Q: What is Canary Deployment and how do you implement it in Kubernetes?
+
+<p>A strategy where new code is deployed to a small fraction of real users (e.g. 5%) before a wider rollout. In Kubernetes, it's typically implemented using an Ingress Controller (like Istio or NGINX) enforcing traffic-split percentages across two separate Deployments, or managed natively via tools like Argo Rollouts.</p>
+
+---
+
+### Q: What are Terraform Workspaces and when should you use them?
+
+<p>Workspaces represent independent state files bound to the exact same configuration code directory. Calling `terraform workspace new dev` isolates a duplicate infrastructure stack laterally. However, for massive enterprise environments requiring strict variable delineations and blast radius limits, adopting completely isolated directory structures is historically safer.</p>
+
+---
+
+### Q: How does Terraform state management work internally?
+
+<p>TF State is a JSON schema that maps declared logical configurations precisely to live infrastructure provider IDs. When you modify code, Terraform executes a differential read against the State file, discerns precisely what parameter drifted, and generates an exact algebraic plan to reconcile the physical environment with the code.</p>
+
+---
+
+### Q: What is terraform import and in which real-world scenario is it used?
+
+<p><code>import</code> binds unmanaged, manually constructed infrastructure (e.g., an S3 bucket someone hastily produced in the console during an incident) back under systemic terraform control. It synchronizes the external ID straight into the TF state file, allowing subsequent automated management without forcing a destructive re-creation.</p>
+
+---
+
+### Q: How would you design a secure CI/CD pipeline for production?
+
+<ul><li>OIDC federation for strict short-lived cloud authentication (no static keys).</li><li>Enforcing Branch Protection Rules explicitly necessitating mandatory multi-party SME approvals.</li><li>Aggressive Shift-Left SAST scanning tooling positioned pre-merge.</li><li>Deployments restricted entirely to isolated, private-VPC ephemeral runners bereft of ingress internet availability.</li></ul>
+
+---
+
+### Q: How do you handle secret management in pipelines?
+
+<p>Placing API keys persistently into environment variables or repository configuration stores constitutes an instant disqualification. I implement externalized fetching architectures using HashiCorp Vault or AWS Secrets Manager. The CI runner authentically identifies itself via OIDC, extracts the strictly-permissioned token temporarily into memory, and injects it dynamically exactly at runtime execution.</p>
+
+---
+
+### Q: Secrets management in CI/CD - what disqualifies you instantly
+
+<p>Answering: <em>"I generate an AWS IAM Access Key and embed it securely into GitHub Secrets."</em> This unequivocally disqualifies you. The correct architectural paradigm entirely repudiates static standing credentials. CI/CD must exclusively harness intrinsic IAM OIDC Federation trusts, generating strictly short-lived, transient bearer tokens immediately dissolving upon pipeline completion.</p>
+
+---
+
+### Q: Is a Webhook inbound or outbound, and how does it work in CI/CD systems?
+
+<p>A Webhook represents a dynamically triggered automated <em>outbound</em> HTTP POST transmitting payload intent instantly across domains. In CI/CD architectures, an explicit Git branch push instantly triggers GitHub servers conceptually projecting an outbound webhook directly targeting your respective inbound Jenkins/ArgoCD endpoint listener, thereby initiating cascading pipeline integrations flawlessly.</p>
+
+---
+
+### Q: How do you integrate GitHub Actions with AWS for CI/CD pipelines?
+
+<p>Establish an immediate AWS IAM OIDC Provider establishing distinct cryptographically secure trust explicitly with Microsoft's GitHub Identity tokens. Institute the `configure-aws-credentials` open-source action strategically calling STS within a pipeline runner, obtaining ephemeral privileges purely defined exclusively targeting dedicated build artifacts.</p>
+
+---
+
+### Q: A manual change was made to an AWS resource in production causing Terraform drift, and the next terraform apply wants to recreate the resource. How would you reconcile the infrastructure without downtime?
+
+<p>Do not run `apply` if it triggers a destructive recreate. If the manual change is the new desired state, update the Terraform code (e.g., adding the new tags/settings) to match reality, then run a `plan` to verify 0 changes. If the code is correct and the manual change was a mistake, run `terraform apply` to overwrite the manual drift back to the original code state. If the resource ID fundamentally changed, use `terraform import`.</p>
+
+---
+
+### Q: Multiple Terraform modules across repositories depend on each other and a deployment fails due to dependency conflicts. How would you design a reliable deployment strategy?
+
+<p>Tightly bound modules in separate repos are an anti-pattern. Decouple them by using robust <strong>remote state data sources</strong> (`terraform_remote_state` or `aws_ssm_parameter`) purely to pass IDs/ARNs between isolated layers (e.g., Network, Data, App). For orchestration, adopt a wrapper framework like <strong>Terragrunt</strong> to explicitly map and execute sequential dependency graphs.</p>
+
+---
+
+### Q: You need to deploy a new version of a critical microservice in production without any downtime. Which deployment strategies would you implement?
+
+<p><strong>Blue-Green Deployment:</strong> Spins up the V2 environment cleanly parallel to V1, tested silently, and then traffic is instantaneously shifted over at the ALB/Route53 layer. Zero downtime, immediate rollback.<br><strong>Canary Deployment:</strong> Safely redirects exactly 5% of real traffic to V2, actively monitors P95 latencies and 5xx errors, and progressively dials the weight loop to 100%.</p>
+
+---
+
+### Q: Your deployment is not updating properly (rolling update stuck). What could be wrong?
+
+<p>Look at `kubectl rollout status deployment <name>`. If stuck, a new ReplicaSet was created but its pods cannot become `Ready`.<br>1. Failing Readiness Probes (app is booting but returning 500s).<br>2. `ImagePullBackOff` (spelled the image tag incorrectly, or missing ECR auth).<br>3. Kubernetes halted the rollout because `maxUnavailable` constraints were hit and no new pods could pass health checks to proceed.</p>
+
+---
+
+### Q: If Terraform state file has older entries and infra was created manually, how will you add it to Terraform?
+
+<p>Use <code>terraform import</code> to bring manually created resources under Terraform management:</p><div class="cb"># General syntax
+terraform import &lt;resource_type&gt;.&lt;name&gt; &lt;resource_id&gt;
+
+# Example: import an existing EC2 instance
+terraform import aws_instance.web i-0abc123def456
+
+# After import, generate/write matching HCL config
+# Run plan to verify no unintended changes
+terraform plan</div><ul><li>Write the matching resource block in <code>.tf</code> before importing — Terraform needs the config to reconcile against</li><li><strong>Terraform 1.5+:</strong> Use <code>import</code> blocks in HCL for declarative, code-reviewed imports</li><li>After import, run <code>terraform plan</code> — a clean plan (no changes) means state matches reality</li><li>For bulk imports: use <code>terraformer</code> (open-source tool) to reverse-engineer existing infra into HCL + state</li></ul>
+
+---
+
+### Q: If there are 1000+ changes to be managed in Terraform state, how will you handle it?
+
+<p>Managing large Terraform state requires splitting and structuring to reduce blast radius and improve performance:</p><ul><li><strong>Split into smaller state files (state isolation):</strong> Break monolithic state into workspaces or separate root modules per domain (networking, compute, security). Each has its own isolated state.</li><li><strong>Use <code>terraform state mv</code>:</strong> Move resources between states without destroying and recreating them</li><li><strong>Targeted applies:</strong> <code>terraform apply -target=aws_instance.web</code> — only applies specific resources. Use sparingly; can cause drift.</li><li><strong>Remote state with locking:</strong> S3 + DynamoDB (AWS) prevents concurrent modifications in team environments</li><li><strong>State surgery tools:</strong> <code>terraform state rm</code> (remove from state without destroying infra), <code>terraform state pull/push</code> for manual edits</li></ul><div class="nt">At 1000+ resources, the real fix is module decomposition — never let a single state file grow unbounded. Each team/domain should own their own state.</div>
+
+---
+
+## 🗄 Databases & Storage
+
+### Q: Have you hosted a website on S3?
+
+<p>Yes — static React/HTML sites on S3 with CloudFront.</p>
+
+---
+
+### Q: What configurations for publicly available S3 website?
+
+<ul><li>Enable <strong>Static Website Hosting</strong> (index + error docs)</li><li>Bucket Policy allowing <code>s3:GetObject</code> for <code>"Principal":"*"</code></li><li>Disable Block Public Access</li><li>Use S3 website endpoint (not REST)</li><li>Optional: CloudFront for HTTPS, caching, custom domain</li></ul>
+
+---
+
+### Q: Anything else?
+
+<ul><li>Custom error document for SPA routing</li><li>Route 53 Alias to CloudFront</li><li>Versioning for rollback</li><li><strong>OAC</strong> with CloudFront — bucket stays private, CF serves publicly</li></ul>
+
+---
+
+### Q: What is a parameter group in Amazon RDS?
+
+<p>Container for engine config values — memory, query cache, timeouts, logging. <strong>DB Parameter Group</strong> (individual instances) and <strong>DB Cluster Parameter Group</strong> (Aurora). Default is non-modifiable; create custom. Dynamic vs static (reboot) params.</p>
+
+---
+
+### Q: RDS can't connect to S3?
+
+<ul><li>IAM Role (s3:PutObject + trust for rds.amazonaws.com)</li><li>Bucket Policy</li><li>KMS (GenerateDataKey + Decrypt)</li><li>S3 Gateway Endpoint if no internet</li><li>SG/NACLs: outbound 443</li></ul>
+
+---
+
+### Q: Configure Grafana dashboards?
+
+<ul><li>Data Sources + Panels (PromQL/SQL)</li><li>Variables ($variable syntax)</li><li>Dashboard as Code (JSON in Git + provisioning YAML)</li></ul>
+
+---
+
+## 📊 Observability, DevOps & Operations
+
+### Q: Anything apart from that?
+
+<p>EKS requires add-ons — CoreDNS, kube-proxy, VPC CNI, LB controller — each adding operational and cost overhead. ECS handles much natively.</p>
+
+---
+
+### Q: Any connectivity failures you resolved?
+
+<p>EKS pod unable to reach RDS. Root cause: RDS Security Group not allowing inbound from EKS node SG. DNS worked, so wasn't immediately obvious — used <code>telnet</code>/<code>nc</code> to confirm port-level block.</p>
+
+---
+
+### Q: Any long-standing issue?
+
+<p>Intermittent DNS failures in EKS — CoreDNS overloaded during traffic spikes. Fixed by tuning CoreDNS replicas, adding <strong>NodeLocal DNSCache</strong>, and setting resource requests/limits.</p>
+
+---
+
+### Q: What would you implement to optimize cloud costs?
+
+<ul><li>Cost Explorer + Budgets</li><li>Trusted Advisor + Compute Optimizer</li><li>Reserved Instances / Savings Plans</li><li>Spot Instances for fault-tolerant workloads</li><li>S3 Lifecycle Policies → Glacier</li><li>Auto Scaling + scheduled scaling (off-hours)</li><li>Tagging strategy via SCPs</li></ul>
+
+---
+
+### Q: Is Trusted Advisor free?
+
+<p>Basic checks are free. Full set (cost optimization, fault tolerance, performance) requires <strong>Business or Enterprise Support plan</strong>.</p>
+
+---
+
+### Q: Will you still use Spot for batch jobs?
+
+<p>Yes — Spot is excellent for fault-tolerant batch. AWS Batch and Karpenter handle interruptions via checkpointing or requeuing.</p>
+
+---
+
+### Q: What if that instance type isn't available in that region?
+
+<p>Use <strong>Spot Fleet</strong> or <strong>Karpenter with instance diversification</strong> — specify multiple compatible types (m5.large, m5a.large, m4.large). Never rely on a single type.</p>
+
+---
+
+### Q: Steps to investigate and remediate an issue?
+
+<ul><li><strong>1. Triage</strong>: CloudWatch alarms, dashboards, recent deployments</li><li><strong>2. Logs</strong>: CloudWatch Insights, pod logs</li><li><strong>3. Metrics</strong>: CPU, memory, network, error rates</li><li><strong>4. Tracing</strong>: X-Ray/Jaeger for distributed tracing</li><li><strong>5. Events</strong>: kubectl describe, CloudTrail, IAM changes</li><li><strong>6. Remediate</strong>: Rollback, scale up, fix config</li><li><strong>7. Post-mortem</strong>: Timeline, root cause, preventive actions</li></ul>
+
+---
+
+### Q: Grafana dashboard types in DevOps?
+
+<ul><li>Infra (CPU/mem/disk via Node Exporter)</li><li>K8s (pods, nodes via kube-state-metrics)</li><li>APM (RED metrics, P95)</li><li>CI/CD (DORA)</li><li>Logs, DB, Cost</li></ul>
+
+---
+
+### Q: Email alerts from Grafana?
+
+<ul><li>SMTP in grafana.ini</li><li>Contact Point (Email)</li><li>Alert Rule (query + condition + for duration)</li><li>Notification Policy</li><li>Go templates for email body</li></ul>
+
+---
+
+### Q: Common alert conditions?
+
+<ul><li>CPU >85% / Memory >90% (5 min)</li><li>Disk >80% warn / >90% crit</li><li>Pod restarts (CrashLoopBackOff)</li><li>5xx rate spike / P95 latency</li><li>up==0 >2 min / cert expiry / DB lag</li></ul>
+
+---
+
+### Q: What is AWS Config and why is it used?
+
+<p>AWS Config acts as a sophisticated DVR for cloud configuration. It continually audits, records, and evaluates the configurations of your AWS resources, documenting how they evolve over time. It's heavily used by compliance and security teams to trigger alerts when a resource violates organizational guidelines (e.g. someone opens SSH port 22 globally).</p>
+
+---
+
+### Q: What is AWS GuardDuty?
+
+<p>Amazon GuardDuty is an ML-powered threat detection capability bridging the fundamental gap between network visibility and IAM insight. It continuously ingests VPC Flow Logs, CloudTrail Events, and DNS logs, producing actionable findings regarding unusual API activities, potential outbound crypto-mining connections, or heavily compromised EC2 instances.</p>
+
+---
+
+### Q: How do you set up an alert policy in GKE if any pod crashes?
+
+<p>Establish a Cloud Logging sink expressly filtering for systemic K8s signals like `OOMKilled` or `CrashLoopBackOff`, and translate that query directly into a custom Log-based Metric. Subsequently, formulate a Cloud Monitoring Alert Policy attached to that metric specifically triggering your organization's PagerDuty integration upon any abnormal deviation.</p>
+
+---
+
+### Q: What is AWS Systems Manager (SSM)? How can you deploy or manage applications on EC2 using SSM?
+
+<p>A comprehensive operational suite. It fundamentally replaces insecure bastion hosts with <strong>SSM Session Manager</strong> (facilitating auditable terminal interactions without open ports). Applications are securely orchestrated rapidly onto thousands of EC2 targets through <strong>SSM Run Command</strong> or permanently enforced via <strong>State Manager</strong> documents containing bootstrap automations.</p>
+
+---
+
+### Q: What is MLOps, and which tools are commonly used in MLOps pipelines?
+
+<p>MLOps translates robust DevOps automation philosophies structurally onto Machine Learning development lifecycles. It concerns programmatic model-training orchestration, continuous evaluation accuracy verifications, and streamlined live-endpoint model deployments. Industry solutions: Kubeflow, MLFlow, AWS SageMaker Pipelines.</p>
+
+---
+
+### Q: How to debug high CPU on EC2 like a senior engineer
+
+<p>Junior engineers intuitively guess hardware faults and force reboot without diagnostic evidence. <strong>Senior Sequence:</strong> Execute `top/htop` internally securing precisely the culprit PID. Extract thread metrics utilizing `jstack` or profilers. Trace fundamental kernel bottlenecks via `strace -p <PID>`. Interrogate local CloudWatch agent logging to correlate resource depletion exact timings against upstream concurrent application payload metrics.</p>
+
+---
+
+### Q: A vulnerable dependency was detected in a Docker image after deployment. What steps would you take to mitigate the risk and secure the CI/CD pipeline?
+
+<p><strong>Immediate:</strong> Identify the blast radius, patch the library in the source `Dockerfile`, re-build, and trigger a rolling deployment. <br><strong>Pipeline Fix:</strong> Implement proactive container vulnerability scanning (Trivy, Snyk, Inspector) directly into the CI pipeline as a rigid blocking step <em>prior</em> to pushing to the ECR registry. Continuously scan ECR repositories for newly discovered CVEs.</p>
+
+---
+
+### Q: Users report intermittent failures across microservices, but logs from individual services look normal. How would you identify the root cause?
+
+<p>When isolated service logs look normal, the problem is network transit, latency, or cascading timeouts. Implement <strong>Distributed Tracing</strong> (AWS X-Ray, Jaeger, or OpenTelemetry). Inject correlation Trace IDs into standard headers at the API Gateway, and track the exact microscopic latency of the request as it traverses across every internal microservice boundary to locate the invisible choke point.</p>
+
+---
+
+## 🐧 Linux, Scripting & Git
+
+### Q: What is Node Exporter?
+
+<p>Prometheus exporter for HW/OS metrics on port 9100. Key: cpu, memory, disk, filesystem, network. K8s: DaemonSet. Dashboard ID 1860.</p>
+
+---
+
+### Q: What is PM2?
+
+<p>Production Node.js process manager — keeps alive, auto-restart, cluster mode (<code>-i max</code>), ecosystem.config.js, zero-downtime reload, <code>pm2 startup</code> + <code>pm2 save</code>.</p>
+
+---
+
+### Q: Kill a PM2 process?
+
+<div class="cb">pm2 stop app / pm2 delete app
+pm2 stop all / pm2 delete all
+pm2 kill  # daemon + all</div>
+
+---
+
+### Q: Check running nodes?
+
+<div class="cb">pm2 list | pm2 show app | pm2 monit</div>
+
+---
+
+### Q: Kill a process in Linux?
+
+<div class="cb">kill PID / kill -9 PID / killall name / pkill -f "pattern"</div><p>SIGTERM first. -9 last resort.</p>
+
+---
+
+### Q: chmod 555?
+
+<p>5=r+x → owner=r-x, group=r-x, others=r-x. Everyone reads/executes, nobody writes.</p>
+
+---
+
+### Q: Check open ports?
+
+<div class="cb">ss -tlnp / netstat -tlnp / lsof -i -P -n / nmap localhost</div>
+
+---
+
+### Q: Cron job?
+
+<div class="cb">min hour dom month dow command
+0 2 * * * /backup.sh          # daily 2AM
+*/5 * * * * /health.sh        # every 5 min
+crontab -e / crontab -l</div>
+
+---
+
+### Q: Clear cache?
+
+<div class="cb">sync && echo 3 > /proc/sys/vm/drop_caches</div><p>App: <code>apt clean</code>, <code>npm cache clean --force</code>. DNS: <code>systemd-resolve --flush-caches</code>.</p>
+
+---
+
+### Q: Resolve merge conflicts?
+
+<ul><li><code>git status</code> → "both modified"</li><li>Edit markers (&lt;&lt;&lt;/===/&gt;&gt;&gt;), keep desired</li><li><code>git add</code> → <code>git commit</code></li><li>Tools: git mergetool, VS Code conflict UI</li></ul>
+
+---
+
+### Q: Switch to a new branch?
+
+<div class="cb">git checkout branch / git switch branch  # existing
+git checkout -b new / git switch -c new  # create+switch
+git branch -a  # list all</div>
+
+---
+
+### Q: Which branching strategy have you used in your project and why?
+
+<p><strong>Trunk-Based Development</strong> with robust feature flags. It mandates that developers frequently merge extremely small, testable chunks sequentially into the `main` trunk branch multiple times per day. It directly avoids the catastrophic "Merge Hell" commonly seen in complex GitFlow releases and is the absolute prerequisite philosophy for functioning Continuous Deployment.</p>
+
+---
+
+### Q: Explain the booting process of Linux.
+
+<p>Linux boot sequence — 6 stages:</p><ol><li><strong>BIOS/UEFI</strong> — Power-on self-test (POST), locates bootable device</li><li><strong>Bootloader (GRUB2)</strong> — Loads the kernel into memory from <code>/boot</code>, passes kernel parameters</li><li><strong>Kernel initialization</strong> — Kernel decompresses itself, initializes hardware drivers, mounts root filesystem (read-only first)</li><li><strong>initramfs / initrd</strong> — Temporary root filesystem with tools needed to mount the real root FS (handles LVM, LUKS, etc.)</li><li><strong>init / systemd (PID 1)</strong> — First process started by kernel. Systemd reads unit files, starts services in parallel based on dependencies</li><li><strong>Runlevel / Target</strong> — Systemd reaches the target (e.g., <code>multi-user.target</code> or <code>graphical.target</code>), spawns login prompt</li></ol><div class="nt">Key command: <code>systemd-analyze blame</code> — shows which services slowed down boot.</div>
+
+---
+
+### Q: What are services in Linux?
+
+<p>A <strong>service</strong> (daemon) is a background process managed by the init system (systemd). It runs without user interaction.</p><div class="cb"># Start / stop / restart
+systemctl start nginx
+systemctl stop nginx
+systemctl restart nginx
+
+# Enable at boot / disable
+systemctl enable nginx
+systemctl disable nginx
+
+# Check status
+systemctl status nginx
+
+# List all services
+systemctl list-units --type=service</div><p>Services are defined as <strong>unit files</strong> in <code>/etc/systemd/system/</code> or <code>/lib/systemd/system/</code>. They specify ExecStart, dependencies, restart policies, and the user they run as.</p>
+
+---
+
+### Q: How do you check open ports in Linux?
+
+<div class="cb"># ss — modern replacement for netstat
+ss -tlnp        # TCP listening ports with process name
+ss -ulnp        # UDP listening ports
+
+# netstat (legacy, may need net-tools)
+netstat -tlnp
+
+# lsof — list open files/sockets
+lsof -i :80     # what's using port 80
+lsof -i TCP -P -n
+
+# nmap — scan from outside
+nmap -sT localhost</div><ul><li><code>-t</code> TCP, <code>-u</code> UDP, <code>-l</code> listening, <code>-n</code> numeric, <code>-p</code> show process</li><li>Best for quick check: <code>ss -tlnp | grep LISTEN</code></li></ul>
+
+---
+
+### Q: Explain the Linux file system structure.
+
+<table><thead><tr><th>Directory</th><th>Purpose</th></tr></thead><tbody><tr><td><code>/</code></td><td>Root — top of the entire hierarchy</td></tr><tr><td><code>/bin</code></td><td>Essential user binaries (ls, cp, bash)</td></tr><tr><td><code>/sbin</code></td><td>System binaries (fsck, ifconfig) — for root</td></tr><tr><td><code>/etc</code></td><td>System-wide configuration files</td></tr><tr><td><code>/home</code></td><td>User home directories</td></tr><tr><td><code>/var</code></td><td>Variable data: logs, spool, tmp persisted across reboots</td></tr><tr><td><code>/tmp</code></td><td>Temporary files, cleared on reboot</td></tr><tr><td><code>/proc</code></td><td>Virtual FS — kernel/process info (e.g., <code>/proc/cpuinfo</code>)</td></tr><tr><td><code>/sys</code></td><td>Virtual FS — hardware/driver info exposed by kernel</td></tr><tr><td><code>/usr</code></td><td>User programs, libraries, docs (bulk of installed software)</td></tr><tr><td><code>/opt</code></td><td>Optional/third-party software (e.g., custom installs)</td></tr><tr><td><code>/boot</code></td><td>Bootloader, kernel image, initramfs</td></tr><tr><td><code>/dev</code></td><td>Device files (block/char devices)</td></tr><tr><td><code>/mnt</code>, <code>/media</code></td><td>Mount points for external/removable storage</td></tr></tbody></table>
+
+---
+
+### Q: Command to check OS version in Linux?
+
+<div class="cb"># Most reliable — works on all distros
+cat /etc/os-release
+
+# Short version
+lsb_release -a
+
+# Kernel version
+uname -r
+
+# Full system info
+uname -a
+
+# RHEL/CentOS specific
+cat /etc/redhat-release
+
+# Debian/Ubuntu specific
+cat /etc/debian_version</div><p>For scripting, <code>/etc/os-release</code> is the standard — it's a key=value file that all modern distros provide.</p>
+
+---
+
