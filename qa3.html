@@ -3311,6 +3311,90 @@ cat /etc/redhat-release
 cat /etc/debian_version</div><p>For scripting, <code>/etc/os-release</code> is the standard — it's a key=value file that all modern distros provide.</p>`
       }
     ]
+  },
+  {
+    s: `Real-World Scenarios`,
+    id: `practical`,
+    cls: `c-comp`,
+    icon: `🔥`,
+    items: [
+      {
+        q: `Your Jenkins pipeline build is successful, but deployment is failing. What will you check?`,
+        a: `<div class="fw">Follow the deployment path from artifact to target environment</div>
+<ul><li><strong>Artifact & Tagging:</strong> Verify the image was actually pushed to the registry (ECR, Nexus, Artifactory) and the deployment manifest is referencing the correct tag.</li>
+<li><strong>Auth & Secrets:</strong> Check if the deployment agent has the right IAM role, kubeconfig, or SSH keys. Secrets might be rotated but not updated in CI.</li>
+<li><strong>Network Connectivity:</strong> Can the Jenkins agent talk to the target environment? Did a security group or NACL change?</li>
+<li><strong>Deployment Environment Health:</strong> Check disk space on target nodes or check if the Kubernetes cluster API is reachable and responding.</li>
+<li><strong>Logs:</strong> Read the exact deployment stage output. Identify if it's an authorization error (401/403) or a connection timeout (504).</li></ul>`,
+        g: `Troubleshooting`,
+        gc: `g-iac`
+      },
+      {
+        q: `A Kubernetes pod is in CrashLoopBackOff. How will you debug it?`,
+        a: `<div class="fw">Systematic descending isolation: Events → Logs → State</div>
+<ul><li><strong>Events:</strong> <code>kubectl describe pod &lt;pod-name&gt;</code> to check for OOMKilled, Liveness probe failures, or image pull errors.</li>
+<li><strong>Previous Logs:</strong> <code>kubectl logs &lt;pod-name&gt; --previous</code> to see why the <em>last</em> container crashed before it restarted.</li>
+<li><strong>Environment/Config:</strong> Check if required ConfigMaps or Secrets are mounted properly and have the correct keys.</li>
+<li><strong>Dependencies:</strong> Is the database reachable? Many apps crash immediately if they can't connect to their required services on startup.</li>
+<li><strong>Interactive Debugging:</strong> If logs are empty, overwrite the command to <code>sleep 3600</code>, exec into the pod, and run the startup script manually to see the failure.</li></ul>`,
+        g: `Troubleshooting`,
+        gc: `g-k8s`
+      },
+      {
+        q: `Terraform infrastructure has drifted due to manual changes. What’s your approach?`,
+        a: `<div class="fw">Identify, Evaluate, and Reconcile</div>
+<ul><li><strong>Identify the Drift:</strong> Run <code>terraform plan</code> to clearly see what was changed manually (additions, modifications, deletions).</li>
+<li><strong>Find the Cause:</strong> Check CloudTrail or audit logs to determine <em>who</em> made the change and <em>why</em>. Was it a midnight incident response break-glass action?</li>
+<li><strong>Evaluate Path Forward:</strong> If the manual change was a mistake, run <code>terraform apply</code> to revert the environment to the declared code state.</li>
+<li><strong>Importing Changes:</strong> If the manual change was a necessary hotfix, update the Terraform code to match the new state, so the next <code>plan</code> shows no changes.</li>
+<li><strong>Prevention:</strong> Implement strict IAM roles where humans only have ReadOnly access, and only the CI/CD pipeline role has Admin access to apply changes.</li></ul>`,
+        g: `Troubleshooting`,
+        gc: `g-tf`
+      },
+      {
+        q: `EC2 CPU suddenly spikes in AWS. What steps will you take?`,
+        a: `<div class="fw">Correlate application metrics with system behavior</div>
+<ul><li><strong>System Level:</strong> SSH or use Systems Manager Session Manager, run <code>top</code> or <code>htop</code> to identify the specific process consuming CPU.</li>
+<li><strong>Application Level:</strong> If it's a web server, check access logs for a traffic spike, DDoS attempt, or long-running DB queries locking up workers.</li>
+<li><strong>Instance Level:</strong> Check CloudWatch metrics for exhausted CPU credits (if T-series burstable instances) or disk I/O bottlenecks causing high CPU wait states (iowait).</li>
+<li><strong>Immediate Action:</strong> If part of an Auto Scaling Group, ensure scaling policies are triggering to add more instances to handle the load.</li>
+<li><strong>Remediation:</strong> Profile the application, implement rate limiting/WAF, or upgrade the instance type if the baseline has permanently shifted.</li></ul>`,
+        g: `Troubleshooting`,
+        gc: `g-aws`
+      },
+      {
+        q: `Docker container works locally but fails in production. Why?`,
+        a: `<div class="fw">"It works on my machine" is an environment difference problem</div>
+<ul><li><strong>Environment Variables:</strong> Missing, malformed, or incorrect production secrets (DB strings, API keys) that were hardcoded locally or in a <code>.env</code> file.</li>
+<li><strong>Architecture Mismatch:</strong> Developing on an M1/M2 Mac (ARM64) and deploying to an EC2 instance running x86_64 without building multi-architecture images.</li>
+<li><strong>Network/Firewall:</strong> The app connects to external APIs that are blocked by production VPC NAT Gateways or Security Groups.</li>
+<li><strong>Dependencies:</strong> Volume mounts used locally aren't present in production, or differing OS packages inside a loosely defined Dockerfile.</li>
+<li><strong>Compute Limits:</strong> The container hits memory limits (OOMKilled) in production Kubernetes because local Docker Desktop had more resources assigned.</li></ul>`,
+        g: `Troubleshooting`,
+        gc: `g-dk`
+      },
+      {
+        q: `How do you ensure zero downtime deployments?`,
+        a: `<div class="fw">Decouple deployment from release</div>
+<ul><li><strong>Blue/Green Deployment:</strong> Spin up a complete parallel environment (Green) with the new version. Test thoroughly, then flip the ALB/Route 53 traffic weight to 100% Green. Rollback is instant.</li>
+<li><strong>Canary Deployments:</strong> Gradually shift 5%, then 10%, then 100% of traffic to the new version while monitoring error rates via CloudWatch or Prometheus.</li>
+<li><strong>Rolling Updates:</strong> In Kubernetes, update pods one by one. Ensure readiness probes are properly configured so traffic isn't routed to a pod until it's actually ready.</li>
+<li><strong>Database Strategy:</strong> Ensure database migrations are strictly backwards-compatible (expand and contract pattern) so both old and new app versions can run simultaneously.</li></ul>`,
+        g: `Strategy`,
+        gc: `g-aws`
+      },
+      {
+        q: `How do you securely manage secrets in production?`,
+        a: `<div class="fw">Zero trust, zero static credentials, and encryption at rest</div>
+<ul><li><strong>Secret Stores:</strong> Use AWS Secrets Manager, Parameter Store, or HashiCorp Vault. <em>Never</em> store secrets in plaintext in Git or Kubernetes manifests.</li>
+<li><strong>Dynamic/Short-Lived Secrets:</strong> Prefer generating ephemeral credentials (e.g. Vault AWS/DB engines) over long-lived static passwords.</li>
+<li><strong>Access Control:</strong> Attach IAM roles directly to application instances/pods (IRSA in EKS) to fetch secrets natively, avoiding the need to pass identity tokens manually.</li>
+<li><strong>CI/CD Pipelines:</strong> Use OIDC (OpenID Connect) for GitHub Actions to assume AWS roles instead of storing permanent <code>AWS_ACCESS_KEY_ID</code>s in the CI variables.</li>
+<li><strong>Encryption:</strong> Ensure secrets are encrypted at rest using KMS Customer Managed Keys.</li></ul>`,
+        g: `Strategy`,
+        gc: `g-sec`
+      }
+    ]
   }
 ]; // ─── MENU-BASED NAVIGATION ───
 
