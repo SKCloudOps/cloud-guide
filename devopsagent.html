@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deconstructing AWS DevOps Agent — Functionality &amp; Potential | Cloud Interview Guide</title>
+  <meta name="description" content="A visual deep-dive into AWS DevOps Agent capabilities. Covers Traditional vs Agent comparison, intelligent IaC/CD, AI-driven monitoring, self-remediation, cost optimization, and multi-account architecture." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/devops.css" />
+  <meta name="keywords" content="AWS DevOps Agent, LLMOps, AI DevOps, intelligent IaC, AI-driven monitoring, self-remediation, cost optimization, multi-account AWS, DevOps automation, cloud agent" />
+  <meta name="author" content="SKCloudOps" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://skcloudops.github.io/cloud-guide/devopsagent.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Deconstructing AWS DevOps Agent — Functionality &amp; Potential" />
+  <meta property="og:description" content="Visual breakdown of AWS DevOps Agent: Traditional vs Agent comparison, intelligent IaC/CD, AI monitoring, multi-account architecture, and key benefits." />
+  <meta property="og:url" content="https://skcloudops.github.io/cloud-guide/devopsagent.html" />
+  <meta property="og:site_name" content="Cloud Interview Guide" />
+  <meta property="og:image" content="https://skcloudops.github.io/cloud-guide/assets/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Deconstructing AWS DevOps Agent — Functionality &amp; Potential" />
+  <meta name="twitter:description" content="Visual breakdown of AWS DevOps Agent: Traditional vs Agent comparison, intelligent IaC/CD, AI monitoring, and multi-account architecture." />
+  <meta name="twitter:image" content="https://skcloudops.github.io/cloud-guide/assets/og-image.png" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#0f172a" />
+  <style>
+    .article-main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+    .article-hero { margin-bottom: 2.75rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    .article-hero-badge {
+      display: inline-flex; align-items: center; gap: .375rem;
+      padding: .3rem .875rem; font-size: .6875rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em; color: #fff;
+      background: linear-gradient(135deg,#7c3aed,#4f46e5);
+      border-radius: 20px; margin-bottom: 1.25rem;
+      box-shadow: 0 2px 8px rgba(124,58,237,.3);
+    }
+    .article-hero h1 { font-size: 2.25rem; font-weight: 800; color: var(--text); letter-spacing: -.04em; line-height: 1.15; margin-bottom: 1rem; }
+    .article-hero-lead { font-size: 1.0625rem; color: var(--text-secondary); line-height: 1.75; max-width: 660px; }
+    .article-meta { display: flex; align-items: center; gap: 1.25rem; margin-top: 1.5rem; font-size: .8125rem; color: var(--text-muted); flex-wrap: wrap; }
+    .article-meta-item { display: flex; align-items: center; gap: .375rem; }
+    .article-meta-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .article-body h2 { font-size: 1.5rem; font-weight: 800; color: var(--text); letter-spacing: -.03em; margin: 3rem 0 1rem; padding-bottom: .625rem; border-bottom: 2px solid var(--border); }
+    .article-body h2:first-child { margin-top: 0; }
+    .article-body p { font-size: .9375rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.125rem; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-diagram { margin: 1.5rem 0 2rem; padding: 1.75rem; background: #fafbfc; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: inset 0 2px 4px rgba(0,0,0,.02); overflow-x: auto; }
+    .article-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); flex-wrap: wrap; }
+    .article-nav-link { display: inline-flex; align-items: center; gap: .375rem; padding: .6rem 1.25rem; font-size: .8125rem; font-weight: 600; color: var(--accent); background: var(--accent-light); border: 1px solid var(--accent-mid); border-radius: 8px; text-decoration: none; transition: background .15s,box-shadow .15s; }
+    .article-nav-link:hover { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 12px rgba(37,99,235,.3); }
+    @media(max-width:900px){ .article-main{padding:1.75rem 1.25rem 3rem;} .article-hero h1{font-size:1.75rem;} }
+    @media(max-width:480px){ .article-hero h1{font-size:1.4rem;} .article-body h2{font-size:1.25rem;} }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+    <div class="sidebar-header"><a class="sidebar-logo" href="index.html">Cloud Interview Guide</a></div>
+    <nav class="sidebar-nav">
+      <div class="nav-menu-item">
+        <div class="nav-menu-label">Infrastructure</div>
+        <div class="nav-menu-dropdown">
+          <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+          <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
+          <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
+          <a href="compute-article.html" class="sidebar-link">Compute Article <span class="count">4</span></a>
+          <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
+        </div>
+      </div>
+      <div class="nav-menu-item">
+        <div class="nav-menu-label">App Services</div>
+        <div class="nav-menu-dropdown">
+          <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
+          <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+          <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+          <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+        </div>
+      </div>
+      <div class="nav-menu-item open">
+        <div class="nav-menu-label">Architecture &amp; Ops</div>
+        <div class="nav-menu-dropdown">
+          <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+          <a href="fault-tolerant-architecture.html" class="sidebar-link">Fault-Tolerant Blueprint <span class="count">5</span></a>
+          <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+          <a href="devopsagent.html" class="sidebar-link active">AWS DevOps Agent</a>
+          <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+          <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
+        </div>
+      </div>
+      <div class="nav-menu-item">
+        <div class="nav-menu-label">Foundations</div>
+        <div class="nav-menu-dropdown">
+          <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+          <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
+          <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+          <a href="platform-interview.html" class="sidebar-link">Interview Prep <span class="count">188</span></a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+  <main class="content-area" role="main">
+    <div class="article-main">
+
+      <header class="article-hero">
+        <div class="article-hero-badge">Architecture &amp; Ops &middot; AI Agents</div>
+        <h1>Deconstructing AWS DevOps Agent</h1>
+        <p class="article-hero-lead">
+          A shift is underway from reactive, human-driven operations to autonomous, AI-directed DevOps. This guide
+          deconstructs the AWS DevOps Agent — what it does, how it compares to traditional workflows, and where
+          it moves engineer effort.
+        </p>
+        <div class="article-meta">
+          <span class="article-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            8 min read
+          </span>
+          <span class="article-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            SKCloudOps
+          </span>
+          <span class="article-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            April 2026
+          </span>
+          <span class="article-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Intermediate
+          </span>
+        </div>
+      </header>
+
+      <div class="article-body">
+
+        <p>
+          Traditional DevOps teams manage infrastructure provisioning, deployments, monitoring, security patching,
+          and cost optimisation through a mix of scripted automation and human judgement. An <strong>AI DevOps Agent</strong>
+          collapses these disciplines into a single autonomous loop: observe, reason, act, and report — continuously.
+        </p>
+
+        <!-- ===== Section 1: Comparison Table ===== -->
+        <h2>Core Comparison: Traditional DevOps vs AI Agent</h2>
+        <p>
+          Across every operational domain, the agent replaces reactive human intervention with continuous,
+          automated action — while generating audit trails at every step.
+        </p>
+
+        <div class="article-diagram">
+          <svg viewBox="0 0 820 370" width="100%" height="auto" style="font-family:system-ui,sans-serif;">
+            <defs>
+              <linearGradient id="hdrGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#1e293b"/>
+                <stop offset="100%" stop-color="#0f172a"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Column headers -->
+            <rect x="0" y="0" width="820" height="44" fill="url(#hdrGrad)" rx="8"/>
+            <rect x="0" y="36" width="820" height="8" fill="url(#hdrGrad)"/>
+            <text x="100" y="27" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">Area</text>
+            <text x="360" y="27" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="middle">&#128100; Traditional</text>
+            <text x="640" y="27" fill="#a78bfa" font-size="13" font-weight="700" text-anchor="middle">&#129302; Agent</text>
+
+            <!-- Column dividers -->
+            <line x1="200" y1="44" x2="200" y2="370" stroke="#e2e8f0" stroke-width="1"/>
+            <line x1="500" y1="44" x2="500" y2="370" stroke="#e2e8f0" stroke-width="1"/>
+
+            <!-- Row data: [area, traditional, agent, yOffset, shade] -->
+            <!-- Row 1 - IaC -->
+            <rect x="0" y="44" width="820" height="54" fill="#f8fafc"/>
+            <text x="16" y="67" fill="#7c3aed" font-size="12" font-weight="700">IaC</text>
+            <text x="210" y="63" fill="#475569" font-size="11">Manual infrastructure provisioning;</text>
+            <text x="210" y="79" fill="#475569" font-size="11">reactive drift detection</text>
+            <text x="510" y="63" fill="#1e293b" font-size="11">Automated IaC &amp; drift correction;</text>
+            <text x="510" y="79" fill="#1e293b" font-size="11">CloudFormation self-heals on drift</text>
+
+            <!-- Row 2 - CI/CD -->
+            <rect x="0" y="98" width="820" height="54" fill="#f0f0ff"/>
+            <text x="16" y="121" fill="#7c3aed" font-size="12" font-weight="700">CI/CD</text>
+            <text x="210" y="117" fill="#475569" font-size="11">Manual resource optimisation;</text>
+            <text x="210" y="133" fill="#475569" font-size="11">standard pipeline deployments</text>
+            <text x="510" y="117" fill="#1e293b" font-size="11">Intelligent CI/CD &amp; auto-deploy;</text>
+            <text x="510" y="133" fill="#1e293b" font-size="11">performs canary &amp; blue-green rollouts</text>
+
+            <!-- Row 3 - Monitoring -->
+            <rect x="0" y="152" width="820" height="54" fill="#f8fafc"/>
+            <text x="16" y="172" fill="#7c3aed" font-size="12" font-weight="700">Monitoring</text>
+            <text x="210" y="172" fill="#475569" font-size="11">Manual log review;</text>
+            <text x="210" y="188" fill="#475569" font-size="11">reactive incident response</text>
+            <text x="510" y="172" fill="#1e293b" font-size="11">Analyses logs/metrics in real time;</text>
+            <text x="510" y="188" fill="#1e293b" font-size="11">auto-remediates detected issues</text>
+
+            <!-- Row 4 - Security -->
+            <rect x="0" y="206" width="820" height="54" fill="#f0f0ff"/>
+            <text x="16" y="226" fill="#7c3aed" font-size="12" font-weight="700">Security</text>
+            <text x="210" y="226" fill="#475569" font-size="11">Manual patching;</text>
+            <text x="210" y="242" fill="#475569" font-size="11">periodic compliance checks</text>
+            <text x="510" y="226" fill="#1e293b" font-size="11">Agent patches systems; enforces rules;</text>
+            <text x="510" y="242" fill="#1e293b" font-size="11">generates compliance reports</text>
+
+            <!-- Row 5 - Cost -->
+            <rect x="0" y="260" width="820" height="54" fill="#f8fafc"/>
+            <text x="16" y="280" fill="#7c3aed" font-size="12" font-weight="700">Cost</text>
+            <text x="210" y="280" fill="#475569" font-size="11">Reactive cost reviews;</text>
+            <text x="210" y="296" fill="#475569" font-size="11">manual right-sizing</text>
+            <text x="510" y="280" fill="#1e293b" font-size="11">Right-sizes resources; manages Spot;</text>
+            <text x="510" y="296" fill="#1e293b" font-size="11">generates spend reports automatically</text>
+
+            <!-- Row 6 - Scale -->
+            <rect x="0" y="314" width="820" height="56" fill="#f0f0ff" rx="0"/>
+            <rect x="0" y="358" width="820" height="12" fill="#f0f0ff" rx="8"/>
+            <text x="16" y="334" fill="#7c3aed" font-size="12" font-weight="700">Scale</text>
+            <text x="210" y="334" fill="#475569" font-size="11">Manual scaling decisions</text>
+            <text x="210" y="350" fill="#475569" font-size="11">and capacity adjustments</text>
+            <text x="510" y="334" fill="#1e293b" font-size="11">Agent autonomously manages capacity</text>
+            <text x="510" y="350" fill="#1e293b" font-size="11">changes based on demand signals</text>
+
+            <!-- Outer border -->
+            <rect x="0.5" y="0.5" width="819" height="369" fill="none" stroke="#c7d2fe" stroke-width="1.5" rx="8"/>
+          </svg>
+        </div>
+
+        <!-- ===== Section 2: Agent Functionality ===== -->
+        <h2>Detailed Agent Functionality (Process Flow)</h2>
+        <p>
+          The agent is not a single service — it is a <strong>continuous process loop</strong> spanning six operational
+          domains. Each capability feeds the others: monitoring data informs cost decisions; compliance state
+          gates deployments; cost signals drive scaling choices.
+        </p>
+
+        <div class="article-diagram">
+          <svg viewBox="0 0 820 420" width="100%" height="auto" style="font-family:system-ui,sans-serif;">
+
+            <!-- LEFT COLUMN cards -->
+            <!-- Card 1: IaC/CD Management -->
+            <rect x="10" y="10" width="390" height="120" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+            <rect x="10" y="10" width="390" height="6" rx="5" fill="#7c3aed"/>
+            <text x="30" y="42" fill="#4c1d95" font-size="13" font-weight="700">Intelligent IaC/CD &amp; Management</text>
+            <text x="30" y="62" fill="#5b21b6" font-size="11">Orchestrates infrastructure changes end-to-end.</text>
+            <text x="30" y="79" fill="#5b21b6" font-size="11">Performs canary and blue-green deployments</text>
+            <text x="30" y="96" fill="#5b21b6" font-size="11">automatically, with drift detection and</text>
+            <text x="30" y="113" fill="#5b21b6" font-size="11">CloudFormation self-healing on configuration drift.</text>
+
+            <!-- Card 2: AI Monitoring -->
+            <rect x="10" y="150" width="390" height="120" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+            <rect x="10" y="150" width="390" height="6" rx="5" fill="#7c3aed"/>
+            <text x="30" y="182" fill="#4c1d95" font-size="13" font-weight="700">AI-Driven Monitoring &amp; Self-Remediation</text>
+            <text x="30" y="202" fill="#5b21b6" font-size="11">Continuously analyses logs and metrics to identify</text>
+            <text x="30" y="219" fill="#5b21b6" font-size="11">root causes. Automatically triggers pre-defined</text>
+            <text x="30" y="236" fill="#5b21b6" font-size="11">remediation scripts — no human pager needed</text>
+            <text x="30" y="253" fill="#5b21b6" font-size="11">for known failure patterns.</text>
+
+            <!-- Card 3: Cost Optimization -->
+            <rect x="10" y="290" width="390" height="120" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+            <rect x="10" y="290" width="390" height="6" rx="5" fill="#7c3aed"/>
+            <text x="30" y="322" fill="#4c1d95" font-size="13" font-weight="700">Cost Optimization</text>
+            <text x="30" y="342" fill="#5b21b6" font-size="11">Monitors spend across cost categories in real time.</text>
+            <text x="30" y="359" fill="#5b21b6" font-size="11">Applies optimisation actions: Spot conversion,</text>
+            <text x="30" y="376" fill="#5b21b6" font-size="11">right-sizing, idle resource clean-up, and savings</text>
+            <text x="30" y="393" fill="#5b21b6" font-size="11">plan recommendations.</text>
+
+            <!-- RIGHT COLUMN cards -->
+            <!-- Card 4: CI/CD Auto-Deploy -->
+            <rect x="420" y="10" width="390" height="120" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+            <rect x="420" y="10" width="390" height="6" rx="5" fill="#4f46e5"/>
+            <text x="440" y="42" fill="#1e1b4b" font-size="13" font-weight="700">Intelligent CI/CD &amp; Auto-Deploying</text>
+            <text x="440" y="62" fill="#3730a3" font-size="11">Orchestrates full deployment pipelines with</text>
+            <text x="440" y="79" fill="#3730a3" font-size="11">automatic metrics validation at each stage.</text>
+            <text x="440" y="96" fill="#3730a3" font-size="11">Auto-rolls back on failure thresholds —</text>
+            <text x="440" y="113" fill="#3730a3" font-size="11">zero manual intervention required.</text>
+
+            <!-- Card 5: Continuous Compliance -->
+            <rect x="420" y="150" width="390" height="120" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+            <rect x="420" y="150" width="390" height="6" rx="5" fill="#4f46e5"/>
+            <text x="440" y="182" fill="#1e1b4b" font-size="13" font-weight="700">Continuous Reporting &amp; Compliance</text>
+            <text x="440" y="202" fill="#3730a3" font-size="11">Applies security patches on schedule. Enforces</text>
+            <text x="440" y="219" fill="#3730a3" font-size="11">policy rules across all accounts continuously.</text>
+            <text x="440" y="236" fill="#3730a3" font-size="11">Generates audit-ready compliance reports</text>
+            <text x="440" y="253" fill="#3730a3" font-size="11">with no manual effort.</text>
+
+            <!-- Card 6: Predictive Cost -->
+            <rect x="420" y="290" width="390" height="120" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+            <rect x="420" y="290" width="390" height="6" rx="5" fill="#4f46e5"/>
+            <text x="440" y="322" fill="#1e1b4b" font-size="13" font-weight="700">Predictive Cost &amp; Resource Management</text>
+            <text x="440" y="342" fill="#3730a3" font-size="11">Forecasts demand and right-sizes proactively.</text>
+            <text x="440" y="359" fill="#3730a3" font-size="11">Manages Spot instance fleets; handles scaling</text>
+            <text x="440" y="376" fill="#3730a3" font-size="11">changes before thresholds are breached —</text>
+            <text x="440" y="393" fill="#3730a3" font-size="11">reducing both cost and latency spikes.</text>
+          </svg>
+        </div>
+
+        <!-- ===== Section 3: Architecture ===== -->
+        <h2>Simplified High-Level Architecture</h2>
+        <p>
+          The agent runs inside a dedicated <strong>Control Plane</strong> in the Staging account and reaches into
+          Production, Development, and Security accounts via cross-account IAM roles. All automated actions are
+          logged to CloudTrail and surfaced in a central dashboard.
+        </p>
+
+        <div class="article-diagram">
+          <svg viewBox="0 0 820 460" width="100%" height="auto" style="font-family:system-ui,sans-serif;">
+
+            <!-- Outer enterprise cloud border -->
+            <rect x="4" y="4" width="812" height="400" rx="12" fill="#f8fafc" stroke="#7c3aed" stroke-width="2" stroke-dasharray="6,3"/>
+            <rect x="20" y="4" width="180" height="22" rx="4" fill="#7c3aed"/>
+            <text x="110" y="19" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">Enterprise AWS Cloud</text>
+
+            <!-- Production Account -->
+            <rect x="18" y="38" width="175" height="200" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+            <rect x="18" y="38" width="175" height="24" rx="8" fill="#f97316"/>
+            <rect x="18" y="50" width="175" height="12" fill="#f97316"/>
+            <text x="106" y="54" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">Production Account</text>
+            <!-- Services -->
+            <rect x="30" y="74" width="64" height="28" rx="5" fill="#fed7aa" stroke="#f97316" stroke-width="1"/>
+            <text x="62" y="91" fill="#9a3412" font-size="10" font-weight="600" text-anchor="middle">EC2</text>
+            <rect x="104" y="74" width="64" height="28" rx="5" fill="#fed7aa" stroke="#f97316" stroke-width="1"/>
+            <text x="136" y="91" fill="#9a3412" font-size="10" font-weight="600" text-anchor="middle">EKS</text>
+            <rect x="30" y="114" width="64" height="28" rx="5" fill="#fed7aa" stroke="#f97316" stroke-width="1"/>
+            <text x="62" y="131" fill="#9a3412" font-size="10" font-weight="600" text-anchor="middle">RDS</text>
+            <rect x="104" y="114" width="64" height="28" rx="5" fill="#fed7aa" stroke="#f97316" stroke-width="1"/>
+            <text x="136" y="131" fill="#9a3412" font-size="10" font-weight="600" text-anchor="middle">Lambda</text>
+            <rect x="30" y="154" width="138" height="28" rx="5" fill="#fed7aa" stroke="#f97316" stroke-width="1"/>
+            <text x="99" y="171" fill="#9a3412" font-size="10" font-weight="600" text-anchor="middle">Fargate Account</text>
+            <rect x="30" y="194" width="64" height="28" rx="5" fill="#fed7aa" stroke="#f97316" stroke-width="1"/>
+            <text x="62" y="211" fill="#9a3412" font-size="10" font-weight="600" text-anchor="middle">Lambda</text>
+            <rect x="104" y="194" width="64" height="28" rx="5" fill="#fed7aa" stroke="#f97316" stroke-width="1"/>
+            <text x="136" y="211" fill="#9a3412" font-size="10" font-weight="600" text-anchor="middle">RDS</text>
+
+            <!-- Staging Account (Control Plane) -->
+            <rect x="207" y="38" width="200" height="200" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+            <rect x="207" y="38" width="200" height="24" rx="8" fill="#3b82f6"/>
+            <rect x="207" y="50" width="200" height="12" fill="#3b82f6"/>
+            <text x="307" y="54" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">Staging Account</text>
+            <rect x="219" y="74" width="64" height="28" rx="5" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1"/>
+            <text x="251" y="91" fill="#1e3a8a" font-size="10" font-weight="600" text-anchor="middle">EC2</text>
+            <rect x="293" y="74" width="64" height="28" rx="5" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1"/>
+            <text x="325" y="91" fill="#1e3a8a" font-size="10" font-weight="600" text-anchor="middle">EKS</text>
+            <rect x="219" y="114" width="138" height="28" rx="5" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1"/>
+            <text x="288" y="131" fill="#1e3a8a" font-size="10" font-weight="600" text-anchor="middle">RDS</text>
+            <!-- Control Plane box -->
+            <rect x="219" y="154" width="176" height="70" rx="8" fill="#1e40af" stroke="#60a5fa" stroke-width="2"/>
+            <text x="307" y="174" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">Control Plane</text>
+            <!-- Robot icon -->
+            <rect x="291" y="180" width="32" height="28" rx="4" fill="#3b82f6"/>
+            <circle cx="299" cy="188" r="3" fill="#fff"/>
+            <circle cx="315" cy="188" r="3" fill="#fff"/>
+            <rect x="296" y="196" width="14" height="3" rx="1" fill="#bfdbfe"/>
+            <text x="307" y="218" fill="#bfdbfe" font-size="9" font-weight="600" text-anchor="middle">AWS DevOps Agent</text>
+
+            <!-- Development Account -->
+            <rect x="421" y="38" width="190" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+            <rect x="421" y="38" width="190" height="24" rx="8" fill="#22c55e"/>
+            <rect x="421" y="50" width="190" height="12" fill="#22c55e"/>
+            <text x="516" y="54" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">Development Account</text>
+            <rect x="433" y="74" width="60" height="28" rx="5" fill="#bbf7d0" stroke="#22c55e" stroke-width="1"/>
+            <text x="463" y="91" fill="#14532d" font-size="10" font-weight="600" text-anchor="middle">EC2</text>
+            <rect x="503" y="74" width="60" height="28" rx="5" fill="#bbf7d0" stroke="#22c55e" stroke-width="1"/>
+            <text x="533" y="91" fill="#14532d" font-size="10" font-weight="600" text-anchor="middle">EKS</text>
+            <rect x="433" y="114" width="60" height="28" rx="5" fill="#bbf7d0" stroke="#22c55e" stroke-width="1"/>
+            <text x="463" y="131" fill="#14532d" font-size="10" font-weight="600" text-anchor="middle">RDS</text>
+            <rect x="503" y="114" width="60" height="28" rx="5" fill="#bbf7d0" stroke="#22c55e" stroke-width="1"/>
+            <text x="533" y="131" fill="#14532d" font-size="10" font-weight="600" text-anchor="middle">Lambda</text>
+            <rect x="433" y="154" width="60" height="28" rx="5" fill="#bbf7d0" stroke="#22c55e" stroke-width="1"/>
+            <text x="463" y="171" fill="#14532d" font-size="10" font-weight="600" text-anchor="middle">S3</text>
+            <rect x="503" y="154" width="80" height="28" rx="5" fill="#bbf7d0" stroke="#22c55e" stroke-width="1"/>
+            <text x="543" y="171" fill="#14532d" font-size="10" font-weight="600" text-anchor="middle">CloudFront</text>
+            <rect x="433" y="194" width="130" height="28" rx="5" fill="#bbf7d0" stroke="#22c55e" stroke-width="1"/>
+            <text x="498" y="211" fill="#14532d" font-size="10" font-weight="600" text-anchor="middle">Amazon MQ / SQS</text>
+
+            <!-- Security Account -->
+            <rect x="625" y="38" width="183" height="200" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+            <rect x="625" y="38" width="183" height="24" rx="8" fill="#ef4444"/>
+            <rect x="625" y="50" width="183" height="12" fill="#ef4444"/>
+            <text x="716" y="54" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">Security Account</text>
+            <rect x="637" y="74" width="72" height="28" rx="5" fill="#fecaca" stroke="#ef4444" stroke-width="1"/>
+            <text x="673" y="91" fill="#7f1d1d" font-size="10" font-weight="600" text-anchor="middle">CloudFront</text>
+            <rect x="719" y="74" width="72" height="28" rx="5" fill="#fecaca" stroke="#ef4444" stroke-width="1"/>
+            <text x="755" y="91" fill="#7f1d1d" font-size="10" font-weight="600" text-anchor="middle">Route 53</text>
+            <rect x="637" y="114" width="72" height="28" rx="5" fill="#fecaca" stroke="#ef4444" stroke-width="1"/>
+            <text x="673" y="131" fill="#7f1d1d" font-size="10" font-weight="600" text-anchor="middle">RDS</text>
+            <rect x="719" y="114" width="72" height="28" rx="5" fill="#fecaca" stroke="#ef4444" stroke-width="1"/>
+            <text x="755" y="131" fill="#7f1d1d" font-size="10" font-weight="600" text-anchor="middle">GuardDuty</text>
+            <rect x="637" y="154" width="72" height="28" rx="5" fill="#fecaca" stroke="#ef4444" stroke-width="1"/>
+            <text x="673" y="171" fill="#7f1d1d" font-size="10" font-weight="600" text-anchor="middle">WAF</text>
+            <rect x="719" y="154" width="72" height="28" rx="5" fill="#fecaca" stroke="#ef4444" stroke-width="1"/>
+            <text x="755" y="171" fill="#7f1d1d" font-size="10" font-weight="600" text-anchor="middle">KMS</text>
+
+            <!-- Arrows from Control Plane to other accounts -->
+            <!-- to Production -->
+            <line x1="219" y1="189" x2="193" y2="189" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+            <!-- to Development -->
+            <line x1="395" y1="189" x2="421" y2="189" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+            <!-- to Security -->
+            <line x1="407" y1="200" x2="625" y2="200" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+
+            <defs>
+              <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/>
+              </marker>
+            </defs>
+
+            <!-- Region box at bottom -->
+            <rect x="140" y="260" width="180" height="60" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <text x="230" y="278" fill="#6d28d9" font-size="10" font-weight="700" text-anchor="middle">Region</text>
+            <rect x="155" y="285" width="60" height="24" rx="5" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+            <text x="185" y="301" fill="#4c1d95" font-size="10" font-weight="600" text-anchor="middle">Lambda</text>
+            <rect x="225" y="285" width="60" height="24" rx="5" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+            <text x="255" y="301" fill="#4c1d95" font-size="10" font-weight="600" text-anchor="middle">S3</text>
+
+            <!-- Legend -->
+            <line x1="430" y1="278" x2="470" y2="278" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="478" y="282" fill="#475569" font-size="10">Automated Action</text>
+            <rect x="430" y="296" width="16" height="10" rx="3" fill="#1e40af"/>
+            <text x="453" y="305" fill="#475569" font-size="10">AWS DevOps Agent</text>
+            <rect x="430" y="314" width="16" height="10" rx="3" fill="#94a3b8"/>
+            <text x="453" y="323" fill="#475569" font-size="10">Traditional DevOps Engineer</text>
+
+            <!-- Border label -->
+            <text x="410" y="390" fill="#94a3b8" font-size="9" text-anchor="middle">Simplified — not all services shown</text>
+          </svg>
+        </div>
+
+        <!-- ===== Section 4: Potential & Benefits ===== -->
+        <h2>Potential &amp; Key Benefits</h2>
+        <p>
+          The shift to an AI agent is not just an efficiency gain — it fundamentally changes what engineers
+          focus on. Routine operations become autonomous; engineers move up the value chain.
+        </p>
+
+        <div class="article-diagram">
+          <svg viewBox="0 0 820 310" width="100%" height="auto" style="font-family:system-ui,sans-serif;">
+            <defs>
+              <linearGradient id="bHdr" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#1e293b"/>
+                <stop offset="100%" stop-color="#0f172a"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Header -->
+            <rect x="0" y="0" width="820" height="44" fill="url(#bHdr)" rx="8"/>
+            <rect x="0" y="36" width="820" height="8" fill="url(#bHdr)"/>
+            <text x="145" y="27" fill="#94a3b8" font-size="12" font-weight="700" text-anchor="middle">Potential Area</text>
+            <text x="410" y="27" fill="#6ee7b7" font-size="12" font-weight="700" text-anchor="middle">Agent Impact</text>
+            <text x="660" y="27" fill="#94a3b8" font-size="12" font-weight="700" text-anchor="middle">Engineer Focus Shift</text>
+
+            <!-- Column dividers -->
+            <line x1="280" y1="44" x2="280" y2="310" stroke="#e2e8f0" stroke-width="1"/>
+            <line x1="540" y1="44" x2="540" y2="310" stroke="#e2e8f0" stroke-width="1"/>
+
+            <!-- Row 1 -->
+            <rect x="0" y="44" width="820" height="52" fill="#f8fafc"/>
+            <text x="20" y="65" fill="#7c3aed" font-size="12" font-weight="700">Automation</text>
+            <text x="20" y="83" fill="#475569" font-size="11">End-to-end operations</text>
+            <rect x="288" y="52" width="144" height="28" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+            <text x="360" y="70" fill="#14532d" font-size="11" font-weight="700" text-anchor="middle">100% Automation</text>
+            <text x="550" y="65" fill="#1e293b" font-size="11">Strategic &amp; Architectural Planning</text>
+            <text x="550" y="83" fill="#475569" font-size="10">Engineer becomes a system designer</text>
+
+            <!-- Row 2 -->
+            <rect x="0" y="96" width="820" height="52" fill="#f0f0ff"/>
+            <text x="20" y="117" fill="#7c3aed" font-size="12" font-weight="700">DevOps Provisioning</text>
+            <text x="20" y="135" fill="#475569" font-size="11">Infrastructure &amp; pipeline setup</text>
+            <rect x="288" y="104" width="160" height="28" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+            <text x="368" y="122" fill="#14532d" font-size="11" font-weight="700" text-anchor="middle">Significant Time Reduction</text>
+            <text x="550" y="117" fill="#1e293b" font-size="11">Platform Design</text>
+            <text x="550" y="135" fill="#475569" font-size="10">Architect platforms, not pipelines</text>
+
+            <!-- Row 3 -->
+            <rect x="0" y="148" width="820" height="52" fill="#f8fafc"/>
+            <text x="20" y="169" fill="#7c3aed" font-size="12" font-weight="700">Monitoring</text>
+            <text x="20" y="187" fill="#475569" font-size="11">Incident detection &amp; response</text>
+            <rect x="288" y="156" width="140" height="28" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+            <text x="358" y="174" fill="#14532d" font-size="11" font-weight="700" text-anchor="middle">Improved Reliability</text>
+            <text x="550" y="169" fill="#1e293b" font-size="11">AI Agent Governance</text>
+            <text x="550" y="187" fill="#475569" font-size="10">Define remediation rules &amp; thresholds</text>
+
+            <!-- Row 4 -->
+            <rect x="0" y="200" width="820" height="52" fill="#f0f0ff"/>
+            <text x="20" y="221" fill="#7c3aed" font-size="12" font-weight="700">Security</text>
+            <text x="20" y="239" fill="#475569" font-size="11">Patching &amp; compliance enforcement</text>
+            <rect x="288" y="208" width="136" height="28" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+            <text x="356" y="226" fill="#14532d" font-size="11" font-weight="700" text-anchor="middle">Enhanced Security</text>
+            <text x="550" y="221" fill="#1e293b" font-size="11">Business Alignment</text>
+            <text x="550" y="239" fill="#475569" font-size="10">Translate risk posture into policy</text>
+
+            <!-- Row 5 -->
+            <rect x="0" y="252" width="820" height="58" fill="#f8fafc" rx="0"/>
+            <rect x="0" y="294" width="820" height="16" fill="#f8fafc" rx="8"/>
+            <text x="20" y="273" fill="#7c3aed" font-size="12" font-weight="700">Cost Management</text>
+            <text x="20" y="291" fill="#475569" font-size="11">Right-sizing &amp; spend optimisation</text>
+            <rect x="288" y="260" width="126" height="28" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+            <text x="351" y="278" fill="#14532d" font-size="11" font-weight="700" text-anchor="middle">Optimised Spend</text>
+            <text x="550" y="273" fill="#1e293b" font-size="11">FinOps &amp; Cloud Economics</text>
+            <text x="550" y="291" fill="#475569" font-size="10">Focus on unit economics &amp; forecasting</text>
+
+            <!-- Outer border -->
+            <rect x="0.5" y="0.5" width="819" height="309" fill="none" stroke="#c7d2fe" stroke-width="1.5" rx="8"/>
+          </svg>
+        </div>
+
+        <div class="article-nav">
+          <a href="devops.html" class="article-nav-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            DevOps &amp; CI/CD
+          </a>
+          <a href="architecture.html" class="article-nav-link">
+            Architecture Patterns
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+        </div>
+
+      </div><!-- /article-body -->
+    </div><!-- /article-main -->
+  </main>
+</div><!-- /app-layout -->
+
+<button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+</button>
+
+<button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<script src="js/page.js"></script>
+</body>
+</html>
