@@ -161,6 +161,36 @@ const seoData = {
         description: 'Extended DevOps and cloud architect Q&A covering advanced topics. Deep dives into microservices patterns, event-driven architectures, multi-region strategies, FinOps, and staff-level interview scenarios.',
         keywords: 'advanced DevOps interview questions, cloud architect Q&A advanced, microservices interview, multi-region architecture, FinOps interview, staff engineer interview, extended Q&A',
         canonical: 'qa3.html'
+    },
+    'compute-article.html': {
+        title: 'AWS Compute Deep Dive | EC2, Autoscaling, Load Balancers',
+        description: 'Comprehensive deep dive into AWS compute options, high availability architectures, autoscaling mechanisms, and load balancing for cloud architects.',
+        keywords: 'AWS compute, EC2, Autoscaling, ALB, NLB, ELB, High Availability, Fault Tolerance, AWS Architecture',
+        canonical: 'compute-article.html'
+    },
+    'devopsagent.html': {
+        title: 'DevOps AI Agent | Smart Assistant for CI/CD & Infrastructure',
+        description: 'Interactive DevOps agent tailored to streamline CI/CD troubleshooting, generate Terraform scripts, and assist with Kubernetes debugging.',
+        keywords: 'DevOps agent, AI assistant, CI/CD automation, Terraform generation, Kubernetes debugging, Cloud AI',
+        canonical: 'devopsagent.html'
+    },
+    'fault-tolerant-architecture.html': {
+        title: 'Fault-Tolerant Architecture Guide | AWS Resiliency Patterns',
+        description: 'Learn how to design highly fault-tolerant and resilient architectures on AWS. Discover best practices for multi-AZ, multi-region, and auto-scaling setups.',
+        keywords: 'fault-tolerant architecture, AWS resiliency, high availability, multi-AZ, disaster recovery, cloud patterns',
+        canonical: 'fault-tolerant-architecture.html'
+    },
+    'platform-interview.html': {
+        title: 'Platform Engineering Interview Guide | SRE, DevOps, Platform Architecture',
+        description: 'Prepare for platform engineering and SRE interviews. Covers internal developer platforms, GitOps, Kubernetes lifecycle, and scalable platform architectures.',
+        keywords: 'platform engineering interview, SRE questions, internal developer platform, IDP, GitOps, Kubernetes platform',
+        canonical: 'platform-interview.html'
+    },
+    'llmops.html': {
+        title: 'LLMOps Guide | Model Lifecycle, Deployment, Monitoring & Governance - Interview Prep',
+        description: 'LLMOps guide for architect interviews. LLM lifecycle management, model deployment strategies, prompt management, observability, cost optimization, guardrails, and enterprise AI governance.',
+        keywords: 'LLMOps, LLM lifecycle, model deployment, prompt management, AI observability, model governance, MLOps, AI cost optimization, guardrails, responsible AI',
+        canonical: 'llmops.html'
     }
 };
 
