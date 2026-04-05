@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LLMOps Guide | Model Lifecycle, Deployment, Monitoring & Governance - Interview Prep</title>
+  <meta name="description" content="LLMOps guide for architect interviews. LLM lifecycle management, model deployment strategies, prompt management, observability, cost optimization, guardrails, and enterprise AI governance." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/devops.css" />
+
+    <meta name="keywords" content="LLMOps, LLM lifecycle, model deployment, prompt management, AI observability, model governance, MLOps, AI cost optimization, guardrails, responsible AI" />
+    <meta name="author" content="SKCloudOps" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://skcloudops.github.io/cloud-guide/llmops.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article" />
+    <meta property="article:section" content="Architecture &amp; Ops" />
+    <meta property="article:tag" content="LLMOps,LLM lifecycle,model deployment,prompt management,AI observability,guardrails,responsible AI" />
+    <meta property="og:title" content="LLMOps Guide | Model Lifecycle, Deployment, Monitoring & Governance - Interview Prep" />
+    <meta property="og:description" content="LLMOps guide for architect interviews. LLM lifecycle management, model deployment strategies, prompt management, observability, cost optimization, guardrails, and enterprise AI governance." />
+    <meta property="og:url" content="https://skcloudops.github.io/cloud-guide/llmops.html" />
+    <meta property="og:site_name" content="Cloud Interview Guide" />
+    <meta property="og:image" content="https://skcloudops.github.io/cloud-guide/assets/aws-serverless-webapp.png" />
+    <meta property="og:image:alt" content="LLMOps - Model Lifecycle, Deployment & Governance" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="LLMOps Guide | Model Lifecycle, Deployment, Monitoring & Governance - Interview Prep" />
+    <meta name="twitter:description" content="LLMOps guide for architect interviews. LLM lifecycle management, model deployment strategies, prompt management, observability, cost optimization, guardrails, and enterprise AI governance." />
+    <meta name="twitter:image" content="https://skcloudops.github.io/cloud-guide/assets/aws-serverless-webapp.png" />
+    <meta name="twitter:image:alt" content="LLMOps - Model Lifecycle, Deployment & Governance" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#0f172a">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "headline": "LLMOps Guide",
+        "description": "LLMOps guide for architect interviews. LLM lifecycle management, model deployment strategies, prompt management, observability, cost optimization, guardrails, and enterprise AI governance.",
+        "url": "https://skcloudops.github.io/cloud-guide/llmops.html",
+        "image": "https://skcloudops.github.io/cloud-guide/assets/aws-serverless-webapp.png",
+        "author": {"@type": "Organization", "name": "SKCloudOps", "url": "https://skcloudops.github.io/cloud-guide/"},
+        "publisher": {
+          "@type": "Organization",
+          "name": "SKCloudOps",
+          "url": "https://skcloudops.github.io/cloud-guide/",
+          "logo": {"@type": "ImageObject", "url": "https://skcloudops.github.io/cloud-guide/assets/favicon.svg"}
+        },
+        "dateModified": "2026-04-05",
+        "inLanguage": "en-US",
+        "teaches": "LLMOps lifecycle, model deployment patterns, prompt versioning, LLM observability, cost optimization, guardrails and governance",
+        "educationalLevel": "Intermediate",
+        "about": [
+    {"@type":"Thing","name":"LLMOps"},
+    {"@type":"Thing","name":"Model Deployment"},
+    {"@type":"Thing","name":"Prompt Management"},
+    {"@type":"Thing","name":"AI Observability"},
+    {"@type":"Thing","name":"AI Governance"},
+    {"@type":"Thing","name":"Guardrails"}
+        ],
+        "isPartOf": {"@type": "WebSite", "name": "Cloud Interview Guide", "url": "https://skcloudops.github.io/cloud-guide/"}
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Cloud Interview Guide", "item": "https://skcloudops.github.io/cloud-guide/"},
+          {"@type": "ListItem", "position": 2, "name": "Architecture & Ops", "item": "https://skcloudops.github.io/cloud-guide/"},
+          {"@type": "ListItem", "position": 3, "name": "LLMOps Guide", "item": "https://skcloudops.github.io/cloud-guide/llmops.html"}
+        ]
+      }
+    ]
+  }
+  </script></head>
+
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Categories">
+      <div class="sidebar-header">
+        <a class="sidebar-logo" href="index.html">Cloud Interview Guide</a>
+      </div>
+                  <nav class="sidebar-nav">
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">Infrastructure</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="networking.html" class="sidebar-link">Networking &amp; VPC <span class="count">6</span></a>
+                        <a href="security.html" class="sidebar-link">Security &amp; IAM <span class="count">6</span></a>
+                        <a href="compute.html" class="sidebar-link">Compute <span class="count">5</span></a>
+                        <a href="storage.html" class="sidebar-link">Storage <span class="count">5</span></a>
+                    </div>
+                </div>
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">App Services</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="databases.html" class="sidebar-link">Databases <span class="count">5</span></a>
+                        <a href="serverless.html" class="sidebar-link">Serverless <span class="count">3</span></a>
+                        <a href="streaming.html" class="sidebar-link">Streaming <span class="count">2</span></a>
+                        <a href="genai.html" class="sidebar-link">Gen AI <span class="count">4</span></a>
+                    </div>
+                </div>
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">Architecture &amp; Ops</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="architecture.html" class="sidebar-link">Architecture <span class="count">11</span></a>
+                        <a href="devops.html" class="sidebar-link">DevOps &amp; CI/CD <span class="count">5</span></a>
+                        <a href="llmops.html" class="sidebar-link active">LLMOps <span class="count">6</span></a>
+                        <a href="kubernetes.html" class="sidebar-link">Kubernetes &amp; EKS <span class="count">15</span></a>
+                        <a href="cost.html" class="sidebar-link">Cost Optimization <span class="count">4</span></a>
+                    </div>
+                </div>
+                <div class="nav-menu-item">
+                    <div class="nav-menu-label">Foundations</div>
+                    <div class="nav-menu-dropdown">
+                        <a href="fundamentals.html" class="sidebar-link">Fundamentals <span class="count">2</span></a>
+                        <a href="aws.html" class="sidebar-link">AWS Core <span class="count">7</span></a>
+                        <a href="reinvent.html" class="sidebar-link">Re:Invent 2024 <span class="count">3</span></a>
+                        <a href="platform-interview.html" class="sidebar-link">Interview Prep <span class="count">188</span></a>
+                    </div>
+                </div>
+            </nav>
+      <div class="header-search">
+        <div class="search-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
+          </svg>
+          <input type="text" id="searchInput" placeholder="Search topics…" autocomplete="off" />
+        </div>
+      </div>
+      <div class="header-filters difficulty-filters">
+        <button class="filter-chip active" data-filter="all">All</button>
+        <button class="filter-chip" data-filter="beginner">🟢 Beginner</button>
+        <button class="filter-chip" data-filter="intermediate">🟡 Intermediate</button>
+        <button class="filter-chip" data-filter="advanced">🔴 Advanced</button>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+    <main class="content-area" role="main">
+      <div class="content-split">
+        <aside class="toc-sidebar" id="tocSidebar">
+          <div class="toc-title">In This Section</div>
+          <nav class="toc-nav" id="tocNav">
+            <a href="#llmops-lifecycle" class="toc-link" data-section="llmops-lifecycle"><span class="toc-dot"></span>LLMOps Lifecycle</a>
+            <a href="#llmops-vs-mlops" class="toc-link" data-section="llmops-vs-mlops"><span class="toc-dot"></span>LLMOps vs MLOps</a>
+            <a href="#prompt-management" class="toc-link" data-section="prompt-management"><span class="toc-dot"></span>Prompt Management</a>
+            <a href="#llm-observability" class="toc-link" data-section="llm-observability"><span class="toc-dot"></span>LLM Observability</a>
+            <a href="#llm-guardrails-governance" class="toc-link" data-section="llm-guardrails-governance"><span class="toc-dot"></span>Guardrails & Governance</a>
+            <a href="#llmops-interview-questions" class="toc-link" data-section="llmops-interview-questions"><span class="toc-dot"></span>Interview Questions</a>
+          </nav>
+          <div class="toc-keyboard-hint">
+            <kbd>↑</kbd><kbd>↓</kbd> Navigate &nbsp; <kbd>Ctrl+K</kbd> Search
+          </div>
+        </aside>
+        <div class="content-panel">
+          <header class="page-hero">
+            <div class="hero-badge" style="background:linear-gradient(135deg,#8b5cf6, #6366f1)">LLMOps</div>
+            <h1>LLMOps Interview Guide</h1>
+            <p class="hero-lead">Master LLM lifecycle management, deployment patterns, prompt versioning, observability, cost optimization, and enterprise governance for AI-powered applications.</p>
+            <div class="hero-stats">
+              <div class="stat"><span class="stat-number">6</span><span class="stat-label">Topics</span></div>
+              <div class="stat"><span class="stat-number">~18</span><span class="stat-label">Min Read</span></div>
+              <div class="stat"><span class="stat-number">10</span><span class="stat-label">Questions</span></div>
+            </div>
+          </header>
+
+          <!-- ====== TOPIC 1: LLMOps Lifecycle ====== -->
+          <article id="llmops-lifecycle" class="topic-card" data-difficulty="beginner"
+            data-keywords="llmops lifecycle model selection evaluation deployment monitoring feedback loop iteration">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+                <span class="read-time">~3 min</span>
+              </div>
+              <h2>LLMOps Lifecycle</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark LLMOps Lifecycle as reviewed">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+              </button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>LLMOps is the set of practices, tools, and processes for managing the full lifecycle of Large Language Model applications in production — from model selection to continuous improvement.</p>
+
+                <h4>The 6-Stage LLMOps Lifecycle</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Stage</th>
+                      <th>Description</th>
+                      <th>Tools / Services</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>1. Model Selection</strong></td>
+                      <td>Choose the right foundation model based on task, cost, latency, and accuracy requirements</td>
+                      <td>Bedrock Model Catalog, Hugging Face, model benchmarks (MMLU, HumanEval)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>2. Prompt Engineering</strong></td>
+                      <td>Design, test, and version prompts. Build system instructions, few-shot examples, guardrails</td>
+                      <td>LangSmith, Promptflow, Bedrock Playground</td>
+                    </tr>
+                    <tr>
+                      <td><strong>3. RAG / Fine-Tuning</strong></td>
+                      <td>Customize model behavior via retrieval augmentation or parameter-efficient fine-tuning (LoRA, QLoRA)</td>
+                      <td>Bedrock Knowledge Bases, SageMaker, OpenSearch</td>
+                    </tr>
+                    <tr>
+                      <td><strong>4. Evaluation</strong></td>
+                      <td>Automated + human evaluation of model outputs before production release</td>
+                      <td>RAGAS, DeepEval, Bedrock Model Evaluation, LLM-as-Judge</td>
+                    </tr>
+                    <tr>
+                      <td><strong>5. Deployment</strong></td>
+                      <td>Ship the LLM app with API gateway, rate limiting, caching, and fallback strategies</td>
+                      <td>API Gateway, Lambda, CloudFront, ElastiCache</td>
+                    </tr>
+                    <tr>
+                      <td><strong>6. Monitoring & Feedback</strong></td>
+                      <td>Track token usage, latency, error rates, user feedback, and model drift</td>
+                      <td>CloudWatch, LangFuse, Datadog, Bedrock Logging</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> LLMOps is NOT just MLOps with a new name. Say: <em>"LLMOps focuses on prompt management, evaluation of non-deterministic outputs, token cost optimization, and guardrails — problems that traditional ML pipelines don't have."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== TOPIC 2: LLMOps vs MLOps ====== -->
+          <article id="llmops-vs-mlops" class="topic-card" data-difficulty="beginner"
+            data-keywords="llmops mlops comparison training data model versioning experiment tracking feature store">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge beginner">Beginner</span>
+                <span class="read-time">~2 min</span>
+              </div>
+              <h2>LLMOps vs Traditional MLOps</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark LLMOps vs MLOps as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" /></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>LLMOps shares DNA with MLOps but introduces fundamentally different challenges:</p>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Dimension</th>
+                      <th>Traditional MLOps</th>
+                      <th>LLMOps</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Model Training</strong></td>
+                      <td>Train from scratch on your data</td>
+                      <td>Use pre-trained FMs; customize via prompts, RAG, or fine-tuning</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Data</strong></td>
+                      <td>Feature stores, labeled datasets</td>
+                      <td>Prompt templates, knowledge bases, vector stores</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Versioning</strong></td>
+                      <td>Model weights, training data versions</td>
+                      <td>Prompt versions, RAG index versions, model API versions</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Evaluation</strong></td>
+                      <td>Accuracy, precision, recall, F1 (deterministic)</td>
+                      <td>Relevance, groundedness, coherence, toxicity (non-deterministic)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Cost Model</strong></td>
+                      <td>Compute hours for training + inference instances</td>
+                      <td>Pay-per-token (input/output), prompt caching, model routing</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Risk</strong></td>
+                      <td>Bias in predictions, data drift</td>
+                      <td>Hallucinations, prompt injection, PII leakage, jailbreaks</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> The biggest shift is from <em>deterministic to non-deterministic</em> outputs. Say: <em>"In traditional ML, the same input always gives the same prediction. With LLMs, the same prompt can give different responses — which changes how we test, evaluate, and monitor."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== TOPIC 3: Prompt Management ====== -->
+          <article id="prompt-management" class="topic-card" data-difficulty="intermediate"
+            data-keywords="prompt versioning prompt registry prompt testing a/b testing prompt chains system instructions">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+                <span class="read-time">~3 min</span>
+              </div>
+              <h2>Prompt Management & Versioning</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Prompt Management as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" /></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>In LLMOps, prompts are code. They need the same rigor as application code — versioning, testing, review, and deployment pipelines.</p>
+
+                <h4>Enterprise Prompt Management Architecture</h4>
+                <ul>
+                  <li><strong>Prompt Registry</strong> — Centralized store for all prompt templates with version history. Like a Docker registry but for prompts. Tools: LangSmith, PromptLayer, custom DynamoDB-backed store.</li>
+                  <li><strong>Prompt Versioning</strong> — Every prompt change is versioned (v1.0, v1.1). Link prompt versions to evaluation results. Roll back to a previous prompt if quality drops.</li>
+                  <li><strong>Prompt Testing</strong> — Automated test suites that run against a set of golden examples. Compare new prompt output against expected responses using LLM-as-Judge or embedding similarity.</li>
+                  <li><strong>Prompt CI/CD</strong> — PR-based workflow: edit prompt → run eval suite → review results → merge → deploy. Treat prompt changes like code changes.</li>
+                  <li><strong>A/B Testing</strong> — Route a percentage of traffic to a new prompt version. Monitor quality metrics and token costs before full rollout.</li>
+                </ul>
+
+                <h4>Prompt Composition Patterns</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Pattern</th>
+                      <th>Description</th>
+                      <th>When to Use</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>System + User</strong></td>
+                      <td>System message sets persona/constraints; user message is the query</td>
+                      <td>Most applications — chatbots, Q&amp;A</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Chain of Prompts</strong></td>
+                      <td>Output of prompt A feeds into prompt B</td>
+                      <td>Complex workflows — extract → summarize → classify</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Dynamic Prompt Assembly</strong></td>
+                      <td>Build prompts at runtime by injecting RAG context, user history, tool schemas</td>
+                      <td>Agentic applications, personalized responses</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Meta-Prompting</strong></td>
+                      <td>Use an LLM to generate/optimize prompts for another LLM</td>
+                      <td>Automated prompt optimization at scale</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> Say: <em>"We version prompts in a registry, run automated evals on every change, and use A/B testing before full rollout. A single word change in a prompt can shift output quality dramatically — so we treat prompts with the same rigor as production code."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== TOPIC 4: LLM Observability ====== -->
+          <article id="llm-observability" class="topic-card" data-difficulty="intermediate"
+            data-keywords="observability monitoring tracing tokens latency cost tracking langfuse langsmith cloudwatch bedrock logging">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge intermediate">Intermediate</span>
+                <span class="read-time">~3 min</span>
+              </div>
+              <h2>LLM Observability & Cost Tracking</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark LLM Observability as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" /></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>LLM observability goes beyond traditional APM. You need to track prompt/response pairs, token consumption, latency per model, and quality over time.</p>
+
+                <h4>The 4 Pillars of LLM Observability</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Pillar</th>
+                      <th>What to Track</th>
+                      <th>Tools</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Tracing</strong></td>
+                      <td>End-to-end request flow: user query → RAG retrieval → LLM call → response. Trace each step with latency</td>
+                      <td>LangFuse, LangSmith, AWS X-Ray</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Metrics</strong></td>
+                      <td>Token usage (input/output), latency (P50/P95/P99), error rates, cache hit ratio, model availability</td>
+                      <td>CloudWatch, Prometheus, Datadog</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Logging</strong></td>
+                      <td>Prompt/response pairs (with PII redaction), model parameters (temperature, max_tokens), guardrail activations</td>
+                      <td>Bedrock Model Invocation Logging, S3, CloudWatch Logs</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Quality Signals</strong></td>
+                      <td>User feedback (thumbs up/down), automatic quality scoring, hallucination detection, guardrail trigger rate</td>
+                      <td>Custom pipelines, LLM-as-Judge, RAGAS</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h4>Cost Optimization Strategies</h4>
+                <ul>
+                  <li><strong>Prompt Caching</strong> — Cache repeated system prefixes and common prompts. Bedrock supports prompt caching for up to 90% cost reduction on cached portions.</li>
+                  <li><strong>Model Routing</strong> — Classify query complexity and route to the cheapest model that meets quality thresholds. Simple FAQ → Haiku ($0.25/M tokens), Complex reasoning → Sonnet ($3/M tokens).</li>
+                  <li><strong>Response Caching</strong> — Cache identical or semantically similar queries in ElastiCache/DynamoDB. Use embedding similarity to find near-duplicates.</li>
+                  <li><strong>Batch API</strong> — Use Bedrock Batch Inference for non-real-time workloads (reports, bulk processing) at 50% lower cost.</li>
+                  <li><strong>Token Optimization</strong> — Shorten prompts, compress RAG context, use structured output (JSON mode) to eliminate verbose responses.</li>
+                </ul>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> Say: <em>"I'd implement LLM-specific tracing with LangFuse to track end-to-end request flows, log all prompt/response pairs to S3 for audit, and build cost dashboards showing token usage per team, model, and feature. The key metric is cost-per-quality-response, not just cost-per-token."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== TOPIC 5: Guardrails & Governance ====== -->
+          <article id="llm-guardrails-governance" class="topic-card" data-difficulty="advanced"
+            data-keywords="guardrails governance responsible ai safety pii prompt injection jailbreak content filtering bedrock guardrails">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+                <span class="read-time">~4 min</span>
+              </div>
+              <h2>Guardrails & Enterprise AI Governance</h2>
+              <button class="review-btn" title="Mark as reviewed" aria-label="Mark Guardrails as reviewed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" /></svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>Enterprise LLM applications need multiple layers of safety controls. Guardrails protect against harmful outputs, data leakage, and off-topic responses.</p>
+
+                <h4>Defense-in-Depth: 5 Layers of LLM Safety</h4>
+                <table class="topic-table">
+                  <thead>
+                    <tr>
+                      <th>Layer</th>
+                      <th>Protection</th>
+                      <th>Implementation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>1. Input Validation</strong></td>
+                      <td>Prompt injection detection, input length limits, PII detection in user queries</td>
+                      <td>Bedrock Guardrails (input filters), custom regex, WAF rules on API Gateway</td>
+                    </tr>
+                    <tr>
+                      <td><strong>2. Model-Level</strong></td>
+                      <td>System instructions that constrain behavior, temperature settings, max_tokens limits</td>
+                      <td>System prompts with explicit boundaries, model parameter controls</td>
+                    </tr>
+                    <tr>
+                      <td><strong>3. Output Filtering</strong></td>
+                      <td>Content filtering (toxicity, harm), PII redaction in responses, topic denial</td>
+                      <td>Bedrock Guardrails (output filters), Comprehend PII detection</td>
+                    </tr>
+                    <tr>
+                      <td><strong>4. Grounding Checks</strong></td>
+                      <td>Verify responses are grounded in source documents (anti-hallucination)</td>
+                      <td>Bedrock Guardrails grounding check, citation validation, confidence scoring</td>
+                    </tr>
+                    <tr>
+                      <td><strong>5. Audit & Compliance</strong></td>
+                      <td>Full audit trail of all LLM interactions, access controls, data residency</td>
+                      <td>Bedrock Invocation Logging → S3, CloudTrail, IAM policies, VPC endpoints</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h4>Key Threat Vectors (Know These for Interviews)</h4>
+                <ul>
+                  <li><strong>Prompt Injection</strong> — Attacker embeds instructions in user input to override system behavior. Mitigation: input validation, separate system/user message channels, content classifiers.</li>
+                  <li><strong>Data Exfiltration</strong> — LLM leaks training data or RAG knowledge base content. Mitigation: output filtering, PII detection, access controls on knowledge bases.</li>
+                  <li><strong>Jailbreaking</strong> — User manipulates the model to bypass safety filters. Mitigation: multi-layer guardrails, adversarial testing, behavior monitoring.</li>
+                  <li><strong>Hallucination</strong> — Model generates plausible but false information. Mitigation: RAG grounding, citation requirements, confidence thresholds, human-in-the-loop for high-stakes decisions.</li>
+                </ul>
+
+                <h4>Governance Framework</h4>
+                <ul>
+                  <li><strong>Model Registry</strong> — Approved models with risk assessments. Only blessed models can be used in production.</li>
+                  <li><strong>Usage Policies</strong> — Per-team token budgets, approved use cases, data classification rules (what data can be sent to which model).</li>
+                  <li><strong>Red Team Testing</strong> — Regular adversarial testing of LLM applications before and after deployment.</li>
+                  <li><strong>Incident Response</strong> — Playbooks for guardrail failures, model degradation, cost spikes, and safety violations.</li>
+                </ul>
+
+                <div class="answer-block correct">
+                  <h4>🎯 Key Takeaway</h4>
+                  <p><strong>Interview tip:</strong> Say: <em>"I'd implement defense-in-depth with Bedrock Guardrails for input/output filtering, grounding checks to prevent hallucinations, VPC endpoints for network isolation, and full invocation logging to S3 for audit. The governance layer includes an approved model registry, per-team cost budgets, and quarterly red team exercises."</em></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ====== INTERVIEW QUESTIONS ====== -->
+          <article id="llmops-interview-questions" class="topic-card" data-difficulty="advanced"
+            data-keywords="interview questions llmops lifecycle deployment monitoring guardrails cost prompt management">
+            <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
+              <div class="topic-meta">
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <h2>Interview Questions — LLMOps</h2>
+              <button class="review-btn" title="Mark as reviewed"
+                aria-label="Mark Interview Questions as reviewed"><svg width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg></button>
+              <span class="expand-icon" aria-hidden="true"></span>
+            </div>
+            <div class="topic-card-body">
+              <div class="topic-body">
+                <p>LLMOps questions test your ability to operationalize AI applications at scale — not just build demos, but run them reliably, safely, and cost-effectively in production.</p>
+                <div class="iq-controls">
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.add('open'))">Show All Answers</button>
+                                    <button type="button" class="iq-ctrl-btn" onclick="this.closest('.topic-body').querySelectorAll('.iq-item').forEach(i=>i.classList.remove('open'))">Hide All</button>
+                                </div>
+                                <ol class="iq-list">
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">How does LLMOps differ from traditional MLOps? Your team has experience with SageMaker ML pipelines. What new processes do they need for an LLM-powered application?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Key differences: prompt management replaces feature engineering, non-deterministic evaluation replaces accuracy metrics, token costs replace compute-hour costs, guardrails replace bias detection. New processes: prompt versioning/registry, LLM-specific evals (groundedness, coherence), token budget tracking, guardrail configuration, and red team testing.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design a prompt management system for an enterprise with 15 teams building LLM applications. How do you handle versioning, testing, and deployment of prompts?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Central prompt registry (DynamoDB + S3) with Git-based versioning. Each team owns their prompts but follows a shared standard. PR-based workflow: edit prompt → automated eval suite runs against golden test cases → LLM-as-Judge scoring → review → merge → gradual rollout (canary). Include rollback capability. Store prompt metadata: version, author, eval scores, linked model version.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your LLM application costs $25,000/month. The CFO says it must be under $10,000. What are your top 5 cost reduction strategies without significantly degrading quality?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">1) Model routing — use smaller model (Haiku) for 70-80% of simple queries. 2) Prompt caching — cache system prefixes. 3) Semantic response caching — cache similar queries in ElastiCache using embedding similarity. 4) Prompt optimization — shorter prompts = fewer tokens. 5) Batch API for non-real-time workloads (50% cheaper). Measure cost-per-quality-response, not just total spend.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">How do you evaluate the quality of an LLM application before deploying a new prompt or model version? What metrics do you track and how do you automate the evaluation?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Metrics: relevance, groundedness, coherence, completeness, toxicity, latency, token cost. Automation: golden test dataset (100+ input/expected-output pairs), LLM-as-Judge (use a stronger model to evaluate), RAGAS for RAG-specific metrics. Run evals in CI pipeline on every prompt change. Gate: new version must score >= current version minus threshold. Human eval for edge cases.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">A security team reports that users are successfully performing prompt injection attacks on your customer-facing chatbot. It's leaking internal knowledge base content. How do you fix this?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Immediate: enable Bedrock Guardrails input filtering for prompt injection patterns, add output filtering to detect leaked internal content. Architecture: separate system/user message channels, use a classifier model to detect malicious intent before sending to the main LLM. Long-term: red team testing, adversarial prompt dataset, rate limiting per user, logging suspicious patterns, access controls on RAG knowledge base segments.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design an observability stack for an LLM application that processes 50,000 requests/day. What do you monitor, alert on, and how do you detect model degradation?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Tracing: LangFuse for end-to-end request tracing (query → RAG → LLM → response). Metrics: token usage, P95 latency, error rate, guardrail trigger rate, user feedback score. Alerts: latency spike >3s, error rate >5%, cost exceeding daily budget, guardrail trigger spike. Degradation detection: daily automated eval against golden dataset, track user thumbs-down trend, embedding drift on RAG queries. Log all prompt/response pairs to S3 (PII-redacted).</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Your company wants to use LLMs but is in a regulated industry (banking). The compliance team requires full audit trails and data residency. How do you architect this?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Bedrock with VPC endpoints (no public internet). Enable Model Invocation Logging → S3 (encrypted with KMS, lifecycle policies for retention). IAM policies restricting which models and features each team can access. Bedrock Guardrails for PII detection/redaction on input and output. Data residency: select Bedrock region matching compliance requirements. CloudTrail for API-level audit. Approved model registry — only compliant models allowed. Regular compliance reports from logged data.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Anthropic releases a new Claude model version. How do you safely migrate your production application from the current model version to the new one?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Never swap models in production without testing. Steps: 1) Run full eval suite against new model with existing prompts. 2) Compare quality scores, latency, and cost vs current model. 3) Check if prompts need adjustment for new model behavior. 4) Shadow mode: run both models in parallel, compare outputs. 5) Canary deployment: route 5% of traffic to new model, monitor quality/cost. 6) Gradual rollout with automatic rollback on quality regression.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">Design a multi-model LLMOps architecture where you use different models for different tasks. How do you manage the complexity of multiple models, prompts, and evaluations?</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Model routing layer (Lambda + Step Functions): classify intent → route to optimal model. Prompt registry: separate prompt templates per model (each model responds differently to the same prompt). Per-model eval suites: each model has its own golden test dataset. Unified observability: single dashboard tracking cost, quality, latency across all models. Fallback chains: primary model → secondary → tertiary. Config-driven: model selection rules in DynamoDB, changeable without code deploy.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="iq-item">
+                                        <div class="iq-question" tabindex="0" role="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+                                            <span class="iq-num"></span>
+                                            <span class="iq-text">What does a production-ready LLM CI/CD pipeline look like? Walk through the stages from code commit to production deployment for an LLM-powered application.</span>
+                                            <span class="iq-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                                        </div>
+                                        <div class="iq-answer">
+                                            <div class="iq-answer-inner">
+                                                <div class="iq-answer-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Answer Guide</div>
+                                                <div class="iq-answer-text">Stages: 1) Code lint + unit tests. 2) Prompt eval suite — run changed prompts against golden dataset, LLM-as-Judge scoring. 3) Integration tests — end-to-end with RAG, guardrails, caching. 4) Security scan — prompt injection test suite, PII leak detection. 5) Cost estimation — calculate expected token cost delta. 6) Staging deployment with shadow mode. 7) Canary to production (5% → 25% → 100%). Gate: quality score must be >= current baseline. Automated rollback on quality regression or cost spike.</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ol>
+                <div class="answer-block correct">
+                  <h4>Preparation Strategy</h4>
+                  <p>LLMOps interviews test <strong>production maturity with AI systems</strong>. Show that you understand the unique challenges of LLMs: non-deterministic outputs, token economics, prompt drift, safety risks, and the need for continuous evaluation. Don't just describe tools — explain your operational philosophy for running AI reliably at scale.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div><!-- .content-panel -->
+      </div><!-- .content-split -->
+    </main>
+  </div>
+
+  <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18" />
+    </svg>
+  </button>
+
+  <!-- Scroll to top -->
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 15l-6-6-6 6" />
+    </svg>
+  </button>
+
+  <script src="js/page.js"></script>
+</body>
+
+</html>
