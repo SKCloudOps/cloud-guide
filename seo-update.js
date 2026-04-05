@@ -119,11 +119,54 @@ const seoData = {
         description: 'AWS streaming and real-time analytics guide for architect interviews. Kinesis Data Streams, MSK (Kafka), event-driven patterns, and real-time data processing architectures.',
         keywords: 'AWS Kinesis, Amazon MSK, real-time streaming, event-driven architecture, Kafka on AWS, data streaming, real-time analytics AWS',
         canonical: 'streaming.html'
+    },
+    'aws-compute.html': {
+        title: 'AWS Compute Services Decision Guide | EC2 vs ECS vs EKS vs Lambda - Interview Prep',
+        description: 'Visual decision guide for selecting the right AWS compute service. Compare EC2, ECS, EKS, Lambda, and Fargate across cost, scaling, control, and ops overhead with clear decision trees.',
+        keywords: 'AWS compute services, EC2 vs Lambda, ECS vs EKS, Fargate, compute decision guide, AWS architecture decision, serverless vs containers, AWS compute comparison',
+        canonical: 'aws-compute.html'
+    },
+    'aws-security-flow.html': {
+        title: 'AWS Security Architecture Reference | IAM, WAF, GuardDuty, KMS - Interview Prep',
+        description: 'Comprehensive AWS security architecture reference. Covers IAM identity flows, WAF & Shield DDoS protection, GuardDuty threat detection, KMS encryption, and end-to-end security patterns.',
+        keywords: 'AWS security architecture, IAM identity flow, AWS WAF, GuardDuty, KMS encryption, security reference, AWS Shield, cloud security patterns, DevSecOps AWS',
+        canonical: 'aws-security-flow.html'
+    },
+    'compute-aws.html': {
+        title: 'AWS Compute Selection Guide | EC2, ECS, EKS, Lambda Decision Framework',
+        description: 'Step-by-step AWS compute selection decision guide. Choose between EC2, ECS, EKS, Lambda, and App Runner with trade-off analysis, cost considerations, and real-world use cases.',
+        keywords: 'AWS compute selection, EC2 decision guide, ECS EKS Lambda comparison, Fargate vs EC2, App Runner, compute trade-offs, cloud architecture AWS',
+        canonical: 'compute-aws.html'
+    },
+    'ms.html': {
+        title: 'DevOps Architect Masterstroke Reference | CI/CD, Kubernetes, IaC - Interview Prep',
+        description: 'Complete DevOps architect interview reference. Covers CI/CD pipeline design, Kubernetes architecture, Terraform IaC, monitoring & observability, GitOps, and enterprise DevOps patterns.',
+        keywords: 'DevOps architect interview, CI/CD pipeline, Kubernetes architecture, Terraform, GitOps, DevOps interview reference, observability, platform engineering, IaC',
+        canonical: 'ms.html'
+    },
+    'qa.html': {
+        title: 'DevOps Interview Q&A | Complete Knowledge Base - Dark Theme',
+        description: '200+ DevOps and cloud architect interview questions with detailed answers. Covers CI/CD, Kubernetes, AWS, Terraform, Docker, monitoring, security, and system design scenarios.',
+        keywords: 'DevOps interview questions answers, cloud architect Q&A, Kubernetes interview, CI/CD questions, Terraform interview, Docker interview, AWS interview knowledge base',
+        canonical: 'qa.html'
+    },
+    'qa2.html': {
+        title: 'DevOps Interview Q&A | Complete Knowledge Base - Light Theme',
+        description: '200+ DevOps and cloud architect interview questions with detailed answers. Covers CI/CD, Kubernetes, AWS, Terraform, Docker, monitoring, security, and system design scenarios.',
+        keywords: 'DevOps interview questions answers, cloud architect Q&A, Kubernetes interview, CI/CD questions, Terraform interview, Docker interview, AWS interview knowledge base',
+        canonical: 'qa2.html'
+    },
+    'qa3.html': {
+        title: 'DevOps Interview Q&A Extended | Advanced Cloud Architecture Questions',
+        description: 'Extended DevOps and cloud architect Q&A covering advanced topics. Deep dives into microservices patterns, event-driven architectures, multi-region strategies, FinOps, and staff-level interview scenarios.',
+        keywords: 'advanced DevOps interview questions, cloud architect Q&A advanced, microservices interview, multi-region architecture, FinOps interview, staff engineer interview, extended Q&A',
+        canonical: 'qa3.html'
     }
 };
 
+const SKIP_FILES = new Set(['src.html', 'patch.html']);
 const files = fs.readdirSync(__dirname)
-    .filter(f => f.endsWith('.html') && f !== 'src.html');
+    .filter(f => f.endsWith('.html') && !SKIP_FILES.has(f));
 
 console.log('SEO update for', files.length, 'files');
 
