@@ -766,7 +766,7 @@ table.w3-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
     </div>
     <div class="sj-module-row" onclick="goto('practice')">
       <div class="sj-module-num" id="mn-practice">9</div>
-      <div class="sj-module-body"><div class="sj-module-title">Practice Questions (30)</div><div class="sj-module-desc">Scenario-grounded questions with explained answers across all 5 domains</div></div>
+      <div class="sj-module-body"><div class="sj-module-title">Practice Questions (35)</div><div class="sj-module-desc">Scenario-grounded questions with explained answers across all 5 domains</div></div>
       <div class="sj-module-right"><div class="sj-module-pct">—</div><div class="sj-module-status" id="ms-practice">Not started</div></div>
     </div>
     <div class="sj-module-row" onclick="goto('studyplan')">
@@ -1994,7 +1994,7 @@ const gapQuestions = [
     opts:['context: current \u2014 so analysis results are visible in the ongoing session','context: fork \u2014 creates an isolated copy so analysis cannot pollute the main session','context: shared \u2014 allows bi-directional context flow','Run with --headless to bypass session management entirely'],
     ans:1, why:'fork creates a completely isolated session copy. Analysis results do not pollute the main conversation, and changes do not affect the parent session.', p:'fork = isolated session copy. Use for CI/CD, parallel tasks, risky ops. Changes do NOT propagate to parent.' },
 ];
-questions.push(...gapQuestions);
+questionsData.push(...gapQuestions);
 
 const studyPlan = [
   { week:1, days:[
