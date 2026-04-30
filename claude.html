@@ -1973,7 +1973,7 @@ const questionsData = [
     ans:2, why:'429 is rate_limit_error — the ONE 4xx error that IS retryable. Exponential backoff with jitter prevents thundering herd. A (immediate retry) will hit the same limit. B is wrong — 429 is the exception to the "4xx = don\'t retry" rule. D doesn\'t solve the root cause.', p:'429 is the exception: it IS retryable with exponential backoff. All other 4xx errors (400, 401, 403, 404) are NOT retryable.' },
   { d:'d4', diff:'I', q:'You want Claude to think through a complex multi-step problem before answering. Which configuration is correct?',
     opts:['Set temperature to 0 and increase max_tokens','Add \"Think step by step\" to the system prompt','Enable extended thinking with thinking: {\"type\": \"enabled\", \"budget_tokens\": 10000}','Use tool_choice: \"any\" with a thinking tool'],
-    ans:2, why:'Extended thinking provides a dedicated internal scratchpad for reasoning. \"Think step by step\" (B) is a prompt technique but doesn\\'t allocate dedicated reasoning tokens. Temperature 0 (A) affects randomness, not depth. D is architecturally wrong.', p:'Extended thinking = dedicated reasoning budget. budget_tokens must be ≥ 1,024. Thinking tokens are billed at output rate.' },
+    ans:2, why:'Extended thinking provides a dedicated internal scratchpad for reasoning. \"Think step by step\" (B) is a prompt technique but doesn\'t allocate dedicated reasoning tokens. Temperature 0 (A) affects randomness, not depth. D is architecturally wrong.', p:'Extended thinking = dedicated reasoning budget. budget_tokens must be ≥ 1,024. Thinking tokens are billed at output rate.' },
 ];
 
 // === NEW: Anti-patterns, Guardrails, Observability, Sessions ===
