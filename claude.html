@@ -1,0 +1,2109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCA-F Prep | Claude Certified Architect — Foundations</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Anthropic brand palette */
+  --ant-coral:   #CF6A4C;
+  --ant-coral-dk:#b85a3e;
+  --ant-coral-lt:#fdf1ec;
+  --ant-beige:   #F5F0E8;
+  --ant-dark:    #1A1A1A;
+  --ant-charcoal:#2D2D2D;
+  --ant-gray:    #F7F7F5;
+  --ant-border:  #E5E5E0;
+  --ant-muted:   #888880;
+  --ant-text:    #333330;
+  --ant-white:   #FFFFFF;
+  --ant-green:   #2D7D5A;
+  --ant-green-lt:#EAF4EE;
+
+  /* W3 code colors */
+  --code-bg: #1E1E1E;
+
+  --header-h: 56px;
+  --sidebar-w: 300px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Source Sans 3', sans-serif; background: var(--ant-white); color: var(--ant-text); font-size: 15px; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+
+/* ══ SKILLJAR TOP HEADER ══════════════════════════════════ */
+#sj-header {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--header-h);
+  background: var(--ant-white); border-bottom: 1px solid var(--ant-border);
+  display: flex; align-items: center; z-index: 400;
+}
+.sjh-logo-zone {
+  width: var(--sidebar-w); min-width: var(--sidebar-w);
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 20px; border-right: 1px solid var(--ant-border);
+  height: 100%;
+}
+.sjh-logo {
+  font-size: 15px; font-weight: 700; color: var(--ant-dark);
+  letter-spacing: -0.3px; line-height: 1.2;
+}
+.sjh-logo span { color: var(--ant-coral); }
+.sjh-logo small { display: block; font-size: 10px; font-weight: 400; color: var(--ant-muted); letter-spacing: 0.3px; text-transform: uppercase; margin-top: 1px; }
+.sjh-content {
+  flex: 1; display: flex; align-items: center;
+  padding: 0 28px; gap: 20px;
+}
+.sjh-course-title {
+  font-size: 14px; font-weight: 600; color: var(--ant-dark);
+}
+.sjh-progress-zone {
+  margin-left: auto; display: flex; align-items: center; gap: 12px;
+}
+.sjh-pct { font-size: 13px; color: var(--ant-muted); white-space: nowrap; }
+.sjh-pct b { color: var(--ant-coral); }
+.sjh-bar-wrap { width: 140px; height: 6px; background: var(--ant-border); border-radius: 3px; overflow: hidden; }
+.sjh-bar-fill { height: 100%; background: var(--ant-coral); border-radius: 3px; transition: width 0.4s; }
+.sjh-score { font-size: 12px; color: var(--ant-muted); background: var(--ant-gray); border: 1px solid var(--ant-border); padding: 3px 10px; border-radius: 12px; white-space: nowrap; }
+.sjh-score b { color: var(--ant-green); }
+
+/* ══ SKILLJAR LEFT SIDEBAR ════════════════════════════════ */
+#sj-sidebar {
+  position: fixed; top: var(--header-h); left: 0;
+  width: var(--sidebar-w); height: calc(100vh - var(--header-h));
+  background: var(--ant-white); border-right: 1px solid var(--ant-border);
+  overflow-y: auto; z-index: 300;
+  display: flex; flex-direction: column;
+}
+#sj-sidebar::-webkit-scrollbar { width: 3px; }
+#sj-sidebar::-webkit-scrollbar-thumb { background: var(--ant-border); }
+
+/* Course title block at top of sidebar */
+.sj-course-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--ant-border);
+  background: var(--ant-gray);
+}
+.sj-course-name { font-size: 13px; font-weight: 700; color: var(--ant-dark); margin-bottom: 3px; }
+.sj-course-meta { font-size: 11px; color: var(--ant-muted); }
+
+/* Section group — collapsible */
+.sj-section { border-bottom: 1px solid var(--ant-border); }
+.sj-section-head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 18px; cursor: pointer;
+  background: var(--ant-white); transition: background 0.12s;
+  user-select: none;
+}
+.sj-section-head:hover { background: var(--ant-gray); }
+.sj-section-head.open { background: var(--ant-gray); }
+.sj-section-chevron {
+  width: 16px; height: 16px; flex-shrink: 0;
+  border: 1.5px solid var(--ant-muted); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; color: var(--ant-muted);
+  transition: transform 0.2s;
+}
+.sj-section-head.open .sj-section-chevron { transform: rotate(90deg); }
+.sj-section-label { font-size: 12px; font-weight: 700; color: var(--ant-charcoal); text-transform: uppercase; letter-spacing: 0.6px; flex: 1; }
+.sj-section-count { font-size: 11px; color: var(--ant-muted); }
+.sj-lessons { display: none; }
+.sj-lessons.open { display: block; }
+
+/* Individual lesson row */
+.sj-lesson {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 18px 9px 20px; cursor: pointer;
+  transition: background 0.1s; text-decoration: none;
+  border-left: 3px solid transparent;
+  background: var(--ant-white);
+}
+.sj-lesson:hover { background: var(--ant-coral-lt); }
+.sj-lesson.active {
+  background: var(--ant-coral-lt);
+  border-left-color: var(--ant-coral);
+}
+.sj-lesson-icon {
+  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+  border: 1.5px solid var(--ant-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: var(--ant-muted); background: var(--ant-white);
+}
+.sj-lesson.active .sj-lesson-icon {
+  background: var(--ant-coral); border-color: var(--ant-coral); color: white;
+}
+.sj-lesson.done .sj-lesson-icon {
+  background: var(--ant-green); border-color: var(--ant-green); color: white;
+  font-size: 11px;
+}
+.sj-lesson-text { flex: 1; }
+.sj-lesson-title { font-size: 13px; color: var(--ant-dark); line-height: 1.35; }
+.sj-lesson.active .sj-lesson-title { font-weight: 600; color: var(--ant-coral-dk); }
+.sj-lesson.done .sj-lesson-title { color: var(--ant-muted); }
+.sj-lesson-sub { font-size: 11px; color: var(--ant-muted); margin-top: 1px; }
+.sj-lesson-dur { font-size: 10px; color: var(--ant-muted); flex-shrink: 0; }
+
+/* ══ MAIN CONTENT AREA ════════════════════════════════════ */
+#sj-main {
+  margin-left: var(--sidebar-w);
+  padding-top: var(--header-h);
+  min-height: 100vh;
+  background: var(--ant-white);
+}
+
+/* Page hero — Skilljar style course banner */
+.page-hero {
+  background: var(--ant-beige);
+  padding: 32px 48px 28px;
+  border-bottom: 1px solid var(--ant-border);
+}
+.breadcrumb { font-size: 12px; color: var(--ant-muted); margin-bottom: 8px; }
+.breadcrumb span { color: var(--ant-coral); cursor: pointer; }
+.breadcrumb span:hover { text-decoration: underline; }
+.page-hero h1 { font-size: 24px; font-weight: 700; color: var(--ant-dark); margin-bottom: 6px; line-height: 1.3; }
+.page-hero p { font-size: 14px; color: #555; max-width: 680px; line-height: 1.65; }
+.hero-tags { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+.hero-tag {
+  font-size: 11px; padding: 3px 10px; border-radius: 12px;
+  background: var(--ant-white); border: 1px solid var(--ant-border); color: var(--ant-muted);
+}
+.hero-tag.highlight { background: var(--ant-coral-lt); border-color: #f0c4b4; color: var(--ant-coral-dk); font-weight: 600; }
+
+/* ══ COURSE HOME ══════════════════════════════════════════ */
+.sj-home-hero {
+  background: linear-gradient(135deg, #2D2D2D 0%, #1A1A1A 100%);
+  padding: 48px 48px 40px;
+  color: white;
+}
+.sj-home-hero .cert-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(207,106,76,0.2); border: 1px solid rgba(207,106,76,0.4);
+  color: #f5a88a; font-size: 11px; padding: 3px 10px; border-radius: 12px;
+  margin-bottom: 14px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+}
+.sj-home-hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 10px; line-height: 1.3; }
+.sj-home-hero p { font-size: 14px; color: #aaa; max-width: 600px; line-height: 1.65; margin-bottom: 20px; }
+.sj-home-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+.sj-stat { }
+.sj-stat .sv { font-size: 22px; font-weight: 700; color: var(--ant-coral); font-family: 'Source Code Pro', monospace; }
+.sj-stat .sl { font-size: 11px; color: #888; margin-top: 1px; }
+.sj-start-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--ant-coral); color: white; border: none;
+  padding: 11px 24px; border-radius: 4px; font-size: 14px; font-weight: 600;
+  cursor: pointer; margin-top: 24px; font-family: 'Source Sans 3', sans-serif;
+  transition: background 0.15s;
+}
+.sj-start-btn:hover { background: var(--ant-coral-dk); }
+
+/* Module list on home */
+.sj-module-list { padding: 0 48px 48px; }
+.sj-module-list h2 {
+  font-size: 18px; font-weight: 700; color: var(--ant-dark);
+  padding: 28px 0 16px;
+  border-bottom: 1px solid var(--ant-border); margin-bottom: 0;
+}
+.sj-module-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 0; border-bottom: 1px solid var(--ant-border);
+  cursor: pointer; transition: all 0.1s;
+}
+.sj-module-row:hover .sj-module-title { color: var(--ant-coral); }
+.sj-module-num {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--ant-gray); border: 1.5px solid var(--ant-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--ant-muted); flex-shrink: 0;
+}
+.sj-module-row.done .sj-module-num {
+  background: var(--ant-green-lt); border-color: var(--ant-green); color: var(--ant-green);
+}
+.sj-module-body { flex: 1; }
+.sj-module-title { font-size: 14px; font-weight: 600; color: var(--ant-dark); margin-bottom: 2px; transition: color 0.1s; }
+.sj-module-desc { font-size: 12.5px; color: var(--ant-muted); }
+.sj-module-right { text-align: right; flex-shrink: 0; }
+.sj-module-pct {
+  font-family: 'Source Code Pro', monospace; font-size: 13px;
+  color: var(--ant-coral); font-weight: 700;
+}
+.sj-module-status { font-size: 11px; color: var(--ant-muted); margin-top: 2px; }
+.sj-module-status.done { color: var(--ant-green); }
+
+/* Progress bar on home */
+.sj-progress-block {
+  background: var(--ant-gray); border-bottom: 1px solid var(--ant-border);
+  padding: 16px 48px;
+  display: flex; align-items: center; gap: 20px;
+}
+.spb-label { font-size: 13px; color: var(--ant-muted); white-space: nowrap; }
+.spb-bar { flex: 1; height: 8px; background: var(--ant-border); border-radius: 4px; overflow: hidden; }
+.spb-fill { height: 100%; background: var(--ant-coral); border-radius: 4px; transition: width 0.4s; }
+.spb-pct { font-size: 13px; font-weight: 700; color: var(--ant-coral); font-family: 'Source Code Pro', monospace; white-space: nowrap; }
+
+/* ══ W3-STYLE CONTENT ═════════════════════════════════════ */
+.w3-content { padding: 0 48px 64px; max-width: 880px; }
+.w3-content h2 {
+  font-size: 21px; font-weight: 700; color: var(--ant-dark);
+  margin: 36px 0 12px; padding-bottom: 8px;
+  border-bottom: 2px solid var(--ant-coral);
+}
+.w3-content h3 {
+  font-size: 15px; font-weight: 700; color: var(--ant-dark); margin: 20px 0 8px;
+}
+.w3-content p { font-size: 14px; line-height: 1.75; margin-bottom: 12px; color: var(--ant-text); }
+.w3-content ul, .w3-content ol { padding-left: 22px; margin-bottom: 16px; }
+.w3-content li { font-size: 14px; line-height: 1.7; margin-bottom: 4px; }
+.w3-content code {
+  font-family: 'Source Code Pro', monospace; font-size: 12.5px;
+  background: var(--ant-gray); border: 1px solid var(--ant-border);
+  padding: 1px 5px; border-radius: 3px; color: #c0392b;
+}
+
+/* Code blocks */
+.w3-code-wrap { margin: 14px 0 20px; }
+.w3-code-header {
+  background: #333; color: #bbb; padding: 7px 14px;
+  font-family: 'Source Code Pro', monospace; font-size: 11px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-radius: 4px 4px 0 0;
+}
+.w3-code-header .lang { color: var(--ant-coral); font-weight: 600; }
+.copy-btn {
+  background: transparent; border: 1px solid #555; color: #999;
+  padding: 2px 8px; border-radius: 3px; font-size: 10px; cursor: pointer;
+  font-family: 'Source Code Pro', monospace; transition: all 0.15s;
+}
+.copy-btn:hover { border-color: var(--ant-coral); color: var(--ant-coral); }
+pre.w3-pre {
+  background: var(--code-bg); color: #d4d4d4;
+  padding: 16px 18px; margin: 0; overflow-x: auto;
+  font-family: 'Source Code Pro', monospace; font-size: 12.5px;
+  line-height: 1.7; border-radius: 0 0 4px 4px;
+  border: 1px solid #333; border-top: none;
+}
+.kw { color: #569cd6; } .st { color: #ce9178; } .cm { color: #6a9955; font-style: italic; }
+.fn { color: #dcdcaa; } .num { color: #b5cea8; } .key { color: #9cdcfe; }
+
+/* Callout boxes */
+.w3-note, .w3-warning, .w3-tip {
+  padding: 12px 16px; margin: 12px 0 16px; border-left: 4px solid;
+  border-radius: 0 4px 4px 0; font-size: 13.5px; line-height: 1.65;
+}
+.w3-note { background: #f0f7ff; border-color: #2196f3; }
+.w3-note::before { content: 'Note: '; font-weight: 700; color: #1565c0; }
+.w3-warning { background: #fffbf0; border-color: #f59e0b; }
+.w3-warning::before { content: '⚠ Warning: '; font-weight: 700; color: #92400e; }
+.w3-tip { background: var(--ant-coral-lt); border-color: var(--ant-coral); }
+.w3-tip::before { content: '⚡ Key: '; font-weight: 700; color: var(--ant-coral-dk); }
+
+/* Tables */
+.w3-table-wrap { overflow-x: auto; margin: 14px 0 20px; }
+table.w3-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.w3-table thead tr { background: var(--ant-dark); color: white; }
+.w3-table thead th { padding: 10px 14px; text-align: left; font-weight: 600; font-size: 12px; }
+.w3-table tbody tr:nth-child(even) { background: var(--ant-gray); }
+.w3-table tbody tr:hover { background: var(--ant-coral-lt); }
+.w3-table tbody td { padding: 9px 14px; border-bottom: 1px solid var(--ant-border); line-height: 1.5; }
+.w3-table tbody td:first-child { font-family: 'Source Code Pro', monospace; font-size: 12px; color: #c0392b; }
+
+/* Domain badge */
+.domain-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--ant-dark); color: white;
+  padding: 5px 14px; border-radius: 3px; font-size: 12px; font-weight: 600;
+  margin-bottom: 20px;
+}
+.domain-label .dl-pct { color: var(--ant-coral); margin-left: 6px; font-family: 'Source Code Pro', monospace; }
+
+/* Complete + Next buttons */
+.sk-complete-btn {
+  width: 100%; background: var(--ant-coral); color: white; border: none;
+  padding: 12px 24px; border-radius: 4px; font-size: 14px; font-weight: 600;
+  cursor: pointer; margin: 28px 0 8px; font-family: 'Source Sans 3', sans-serif;
+  transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.sk-complete-btn:hover { background: var(--ant-coral-dk); }
+.sk-complete-btn.done { background: var(--ant-green); cursor: default; }
+.sk-next-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--ant-dark); color: white; border: none;
+  padding: 10px 22px; border-radius: 4px; font-size: 13px; font-weight: 600;
+  cursor: pointer; margin-bottom: 48px; font-family: 'Source Sans 3', sans-serif;
+  transition: background 0.15s;
+}
+.sk-next-btn:hover { background: var(--ant-charcoal); }
+
+/* Practice questions */
+.filter-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.f-btn {
+  background: var(--ant-white); border: 1px solid var(--ant-border); color: var(--ant-muted);
+  padding: 5px 14px; border-radius: 16px; font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all 0.12s; font-family: 'Source Sans 3', sans-serif;
+}
+.f-btn:hover { border-color: var(--ant-coral); color: var(--ant-coral-dk); }
+.f-btn.active { background: var(--ant-coral); border-color: var(--ant-coral); color: white; }
+.tryit-wrap { margin: 0 0 12px; border: 1px solid var(--ant-border); border-radius: 6px; overflow: hidden; }
+.tryit-header {
+  background: var(--ant-dark); color: white; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between; font-size: 13px;
+}
+.th-title { font-weight: 600; }
+.th-diff { font-size: 9px; padding: 2px 7px; border-radius: 3px; font-family: 'Source Code Pro', monospace; letter-spacing: 0.5px; }
+.diff-F { background: rgba(45,125,90,0.3); color: #7effc0; }
+.diff-I { background: rgba(245,166,35,0.25); color: #ffd580; }
+.diff-E { background: rgba(207,106,76,0.3); color: #ffb89a; }
+.tryit-body { background: var(--ant-gray); padding: 16px; }
+.tryit-q { font-size: 14px; font-weight: 600; color: var(--ant-dark); margin-bottom: 14px; line-height: 1.55; }
+.tryit-opt {
+  display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; border-radius: 4px;
+  margin-bottom: 7px; border: 1px solid var(--ant-border); cursor: pointer;
+  background: white; font-size: 13.5px; line-height: 1.5; transition: all 0.12s;
+}
+.tryit-opt:hover { border-color: var(--ant-coral); background: var(--ant-coral-lt); }
+.tryit-opt.selected { border-color: #2196f3; background: #f0f7ff; }
+.tryit-opt.correct { border-color: var(--ant-green); background: var(--ant-green-lt); }
+.tryit-opt.wrong { border-color: #e53935; background: #ffebee; }
+.opt-radio {
+  width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--ant-border);
+  flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center;
+}
+.tryit-opt.selected .opt-radio { border-color: #2196f3; background: #2196f3; }
+.tryit-opt.correct .opt-radio { border-color: var(--ant-green); background: var(--ant-green); }
+.tryit-opt.wrong .opt-radio { border-color: #e53935; background: #e53935; }
+.opt-radio::after { content:''; width:6px; height:6px; border-radius:50%; background:white; display:none; }
+.tryit-opt.selected .opt-radio::after, .tryit-opt.correct .opt-radio::after, .tryit-opt.wrong .opt-radio::after { display:block; }
+.submit-btn {
+  background: var(--ant-coral); color: white; border: none;
+  padding: 9px 22px; border-radius: 4px; font-size: 13px; font-weight: 600;
+  cursor: pointer; margin-top: 10px; transition: background 0.15s; font-family: 'Source Sans 3', sans-serif;
+}
+.submit-btn:hover { background: var(--ant-coral-dk); }
+.submit-btn:disabled { background: #ccc; cursor: default; }
+.explanation-box { margin-top: 12px; padding: 12px 14px; border-radius: 4px; font-size: 13px; line-height: 1.65; display: none; }
+.explanation-box.show { display: block; }
+.explanation-box.ok { background: var(--ant-green-lt); border-left: 4px solid var(--ant-green); }
+.explanation-box.bad { background: #ffebee; border-left: 4px solid #e53935; }
+.exp-verdict { font-weight: 700; margin-bottom: 6px; }
+.exp-verdict.ok { color: var(--ant-green); }
+.exp-verdict.bad { color: #c62828; }
+.exp-principle { margin-top: 8px; font-style: italic; color: var(--ant-coral-dk); font-size: 12.5px; }
+
+/* Scenarios */
+.scenario-card { border: 1px solid var(--ant-border); border-radius: 6px; overflow: hidden; margin-bottom: 16px; }
+.sc-head { background: var(--ant-dark); color: white; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; }
+.sc-num { font-size: 10px; font-family: 'Source Code Pro', monospace; color: #f5a88a; letter-spacing: 1px; }
+.sc-title { font-size: 15px; font-weight: 700; }
+.sc-freq { font-size: 10px; background: var(--ant-coral); color: white; padding: 2px 8px; border-radius: 10px; }
+.sc-body { padding: 16px 18px; background: white; }
+.sc-desc { font-size: 13.5px; line-height: 1.65; margin-bottom: 12px; }
+.sc-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.sc-tool { font-family: 'Source Code Pro', monospace; font-size: 11px; background: var(--ant-gray); border: 1px solid var(--ant-border); padding: 2px 8px; border-radius: 3px; color: #c0392b; }
+.sc-traps { background: #fffbf0; border-left: 3px solid #f59e0b; padding: 10px 14px; border-radius: 0 4px 4px 0; font-size: 13px; }
+.sc-traps strong { display: block; margin-bottom: 6px; color: #92400e; }
+.sc-traps li { margin-bottom: 4px; }
+.sc-focus { margin-top: 10px; font-size: 12.5px; color: var(--ant-muted); font-style: italic; }
+
+/* Cheatsheet */
+.cs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cs-card { border: 1px solid var(--ant-border); border-radius: 4px; overflow: hidden; }
+.cs-head { background: var(--ant-dark); color: var(--ant-coral); padding: 8px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; font-family: 'Source Code Pro', monospace; text-transform: uppercase; }
+.cs-row { display: flex; border-bottom: 1px solid var(--ant-border); font-size: 13px; }
+.cs-row:last-child { border-bottom: none; }
+.cs-row:nth-child(even) { background: var(--ant-gray); }
+.cs-k { font-family: 'Source Code Pro', monospace; font-size: 11.5px; color: #c0392b; padding: 7px 12px; min-width: 110px; flex-shrink: 0; border-right: 1px solid var(--ant-border); font-weight: 600; }
+.cs-v { padding: 7px 12px; color: var(--ant-text); line-height: 1.5; }
+
+/* Study plan */
+.week-header { background: var(--ant-dark); color: white; padding: 12px 18px; border-radius: 4px 4px 0 0; display: flex; align-items: center; gap: 14px; margin-top: 24px; }
+.wk-badge { font-family: 'Source Code Pro', monospace; font-size: 20px; color: var(--ant-coral); }
+.wk-title { font-size: 15px; font-weight: 700; }
+.day-card { border: 1px solid var(--ant-border); border-top: none; background: white; }
+.day-card:last-child { border-radius: 0 0 4px 4px; }
+.day-head { background: var(--ant-gray); padding: 9px 18px; display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13px; font-weight: 600; border-top: 1px solid var(--ant-border); }
+.day-tag { font-family: 'Source Code Pro', monospace; font-size: 10px; background: var(--ant-dark); color: var(--ant-coral); padding: 2px 8px; border-radius: 2px; }
+.day-tasks { padding: 12px 18px 14px; display: none; }
+.day-tasks.open { display: block; }
+.day-task { display: flex; align-items: flex-start; gap: 8px; padding: 4px 0; font-size: 13.5px; border-bottom: 1px solid #f0f0f0; }
+.day-task:last-child { border-bottom: none; }
+.day-task input { accent-color: var(--ant-coral); margin-top: 3px; flex-shrink: 0; }
+
+/* Resources */
+.res-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 12px 0 20px; }
+.res-table tr { border-bottom: 1px solid var(--ant-border); }
+.res-table tr:hover { background: var(--ant-coral-lt); }
+.res-table td { padding: 9px 14px; }
+.res-table td:first-child { font-weight: 600; color: var(--ant-dark); width: 40%; }
+.res-table td:last-child { font-family: 'Source Code Pro', monospace; font-size: 11.5px; color: #1a73e8; }
+
+/* Lesson nav prev/next footer */
+.lesson-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 48px 32px; border-top: 1px solid var(--ant-border); margin-top: 8px;
+  background: var(--ant-gray);
+}
+.lf-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: white; border: 1px solid var(--ant-border);
+  padding: 8px 18px; border-radius: 4px; font-size: 13px; font-weight: 600;
+  cursor: pointer; color: var(--ant-dark); font-family: 'Source Sans 3', sans-serif;
+  transition: all 0.12s;
+}
+.lf-btn:hover { border-color: var(--ant-coral); color: var(--ant-coral-dk); }
+.lf-btn.primary { background: var(--ant-coral); color: white; border-color: var(--ant-coral); }
+.lf-btn.primary:hover { background: var(--ant-coral-dk); }
+
+/* Pages */
+.page { display: none; }
+.page.active { display: block; }
+
+@media (max-width: 860px) {
+  #sj-sidebar { display: none; }
+  #sj-main { margin-left: 0; }
+  .w3-content { padding: 0 16px 40px; }
+  .page-hero { padding: 24px 16px; }
+  .cs-grid { grid-template-columns: 1fr; }
+  .sj-module-list { padding: 0 16px 32px; }
+  .sj-progress-block { padding: 16px; }
+  .sj-home-hero { padding: 32px 16px; }
+  .lesson-footer { padding: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ SKILLJAR TOP HEADER ══════════════════════════════════════════════════ -->
+<header id="sj-header">
+  <div class="sjh-logo-zone">
+    <div>
+      <div class="sjh-logo">Anthropic <span>Academy</span><small>Claude Certified Architect</small></div>
+    </div>
+  </div>
+  <div class="sjh-content">
+    <div class="sjh-course-title">CCA-F — Foundations Exam Prep</div>
+    <div class="sjh-progress-zone">
+      <div class="sjh-score">Practice: <b id="tb-score">0/0</b></div>
+      <div class="sjh-pct"><b id="prog-pct">0</b>% complete</div>
+      <div class="sjh-bar-wrap"><div class="sjh-bar-fill" id="course-progress" style="width:0%"></div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ══ SKILLJAR LEFT SIDEBAR ════════════════════════════════════════════════ -->
+<aside id="sj-sidebar">
+  <div class="sj-course-header">
+    <div class="sj-course-name">Claude Certified Architect</div>
+    <div class="sj-course-meta">Foundations (CCA-F) &nbsp;·&nbsp; 11 lessons &nbsp;·&nbsp; Free</div>
+  </div>
+
+  <!-- Section: Getting Started -->
+  <div class="sj-section">
+    <div class="sj-section-head open" onclick="toggleSection(this)">
+      <div class="sj-section-chevron">▶</div>
+      <div class="sj-section-label">Getting Started</div>
+      <div class="sj-section-count">2 lessons</div>
+    </div>
+    <div class="sj-lessons open">
+      <div class="sj-lesson active" data-page="home" onclick="goto('home')">
+        <div class="sj-lesson-icon">⊙</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Course Overview</div>
+          <div class="sj-lesson-sub">Modules, progress, Skilljar links</div>
+        </div>
+        <div class="sj-lesson-dur">~5 min</div>
+      </div>
+      <div class="sj-lesson" data-page="overview" onclick="goto('overview')">
+        <div class="sj-lesson-icon">1</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Exam Overview & Format</div>
+          <div class="sj-lesson-sub">60 Qs · 120 min · Score 720+</div>
+        </div>
+        <div class="sj-lesson-dur">~10 min</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Exam Domains -->
+  <div class="sj-section">
+    <div class="sj-section-head open" onclick="toggleSection(this)">
+      <div class="sj-section-chevron">▶</div>
+      <div class="sj-section-label">Exam Domains</div>
+      <div class="sj-section-count">5 lessons</div>
+    </div>
+    <div class="sj-lessons open">
+      <div class="sj-lesson" data-page="d1" onclick="goto('d1')">
+        <div class="sj-lesson-icon">2</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Agent Architecture</div>
+          <div class="sj-lesson-sub">stop_reason · hooks · subagents</div>
+        </div>
+        <div class="sj-lesson-dur">27%</div>
+      </div>
+      <div class="sj-lesson" data-page="d2" onclick="goto('d2')">
+        <div class="sj-lesson-icon">3</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Tool Design & MCP</div>
+          <div class="sj-lesson-sub">tool_choice · tools vs resources</div>
+        </div>
+        <div class="sj-lesson-dur">18%</div>
+      </div>
+      <div class="sj-lesson" data-page="d3" onclick="goto('d3')">
+        <div class="sj-lesson-icon">4</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Claude Code</div>
+          <div class="sj-lesson-sub">CLAUDE.md · skills · CI/CD</div>
+        </div>
+        <div class="sj-lesson-dur">20%</div>
+      </div>
+      <div class="sj-lesson" data-page="d4" onclick="goto('d4')">
+        <div class="sj-lesson-icon">5</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Prompt Engineering</div>
+          <div class="sj-lesson-sub">validation · retry · few-shot</div>
+        </div>
+        <div class="sj-lesson-dur">20%</div>
+      </div>
+      <div class="sj-lesson" data-page="d5" onclick="goto('d5')">
+        <div class="sj-lesson-icon">6</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Context & Reliability</div>
+          <div class="sj-lesson-sub">lost-in-middle · trimming</div>
+        </div>
+        <div class="sj-lesson-dur">15%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Reference -->
+  <div class="sj-section">
+    <div class="sj-section-head open" onclick="toggleSection(this)">
+      <div class="sj-section-chevron">▶</div>
+      <div class="sj-section-label">Reference & Practice</div>
+      <div class="sj-section-count">4 lessons</div>
+    </div>
+    <div class="sj-lessons open">
+      <div class="sj-lesson" data-page="scenarios" onclick="goto('scenarios')">
+        <div class="sj-lesson-icon">7</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">6 Exam Scenarios</div>
+          <div class="sj-lesson-sub">Architecture · traps · focus areas</div>
+        </div>
+        <div class="sj-lesson-dur">~20 min</div>
+      </div>
+      <div class="sj-lesson" data-page="cheatsheet" onclick="goto('cheatsheet')">
+        <div class="sj-lesson-icon">8</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Cheat Sheet</div>
+          <div class="sj-lesson-sub">Quick reference before exam day</div>
+        </div>
+        <div class="sj-lesson-dur">~5 min</div>
+      </div>
+      <div class="sj-lesson" data-page="practice" onclick="goto('practice')">
+        <div class="sj-lesson-icon">9</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Practice Questions (25)</div>
+          <div class="sj-lesson-sub">All 5 domains · full explanations</div>
+        </div>
+        <div class="sj-lesson-dur">~45 min</div>
+      </div>
+      <div class="sj-lesson" data-page="studyplan" onclick="goto('studyplan')">
+        <div class="sj-lesson-icon">10</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">2-Week Study Plan</div>
+          <div class="sj-lesson-sub">Daily hands-on tasks + checklist</div>
+        </div>
+        <div class="sj-lesson-dur">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Advanced API Features -->
+  <div class="sj-section">
+    <div class="sj-section-head open" onclick="toggleSection(this)">
+      <div class="sj-section-chevron">▶</div>
+      <div class="sj-section-label">Advanced API Features</div>
+      <div class="sj-section-count">6 lessons</div>
+    </div>
+    <div class="sj-lessons open">
+      <div class="sj-lesson" data-page="extended" onclick="goto('extended')">
+        <div class="sj-lesson-icon">A1</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Extended Thinking</div>
+          <div class="sj-lesson-sub">budget_tokens · tool use · streaming</div>
+        </div>
+        <div class="sj-lesson-dur">~10 min</div>
+      </div>
+      <div class="sj-lesson" data-page="models" onclick="goto('models')">
+        <div class="sj-lesson-icon">A2</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Model Selection & Tiers</div>
+          <div class="sj-lesson-sub">Opus · Sonnet · Haiku tradeoffs</div>
+        </div>
+        <div class="sj-lesson-dur">~8 min</div>
+      </div>
+      <div class="sj-lesson" data-page="streaming" onclick="goto('streaming')">
+        <div class="sj-lesson-icon">A3</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Streaming & Batch API</div>
+          <div class="sj-lesson-sub">Real-time vs async · 50% cost saving</div>
+        </div>
+        <div class="sj-lesson-dur">~10 min</div>
+      </div>
+      <div class="sj-lesson" data-page="caching" onclick="goto('caching')">
+        <div class="sj-lesson-icon">A4</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Prompt Caching</div>
+          <div class="sj-lesson-sub">90% cost reduction · cache_control</div>
+        </div>
+        <div class="sj-lesson-dur">~8 min</div>
+      </div>
+      <div class="sj-lesson" data-page="errors" onclick="goto('errors')">
+        <div class="sj-lesson-icon">A5</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Error Handling & Rate Limits</div>
+          <div class="sj-lesson-sub">429 · 529 · backoff · token budget</div>
+        </div>
+        <div class="sj-lesson-dur">~10 min</div>
+      </div>
+      <div class="sj-lesson" data-page="computer" onclick="goto('computer')">
+        <div class="sj-lesson-icon">A6</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Computer Use</div>
+          <div class="sj-lesson-sub">GUI interaction · sandbox · tools</div>
+        </div>
+        <div class="sj-lesson-dur">~6 min</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Resources -->
+  <div class="sj-section">
+    <div class="sj-section-head" onclick="toggleSection(this)">
+      <div class="sj-section-chevron">▶</div>
+      <div class="sj-section-label">Resources</div>
+      <div class="sj-section-count">1 lesson</div>
+    </div>
+    <div class="sj-lessons">
+      <div class="sj-lesson" data-page="resources" onclick="goto('resources')">
+        <div class="sj-lesson-icon">11</div>
+        <div class="sj-lesson-text">
+          <div class="sj-lesson-title">Links & Official Docs</div>
+          <div class="sj-lesson-sub">Skilljar, SDK, Claude Code, MCP</div>
+        </div>
+        <div class="sj-lesson-dur">—</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══ MAIN CONTENT ══════════════════════════════════════════════════════════ -->
+<main id="sj-main">
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="sj-home-hero">
+    <div class="cert-badge">🎓 Certification Prep</div>
+    <h1>Claude Certified Architect — Foundations</h1>
+    <p>Complete exam preparation covering all 5 domains, 6 production scenarios, 25 practice questions, and a hands-on 2-week study plan. Scenario-grounded architectural judgment — not API trivia.</p>
+    <div class="sj-home-stats">
+      <div class="sj-stat"><div class="sv">60</div><div class="sl">Questions</div></div>
+      <div class="sj-stat"><div class="sv">120</div><div class="sl">Minutes</div></div>
+      <div class="sj-stat"><div class="sv">720</div><div class="sl">Passing Score</div></div>
+      <div class="sj-stat"><div class="sv">$99</div><div class="sl">USD</div></div>
+      <div class="sj-stat"><div class="sv">4/6</div><div class="sl">Scenarios Selected</div></div>
+    </div>
+    <button class="sj-start-btn" onclick="goto('overview')">Start Course →</button>
+  </div>
+
+  <div class="sj-progress-block">
+    <div class="spb-label">Your progress</div>
+    <div class="spb-bar"><div class="spb-fill" id="home-progress-fill" style="width:0%"></div></div>
+    <div class="spb-pct"><span id="home-prog-pct">0</span>% complete</div>
+  </div>
+
+  <div class="sj-module-list">
+    <h2>Course Content</h2>
+    <div class="sj-module-row" onclick="goto('overview')">
+      <div class="sj-module-num" id="mn-overview">1</div>
+      <div class="sj-module-body"><div class="sj-module-title">Exam Overview & Format</div><div class="sj-module-desc">Exam specs, domain weights, scoring, candidate profile, 6 mental models</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">—</div><div class="sj-module-status" id="ms-overview">Not started</div></div>
+    </div>
+    <div class="sj-module-row" onclick="goto('d1')">
+      <div class="sj-module-num" id="mn-d1">2</div>
+      <div class="sj-module-body"><div class="sj-module-title">Domain 1 — Agent Architecture & Orchestration</div><div class="sj-module-desc">Agentic loop, stop_reason, hooks, multi-agent patterns, escalation design</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">27%</div><div class="sj-module-status" id="ms-d1">Not started</div></div>
+    </div>
+    <div class="sj-module-row" onclick="goto('d2')">
+      <div class="sj-module-num" id="mn-d2">3</div>
+      <div class="sj-module-body"><div class="sj-module-title">Domain 2 — Tool Design & MCP Integration</div><div class="sj-module-desc">Tool descriptions as routing logic, tool_choice, MCP tools vs resources, transport</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">18%</div><div class="sj-module-status" id="ms-d2">Not started</div></div>
+    </div>
+    <div class="sj-module-row" onclick="goto('d3')">
+      <div class="sj-module-num" id="mn-d3">4</div>
+      <div class="sj-module-body"><div class="sj-module-title">Domain 3 — Claude Code Configuration & Workflows</div><div class="sj-module-desc">CLAUDE.md hierarchy, .claude/rules/, Agent Skills, CI/CD headless mode</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">20%</div><div class="sj-module-status" id="ms-d3">Not started</div></div>
+    </div>
+    <div class="sj-module-row" onclick="goto('d4')">
+      <div class="sj-module-num" id="mn-d4">5</div>
+      <div class="sj-module-body"><div class="sj-module-title">Domain 4 — Prompt Engineering & Structured Output</div><div class="sj-module-desc">3-layer validation, retry-with-feedback, few-shot vs schema selection</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">20%</div><div class="sj-module-status" id="ms-d4">Not started</div></div>
+    </div>
+    <div class="sj-module-row" onclick="goto('d5')">
+      <div class="sj-module-num" id="mn-d5">6</div>
+      <div class="sj-module-body"><div class="sj-module-title">Domain 5 — Context Management & Reliability</div><div class="sj-module-desc">Lost-in-middle effect, progressive summarization pitfalls, tool output trimming</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">15%</div><div class="sj-module-status" id="ms-d5">Not started</div></div>
+    </div>
+    <div class="sj-module-row" onclick="goto('scenarios')">
+      <div class="sj-module-num" id="mn-scenarios">7</div>
+      <div class="sj-module-body"><div class="sj-module-title">6 Exam Scenarios</div><div class="sj-module-desc">Deep dive on all 6 production scenarios — architecture, traps, focus areas</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">—</div><div class="sj-module-status" id="ms-scenarios">Not started</div></div>
+    </div>
+    <div class="sj-module-row" onclick="goto('cheatsheet')">
+      <div class="sj-module-num" id="mn-cheatsheet">8</div>
+      <div class="sj-module-body"><div class="sj-module-title">Quick Reference Cheat Sheet</div><div class="sj-module-desc">All key terms, patterns, and rules for exam day</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">—</div><div class="sj-module-status" id="ms-cheatsheet">Not started</div></div>
+    </div>
+    <div class="sj-module-row" onclick="goto('practice')">
+      <div class="sj-module-num" id="mn-practice">9</div>
+      <div class="sj-module-body"><div class="sj-module-title">Practice Questions (25)</div><div class="sj-module-desc">Scenario-grounded questions with explained answers across all 5 domains</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">—</div><div class="sj-module-status" id="ms-practice">Not started</div></div>
+    </div>
+    <div class="sj-module-row" onclick="goto('studyplan')">
+      <div class="sj-module-num" id="mn-studyplan">10</div>
+      <div class="sj-module-body"><div class="sj-module-title">2-Week Study Plan</div><div class="sj-module-desc">Daily hands-on tasks from API fundamentals to exam-ready judgment</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">—</div><div class="sj-module-status" id="ms-studyplan">Not started</div></div>
+    </div>    <div class="sj-module-row" onclick="goto('extended')">
+      <div class="sj-module-num" id="mn-extended">A1</div>
+      <div class="sj-module-body"><div class="sj-module-title">Extended Thinking</div><div class="sj-module-desc">budget_tokens, thinking blocks, tool use interaction, streaming incompatibility</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">—</div><div class="sj-module-status" id="ms-extended">Not started</div></div>
+    </div>
+    <div class="sj-module-row" onclick="goto('models')">
+      <div class="sj-module-num" id="mn-models">A2</div>
+      <div class="sj-module-body"><div class="sj-module-title">Model Selection & Tiers</div><div class="sj-module-desc">Opus vs Sonnet vs Haiku — cost, capability, context window, when to use each</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">—</div><div class="sj-module-status" id="ms-models">Not started</div></div>
+    </div>
+    <div class="sj-module-row" onclick="goto('streaming')">
+      <div class="sj-module-num" id="mn-streaming">A3</div>
+      <div class="sj-module-body"><div class="sj-module-title">Streaming & Batch API</div><div class="sj-module-desc">Streaming with tool use, Batch API 50% discount, when to use each</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">—</div><div class="sj-module-status" id="ms-streaming">Not started</div></div>
+    </div>
+    <div class="sj-module-row" onclick="goto('caching')">
+      <div class="sj-module-num" id="mn-caching">A4</div>
+      <div class="sj-module-body"><div class="sj-module-title">Prompt Caching</div><div class="sj-module-desc">cache_control, 90% cost reduction on cache hits, what to cache, position rules</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">—</div><div class="sj-module-status" id="ms-caching">Not started</div></div>
+    </div>
+    <div class="sj-module-row" onclick="goto('errors')">
+      <div class="sj-module-num" id="mn-errors">A5</div>
+      <div class="sj-module-body"><div class="sj-module-title">Error Handling & Rate Limits</div><div class="sj-module-desc">HTTP error codes, exponential backoff, 429 vs 529, proactive token counting</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">—</div><div class="sj-module-status" id="ms-errors">Not started</div></div>
+    </div>
+    <div class="sj-module-row" onclick="goto('computer')">
+      <div class="sj-module-num" id="mn-computer">A6</div>
+      <div class="sj-module-body"><div class="sj-module-title">Computer Use</div><div class="sj-module-desc">GUI interaction tools, sandbox requirements, agentic loop mechanics</div></div>
+      <div class="sj-module-right"><div class="sj-module-pct">—</div><div class="sj-module-status" id="ms-computer">Not started</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: OVERVIEW ═══════ -->
+<div class="page" id="page-overview">
+  <div class="page-hero"><div class="breadcrumb">Course Home › Exam Overview</div><h1>Section 1: Exam Overview & Format</h1><p>Everything you need to know before booking. Scenario-grounded, architectural decision-making — not API trivia.</p></div>
+  <div class="w3-content">
+    <h2>Exam Specifications</h2>
+    <div class="w3-table-wrap"><table class="w3-table"><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody>
+      <tr><td>question_type</td><td>Multiple choice — 1 correct out of 4 options</td></tr>
+      <tr><td>num_questions</td><td>60 questions</td></tr>
+      <tr><td>duration</td><td>120 minutes</td></tr>
+      <tr><td>passing_score</td><td>720 (scaled score 100–1,000)</td></tr>
+      <tr><td>guessing_penalty</td><td>None — always answer every question</td></tr>
+      <tr><td>exam_fee</td><td>USD $99</td></tr>
+      <tr><td>delivery</td><td>Online proctored OR testing center</td></tr>
+      <tr><td>language</td><td>English</td></tr>
+      <tr><td>scenario_structure</td><td>4 of 6 scenarios randomly selected; all questions anchored to those 4</td></tr>
+      <tr><td>access</td><td>Via Claude Partner Network (free to join)</td></tr>
+    </tbody></table></div>
+
+    <h2>Domain Weight Breakdown</h2>
+    <div class="w3-table-wrap"><table class="w3-table"><thead><tr><th>Domain</th><th style="text-align:center">Weight</th><th>Core Technologies</th></tr></thead><tbody>
+      <tr><td style="font-family:inherit;color:inherit;font-weight:700">Agent Architecture & Orchestration</td><td class="pct">27%</td><td>Claude Agent SDK, stop_reason, hooks, subagents</td></tr>
+      <tr><td style="font-family:inherit;color:inherit;font-weight:700">Claude Code Configuration</td><td class="pct">20%</td><td>CLAUDE.md, .claude/rules/, skills, CI/CD headless</td></tr>
+      <tr><td style="font-family:inherit;color:inherit;font-weight:700">Prompt Engineering & Structured Output</td><td class="pct">20%</td><td>JSON Schema, few-shot, validation retry loops</td></tr>
+      <tr><td style="font-family:inherit;color:inherit;font-weight:700">Tool Design & MCP Integration</td><td class="pct">18%</td><td>MCP tools/resources, tool descriptions, transport</td></tr>
+      <tr><td style="font-family:inherit;color:inherit;font-weight:700">Context Management & Reliability</td><td class="pct">15%</td><td>Lost-in-middle, summarization, context trimming</td></tr>
+    </tbody></table></div>
+
+    <h2>6 Critical Mental Models</h2>
+    <p>The CCA-F exam is not a memorization test. It is a judgment test — every question gives you a realistic scenario and asks you to make the correct architectural decision. The four answer options are designed so that two or three look plausible if you understand the concept loosely. The following six principles are what separates the correct answer from the "almost right" distractors. Know them without hesitation.</p>
+    <div class="w3-tip">These 6 principles are tested across all domains. Know them without hesitation.</div>
+    <ol>
+      <li><strong>stop_reason drives everything</strong> — <code>tool_use</code> = execute & loop; <code>end_turn</code> = done; <code>max_tokens</code> = truncated</li>
+      <li><strong>Tool descriptions ARE selection logic</strong> — vague descriptions cause wrong tool calls, always</li>
+      <li><strong>No shared memory between subagents</strong> — every subagent needs ALL context explicitly in its prompt</li>
+      <li><strong>Lost-in-the-middle is real</strong> — put critical context at START or END of long inputs</li>
+      <li><strong>CLAUDE.md is hierarchical</strong> — user → project → directory; more specific = higher priority</li>
+      <li><strong>Programmatic > prompt enforcement</strong> — use PostToolUse hooks, not instructions, for hard business limits</li>
+    </ol>
+    <button class="sk-complete-btn" id="btn-overview" onclick="markDone('overview')">✓ Mark Section Complete</button>
+    <button class="sk-next-btn" onclick="goto('d1')">Next: Domain 1 — Agent Architecture →</button>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: DOMAIN 1 ═══════ -->
+<div class="page" id="page-d1">
+  <div class="page-hero"><div class="breadcrumb">Course Home › Domain 1</div><h1>Domain 1: Agent Architecture & Orchestration</h1><p>The highest-weight domain. Master the agentic loop, lifecycle hooks, multi-agent patterns, and escalation design.</p></div>
+  <div class="w3-content">
+    <div class="domain-label">DOMAIN 1 <span class="dl-pct">27% of exam</span></div>
+
+    <h2>The Agentic Loop — stop_reason</h2>
+    <p>Every Claude API response includes a <code>stop_reason</code> field. Your entire agent loop is driven by this single value. Know all four without hesitation.</p>
+    <div class="w3-table-wrap"><table class="w3-table"><thead><tr><th>stop_reason</th><th>Meaning</th><th>Agent Action</th></tr></thead><tbody>
+      <tr><td>end_turn</td><td>Model finished response</td><td>Return result to user — loop ends</td></tr>
+      <tr><td>tool_use</td><td>Model wants to call a tool</td><td>Execute tool → append tool_result → call API again</td></tr>
+      <tr><td>max_tokens</td><td>Token limit reached</td><td>Response truncated — increase max_tokens or chunk input</td></tr>
+      <tr><td>stop_sequence</td><td>Hit a custom stop string</td><td>Handle per your application logic</td></tr>
+    </tbody></table></div>
+
+    <h3>Understanding stop_reason in depth</h3>
+    <p><strong>end_turn</strong> means the model has finished its response naturally. There is nothing more for it to do — this is the signal to surface the result to the user and exit the loop. This is the "happy path" termination condition.</p>
+    <p><strong>tool_use</strong> means the model has decided it needs external information or needs to take an action before it can continue. It has paused mid-reasoning to request a tool call. Your job is to execute that tool, package the result as a <code>tool_result</code> content block, append it to the messages array, and call the API again. The model will then resume from where it paused.</p>
+    <p><strong>max_tokens</strong> is a failure mode — the response was cut off because it hit your <code>max_tokens</code> limit before the model finished. This is not a normal exit. You either need to increase <code>max_tokens</code>, chunk your input, or compress context history.</p>
+    <p><strong>stop_sequence</strong> fires when the model generates a string you pre-defined as a termination signal. This is used in custom parsing scenarios where you want the model to stop at a specific output marker rather than at natural completion.</p>
+    <h3>Example: The Canonical Agentic Loop</h3>
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">Python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre"><span class="cm"># The correct agentic loop — driven entirely by stop_reason</span>
+messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
+<span class="kw">while</span> True:
+    response = client.messages.create(
+        model=<span class="st">"claude-sonnet-4-6"</span>, messages=messages, tools=tools
+    )
+
+    <span class="kw">if</span> response.stop_reason == <span class="st">"end_turn"</span>:
+        <span class="kw">return</span> response.content[<span class="num">0</span>].text  <span class="cm"># ✓ Done</span>
+
+    <span class="kw">elif</span> response.stop_reason == <span class="st">"tool_use"</span>:
+        tool_call = <span class="fn">extract_tool_use</span>(response.content)
+        result = <span class="fn">execute_tool</span>(tool_call.name, tool_call.input)
+        messages.append({"role": <span class="st">"assistant"</span>, "content": response.content})
+        messages.append({"role": <span class="st">"user"</span>, "content": [<span class="fn">tool_result_block</span>(result)]})
+        <span class="cm"># Loop — model continues from here</span>
+
+    <span class="kw">elif</span> response.stop_reason == <span class="st">"max_tokens"</span>:
+        <span class="kw">raise</span> TokenLimitError(<span class="st">"Increase max_tokens or chunk input"</span>)</pre>
+    </div>
+
+    <h2>Lifecycle Hooks — Programmatic Enforcement</h2>
+    <p>Hooks intercept execution at key points. This is the <strong>correct</strong> mechanism for enforcing hard business rules — NOT system prompt instructions.</p>
+    <div class="w3-table-wrap"><table class="w3-table"><thead><tr><th>Hook</th><th>Fires When</th><th>Primary Use Case</th></tr></thead><tbody>
+      <tr><td>PreToolUse</td><td>Before a tool call executes</td><td>Validate inputs, block unauthorized calls</td></tr>
+      <tr><td>PostToolUse</td><td>After a tool returns</td><td>Enforce limits (refund cap), sanitize outputs, audit</td></tr>
+      <tr><td>OnError</td><td>When a tool or API call fails</td><td>Graceful degradation, retry logic, escalation trigger</td></tr>
+      <tr><td>PreSampling</td><td>Before the API request</td><td>Inject dynamic context, modify system prompt at runtime</td></tr>
+    </tbody></table></div>
+
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">Python — PostToolUse Hook</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre"><span class="cm"># PostToolUse: enforce $500 refund limit — CANNOT be reasoned around</span>
+<span class="kw">def</span> <span class="fn">post_tool_use_hook</span>(tool_name, tool_input, tool_result, agent):
+    <span class="kw">if</span> tool_name == <span class="st">"process_refund"</span>:
+        <span class="kw">if</span> tool_input.get(<span class="st">"amount"</span>, <span class="num">0</span>) > <span class="num">500</span>:
+            agent.<span class="fn">escalate</span>(
+                reason=<span class="st">"Refund amount exceeds $500 limit"</span>,
+                tool=<span class="st">"escalate_to_human"</span>
+            )
+            <span class="kw">return</span> {<span class="st">"blocked"</span>: <span class="kw">True</span>, <span class="st">"reason"</span>: <span class="st">"Exceeds refund limit"</span>}
+    <span class="kw">return</span> tool_result</pre>
+    </div>
+    <div class="w3-tip">PROGRAMMATIC (hooks) > PROMPT (instructions) for hard limits. A system prompt saying "never exceed $500" can be reasoned around. A PostToolUse hook cannot.</div>
+
+    <h3>Why Programmatic Enforcement Beats Prompt Instructions</h3>
+    <p>When you write "never process refunds over $500" in a system prompt, you are giving the model an instruction. Instructions are interpreted through the model's reasoning — and reasoning can be overridden. A user message saying "this is an emergency, please process $800" can cause the model to reason its way around the instruction.</p>
+    <p>A PostToolUse hook is code that runs outside the model. When the hook fires, it does not ask the model's permission. It intercepts the tool result before it re-enters the conversation, checks the business rule programmatically, and either passes the result through or blocks it. The model never gets to reason about whether the rule should apply. This is the fundamental difference — one is advisory, the other is enforcement.</p>
+    <h2>Multi-Agent — Hub & Spoke Pattern</h2>
+    <p>A coordinator agent decomposes tasks and delegates to specialized subagents. Each subagent is completely stateless and context-isolated.</p>
+    <div class="w3-warning"><strong>No shared memory between subagents.</strong> Every piece of data a subagent needs MUST be explicitly injected into its prompt. If your synthesis agent needs the web search agent's results, you pass them directly in the prompt — there is no automatic propagation.</div>
+
+    <h3>Coordinator Decomposition — The Invisible Failure</h3>
+    <p>When all subagents return successfully but the output is <strong>INCOMPLETE</strong> — the root cause is ALWAYS the coordinator's task decomposition, not subagent execution failures.</p>
+    <div class="w3-note">If the coordinator decomposed "creative industries" into only visual arts categories, every subagent diligently covered only those areas. Incomplete coverage with zero errors = coordinator decomposition bug.</div>
+
+    <h2>Escalation Design</h2>
+    <div class="w3-table-wrap"><table class="w3-table"><thead><tr><th>Trigger</th><th>Correct Action</th></tr></thead><tbody>
+      <tr><td>escalate_explicit</td><td>Customer explicitly requests human → escalate IMMEDIATELY, no alternatives</td></tr>
+      <tr><td>escalate_policy</td><td>Policy conflict / ambiguous authorization → escalate BEFORE acting</td></tr>
+      <tr><td>escalate_retry_limit</td><td>Retry limit reached (e.g. 3 failures) → escalate with full error context</td></tr>
+      <tr><td>escalate_high_value</td><td>High-value / irreversible action → confirm with human first</td></tr>
+    </tbody></table></div>
+
+    <button class="sk-complete-btn" id="btn-d1" onclick="markDone('d1')">✓ Mark Domain 1 Complete</button>
+    <button class="sk-next-btn" onclick="goto('d2')">Next: Domain 2 — Tool Design & MCP →</button>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: DOMAIN 2 ═══════ -->
+<div class="page" id="page-d2">
+  <div class="page-hero"><div class="breadcrumb">Course Home › Domain 2</div><h1>Domain 2: Tool Design & MCP Integration</h1><p>Tool descriptions as routing logic, the tool_choice parameter, MCP architecture — tools vs resources, transport mechanisms.</p></div>
+  <div class="w3-content">
+    <div class="domain-label">DOMAIN 2 <span class="dl-pct">18% of exam</span></div>
+
+    <h2>Tool Descriptions — Your Routing Logic</h2>
+    <p>Before the model decides what to say or do next, it reads all the tool descriptions you have provided. The description is not a label — it is the entire basis on which the model decides whether this tool applies to the current situation. Think of each tool description as a contract: it tells the model exactly when to call this tool, what to pass in, and what to expect back.</p>
+    <p>The model selects tools based on their descriptions. Vague descriptions cause wrong tool calls — consistently, not occasionally.</p>
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">JSON — Bad vs Good Tool Description</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre"><span class="cm">// ❌ BAD — too vague, causes wrong selection when similar tools exist</span>
+{
+  "name": "analyze_contract",
+  "description": "Analyzes the provided text and returns insights."
+}
+
+<span class="cm">// ✅ GOOD — specific, differentiating, tells model when NOT to use it</span>
+{
+  "name": "analyze_contract",
+  "description": "Analyzes structured contract documents (PDF/DOCX).
+    Returns extracted clauses, parties, dates, and obligations as JSON.
+    Use ONLY for legal/contractual documents. For general text, use
+    analyze_content instead. Input: base64-encoded document.
+    Output: {clauses:[...], parties:[...], effective_date:ISO8601}"
+}</pre>
+    </div>
+    <div class="w3-tip">A complete tool description includes: WHAT it does, WHAT it returns (specific fields), input formats with examples, edge cases, and when NOT to use it vs similar tools.</div>
+
+    <h2>The tool_choice Parameter</h2>
+    <p>By default the model decides whether to call a tool or respond with text — this is <code>"auto"</code>. But there are two situations where you need to override this. First, when you need to guarantee that the model calls <em>some</em> tool (use <code>"any"</code>) — this is the strongest way to enforce structured output because the model cannot produce a plain text response. Second, when you need to guarantee the model calls a <em>specific</em> tool as the first step of a pipeline (use <code>{"type":"tool","name":"X"}</code>) — this ensures your pipeline always starts with metadata extraction, or authentication, or whatever mandatory first step your architecture requires.</p>
+    <div class="w3-table-wrap"><table class="w3-table"><thead><tr><th>Value</th><th>Behavior</th><th>When to Use</th></tr></thead><tbody>
+      <tr><td>{"type":"auto"}</td><td>Model decides tool vs text</td><td>Default — most conversational and agentic flows</td></tr>
+      <tr><td>{"type":"any"}</td><td>Model MUST call SOME tool</td><td>Force structured output; guarantee a tool call happens</td></tr>
+      <tr><td>{"type":"tool","name":"X"}</td><td>Model MUST call tool X specifically</td><td>Force a specific first step in a pipeline</td></tr>
+    </tbody></table></div>
+    <div class="w3-note">Use <code>{"type":"tool","name":"extract_metadata"}</code> to force a mandatory pipeline first step. After receiving the result, switch back to <code>"auto"</code> for remaining steps.</div>
+
+    <h2>MCP — Model Context Protocol</h2>
+    <p>MCP is an open standard that defines how AI models connect to external tools and data sources. Think of it as a universal adapter — instead of building a custom integration for every service, you build one MCP server and any MCP-compatible model can use it.</p>
+    <p>The core mental model: an MCP server exposes <strong>Tools</strong> (things to do — functions the model can invoke), <strong>Resources</strong> (things to read — data the model can pull in as context), and <strong>Prompts</strong> (reusable prompt templates). The transport layer handles communication: <strong>stdio</strong> for local servers running in the same process, <strong>SSE</strong> (Server-Sent Events) for remote servers over HTTP.</p>
+    <p><strong>Sampling</strong> is the most subtle MCP primitive — it allows the MCP server itself to request a Claude completion. This enables server-side AI logic: for example, a document analysis MCP server can use sampling to have Claude summarize a chunk before returning it to the main agent. The server becomes an active participant in the AI pipeline, not just a passive tool provider.</p>
+    <div class="w3-table-wrap"><table class="w3-table"><thead><tr><th>Concept</th><th>Definition & Key Details</th></tr></thead><tbody>
+      <tr><td>Tools</td><td>Executable functions Claude can call — read, write, compute, call APIs. Like REST endpoints.</td></tr>
+      <tr><td>Resources</td><td>Data sources Claude can read — files, database records, API responses. Like a file browser for context.</td></tr>
+      <tr><td>Sampling</td><td>MCP servers can request Claude completions back. Enables server-side AI-triggered logic flows.</td></tr>
+      <tr><td>stdio</td><td>Local process transport — used for same-machine MCP servers.</td></tr>
+      <tr><td>SSE</td><td>HTTP Server-Sent Events — used for remote MCP servers over the network.</td></tr>
+      <tr><td>--mcp-scope local</td><td>Config applies to current project only (.claude/.mcp.json)</td></tr>
+      <tr><td>--mcp-scope user</td><td>Config applies globally to all projects for this user</td></tr>
+    </tbody></table></div>
+    <div class="w3-tip">Tools = things to DO. Resources = data to READ. Design MCP servers accordingly — actions in tools, contextual lookup data in resources.</div>
+
+    <h2>Structured Error Responses</h2>
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">Python — MCP Tool Error Structure</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre"><span class="cm"># Structure errors for intelligent coordinator recovery</span>
+<span class="kw">return</span> {
+    <span class="key">"isError"</span>: <span class="kw">True</span>,
+    <span class="key">"errorCategory"</span>: <span class="st">"timeout"</span>,    <span class="cm"># helps coordinator pick recovery strategy</span>
+    <span class="key">"isRetryable"</span>: <span class="kw">True</span>,             <span class="cm"># True = retry | False = escalate to human</span>
+    <span class="key">"partialData"</span>: {...},            <span class="cm"># partial results for smarter retry context</span>
+    <span class="key">"message"</span>: <span class="st">"Web search timed out after 30s"</span>
+}</pre>
+    </div>
+
+    <button class="sk-complete-btn" id="btn-d2" onclick="markDone('d2')">✓ Mark Domain 2 Complete</button>
+    <button class="sk-next-btn" onclick="goto('d3')">Next: Domain 3 — Claude Code →</button>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: DOMAIN 3 ═══════ -->
+<div class="page" id="page-d3">
+  <div class="page-hero"><div class="breadcrumb">Course Home › Domain 3</div><h1>Domain 3: Claude Code Configuration & Workflows</h1><p>CLAUDE.md hierarchy, .claude/rules/, Agent Skills (slash commands), planning mode, CI/CD headless integration.</p></div>
+  <div class="w3-content">
+    <div class="domain-label">DOMAIN 3 <span class="dl-pct">20% of exam</span></div>
+
+    <h2>CLAUDE.md Hierarchy</h2>
+    <p>CLAUDE.md is Claude Code's memory system. It is a plain Markdown file that Claude automatically reads before every task. You use it to give Claude persistent instructions, project context, coding standards, and behavioral rules — without having to repeat them in every conversation.</p>
+    <p>CLAUDE.md files follow CSS-like specificity. All files load and merge — when conflicts exist, the more specific file wins.</p>
+    <div class="w3-table-wrap"><table class="w3-table"><thead><tr><th>Level</th><th>Location</th><th>Scope</th><th>Priority</th></tr></thead><tbody>
+      <tr><td>user_global</td><td>~/.claude/CLAUDE.md</td><td>All projects for this user</td><td>Lowest</td></tr>
+      <tr><td>project_root</td><td>.claude/CLAUDE.md</td><td>Entire project</td><td>Medium</td></tr>
+      <tr><td>directory</td><td>subdir/CLAUDE.md</td><td>Files in that directory only</td><td>Highest</td></tr>
+      <tr><td>topic_rules</td><td>.claude/rules/*.md</td><td>Configurable via YAML frontmatter</td><td>Variable</td></tr>
+    </tbody></table></div>
+    <h3>How the Hierarchy Works in Practice</h3>
+    <p>Imagine you are editing a file in <code>src/api/routes.ts</code>. Claude loads three files in sequence: first <code>~/.claude/CLAUDE.md</code> (your global preferences — preferred language, formatting style, general rules that apply to all your projects), then <code>.claude/CLAUDE.md</code> (project-level rules — how this codebase is structured, which libraries to use, testing approach), then <code>src/api/CLAUDE.md</code> (directory-level rules — API-specific constraints like "never expose internal error details" or "always validate with Zod").</p>
+    <p>All three sets of rules are active simultaneously. If the project-level file says "use TypeScript" and the directory-level file says "use strict null checks", both apply. If the project-level file says "use single quotes" but the directory-level file says "use double quotes", the directory-level rule wins because it is more specific — just like CSS specificity.</p>
+    <div class="w3-tip">CLAUDE.md is cumulative AND hierarchical. All files apply; more specific wins on conflict. <code>src/api/CLAUDE.md</code> > <code>.claude/CLAUDE.md</code> > <code>~/.claude/CLAUDE.md</code></div>
+
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">YAML — Directory-Level CLAUDE.md with Frontmatter</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre"><span class="cm">--- # src/api/CLAUDE.md — path-scoped tool restrictions</span>
+description: <span class="st">"API layer rules — strict security, no direct DB access"</span>
+allowed-tools:
+  - Read
+  - Grep
+  - <span class="st">Bash(git diff)</span>
+path-scope: <span class="st">src/api/</span>
+---
+
+<span class="cm"># API Layer Rules</span>
+Never expose internal error details in API responses.
+Always validate input with Zod schemas before processing.
+Use parameterized queries only — no string concatenation in SQL.</pre>
+    </div>
+
+    <h2>Agent Skills — Custom Slash Commands</h2>
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">YAML — SKILL.md Frontmatter</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre">---
+name: review-pr
+description: <span class="st">"Reviews a PR for security issues and style violations"</span>
+context: fork           <span class="cm"># isolated context — safe for CI, no session pollution</span>
+allowed-tools:
+  - Read
+  - Grep
+  - <span class="st">Bash(git diff HEAD~1)</span>
+path: <span class="st">.claude/skills/review-pr.md</span>  <span class="cm"># ALWAYS repo-relative, never absolute</span>
+---
+
+<span class="cm"># PR Review Workflow</span>
+Use <span class="fn">Bash(git diff HEAD~1)</span> to get the diff. Check for:
+<span class="num">1</span>. Security issues (SQL injection, XSS, exposed secrets)
+<span class="num">2</span>. Error handling gaps
+Report: [CRITICAL|HIGH|MEDIUM|LOW] - description
+Report ONLY high-confidence findings.</pre>
+    </div>
+    <div class="w3-warning">Always use repo-relative paths in SKILL.md. Absolute paths (e.g. /Users/dev/project/) break in CI where checkout path is /home/runner/work/.</div>
+
+    <h2>CI/CD — Headless Mode</h2>
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">YAML — GitHub Actions Integration</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre">name: Claude Code PR Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: <span class="fn">actions/checkout@v4</span>
+      - name: Claude Code Review
+        uses: <span class="fn">anthropics/claude-code-action@v1</span>
+        with:
+          prompt: <span class="st">"Review this PR for security issues.
+                   Report ONLY high-confidence findings. Be conservative."</span>
+          allowed-tools: <span class="st">"Read,Grep,Bash(git diff)"</span>  <span class="cm"># minimal set!</span>
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}</pre>
+    </div>
+    <div class="w3-warning"><code>--dangerouslySkipPermissions</code> MUST always be paired with restricted <code>--allowedTools</code>. Without it, the model has unrestricted tool access in CI.</div>
+
+    <button class="sk-complete-btn" id="btn-d3" onclick="markDone('d3')">✓ Mark Domain 3 Complete</button>
+    <button class="sk-next-btn" onclick="goto('d4')">Next: Domain 4 — Prompt Engineering →</button>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: DOMAIN 4 ═══════ -->
+<div class="page" id="page-d4">
+  <div class="page-hero"><div class="breadcrumb">Course Home › Domain 4</div><h1>Domain 4: Prompt Engineering & Structured Output</h1><p>Three-layer validation, retry-with-feedback pattern, few-shot vs schema selection, tool_choice for compliance.</p></div>
+  <div class="w3-content">
+    <div class="domain-label">DOMAIN 4 <span class="dl-pct">20% of exam</span></div>
+
+    <h2>Three-Layer Validation</h2>
+    <div class="w3-table-wrap"><table class="w3-table"><thead><tr><th>Layer</th><th>Checks For</th><th>Example Failure</th><th>Detection Method</th></tr></thead><tbody>
+      <tr><td>1_syntactic</td><td>Valid, parseable JSON</td><td>Unterminated string, trailing comma</td><td>json.loads() try/catch</td></tr>
+      <tr><td>2_schema</td><td>Correct types, required fields, formats</td><td>invoice_date is a number not ISO string</td><td>JSON Schema (jsonschema lib)</td></tr>
+      <tr><td>3_semantic</td><td>Cross-field consistency / business logic</td><td>sum(line_items) ≠ invoice_total</td><td>Custom validation rules</td></tr>
+    </tbody></table></div>
+    <h3>Why Each Layer Is Necessary</h3>
+    <p><strong>Syntactic validation</strong> catches the most basic failure: the model produced text that is not valid JSON. This happens when the model truncates output mid-object, adds a conversational preamble before the JSON, or uses Python-style <code>None</code> instead of JSON <code>null</code>. A simple <code>try/except json.loads()</code> catches this entire class of errors.</p>
+    <p><strong>Schema validation</strong> catches the next level: the JSON is parseable but the shape is wrong. A date field contains a number. A required field is missing. An enum field contains a value not in the allowed list. JSON Schema libraries like Python's <code>jsonschema</code> handle this automatically — you define the schema once and validate against it on every extraction.</p>
+    <p><strong>Semantic validation</strong> is what most pipelines miss. The JSON is valid, the schema passes, but the data is internally inconsistent. The line items sum to $850 but <code>invoice_total</code> says $1,000. The <code>end_date</code> is before the <code>start_date</code>. The <code>quantity</code> is negative. These errors require custom business logic — there is no generic library that knows your domain rules. You write them explicitly.</p>
+    <div class="w3-tip">If asked "what validation is missing" when JSON is valid but fields are inconsistent — the answer is SEMANTIC validation. This is the layer most pipelines miss.</div>
+
+    <h2>Retry-With-Feedback Pattern</h2>
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">Python — Blind Retry vs Retry-With-Feedback</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre"><span class="cm"># ❌ WRONG — blind retry: same prompt = same distribution of errors</span>
+<span class="kw">for</span> attempt <span class="kw">in</span> range(<span class="num">3</span>):
+    result = <span class="fn">extract</span>(document, base_prompt)  <span class="cm"># no change</span>
+
+<span class="cm"># ✅ CORRECT — retry with specific failure context</span>
+result = <span class="fn">extract</span>(document, base_prompt)
+<span class="kw">for</span> attempt <span class="kw">in</span> range(<span class="num">3</span>):
+    errors = <span class="fn">validate</span>(result)
+    <span class="kw">if not</span> errors:
+        <span class="kw">break</span>
+    feedback = base_prompt + <span class="fn">f</span><span class="st">"""
+    Your previous extraction had these specific issues:
+    {errors}
+    Please re-extract and correct ONLY these fields.
+    Correct format for invoice_date: ISO 8601 (YYYY-MM-DD).
+    """</span>
+    result = <span class="fn">extract</span>(document, feedback)</pre>
+    </div>
+
+    <h2>Few-Shot vs JSON Schema</h2>
+    <p>Few-shot prompting and JSON Schema serve different purposes in extraction pipelines. Understanding when each applies is directly tested on the exam.</p>
+    <p><strong>JSON Schema</strong> works best when the extraction rule can be expressed as a type constraint. If a field should always be an ISO 8601 date string, a Schema can enforce that. If a status field must be one of three specific values, an enum constraint handles it. Schema-based validation is deterministic, maintainable, and doesn't consume tokens.</p>
+    <p><strong>Few-shot examples</strong> work best when the "correct" extraction depends on context, convention, or domain knowledge that is hard to express as a rule. Payment terms like "net 30", "2/10 n30", or "due on receipt" are all valid but formatted differently — a few examples showing the canonical output format teaches the model the pattern far more reliably than a regex or type constraint.</p>
+    <div class="w3-table-wrap"><table class="w3-table"><thead><tr><th>✅ Use Few-Shot For</th><th>📋 Use JSON Schema For</th></tr></thead><tbody>
+      <tr><td style="font-family:inherit;color:inherit">Informal/non-standard formats ("2 dozen", "a handful")</td><td>Well-defined types (invoice_number, amounts)</td></tr>
+      <tr><td style="font-family:inherit;color:inherit">Domain jargon with no standard format</td><td>Boolean flags, enum fields with fixed values</td></tr>
+      <tr><td style="font-family:inherit;color:inherit">Culturally variable date formats</td><td>Numeric fields with known constraints</td></tr>
+      <tr><td style="font-family:inherit;color:inherit">Ambiguous classification decisions</td><td>Required fields where format is unambiguous</td></tr>
+    </tbody></table></div>
+
+    <button class="sk-complete-btn" id="btn-d4" onclick="markDone('d4')">✓ Mark Domain 4 Complete</button>
+    <button class="sk-next-btn" onclick="goto('d5')">Next: Domain 5 — Context & Reliability →</button>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: DOMAIN 5 ═══════ -->
+<div class="page" id="page-d5">
+  <div class="page-hero"><div class="breadcrumb">Course Home › Domain 5</div><h1>Domain 5: Context Management & Reliability</h1><p>Lost-in-the-middle effect, progressive summarization pitfalls, tool output trimming, long-document strategies.</p></div>
+  <div class="w3-content">
+    <div class="domain-label">DOMAIN 5 <span class="dl-pct">15% of exam</span></div>
+
+    <h2>The Lost-in-the-Middle Effect</h2>
+    <p>Imagine reading a 400-page document where you know you'll be tested on its contents. You will naturally pay close attention to the introduction and the conclusion. The middle chapters — especially if they cover similar-sounding topics — will blur together. Language models exhibit exactly this behavior, and it is structural, not something you can fix by asking the model to "pay close attention."</p>
+    <p>LLMs reliably process content at the <strong>beginning</strong> and <strong>end</strong> of long inputs, but miss content buried in the <strong>middle</strong>. This is an architectural constraint — not a prompt engineering problem to solve with better wording.</p>
+    <div class="w3-warning">For compliance, legal, or safety-critical review tasks — never rely on single-pass through a 100K+ token document. Content in the middle WILL be missed.</div>
+
+    <h3>Mitigation Strategies</h3>
+    <ul>
+      <li>Place critical instructions and criteria at the <strong>TOP</strong> of the input</li>
+      <li>For long documents: chunk into ~20–30K token sections, process independently, aggregate</li>
+      <li>Use explicit section headers to anchor attention in long inputs</li>
+      <li>Place key summaries at the top of aggregated multi-agent outputs</li>
+    </ul>
+
+    <h2>Progressive Summarization — Numeric Precision Loss</h2>
+    <div class="w3-table-wrap"><table class="w3-table"><thead><tr><th>Original Exact Value</th><th>After Summarization (WRONG)</th></tr></thead><tbody>
+      <tr><td style="font-family:inherit;color:inherit">"42.3% improvement in throughput"</td><td>"about a 40% improvement"</td></tr>
+      <tr><td style="font-family:inherit;color:inherit">"18 days to resolve"</td><td>"several weeks to resolve"</td></tr>
+      <tr><td style="font-family:inherit;color:inherit">"$2,847.50 refund processed"</td><td>"a refund was processed"</td></tr>
+    </tbody></table></div>
+    <div class="w3-tip">Preserve raw numeric data separately from narrative summaries. Never let progressively summarized context be the sole record for figures, percentages, and dates.</div>
+
+    <h2>Tool Output Context Trimming</h2>
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">Python — 90% Context Reduction</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre"><span class="cm"># ❌ WRONG — full 40-field object: ~800 tokens per call</span>
+result = <span class="fn">call_tool</span>(<span class="st">"get_customer"</span>, {<span class="st">"id"</span>: <span class="num">123</span>})
+messages.<span class="fn">append</span>(<span class="fn">tool_result</span>(result))  <span class="cm"># 800 tokens wasted</span>
+
+<span class="cm"># ✅ CORRECT — project to needed fields: ~80 tokens (90% reduction)</span>
+result = <span class="fn">call_tool</span>(<span class="st">"get_customer"</span>, {<span class="st">"id"</span>: <span class="num">123</span>})
+needed = {k: result[k] <span class="kw">for</span> k <span class="kw">in</span>
+    [<span class="st">"name"</span>, <span class="st">"email"</span>, <span class="st">"account_status"</span>, <span class="st">"tier"</span>, <span class="st">"open_orders"</span>]}
+messages.<span class="fn">append</span>(<span class="fn">tool_result</span>(needed))</pre>
+    </div>
+
+    <button class="sk-complete-btn" id="btn-d5" onclick="markDone('d5')">✓ Mark Domain 5 Complete</button>
+    <button class="sk-next-btn" onclick="goto('scenarios')">Next: 6 Exam Scenarios →</button>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: SCENARIOS ═══════ -->
+<div class="page" id="page-scenarios">
+  <div class="page-hero"><div class="breadcrumb">Course Home › Scenarios</div><h1>Section 7: All 6 Exam Scenarios</h1><p>The exam randomly selects 4. Scenarios 1 and 3 appear most frequently. Master those two first, then the rest.</p></div>
+  <div class="w3-content">
+    <p>The exam randomly selects 4 of these 6 scenarios at the start of your test. Every question you see will be anchored to one of those 4 scenarios. You don't know in advance which 4 will be selected, so you need to be comfortable with all 6 — but based on candidate reports, Scenarios 1 and 3 appear in almost every exam sitting.</p>
+    <p>For each scenario, study three things: what the architecture looks like (so you can recognize it in a question), what the common traps are (the wrong answers are engineered around these), and what the key principle is (the one insight that makes the correct answer obvious once you see it).</p>
+    <div id="scenarios-container"></div>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: CHEATSHEET ═══════ -->
+<div class="page" id="page-cheatsheet">
+  <div class="page-hero"><div class="breadcrumb">Course Home › Cheat Sheet</div><h1>Section 8: Quick Reference Cheat Sheet</h1><p>Most frequently tested terminology and patterns. Print this for final review the night before your exam.</p></div>
+  <div class="w3-content">
+    <p>This is your last-read-before-exam reference. Every cell in these tables is a term, value, or rule that appears directly in exam questions. The left column of each table is what the exam will name — the right column is what you need to know about it.</p>
+    <p>Print this page or keep it open in a separate tab. On exam day, you will not have access to reference material — but 20 minutes reviewing this the night before significantly sharpens recall on the precise terminology questions that trip people up.</p>
+    <div class="cs-grid">
+      <div class="cs-card"><div class="cs-head">stop_reason Values</div>
+        <div class="cs-row"><div class="cs-k">end_turn</div><div class="cs-v">Done — return result to user</div></div>
+        <div class="cs-row"><div class="cs-k">tool_use</div><div class="cs-v">Execute tool → append → loop</div></div>
+        <div class="cs-row"><div class="cs-k">max_tokens</div><div class="cs-v">Truncated — increase limit</div></div>
+        <div class="cs-row"><div class="cs-k">stop_sequence</div><div class="cs-v">Hit custom stop string</div></div>
+      </div>
+      <div class="cs-card"><div class="cs-head">tool_choice Options</div>
+        <div class="cs-row"><div class="cs-k">"auto"</div><div class="cs-v">Model decides (default)</div></div>
+        <div class="cs-row"><div class="cs-k">"any"</div><div class="cs-v">Must call SOME tool</div></div>
+        <div class="cs-row"><div class="cs-k">"tool"+"name"</div><div class="cs-v">Must call THIS tool</div></div>
+      </div>
+      <div class="cs-card"><div class="cs-head">CLAUDE.md Priority</div>
+        <div class="cs-row"><div class="cs-k">subdir/</div><div class="cs-v">Highest (most specific)</div></div>
+        <div class="cs-row"><div class="cs-k">.claude/</div><div class="cs-v">Project root (medium)</div></div>
+        <div class="cs-row"><div class="cs-k">~/.claude/</div><div class="cs-v">User global (lowest)</div></div>
+        <div class="cs-row"><div class="cs-k">Rule</div><div class="cs-v">All merge; conflict = specific wins</div></div>
+      </div>
+      <div class="cs-card"><div class="cs-head">Agent SDK Hooks</div>
+        <div class="cs-row"><div class="cs-k">PreToolUse</div><div class="cs-v">Validate before execution</div></div>
+        <div class="cs-row"><div class="cs-k">PostToolUse</div><div class="cs-v">Enforce limits after (preferred)</div></div>
+        <div class="cs-row"><div class="cs-k">OnError</div><div class="cs-v">Handle failures gracefully</div></div>
+        <div class="cs-row"><div class="cs-k">Rule</div><div class="cs-v">Hooks > prompt for hard rules</div></div>
+      </div>
+      <div class="cs-card"><div class="cs-head">Multi-Agent Rules</div>
+        <div class="cs-row"><div class="cs-k">Memory</div><div class="cs-v">NO shared memory — pass all explicitly</div></div>
+        <div class="cs-row"><div class="cs-k">Incomplete</div><div class="cs-v">All succeed but incomplete = coordinator decomp</div></div>
+        <div class="cs-row"><div class="cs-k">Errors</div><div class="cs-v">isError + isRetryable + errorCategory</div></div>
+      </div>
+      <div class="cs-card"><div class="cs-head">Validation Layers</div>
+        <div class="cs-row"><div class="cs-k">Syntactic</div><div class="cs-v">Valid JSON? (try/catch)</div></div>
+        <div class="cs-row"><div class="cs-k">Schema</div><div class="cs-v">Correct types/fields?</div></div>
+        <div class="cs-row"><div class="cs-k">Semantic</div><div class="cs-v">Cross-field consistent?</div></div>
+        <div class="cs-row"><div class="cs-k">Retry</div><div class="cs-v">Always with failure context</div></div>
+      </div>
+      <div class="cs-card"><div class="cs-head">MCP Concepts</div>
+        <div class="cs-row"><div class="cs-k">Tools</div><div class="cs-v">Functions to call (actions)</div></div>
+        <div class="cs-row"><div class="cs-k">Resources</div><div class="cs-v">Data to read (context)</div></div>
+        <div class="cs-row"><div class="cs-k">Sampling</div><div class="cs-v">Server requests completions back</div></div>
+        <div class="cs-row"><div class="cs-k">stdio / SSE</div><div class="cs-v">Local / Remote transport</div></div>
+      </div>
+      <div class="cs-card"><div class="cs-head">Context Pitfalls</div>
+        <div class="cs-row"><div class="cs-k">Lost-middle</div><div class="cs-v">Key info at START/END of long input</div></div>
+        <div class="cs-row"><div class="cs-k">Summarization</div><div class="cs-v">Loses numbers — preserve raw data</div></div>
+        <div class="cs-row"><div class="cs-k">Tool outputs</div><div class="cs-v">Trim 40 fields → 5 needed fields</div></div>
+        <div class="cs-row"><div class="cs-k">Long docs</div><div class="cs-v">Chunk + front-load; never single-pass</div></div>
+      </div>
+      <div class="cs-card"><div class="cs-head">CI/CD Safety Pattern</div>
+        <div class="cs-row"><div class="cs-k">Mode</div><div class="cs-v">--headless or claude-code-action</div></div>
+        <div class="cs-row"><div class="cs-k">Permissions</div><div class="cs-v">dangerouslySkipPermissions + allowedTools</div></div>
+        <div class="cs-row"><div class="cs-k">Prompts</div><div class="cs-v">"High confidence only" — minimize FP</div></div>
+      </div>
+      <div class="cs-card"><div class="cs-head">Escalation Rules</div>
+        <div class="cs-row"><div class="cs-k">Human request</div><div class="cs-v">Escalate immediately — no alternatives</div></div>
+        <div class="cs-row"><div class="cs-k">Policy conflict</div><div class="cs-v">Escalate before acting</div></div>
+        <div class="cs-row"><div class="cs-k">Retry limit</div><div class="cs-v">Escalate with full context</div></div>
+        <div class="cs-row"><div class="cs-k">High-value</div><div class="cs-v">Confirm with human first</div></div>
+      </div>
+    </div>
+    <button class="sk-next-btn" onclick="goto('practice')">Next: Practice Questions →</button>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: PRACTICE ═══════ -->
+<div class="page" id="page-practice">
+  <div class="page-hero"><div class="breadcrumb">Course Home › Practice Questions</div><h1>Section 9: Practice Questions</h1><p>25 scenario-grounded questions with full explanations. Click to expand, select, then check your answer.</p></div>
+  <div class="w3-content">
+    <p>These questions mirror the format, difficulty, and distractor style of the real exam. Each wrong answer is designed to look correct if you understand the concept loosely — the same way the real exam works. When you get a question wrong, read the explanation carefully: the principle at the bottom of each explanation is the mental model you need to lock in.</p>
+    <p>Work through all 25 before checking your score. Then filter by domain to identify which areas need more review before your exam day.</p>
+    <div class="filter-row">
+      <button class="f-btn active" onclick="filterQ('all',this)">All (25)</button>
+      <button class="f-btn" onclick="filterQ('d1',this)">Domain 1</button>
+      <button class="f-btn" onclick="filterQ('d2',this)">Domain 2</button>
+      <button class="f-btn" onclick="filterQ('d3',this)">Domain 3</button>
+      <button class="f-btn" onclick="filterQ('d4',this)">Domain 4</button>
+      <button class="f-btn" onclick="filterQ('d5',this)">Domain 5</button>
+    </div>
+    <div id="q-container"></div>
+    <button class="sk-complete-btn" id="btn-practice" onclick="markDone('practice')">✓ Mark Practice Complete</button>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: STUDY PLAN ═══════ -->
+<div class="page" id="page-studyplan">
+  <div class="page-hero"><div class="breadcrumb">Course Home › Study Plan</div><h1>Section 10: 2-Week Study Plan</h1><p>Hands-on building takes priority over passive reading. The exam rewards production experience.</p></div>
+  <div class="w3-content">
+    <p>This plan is structured around a core principle: <strong>building beats reading</strong>. The exam tests whether you can make correct architectural decisions under time pressure — and that judgment only develops through actually building systems, hitting the failure modes, and understanding why certain patterns exist.</p>
+    <p>Week 1 builds your foundation through hands-on work. Week 2 closes the gap between knowledge and exam-ready judgment through scenario practice and the official test. Each day has a specific deliverable — not just "read about X" but "build X and observe Y."</p>
+    <div class="w3-tip">Your head start: CI/CD (Action Log Analyser, AI CI/CD Guardian), agentic systems (Agentic DevOps architecture), and daily Claude Code work. Focus your prep on: stop_reason mechanics, CLAUDE.md hierarchy specifics, 3-layer validation, and precise SDK terminology.</div>
+
+    <div class="week-header"><div class="wk-badge">W1</div><div class="wk-title">Core Foundations — Build the Mental Models (Days 1–7)</div></div>
+    <div id="week1-days"></div>
+
+    <div class="week-header" style="margin-top:24px"><div class="wk-badge">W2</div><div class="wk-title">Scenarios + Exam Prep — Close the Gaps (Days 8–14)</div></div>
+    <div id="week2-days"></div>
+
+    <button class="sk-next-btn" style="margin-top:16px" onclick="goto('resources')">Next: Resources & Links →</button>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: RESOURCES ═══════ -->
+<div class="page" id="page-resources">
+  <div class="page-hero"><div class="breadcrumb">Course Home › Resources</div><h1>Section 11: Official Resources & Links</h1><p>All authoritative sources. The official 60-question practice test (after registration) is the single most important resource.</p></div>
+  <div class="w3-content">
+    <p>The resources below are ordered by exam relevance. The official 60-question practice test (available after you register) is the single most important resource — it is the only simulation of the real exam format, difficulty, and distractor style. Everything else in this guide prepares you for that test.</p>
+    <p>The Anthropic Academy courses are authoritative because the exam is built directly from them. When exam questions use specific terminology, it matches the terminology in these courses exactly. If you have time to do only 3 courses, do: Introduction to Subagents, MCP Advanced Topics, and Claude Code Configuration.</p>
+    <h2>Registration</h2>
+    <table class="res-table">
+      <tr><td>Exam Access Request</td><td>anthropic.skilljar.com/claude-certified-architect-foundations-access-request</td></tr>
+      <tr><td>Anthropic Academy (13 free courses)</td><td>anthropic.skilljar.com</td></tr>
+    </table>
+    <h2>Claude Agent SDK</h2>
+    <table class="res-table">
+      <tr><td>Overview</td><td>platform.claude.com/docs/en/agent-sdk/overview</td></tr>
+      <tr><td>Hooks</td><td>platform.claude.com/docs/en/agent-sdk/hooks</td></tr>
+      <tr><td>Subagents</td><td>platform.claude.com/docs/en/agent-sdk/subagents</td></tr>
+      <tr><td>Sessions</td><td>platform.claude.com/docs/en/agent-sdk/sessions</td></tr>
+    </table>
+    <h2>Claude API</h2>
+    <table class="res-table">
+      <tr><td>Messages API</td><td>platform.claude.com/docs/en/api/messages</td></tr>
+      <tr><td>Tool Use</td><td>platform.claude.com/docs/en/build-with-claude/tool-use</td></tr>
+      <tr><td>Prompt Engineering</td><td>platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview</td></tr>
+    </table>
+    <h2>Claude Code</h2>
+    <table class="res-table">
+      <tr><td>Overview</td><td>code.claude.com/docs/en/overview</td></tr>
+      <tr><td>CLAUDE.md & Memory</td><td>code.claude.com/docs/en/memory</td></tr>
+      <tr><td>Agent Skills (slash commands)</td><td>code.claude.com/docs/en/skills</td></tr>
+      <tr><td>Hooks</td><td>code.claude.com/docs/en/hooks</td></tr>
+      <tr><td>GitHub Actions CI/CD</td><td>code.claude.com/docs/en/github-actions</td></tr>
+      <tr><td>Headless Mode</td><td>code.claude.com/docs/en/headless</td></tr>
+    </table>
+    <h2>Model Context Protocol</h2>
+    <table class="res-table">
+      <tr><td>MCP Overview</td><td>modelcontextprotocol.io</td></tr>
+      <tr><td>Tools</td><td>modelcontextprotocol.io/docs/concepts/tools</td></tr>
+      <tr><td>Resources</td><td>modelcontextprotocol.io/docs/concepts/resources</td></tr>
+    </table>
+    <h2>Practice Exams & Community</h2>
+    <table class="res-table">
+      <tr><td>Tutorials Dojo CCA-F Practice</td><td>tutorialsdojo.com — search "CCA-F"</td></tr>
+      <tr><td>Udemy: Jon Bonso CCA-F Exams</td><td>udemy.com — search "Claude Certified Architect"</td></tr>
+      <tr><td>Community Study Guide (GitHub)</td><td>github.com/paullarionov/claude-certified-architect</td></tr>
+      <tr><td>Anthropic Cookbook</td><td>github.com/anthropics/anthropic-cookbook</td></tr>
+    </table>
+  </div>
+</div>
+
+
+
+<!-- ═══════ PAGE: EXTENDED THINKING ═══════ -->
+<div class="page" id="page-extended">
+  <div class="page-hero">
+    <div class="breadcrumb"><span onclick="goto('home')">Course Home</span> › Advanced API Features</div>
+    <h1>Extended Thinking</h1>
+    <p>How Claude reasons step-by-step before responding — when to use it, how it interacts with tool use, and cost tradeoffs.</p>
+    <div class="hero-tags">
+      <span class="hero-tag highlight">Domain 1 · Domain 4</span>
+      <span class="hero-tag">Agent Architecture</span>
+      <span class="hero-tag">Prompt Engineering</span>
+    </div>
+  </div>
+  <div class="w3-content">
+    <h2>What Is Extended Thinking?</h2>
+    <p>Extended thinking gives Claude a private scratchpad to reason through complex problems before producing its final response. The model generates <strong>thinking blocks</strong> — internal reasoning that is visible to you but not sent back to the model as conversation history.</p>
+    <div class="w3-table-wrap"><table class="w3-table">
+      <thead><tr><th>Parameter</th><th>Description</th><th>Typical Value</th></tr></thead>
+      <tbody>
+        <tr><td>thinking.type</td><td>Enable extended thinking</td><td>"enabled"</td></tr>
+        <tr><td>budget_tokens</td><td>Max tokens for internal reasoning</td><td>5,000–16,000</td></tr>
+        <tr><td>min budget</td><td>Minimum that activates thinking</td><td>1,024 tokens</td></tr>
+        <tr><td>billed tokens</td><td>Thinking tokens ARE billed</td><td>Same rate as output</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">Python — Extended Thinking</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre">response = client.messages.create(
+    model=<span class="st">"claude-opus-4-5"</span>,
+    max_tokens=<span class="num">16000</span>,
+    thinking={{
+        <span class="st">"type"</span>: <span class="st">"enabled"</span>,
+        <span class="st">"budget_tokens"</span>: <span class="num">10000</span>  <span class="cm"># Claude can use up to 10K tokens to think</span>
+    }},
+    messages=[{{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}}]
+)
+
+<span class="cm"># Response contains BOTH thinking blocks AND text blocks</span>
+<span class="kw">for</span> block <span class="kw">in</span> response.content:
+    <span class="kw">if</span> block.type == <span class="st">"thinking"</span>:
+        print(<span class="st">"Reasoning:"</span>, block.thinking)   <span class="cm"># internal scratchpad</span>
+    <span class="kw">elif</span> block.type == <span class="st">"text"</span>:
+        print(<span class="st">"Answer:"</span>, block.text)          <span class="cm"># final response</span></pre>
+    </div>
+
+    <h2>Extended Thinking + Tool Use</h2>
+    <p>When extended thinking is enabled alongside tools, the model thinks <strong>before</strong> deciding which tool to call. This significantly improves tool selection accuracy for complex multi-step tasks.</p>
+    <div class="w3-warning">You cannot stream extended thinking responses. Streaming and <code>thinking.type = "enabled"</code> are mutually exclusive. If your architecture requires streaming, do not enable thinking.</div>
+    <div class="w3-tip">Extended thinking blocks must be passed back in subsequent turns exactly as received — do not modify or strip them. Stripping thinking blocks from multi-turn conversations breaks the reasoning chain.</div>
+
+    <h2>When to Use Extended Thinking</h2>
+    <div class="w3-table-wrap"><table class="w3-table">
+      <thead><tr><th>Use Extended Thinking</th><th>Do NOT Use Extended Thinking</th></tr></thead>
+      <tbody>
+        <tr><td style="font-family:inherit;color:inherit">Complex multi-step reasoning (math, logic, planning)</td><td>Simple extraction or classification tasks</td></tr>
+        <tr><td style="font-family:inherit;color:inherit">Ambiguous tool selection with many similar tools</td><td>High-throughput pipelines where latency matters</td></tr>
+        <tr><td style="font-family:inherit;color:inherit">Agent tasks where wrong first steps are costly</td><td>Any task requiring streaming responses</td></tr>
+        <tr><td style="font-family:inherit;color:inherit">Code generation with complex requirements</td><td>Cost-sensitive pipelines (thinking tokens are billed)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="w3-note">Extended thinking is only available on Opus and Sonnet models, not Haiku. budget_tokens must be at least 1,024 or thinking will not activate.</div>
+
+    <button class="sk-complete-btn" id="btn-extended" onclick="markDone('extended')">✓ Mark Complete</button>
+    <button class="sk-next-btn" onclick="goto('models')">Next: Model Selection →</button>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: MODEL SELECTION ═══════ -->
+<div class="page" id="page-models">
+  <div class="page-hero">
+    <div class="breadcrumb"><span onclick="goto('home')">Course Home</span> › Advanced API Features</div>
+    <h1>Model Selection & Tiers</h1>
+    <p>When to use Opus, Sonnet, or Haiku in agent architectures. Cost vs. capability tradeoffs tested directly on the exam.</p>
+    <div class="hero-tags">
+      <span class="hero-tag highlight">Domain 1 · Domain 5</span>
+      <span class="hero-tag">Agent Architecture</span>
+      <span class="hero-tag">Cost Optimization</span>
+    </div>
+  </div>
+  <div class="w3-content">
+    <h2>The Claude Model Tiers</h2>
+    <div class="w3-table-wrap"><table class="w3-table">
+      <thead><tr><th>Model</th><th>Tier</th><th>Best For</th><th>Avoid When</th></tr></thead>
+      <tbody>
+        <tr><td>claude-opus-4-x</td><td>Highest capability</td><td>Complex reasoning, orchestration coordinator, ambiguous tasks requiring judgment</td><td>High-volume pipelines, cost-sensitive workflows, simple extraction</td></tr>
+        <tr><td>claude-sonnet-4-x</td><td>Balanced</td><td>Most production tasks — good capability at reasonable cost, CI/CD pipelines, subagents</td><td>Tasks requiring maximum reasoning depth or absolute lowest cost</td></tr>
+        <tr><td>claude-haiku-4-x</td><td>Fastest/cheapest</td><td>High-volume extraction, simple classification, routing tasks, real-time chat</td><td>Complex reasoning, multi-step planning, extended thinking (not supported)</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>Model Selection in Multi-Agent Systems</h2>
+    <p>The exam tests a specific pattern: <strong>use a capable model for the coordinator and cheaper models for specialist subagents</strong> doing well-defined tasks.</p>
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">Python — Tiered Model Strategy</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre"><span class="cm"># Coordinator: Opus for complex task decomposition and judgment</span>
+coordinator = Agent(
+    model=<span class="st">"claude-opus-4-5"</span>,
+    system=<span class="st">"You are the research coordinator..."</span>
+)
+
+<span class="cm"># Subagents: Sonnet/Haiku for well-defined specialist tasks</span>
+web_search_agent = Agent(
+    model=<span class="st">"claude-haiku-4-5-20251001"</span>,  <span class="cm"># fast + cheap for structured search</span>
+    system=<span class="st">"Search the web and return structured results..."</span>
+)
+
+doc_analysis_agent = Agent(
+    model=<span class="st">"claude-sonnet-4-6"</span>,  <span class="cm"># balanced for analysis tasks</span>
+    system=<span class="st">"Analyze documents and extract key findings..."</span>
+)</pre>
+    </div>
+    <div class="w3-tip">Model selection is a cost/capability tradeoff. The exam presents scenarios where you must identify the correct tier — Haiku for high-volume simple tasks, Opus for complex coordination, Sonnet for the balanced middle.</div>
+
+    <h2>Model Strings (Memorize These)</h2>
+    <div class="w3-table-wrap"><table class="w3-table">
+      <thead><tr><th>Model String</th><th>Family</th><th>Context Window</th></tr></thead>
+      <tbody>
+        <tr><td>claude-opus-4-5</td><td>Claude 4 Opus</td><td>200K tokens</td></tr>
+        <tr><td>claude-sonnet-4-6</td><td>Claude 4 Sonnet (latest)</td><td>200K tokens</td></tr>
+        <tr><td>claude-haiku-4-5-20251001</td><td>Claude 4 Haiku</td><td>200K tokens</td></tr>
+      </tbody>
+    </table></div>
+    <div class="w3-note">All current Claude models support a 200K token context window. The exam does not ask you to memorize exact pricing but does test whether you understand relative cost tiers.</div>
+
+    <button class="sk-complete-btn" id="btn-models" onclick="markDone('models')">✓ Mark Complete</button>
+    <button class="sk-next-btn" onclick="goto('streaming')">Next: Streaming & Batch API →</button>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: STREAMING & BATCH ═══════ -->
+<div class="page" id="page-streaming">
+  <div class="page-hero">
+    <div class="breadcrumb"><span onclick="goto('home')">Course Home</span> › Advanced API Features</div>
+    <h1>Streaming & Batch API</h1>
+    <p>Streaming for real-time responses, Batch API for high-volume async processing. Both appear in exam scenarios.</p>
+    <div class="hero-tags">
+      <span class="hero-tag highlight">Domain 1 · Domain 4</span>
+      <span class="hero-tag">API Mechanics</span>
+    </div>
+  </div>
+  <div class="w3-content">
+    <h2>Streaming Responses</h2>
+    <p>Streaming returns tokens as they are generated instead of waiting for the complete response. Critical for real-time user-facing applications.</p>
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">Python — Streaming with Tool Use</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre"><span class="kw">with</span> client.messages.stream(
+    model=<span class="st">"claude-sonnet-4-6"</span>,
+    max_tokens=<span class="num">1024</span>,
+    messages=messages,
+    tools=tools
+) <span class="kw">as</span> stream:
+    <span class="kw">for</span> event <span class="kw">in</span> stream:
+        <span class="kw">if</span> event.type == <span class="st">"content_block_delta"</span>:
+            <span class="kw">if</span> event.delta.type == <span class="st">"text_delta"</span>:
+                print(event.delta.text, end=<span class="st">""</span>, flush=<span class="kw">True</span>)
+        <span class="kw">elif</span> event.type == <span class="st">"message_stop"</span>:
+            final = stream.get_final_message()
+            <span class="cm"># Check stop_reason on final message — same rules apply</span>
+            <span class="kw">if</span> final.stop_reason == <span class="st">"tool_use"</span>:
+                <span class="fn">handle_tool_calls</span>(final)</pre>
+    </div>
+    <div class="w3-warning">Streaming is incompatible with extended thinking. If you need extended thinking, use non-streaming API calls. If you need real-time token delivery, disable extended thinking.</div>
+
+    <h2>Streaming + Agentic Loops</h2>
+    <p>When streaming in an agentic loop, you must collect the <strong>full streamed response</strong> before executing tool calls. You cannot execute tools mid-stream — wait for <code>message_stop</code>, then check <code>stop_reason</code>.</p>
+    <div class="w3-tip">stop_reason logic is identical for streaming and non-streaming. The only difference is HOW you receive the tokens — the loop mechanics (tool_use → execute → continue) are unchanged.</div>
+
+    <h2>Batch API</h2>
+    <p>The Batch API processes large volumes of requests asynchronously at <strong>50% lower cost</strong> than real-time API calls. Results are returned within 24 hours.</p>
+    <div class="w3-table-wrap"><table class="w3-table">
+      <thead><tr><th>Feature</th><th>Real-time API</th><th>Batch API</th></tr></thead>
+      <tbody>
+        <tr><td>response_time</td><td>Seconds</td><td>Up to 24 hours</td></tr>
+        <tr><td>cost</td><td>Standard rate</td><td>50% discount</td></tr>
+        <tr><td>max_requests</td><td>Rate limited</td><td>Up to 100,000 per batch</td></tr>
+        <tr><td>use_case</td><td>Real-time, interactive</td><td>Bulk extraction, evaluation, offline processing</td></tr>
+        <tr><td>streaming</td><td>Supported</td><td>Not supported</td></tr>
+        <tr><td>tool_use</td><td>Supported</td><td>Supported</td></tr>
+      </tbody>
+    </table></div>
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">Python — Batch API</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre"><span class="cm"># Create a batch of requests</span>
+batch = client.messages.batches.create(
+    requests=[
+        {{
+            <span class="st">"custom_id"</span>: <span class="st">"invoice-001"</span>,
+            <span class="st">"params"</span>: {{
+                <span class="st">"model"</span>: <span class="st">"claude-haiku-4-5-20251001"</span>,
+                <span class="st">"max_tokens"</span>: <span class="num">1024</span>,
+                <span class="st">"messages"</span>: [{{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: invoice_text}}]
+            }}
+        }}
+        <span class="kw">for</span> invoice_text <span class="kw">in</span> invoices  <span class="cm"># process thousands at 50% cost</span>
+    ]
+)
+<span class="cm"># Poll for results</span>
+<span class="kw">while</span> batch.processing_status == <span class="st">"in_progress"</span>:
+    time.sleep(<span class="num">60</span>)
+    batch = client.messages.batches.retrieve(batch.id)</pre>
+    </div>
+    <div class="w3-tip">Use Batch API for: bulk data extraction from documents, running evaluations against many examples, offline report generation. Use real-time API for: anything user-facing, agentic loops that need to act on results immediately.</div>
+
+    <button class="sk-complete-btn" id="btn-streaming" onclick="markDone('streaming')">✓ Mark Complete</button>
+    <button class="sk-next-btn" onclick="goto('caching')">Next: Prompt Caching →</button>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: PROMPT CACHING ═══════ -->
+<div class="page" id="page-caching">
+  <div class="page-hero">
+    <div class="breadcrumb"><span onclick="goto('home')">Course Home</span> › Advanced API Features</div>
+    <h1>Prompt Caching</h1>
+    <p>Cache static portions of prompts to reduce costs and latency. Critical for agent systems with large system prompts or repeated tool definitions.</p>
+    <div class="hero-tags">
+      <span class="hero-tag highlight">Domain 1 · Domain 4</span>
+      <span class="hero-tag">Cost Optimization</span>
+    </div>
+  </div>
+  <div class="w3-content">
+    <h2>How Prompt Caching Works</h2>
+    <p>Prompt caching allows you to mark static content with <code>cache_control</code> so Claude can reuse the KV cache from a previous request instead of reprocessing the same tokens. This reduces both cost and time-to-first-token.</p>
+    <div class="w3-table-wrap"><table class="w3-table">
+      <thead><tr><th>Metric</th><th>Cache Miss (first call)</th><th>Cache Hit (subsequent calls)</th></tr></thead>
+      <tbody>
+        <tr><td>input_cost</td><td>Standard rate × 1.25</td><td>Standard rate × 0.10 (90% discount)</td></tr>
+        <tr><td>latency</td><td>Normal processing time</td><td>Significantly reduced TTFT</td></tr>
+        <tr><td>cache_duration</td><td>—</td><td>5 minutes (TTL, refreshed on hit)</td></tr>
+        <tr><td>min_cacheable_tokens</td><td>1,024 tokens minimum</td><td>—</td></tr>
+      </tbody>
+    </table></div>
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">Python — Prompt Caching</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre">response = client.messages.create(
+    model=<span class="st">"claude-sonnet-4-6"</span>,
+    max_tokens=<span class="num">1024</span>,
+    system=[
+        {{
+            <span class="st">"type"</span>: <span class="st">"text"</span>,
+            <span class="st">"text"</span>: large_system_prompt,  <span class="cm"># 2000+ tokens of static instructions</span>
+            <span class="st">"cache_control"</span>: {{<span class="st">"type"</span>: <span class="st">"ephemeral"</span>}}  <span class="cm"># ← mark for caching</span>
+        }}
+    ],
+    tools=tools,  <span class="cm"># tool definitions are also good cache candidates</span>
+    messages=messages
+)
+
+<span class="cm"># Check cache usage in response</span>
+usage = response.usage
+print(f<span class="st">"Cache read: {usage.cache_read_input_tokens}"</span>)    <span class="cm"># 90% cheaper</span>
+print(f<span class="st">"Cache write: {usage.cache_creation_input_tokens}"</span>)  <span class="cm"># 25% more expensive</span></pre>
+    </div>
+
+    <h2>What to Cache</h2>
+    <ul>
+      <li><strong>Large system prompts</strong> — instructions, personas, domain context that don't change per request</li>
+      <li><strong>Tool definitions</strong> — especially when you have many tools with long descriptions</li>
+      <li><strong>Few-shot examples</strong> — static examples that appear in every request</li>
+      <li><strong>Long reference documents</strong> — codebases, knowledge bases passed as context</li>
+    </ul>
+    <div class="w3-warning">Content marked with <code>cache_control</code> must appear at the SAME position in the prompt on every request for the cache to hit. If the cached content shifts position (e.g., a dynamic prefix is added before it), the cache will miss.</div>
+    <div class="w3-tip">In agentic loops with long system prompts: cache the system prompt. In multi-agent systems: cache tool definitions in subagents that run the same task repeatedly. Cache hits are billed at 10% of normal input cost — significant savings at scale.</div>
+
+    <button class="sk-complete-btn" id="btn-caching" onclick="markDone('caching')">✓ Mark Complete</button>
+    <button class="sk-next-btn" onclick="goto('errors')">Next: Error Handling & Rate Limits →</button>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: ERROR HANDLING ═══════ -->
+<div class="page" id="page-errors">
+  <div class="page-hero">
+    <div class="breadcrumb"><span onclick="goto('home')">Course Home</span> › Advanced API Features</div>
+    <h1>Error Handling & Rate Limits</h1>
+    <p>HTTP error codes, exponential backoff, rate limit handling, and token budget management in production agent systems.</p>
+    <div class="hero-tags">
+      <span class="hero-tag highlight">Domain 1 · Domain 5</span>
+      <span class="hero-tag">Reliability</span>
+    </div>
+  </div>
+  <div class="w3-content">
+    <h2>API Error Codes</h2>
+    <div class="w3-table-wrap"><table class="w3-table">
+      <thead><tr><th>HTTP Code</th><th>Error Type</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>400</td><td>invalid_request_error</td><td>Fix the request — do NOT retry. Bad params, invalid model, malformed JSON.</td></tr>
+        <tr><td>401</td><td>authentication_error</td><td>Fix API key — do NOT retry. Invalid or expired key.</td></tr>
+        <tr><td>403</td><td>permission_error</td><td>Fix permissions — do NOT retry. Accessing unavailable resource.</td></tr>
+        <tr><td>404</td><td>not_found_error</td><td>Fix resource reference — do NOT retry.</td></tr>
+        <tr><td>429</td><td>rate_limit_error</td><td>Retry with exponential backoff. You've hit requests-per-minute or tokens-per-minute limit.</td></tr>
+        <tr><td>500</td><td>api_error</td><td>Retry with backoff. Anthropic-side error.</td></tr>
+        <tr><td>529</td><td>overloaded_error</td><td>Retry with backoff. API temporarily overloaded.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="w3-tip">The key exam distinction: 4xx errors (except 429) are NOT retryable — they signal a problem with YOUR request. 429 and 5xx/529 ARE retryable with exponential backoff.</div>
+
+    <h2>Exponential Backoff Pattern</h2>
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">Python — Exponential Backoff</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre"><span class="kw">import</span> time, random
+
+<span class="kw">def</span> <span class="fn">call_with_backoff</span>(messages, max_retries=<span class="num">5</span>):
+    <span class="kw">for</span> attempt <span class="kw">in</span> range(max_retries):
+        <span class="kw">try</span>:
+            <span class="kw">return</span> client.messages.create(
+                model=<span class="st">"claude-sonnet-4-6"</span>,
+                max_tokens=<span class="num">1024</span>,
+                messages=messages
+            )
+        <span class="kw">except</span> anthropic.RateLimitError:
+            <span class="kw">if</span> attempt == max_retries - <span class="num">1</span>:
+                <span class="kw">raise</span>
+            wait = (<span class="num">2</span> ** attempt) + random.uniform(<span class="num">0</span>, <span class="num">1</span>)  <span class="cm"># jitter</span>
+            time.sleep(wait)
+        <span class="kw">except</span> anthropic.BadRequestError:
+            <span class="kw">raise</span>  <span class="cm"># 400 — don't retry, fix the request</span></pre>
+    </div>
+
+    <h2>Token Budget Management</h2>
+    <p>Production agent systems must proactively manage context to avoid <code>max_tokens</code> truncation mid-task.</p>
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">Python — Proactive Token Counting</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre"><span class="cm"># Count tokens BEFORE making the API call</span>
+token_count = client.messages.count_tokens(
+    model=<span class="st">"claude-sonnet-4-6"</span>,
+    system=system_prompt,
+    tools=tools,
+    messages=messages
+)
+
+<span class="kw">if</span> token_count.input_tokens > <span class="num">180_000</span>:  <span class="cm"># leave 20K buffer</span>
+    messages = <span class="fn">trim_oldest_tool_results</span>(messages)
+    <span class="cm"># or: summarize old turns, or: start a new context</span>
+
+response = client.messages.create(
+    model=<span class="st">"claude-sonnet-4-6"</span>,
+    max_tokens=<span class="num">4096</span>,
+    messages=messages
+)</pre>
+    </div>
+    <div class="w3-tip">Never let a long-running agent hit max_tokens mid-task — it produces a truncated, unusable response. Count tokens proactively and trim or summarize before calling the API.</div>
+
+    <h2>Rate Limits — Types</h2>
+    <div class="w3-table-wrap"><table class="w3-table">
+      <thead><tr><th>Limit Type</th><th>What It Counts</th><th>Mitigation</th></tr></thead>
+      <tbody>
+        <tr><td>RPM</td><td>Requests per minute</td><td>Backoff, batch API, request queuing</td></tr>
+        <tr><td>TPM</td><td>Input + output tokens per minute</td><td>Reduce max_tokens, use Haiku for high-volume tasks</td></tr>
+        <tr><td>TPD</td><td>Tokens per day</td><td>Upgrade tier, use Batch API for non-urgent work</td></tr>
+      </tbody>
+    </table></div>
+
+    <button class="sk-complete-btn" id="btn-errors" onclick="markDone('errors')">✓ Mark Complete</button>
+    <button class="sk-next-btn" onclick="goto('computer')">Next: Computer Use →</button>
+  </div>
+</div>
+
+<!-- ═══════ PAGE: COMPUTER USE ═══════ -->
+<div class="page" id="page-computer">
+  <div class="page-hero">
+    <div class="breadcrumb"><span onclick="goto('home')">Course Home</span> › Advanced API Features</div>
+    <h1>Computer Use</h1>
+    <p>Claude's ability to interact with GUIs — clicks, typing, screenshots. Low exam weight but appears in agent architecture questions.</p>
+    <div class="hero-tags">
+      <span class="hero-tag highlight">Domain 1</span>
+      <span class="hero-tag">Agent Architecture</span>
+      <span class="hero-tag">Low Weight</span>
+    </div>
+  </div>
+  <div class="w3-content">
+    <h2>What Is Computer Use?</h2>
+    <p>Computer use allows Claude to interact with a computer's GUI — taking screenshots, moving the cursor, clicking, and typing — to complete tasks that require visual interaction with desktop applications or websites.</p>
+    <div class="w3-table-wrap"><table class="w3-table">
+      <thead><tr><th>Built-in Tool</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>computer</td><td>Take screenshots, move mouse, click, type, scroll</td></tr>
+        <tr><td>text_editor</td><td>Read, write, and edit files by path</td></tr>
+        <tr><td>bash</td><td>Execute shell commands</td></tr>
+      </tbody>
+    </table></div>
+    <div class="w3-code-wrap">
+      <div class="w3-code-header"><span class="lang">Python — Enabling Computer Use</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre class="w3-pre">response = client.messages.create(
+    model=<span class="st">"claude-sonnet-4-6"</span>,
+    max_tokens=<span class="num">4096</span>,
+    tools=[
+        {{
+            <span class="st">"type"</span>: <span class="st">"computer_20250124"</span>,
+            <span class="st">"name"</span>: <span class="st">"computer"</span>,
+            <span class="st">"display_width_px"</span>: <span class="num">1024</span>,
+            <span class="st">"display_height_px"</span>: <span class="num">768</span>,
+        }},
+        {{<span class="st">"type"</span>: <span class="st">"text_editor_20250124"</span>, <span class="st">"name"</span>: <span class="st">"str_replace_based_edit_tool"</span>}},
+        {{<span class="st">"type"</span>: <span class="st">"bash_20250124"</span>, <span class="st">"name"</span>: <span class="st">"bash"</span>}},
+    ],
+    messages=messages
+)</pre>
+    </div>
+
+    <h2>Key Exam Facts About Computer Use</h2>
+    <ul>
+      <li>Computer use tools are <strong>beta</strong> — enabled via a <code>banthropic-beta</code> header</li>
+      <li>The agentic loop mechanics are <strong>identical</strong> — <code>stop_reason = "tool_use"</code> drives the loop exactly the same way</li>
+      <li>Screenshots are passed back as <strong>image content blocks</strong> in the tool_result</li>
+      <li>Best model: <strong>Sonnet</strong> for computer use tasks (best speed/accuracy tradeoff)</li>
+      <li>Computer use requires a <strong>sandboxed environment</strong> — never run on a production machine</li>
+    </ul>
+    <div class="w3-warning">Computer use gives Claude the ability to take real actions on a computer. Always run in an isolated sandbox. Never give it access to production systems, credentials, or sensitive data without strict sandboxing.</div>
+    <div class="w3-tip">The exam tests conceptual awareness of computer use, not deep implementation. Know: what it is, the 3 built-in tools, that it uses the same agentic loop, and that it requires sandbox isolation.</div>
+
+    <button class="sk-complete-btn" id="btn-computer" onclick="markDone('computer')">✓ Mark Complete</button>
+    <button class="sk-next-btn" onclick="goto('scenarios')">Next: 6 Exam Scenarios →</button>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────
+const scenariosData = [
+  { num:'SCENARIO 1', title:'Customer Support Agent', freq:true,
+    desc:'Build an agent using the Claude Agent SDK to handle returns, billing disputes, and account issues. Target: 80%+ first-contact resolution with appropriate human escalation.',
+    tools:['get_customer','lookup_order','process_refund','check_policy','escalate_to_human'],
+    traps:['Using system prompt to enforce the $500 refund cap instead of a PostToolUse hook','Attempting autonomous resolution after customer explicitly requests a human','Retrying process_refund after explicit policy denial (should escalate)'],
+    focus:'Hook-based enforcement, escalation trigger conditions, tool description quality' },
+  { num:'SCENARIO 2', title:'Code Generation with Claude Code', freq:false,
+    desc:'Use Claude Code to accelerate development: code generation, refactoring, debugging, documentation. Configure custom slash commands and CLAUDE.md hierarchies for a production project.',
+    tools:['Read','Write','Bash','Grep','Glob','Custom MCP'],
+    traps:['Not knowing directory-level CLAUDE.md takes priority over project root on conflicts','Using absolute paths in SKILL.md (breaks in CI checkout)','Confusing context:fork (isolated) vs context:current (shared session)'],
+    focus:'CLAUDE.md hierarchy rules, SKILL.md frontmatter options, planning mode use cases' },
+  { num:'SCENARIO 3', title:'Multi-Agent Research System', freq:true,
+    desc:'Coordinator delegates to specialized subagents: web research, document analysis, synthesis, report generation. Must produce complete reports with citations.',
+    tools:['spawn_subagent','web_search','analyze_document','synthesize','generate_report'],
+    traps:['Assuming subagents share memory — they don\'t, ALL context must be passed explicitly','Assuming incomplete output means a subagent failed — root cause is coordinator decomposition','Not placing aggregated summaries at the top of the synthesis prompt'],
+    focus:'No shared memory rule, coordinator decomposition quality, lost-in-middle in aggregation' },
+  { num:'SCENARIO 4', title:'Developer Productivity Tools', freq:false,
+    desc:'Agent helps engineers explore unfamiliar codebases, generate boilerplate, and automate routine tasks using built-in and MCP tools.',
+    tools:['Read','Write','Bash','Grep','Glob','MCP: codebase_search'],
+    traps:['Sending too many files at once — attention dilution causes shallow coverage of each','Not strengthening MCP tool descriptions to prevent model defaulting to built-in tools','Missing the pattern: use Grep/Glob to narrow scope before Read'],
+    focus:'Attention dilution prevention, MCP vs built-in tool description competition' },
+  { num:'SCENARIO 5', title:'CI/CD Integration', freq:false,
+    desc:'Integrate Claude Code into a CI/CD pipeline for automated code reviews, test generation, and PR feedback. Headless non-interactive mode required.',
+    tools:['--headless','claude-code-action','--allowedTools','--dangerouslySkipPermissions'],
+    traps:['Using --dangerouslySkipPermissions WITHOUT restricting --allowedTools (security)','Overly broad prompts that generate false positives blocking valid PRs','Using absolute paths in slash commands that break in CI checkout paths'],
+    focus:'Headless configuration, false positive minimization, dangerouslySkipPermissions safety' },
+  { num:'SCENARIO 6', title:'Structured Data Extraction', freq:false,
+    desc:'Extract information from unstructured documents (invoices, contracts), validate with JSON schemas, maintain high accuracy on edge cases.',
+    tools:['extract_with_schema','validate_output','retry_extraction','flag_for_review'],
+    traps:['Blind retry instead of retry-with-feedback (same prompt = same wrong result)','Missing semantic validation layer (valid JSON, valid schema, but inconsistent values)','Using few-shot for simple well-defined fields when a JSON Schema is more reliable'],
+    focus:'Three validation layers, retry-with-feedback pattern, few-shot vs schema selection' },
+];
+
+const questionsData = [
+  { d:'d1', diff:'F', q:'Your agentic loop receives a response with stop_reason = "tool_use". What is the correct next action?',
+    opts:['Return the response to the user immediately','Extract the tool call, execute it, append the tool_result, and call the API again','Increment a retry counter and call the API with the same messages','Pause and wait for user confirmation before executing'],
+    ans:1, why:'stop_reason = tool_use means the model wants to execute a tool. Execute → append tool_result → loop. Never return to user mid-tool-use. C is wrong — this isn\'t a failure state.', p:'The agentic loop continues until stop_reason = end_turn.' },
+  { d:'d1', diff:'I', q:'You need to enforce a $500 maximum refund limit. Which implementation provides the strongest guarantee?',
+    opts:['Add "Never process refunds exceeding $500" to the system prompt','Add a refund_limit field to the process_refund tool\'s input_schema','Implement a PostToolUse hook that intercepts process_refund and blocks amounts over $500','Validate the amount in the user\'s initial request before it reaches the agent'],
+    ans:2, why:'PostToolUse hooks are programmatic — cannot be reasoned around. System prompt (A) is advisory. Schema (B) defines types, not business rules. D only catches the initial request.', p:'PROGRAMMATIC (hooks) > PROMPT (instructions) for hard limits.' },
+  { d:'d1', diff:'I', q:'All subagents returned successful results, but the report covers only visual arts and misses performing arts and literature. What is the root cause?',
+    opts:['The web search subagent had insufficient tool permissions','The synthesis subagent\'s context window was exceeded','The coordinator decomposed "creative industries" into only visual arts categories','MCP tool latency caused some subagents to return empty results'],
+    ans:2, why:'All subagents succeeded (no errors), so A and D are wrong. Context exceeded (B) causes truncated output, not categorically missing topics. Coverage gaps with successful executions = coordinator decomposition failure.', p:'Incomplete output + all subagents succeed = coordinator decomposition failure.' },
+  { d:'d1', diff:'E', q:'A customer explicitly says "I want to speak to a human agent right now." Your agent could resolve this autonomously. What should the agent do?',
+    opts:['Attempt to resolve autonomously first, then offer escalation','Explain the automated option and ask if they still want a human','Immediately call escalate_to_human without attempting autonomous resolution','Resolve the issue and inform the customer a human reviewed it afterward'],
+    ans:2, why:'An explicit request for a human is an unconditional escalation trigger. A violates the customer\'s directive. B also negotiates when no negotiation is permitted. D is dishonest.', p:'Explicit human request → escalate IMMEDIATELY. No retries, no alternatives.' },
+  { d:'d1', diff:'F', q:'The Claude API requires you to send full conversation history on every request. Why?',
+    opts:['To allow the model to learn from the conversation over time','The model is stateless — it has no memory between API calls; context must be provided each time','To enable billing to calculate usage correctly','Sending partial history causes rate limiting'],
+    ans:1, why:'The Claude API is completely stateless. Each request is independent. No memory of previous interactions unless included in the messages array. This is why multi-turn conversations require sending the full history every time.', p:'Claude API is stateless — you maintain and send ALL conversation history on every request.' },
+  { d:'d2', diff:'F', q:'You have two tools with identical descriptions: "Analyzes text." Wrong tool is called 40% of the time. What is the fix?',
+    opts:['Rename the tools to be less similar','Rewrite both descriptions with specific input types, output fields, edge cases, and when NOT to use each','Add system prompt instructions specifying when to use each tool','Remove one tool and handle both cases in a single tool'],
+    ans:1, why:'Renaming (A) doesn\'t fix vague descriptions. System prompt (C) is secondary to description quality. Consolidating (D) increases complexity. The fix is always description specificity.', p:'Tool descriptions ARE your routing logic. Vague = unreliable selection.' },
+  { d:'d2', diff:'I', q:'You need extract_metadata to always be the first step in a pipeline. What is the correct tool_choice?',
+    opts:['{"type": "auto"}','{"type": "any"}','{"type": "tool", "name": "extract_metadata"}','List extract_metadata first in the tools array'],
+    ans:2, why:'"auto" lets model decide — might skip. "any" forces some tool, not a specific one. Array order (D) doesn\'t control selection. Only the named tool_choice guarantees a specific tool is called.', p:'Force a specific first step with tool_choice: {"type":"tool","name":"X"}.' },
+  { d:'d2', diff:'F', q:'What is the primary difference between MCP Tools and MCP Resources?',
+    opts:['Tools are synchronous; Resources are asynchronous','Tools are functions Claude can call to perform actions; Resources are data Claude can read','Tools require user confirmation; Resources are accessed without permission','Tools are defined in JSON; Resources are defined in XML'],
+    ans:1, why:'A, C, D are fabricated distinctions. Tools = executable functions. Resources = data sources Claude reads as context — like a file system for the model.', p:'Tools = do things. Resources = read data.' },
+  { d:'d3', diff:'F', q:'A project has ~/.claude/CLAUDE.md, .claude/CLAUDE.md, and src/api/CLAUDE.md. A rule in src/api/ conflicts with .claude/. Which rule applies when editing src/api/routes.ts?',
+    opts:['~/.claude/CLAUDE.md rule (user global takes precedence)','The .claude/CLAUDE.md rule (project root)','The src/api/CLAUDE.md rule (most specific file wins)','Neither — conflicting rules cancel each other out'],
+    ans:2, why:'CLAUDE.md follows CSS-like specificity. src/api/ is more specific than project root, which is more specific than user global. D is wrong — there is no cancellation rule.', p:'More specific CLAUDE.md = higher priority. All files merge; conflicts resolved by specificity.' },
+  { d:'d3', diff:'I', q:'A custom slash command /review-pr works locally but fails in CI with "file not found." What is the most likely cause?',
+    opts:['GitHub Actions doesn\'t support Claude Code slash commands','ANTHROPIC_API_KEY secret is not set in repository settings','The SKILL.md references files using absolute paths that differ in CI checkout','Claude Code requires interactive mode for slash commands'],
+    ans:2, why:'A is incorrect — Claude Code works in CI headless mode. B causes API auth errors, not file not found. D is incorrect — that\'s the point of headless mode. Absolute paths break in CI.', p:'Always use repo-relative paths in SKILL.md. Absolute paths break in CI.' },
+  { d:'d3', diff:'E', q:'You run Claude Code in CI with --dangerouslySkipPermissions. Reviewers flag it as a security risk. What is the correct configuration?',
+    opts:['Remove --dangerouslySkipPermissions and use interactive mode','Add --allowedTools "Read,Grep,Bash(git diff)" to restrict which tools can be called','Use CLAUDE_SAFE_MODE=true to restrict access','This flag is inherently unsafe and should never be used in CI'],
+    ans:1, why:'--dangerouslySkipPermissions is necessary for non-interactive CI. The safety mechanism is pairing it with a restricted --allowedTools list. A defeats CI automation. C doesn\'t exist. D is wrong.', p:'--dangerouslySkipPermissions + --allowedTools [minimal list] = safe CI pattern.' },
+  { d:'d4', diff:'F', q:'Your extraction returns JSON where invoice_total = 1000 but sum of line_items = 850. JSON is valid and passes schema validation. What validation is missing?',
+    opts:['Syntactic validation','Schema validation','Semantic validation','Output format validation'],
+    ans:2, why:'Syntactic = parseable JSON? Schema = correct types and field names? The JSON passes both. Semantic checks cross-field business logic — sum(line_items) == invoice_total is a semantic constraint.', p:'Semantic validation = cross-field consistency. Goes beyond JSON Schema.' },
+  { d:'d4', diff:'I', q:'Your pipeline retries 3 times with the same prompt. Success rate doesn\'t improve on 2nd and 3rd attempts. What is the correct fix?',
+    opts:['Switch to a more capable model on retry','Increase max_tokens on retry','Include the specific validation errors in the retry prompt','Reduce temperature to 0 on retries'],
+    ans:2, why:'A blind retry with the same prompt produces the same distribution of outputs. Feedback changes what the model knows. "Your response had these specific issues: [errors]. Please correct them." A, B, D don\'t address why the extraction was wrong.', p:'Retry with failure context = fundamentally different from blind retry.' },
+  { d:'d4', diff:'I', q:'For which fields is few-shot most valuable when extracting invoice data?',
+    opts:['invoice_number and invoice_date (few-shot); payment_terms (schema)','payment_terms and shipping_notes (few-shot); invoice_number (schema)','All fields benefit equally from few-shot','Few-shot is only useful when schema validation fails'],
+    ans:1, why:'Few-shot excels for ambiguous/informal fields — payment_terms ("net 30", "2/10 n30") and shipping_notes (free-form). invoice_number has consistent, well-defined formats — JSON Schema type constraints are more reliable.', p:'Few-shot for ambiguous/informal; Schema for well-defined/typed fields.' },
+  { d:'d4', diff:'E', q:'You want to guarantee the model returns JSON matching your exact schema. Which provides the strongest enforcement?',
+    opts:['Add "Always respond in valid JSON" to the system prompt','Set tool_choice: {"type":"any"} with a single extraction tool whose input_schema IS your target schema','Use response_format: {"type":"json_object"} in the API call','Add 10 few-shot examples of correct JSON output'],
+    ans:1, why:'System prompt (A) is advisory. response_format (C) enforces JSON but not your specific schema. Few-shot (D) improves but doesn\'t enforce. tool_choice:"any" with one tool forces output matching that tool\'s input_schema exactly.', p:'tool_choice:"any" + single tool whose schema IS your target = strongest enforcement.' },
+  { d:'d5', diff:'I', q:'A research report cites "42.3% improvement" in the intro but "about 40% improvement" in the body. Both came from the same subagent. What caused the discrepancy?',
+    opts:['The subagent used two different data sources','The intro used raw data; the body was generated after progressive summarization stripped numeric precision','The synthesis agent\'s context window was exceeded mid-generation','The model hallucinated the figure in one section'],
+    ans:1, why:'Progressive summarization converts exact values to approximations — "42.3%" → "about 40%". The raw data was available in the first pass but lost in the compressed context used for the body section.', p:'Preserve numeric data separately. Summarization destroys precision.' },
+  { d:'d5', diff:'E', q:'A compliance agent processes a 400-page document and consistently misses violations in pages 150–300 but covers pages 1–50 and 350–400 accurately. What is the most effective mitigation?',
+    opts:['Use a higher-tier model with a larger context window','Switch to streaming responses','Chunk the document into ~30-page sections, process independently, aggregate findings','Move compliance criteria to the end of the document input'],
+    ans:2, why:'Accurate at start/end, degraded in middle = textbook lost-in-the-middle. A larger context doesn\'t fix the effect. Streaming doesn\'t change attention distribution. Moving criteria to end helps partially. Chunking eliminates the effect.', p:'Lost-in-middle mitigation: chunk to eliminate middle sections entirely.' },
+  { d:'d5', diff:'I', q:'A tool returns 40 fields but your agent only uses 5. After 20 tool calls, performance degrades. What is the correct fix?',
+    opts:['Increase context window by switching to a higher-capacity model','Project tool results to the 5 needed fields before appending to messages','Clear message history every 10 tool calls','Switch from tool_use to embedding data in the system prompt'],
+    ans:1, why:'Each 40-field result adds ~800 tokens to context. After 20 calls: 16,000 wasted tokens. Trimming to 5 fields reduces this to ~1,600 total. A delays the problem. C loses needed history. D is architecturally wrong.', p:'Trim tool outputs before appending. 40→5 fields = ~90% context savings per call.' },
+  { d:'d1', diff:'I', q:'Your agentic loop is designed correctly but the agent fails silently after tool call #15. What is the most likely cause?',
+    opts:['The model reached its max_turns limit without triggering stop_sequence','Accumulated tool results have consumed most of the context window, causing the model to stop_reason = max_tokens','The agent SDK has a hard limit of 15 tool calls per session','The model stopped because stop_reason = end_turn was returned prematurely'],
+    ans:1, why:'After 15+ tool calls, the accumulated messages (including all tool_results) can fill the context window. When max_tokens is reached, the response is truncated — which can appear as silent failure if the agentic loop doesn\'t check this stop_reason.', p:'Monitor context growth in long-running agent loops — tool results accumulate.' },
+  { d:'d2', diff:'I', q:'When an MCP tool needs to communicate that a long-running task completed, which MCP feature enables server-to-client notification?',
+    opts:['Tool notifications — a push mechanism built into the tools spec','Sampling — the server requests a new Claude completion to process the completion event','Resources — the completed result is stored as a resource Claude polls','There is no way for MCP servers to initiate communication'],
+    ans:1, why:'Sampling is the MCP mechanism that allows servers to request Claude completions. This enables the server to trigger a new AI-driven flow when an event occurs. Resources (C) are passive data stores, not event triggers.', p:'MCP Sampling = server requests completions from Claude. Enables server-side AI-triggered flows.' },
+  { d:'d3', diff:'I', q:'When should you use Claude Code\'s planning mode before executing a task?',
+    opts:['Always — planning produces better results for all tasks','For complex multi-step tasks where you want to review the approach before irreversible changes','Only for file write operations, never for read-only analysis','Planning mode is deprecated — use --headless instead'],
+    ans:1, why:'Planning mode adds overhead — valuable when tasks involve multiple steps with irreversible consequences (file writes, deployments) where verifying the approach first prevents mistakes. Not needed for simple read-only tasks.', p:'Planning mode = review before irreversible action. Not needed for simple reads.' },
+  { d:'d4', diff:'F', q:'What does tool_choice: {"type": "any"} guarantee?',
+    opts:['The model will always use the first tool in the tools array','The model must call at least one tool — it cannot respond with text only','The model will call all available tools in sequence','The model will call tools in parallel'],
+    ans:1, why:'"any" guarantees the model calls at least one tool from the available set. It cannot produce a text-only response. Combined with a single extraction tool, this is the strongest way to enforce structured output.', p:'tool_choice "any" = must call SOME tool. Use to force structured output.' },
+  { d:'d5', diff:'E', q:'A multi-agent pipeline summarizes each subagent output before passing to the next stage. The final report is missing specific statistics. What is the most likely cause?',
+    opts:['The web search subagent timed out','Progressive summarization converted "revenue grew 23.7% YoY" to vague language before passing to synthesis','The synthesis agent\'s context window was exceeded','The coordinator did not include web search results in the synthesis prompt'],
+    ans:1, why:'"Statistics missing but general content present" is the signature of progressive summarization losing numeric precision. "23.7% YoY" becomes "significantly" or is dropped entirely.', p:'Progressive summarization loses numeric precision — preserve raw stats separately.' },
+  { d:'d1', diff:'I', q:'You are designing a support agent. A customer says "I think my order might have been delivered to the wrong address." What is the correct first action?',
+    opts:['Immediately call process_reship to proactively solve the problem','Call lookup_order to verify the delivery details before taking any action','Escalate to a human because address issues are sensitive','Ask the customer for their order number before using any tool'],
+    ans:1, why:'"Might have been" is unconfirmed. The agent must verify by calling lookup_order first — reshipping on an unconfirmed report could create duplicate shipments. Escalation (C) is premature. The agent likely already has customer context.', p:'Verify state before acting. Always call lookup tools before action tools.' },
+  { d:'d2', diff:'E', q:'Your agent consistently uses the built-in Read tool instead of a custom MCP tool called read_document even though your system prompt says to use read_document. What is the fix?',
+    opts:['Remove the built-in Read tool from the agent\'s tool list','Enhance the read_document MCP tool description to explain its unique advantages over Read','Move the instruction to the user turn instead of system prompt','Change tool_choice to force read_document on every call'],
+    ans:1, why:'Tool selection is driven by description quality, not system prompt instructions. When two tools have similar functionality, the model picks based on how well descriptions differentiate them. Strengthen MCP description to highlight concrete advantages.', p:'Tool description quality determines selection. Instructions are advisory; descriptions are deterministic.' },
+];
+
+const studyPlan = [
+  { week:1, days:[
+    { tag:'DAY 1–2', title:'Claude API & Agentic Loop', tasks:['Read: platform.claude.com/docs/en/api/messages','Build a minimal agent loop in Python: stop_reason → tool_use → execute → loop','Deliberately trigger all 4 stop_reason values to feel the difference','Study tool_use content block structure: id, name, input fields'] },
+    { tag:'DAY 3', title:'Agent SDK — Hooks & Sessions', tasks:['Read: platform.claude.com/docs/en/agent-sdk/hooks','Build a PostToolUse hook that enforces a $500 refund limit','Build a PreToolUse hook that blocks an unauthorized tool call','Compare: hook enforcement vs system prompt instruction — observe the difference'] },
+    { tag:'DAY 4', title:'Multi-Agent Orchestration', tasks:['Read: platform.claude.com/docs/en/agent-sdk/subagents','Build a 2-agent system: coordinator + one specialist subagent','Deliberately pass incomplete context — observe the failure mode','Fix by passing full context — understand WHY explicit injection is required'] },
+    { tag:'DAY 5', title:'MCP — Tools, Resources, Transport', tasks:['Read: modelcontextprotocol.io/docs/concepts/tools and /resources','Build a local MCP server with 2 tools and 1 resource','Wire it to Claude Code using .mcp.json','Test stdio transport locally; understand SSE conceptually for remote servers'] },
+    { tag:'DAY 6–7', title:'CLAUDE.md & Claude Code Config', tasks:['Read: code.claude.com/docs/en/memory','Set up a 3-level CLAUDE.md hierarchy on a real project','Create .claude/rules/ with path-scoped rules using YAML frontmatter','Build one custom slash command (SKILL.md) with context:fork and allowed-tools','Test priority: create a conflict between directory and project CLAUDE.md — verify which wins'] },
+  ]},
+  { week:2, days:[
+    { tag:'DAY 8', title:'Prompt Engineering & Structured Output', tasks:['Read: platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview','Build a 3-layer validation pipeline for invoice extraction','Implement retry-with-feedback (not blind retry) — test the difference','Test few-shot vs schema for 3 different field types'] },
+    { tag:'DAY 9', title:'CI/CD Integration — Headless Mode', tasks:['Read: code.claude.com/docs/en/github-actions','Set up claude-code-action in a test GitHub repository','Configure --allowedTools for a minimal code review task','Write a prompt that produces 0 false positives on a clean commit'] },
+    { tag:'DAY 10', title:'Context Management Deep Dive', tasks:['Implement context trimming for a tool returning 40 fields → 5 needed fields','Build a chunking pipeline for a long document','Compare single-pass vs chunked coverage — observe what the middle misses','Build a pipeline that preserves numeric data separately from narrative summaries'] },
+    { tag:'DAY 11–12', title:'All 6 Scenarios Deep Study', tasks:['For each scenario: identify the 3 most likely wrong-answer distractors','Build the Customer Support agent (Scenario 1) fully with hooks','Build the Multi-Agent Research pipeline (Scenario 3) — practice context passing','Scenarios 1 & 3 appear most frequently — master these two'] },
+    { tag:'DAY 13', title:'Official Anthropic Academy Courses', tasks:['Complete: Introduction to Subagents (Skilljar)','Complete: MCP Advanced Topics (Skilljar)','Complete: Claude Code Configuration & Workflows (Skilljar)','Note any terminology differences from your mental models'] },
+    { tag:'DAY 14', title:'Official Practice Test + Book Exam', tasks:['Complete the official 60-question practice test (from Anthropic after registration)','For every wrong answer: identify which mental model was missing','Re-read the relevant domain section for each wrong answer','Review the Cheat Sheet one final time','Book the exam'] },
+  ]},
+];
+
+// ── RENDER SCENARIOS ───────────────────────────────────────────────────────
+function renderScenarios() {
+  const c = document.getElementById('scenarios-container');
+  c.innerHTML = '';
+  scenariosData.forEach(s => {
+    const tools = s.tools.map(t => `<span class="sc-tool">${t}</span>`).join('');
+    const traps = s.traps.map(t => `<li>${t}</li>`).join('');
+    c.innerHTML += `<div class="scenario-card">
+      <div class="sc-head">
+        <div><div class="sc-num">${s.num}</div><div class="sc-title">${s.title}</div></div>
+        ${s.freq ? '<span class="sc-freq">Most Frequent</span>' : ''}
+      </div>
+      <div class="sc-body">
+        <p class="sc-desc">${s.desc}</p>
+        <div class="sc-tools">${tools}</div>
+        <div class="sc-traps"><strong>⚠️ Exam Traps:</strong><ul>${traps}</ul></div>
+        <p class="sc-focus"><strong>Focus:</strong> ${s.focus}</p>
+      </div>
+    </div>`;
+  });
+  c.innerHTML += `<button class="sk-complete-btn" id="btn-scenarios" onclick="markDone('scenarios')">✓ Mark Scenarios Complete</button>
+    <button class="sk-next-btn" onclick="goto('cheatsheet')">Next: Cheat Sheet →</button>`;
+}
+
+// ── RENDER QUESTIONS ───────────────────────────────────────────────────────
+let sel = {}, ans = {}, score = 0, total = 0;
+function renderQ(filter='all') {
+  const c = document.getElementById('q-container'); c.innerHTML = '';
+  const list = filter === 'all' ? questionsData : questionsData.filter(q => q.d === filter);
+  const diffLabel = {F:'Foundation',I:'Intermediate',E:'Expert'};
+  list.forEach((q, idx) => {
+    const gi = questionsData.indexOf(q);
+    const opts = q.opts.map((o,oi) => {
+      let cls = 'tryit-opt';
+      if (ans[gi] !== undefined) {
+        if (oi === q.ans) cls += ' correct';
+        else if (oi === sel[gi] && oi !== q.ans) cls += ' wrong';
+      } else if (sel[gi] === oi) cls += ' selected';
+      return `<div class="${cls}" id="opt-${gi}-${oi}" onclick="pickOpt(${gi},${oi})">
+        <div class="opt-radio"></div><div>${o}</div></div>`;
+    }).join('');
+    const expCls = ans[gi] !== undefined ? 'explanation-box show ' + (sel[gi]===q.ans?'ok':'bad') : 'explanation-box';
+    const verdict = ans[gi] !== undefined ? (sel[gi]===q.ans ? '<div class="exp-verdict ok">✓ Correct</div>' : `<div class="exp-verdict bad">✗ Incorrect — Correct answer: ${q.opts[q.ans].charAt(0)}</div>`) : '';
+    c.innerHTML += `<div class="tryit-wrap">
+      <div class="tryit-header">
+        <span class="th-title">Q${idx+1} &nbsp;·&nbsp; <span style="color:#aaa;font-weight:400;font-size:11px">${q.d.toUpperCase()}</span></span>
+        <span class="th-diff diff-${q.diff}">${diffLabel[q.diff]}</span>
+      </div>
+      <div class="tryit-body">
+        <div class="tryit-q">${q.q}</div>
+        ${opts}
+        <button class="submit-btn" id="sbtn-${gi}" onclick="checkQ(${gi})" ${ans[gi]!==undefined||sel[gi]===undefined?'disabled':''}>Submit Answer</button>
+        <div class="${expCls}" id="exp-${gi}">${verdict}<div>${q.why}</div><div class="exp-principle">⚡ ${q.p}</div></div>
+      </div>
+    </div>`;
+  });
+}
+function pickOpt(gi, oi) {
+  if (ans[gi] !== undefined) return;
+  document.querySelectorAll(`[id^="opt-${gi}-"]`).forEach(e => e.classList.remove('selected'));
+  document.getElementById(`opt-${gi}-${oi}`).classList.add('selected');
+  sel[gi] = oi;
+  const btn = document.getElementById(`sbtn-${gi}`);
+  if (btn) btn.disabled = false;
+}
+function checkQ(gi) {
+  if (ans[gi] !== undefined) return;
+  const q = questionsData[gi]; if (sel[gi] === undefined) return;
+  ans[gi] = true; total++;
+  const ok = sel[gi] === q.ans; if (ok) score++;
+  document.querySelectorAll(`[id^="opt-${gi}-"]`).forEach((e,oi) => {
+    if (oi === q.ans) e.classList.add('correct');
+    else if (oi === sel[gi] && !ok) e.classList.add('wrong');
+    e.style.cursor = 'default';
+  });
+  const exp = document.getElementById(`exp-${gi}`);
+  exp.classList.add('show'); exp.classList.add(ok ? 'ok' : 'bad');
+  exp.innerHTML = `<div class="exp-verdict ${ok?'ok':'bad'}">${ok?'✓ Correct':'✗ Incorrect — Correct: '+q.opts[q.ans]}</div><div>${q.why}</div><div class="exp-principle">⚡ ${q.p}</div>`;
+  document.getElementById(`sbtn-${gi}`).disabled = true;
+  document.getElementById('tb-score').textContent = `${score}/${total}`;
+}
+function filterQ(f, btn) {
+  document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active'); renderQ(f);
+}
+
+// ── RENDER STUDY PLAN ──────────────────────────────────────────────────────
+function renderStudyPlan() {
+  studyPlan.forEach(wk => {
+    const container = document.getElementById(`week${wk.week}-days`);
+    container.innerHTML = wk.days.map((d,i) => `
+      <div class="day-card">
+        <div class="day-head" onclick="toggleDay('w${wk.week}d${i}')">
+          <span class="day-tag">${d.tag}</span>
+          <span>${d.title}</span>
+          <span style="margin-left:auto;font-size:12px;color:#999">▾</span>
+        </div>
+        <div class="day-tasks" id="w${wk.week}d${i}">
+          ${d.tasks.map(t => `<div class="day-task"><input type="checkbox" /><span>${t}</span></div>`).join('')}
+        </div>
+      </div>`).join('');
+  });
+}
+function toggleDay(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+// ── MODULE PROGRESS ────────────────────────────────────────────────────────
+const completed = new Set();
+function markDone(id) {
+  // Update home list
+  const mn = document.getElementById('mn-'+id);
+  const ms = document.getElementById('ms-'+id);
+  if (mn) { mn.style.background = 'var(--ant-green-lt)'; mn.style.borderColor = 'var(--ant-green)'; mn.style.color = 'var(--ant-green)'; mn.textContent = '✓'; }
+  if (ms) { ms.textContent = '✓ Complete'; ms.className = 'sj-module-status done'; }
+  const row = mn && mn.closest('.sj-module-row');
+  if (row) row.classList.add('done');
+  // Update sidebar lesson icon
+  document.querySelectorAll('.sj-lesson[data-page="'+id+'"] .sj-lesson-icon').forEach(el => {
+    el.textContent = '✓'; el.parentElement.classList.add('done');
+  });
+
+  completed.add(id);
+  const btn = document.getElementById(`btn-${id}`);
+  if (btn) { btn.textContent = '✓ Completed'; btn.classList.add('done'); }
+  const mod = document.getElementById(`mod-${id}`);
+  if (mod) { mod.classList.add('done'); mod.querySelector('.sk-dot').style.background = 'var(--w3-green)'; }
+  const nav = document.querySelector(`[onclick="goto('${id}')"]`);
+  if (nav) nav.classList.add('completed');
+  // Update course progress
+  const pct = Math.round((completed.size / 8) * 100);
+  document.getElementById('course-progress').style.width = pct + '%';
+  // Update course cards
+  // update global progress
+  const pct2 = Math.round((completed.size/16)*100);
+  document.getElementById('course-progress').style.width = pct2+'%';
+  document.getElementById('prog-pct').textContent = pct2;
+  const hpf = document.getElementById('home-progress-fill');
+  const hpp = document.getElementById('home-prog-pct');
+  if (hpf) hpf.style.width = pct2+'%';
+  if (hpp) hpp.textContent = pct2;
+}
+function toggleModule(id) {
+  if (completed.has(id)) { completed.delete(id); document.getElementById(`mod-${id}`).classList.remove('done'); }
+  else markDone(id);
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────────────────────
+const pages = ['home','overview','d1','d2','d3','d4','d5','scenarios','cheatsheet','practice','studyplan','resources','extended','models','streaming','caching','errors','computer'];
+function goto(id) {
+  pages.forEach(p => {
+    const el = document.getElementById('page-'+p);
+    if (el) el.classList.remove('active');
+  });
+  const target = document.getElementById('page-'+id);
+  if (target) target.classList.add('active');
+  // Update sidebar lesson items
+  document.querySelectorAll('.sj-lesson').forEach(n => {
+    n.classList.toggle('active', n.dataset.page === id);
+  });
+  window.scrollTo(0,0);
+}
+
+// ── COPY BUTTONS ───────────────────────────────────────────────────────────
+function copyCode(btn) {
+  const pre = btn.closest('.w3-code-wrap').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    btn.textContent = 'Copied!'; btn.style.color = 'var(--w3-green)';
+    setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 2000);
+  });
+}
+
+// ── INIT ────────────────────────────────────────────────────────────────────
+renderScenarios();
+renderQ();
+renderStudyPlan();
+</script>
+
+<script>
+// Sidebar section toggle
+function toggleSection(head) {
+  head.classList.toggle('open');
+  const lessons = head.nextElementSibling;
+  lessons.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
