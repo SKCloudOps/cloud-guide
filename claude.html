@@ -494,7 +494,7 @@ table.w3-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 <aside id="sj-sidebar">
   <div class="sj-course-header">
     <div class="sj-course-name">Claude Certified Architect</div>
-    <div class="sj-course-meta">Foundations (CCA-F) &nbsp;·&nbsp; 11 lessons &nbsp;·&nbsp; Free</div>
+    <div class="sj-course-meta">Foundations (CCA-F) &nbsp;·&nbsp; 18 lessons &nbsp;·&nbsp; Free</div>
   </div>
 
   <!-- Section: Getting Started -->
@@ -602,7 +602,7 @@ table.w3-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
       <div class="sj-lesson" data-page="practice" onclick="goto('practice')">
         <div class="sj-lesson-icon">9</div>
         <div class="sj-lesson-text">
-          <div class="sj-lesson-title">Practice Questions (25)</div>
+          <div class="sj-lesson-title">Practice Questions (30)</div>
           <div class="sj-lesson-sub">All 5 domains · full explanations</div>
         </div>
         <div class="sj-lesson-dur">~45 min</div>
@@ -711,7 +711,7 @@ table.w3-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
       <div class="sj-stat"><div class="sv">120</div><div class="sl">Minutes</div></div>
       <div class="sj-stat"><div class="sv">720</div><div class="sl">Passing Score</div></div>
       <div class="sj-stat"><div class="sv">$99</div><div class="sl">USD</div></div>
-      <div class="sj-stat"><div class="sv">4/6</div><div class="sl">Scenarios Selected</div></div>
+      <div class="sj-stat"><div class="sv">4/6</div><div class="sl">Scenarios Per Exam</div></div>
     </div>
     <button class="sj-start-btn" onclick="goto('overview')">Start Course →</button>
   </div>
@@ -766,7 +766,7 @@ table.w3-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
     </div>
     <div class="sj-module-row" onclick="goto('practice')">
       <div class="sj-module-num" id="mn-practice">9</div>
-      <div class="sj-module-body"><div class="sj-module-title">Practice Questions (25)</div><div class="sj-module-desc">Scenario-grounded questions with explained answers across all 5 domains</div></div>
+      <div class="sj-module-body"><div class="sj-module-title">Practice Questions (30)</div><div class="sj-module-desc">Scenario-grounded questions with explained answers across all 5 domains</div></div>
       <div class="sj-module-right"><div class="sj-module-pct">—</div><div class="sj-module-status" id="ms-practice">Not started</div></div>
     </div>
     <div class="sj-module-row" onclick="goto('studyplan')">
@@ -981,18 +981,19 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
 
     <h2>MCP — Model Context Protocol</h2>
     <p>MCP is an open standard that defines how AI models connect to external tools and data sources. Think of it as a universal adapter — instead of building a custom integration for every service, you build one MCP server and any MCP-compatible model can use it.</p>
-    <p>The core mental model: an MCP server exposes <strong>Tools</strong> (things to do — functions the model can invoke), <strong>Resources</strong> (things to read — data the model can pull in as context), and <strong>Prompts</strong> (reusable prompt templates). The transport layer handles communication: <strong>stdio</strong> for local servers running in the same process, <strong>SSE</strong> (Server-Sent Events) for remote servers over HTTP.</p>
+    <p>The core mental model: an MCP server exposes <strong>Tools</strong> (things to do — functions the model can invoke), <strong>Resources</strong> (things to read — data the model can pull in as context), and <strong>Prompts</strong> (reusable prompt templates). The transport layer handles communication: <strong>stdio</strong> for local servers running in the same process, <strong>Streamable HTTP</strong> for remote servers over the network (replaced the earlier SSE transport in the March 2025 MCP spec update).</p>
     <p><strong>Sampling</strong> is the most subtle MCP primitive — it allows the MCP server itself to request a Claude completion. This enables server-side AI logic: for example, a document analysis MCP server can use sampling to have Claude summarize a chunk before returning it to the main agent. The server becomes an active participant in the AI pipeline, not just a passive tool provider.</p>
     <div class="w3-table-wrap"><table class="w3-table"><thead><tr><th>Concept</th><th>Definition & Key Details</th></tr></thead><tbody>
       <tr><td>Tools</td><td>Executable functions Claude can call — read, write, compute, call APIs. Like REST endpoints.</td></tr>
       <tr><td>Resources</td><td>Data sources Claude can read — files, database records, API responses. Like a file browser for context.</td></tr>
+      <tr><td>Prompts</td><td>Reusable prompt templates exposed by MCP servers. Pre-built workflows the client can invoke.</td></tr>
       <tr><td>Sampling</td><td>MCP servers can request Claude completions back. Enables server-side AI-triggered logic flows.</td></tr>
       <tr><td>stdio</td><td>Local process transport — used for same-machine MCP servers.</td></tr>
-      <tr><td>SSE</td><td>HTTP Server-Sent Events — used for remote MCP servers over the network.</td></tr>
+      <tr><td>Streamable HTTP</td><td>Remote transport for MCP servers over the network. Replaced the legacy SSE transport in the March 2025 spec update. Uses a single endpoint that can dynamically upgrade to a stream.</td></tr>
       <tr><td>--mcp-scope local</td><td>Config applies to current project only (.claude/.mcp.json)</td></tr>
       <tr><td>--mcp-scope user</td><td>Config applies globally to all projects for this user</td></tr>
     </tbody></table></div>
-    <div class="w3-tip">Tools = things to DO. Resources = data to READ. Design MCP servers accordingly — actions in tools, contextual lookup data in resources.</div>
+    <div class="w3-tip">Tools = things to DO. Resources = data to READ. Prompts = reusable templates. Design MCP servers accordingly — actions in tools, contextual lookup data in resources, common workflows in prompts.</div>
 
     <h2>Structured Error Responses</h2>
     <div class="w3-code-wrap">
@@ -1240,6 +1241,7 @@ messages.<span class="fn">append</span>(<span class="fn">tool_result</span>(need
       <div class="cs-card"><div class="cs-head">Agent SDK Hooks</div>
         <div class="cs-row"><div class="cs-k">PreToolUse</div><div class="cs-v">Validate before execution</div></div>
         <div class="cs-row"><div class="cs-k">PostToolUse</div><div class="cs-v">Enforce limits after (preferred)</div></div>
+        <div class="cs-row"><div class="cs-k">PreSampling</div><div class="cs-v">Inject context before API call</div></div>
         <div class="cs-row"><div class="cs-k">OnError</div><div class="cs-v">Handle failures gracefully</div></div>
         <div class="cs-row"><div class="cs-k">Rule</div><div class="cs-v">Hooks > prompt for hard rules</div></div>
       </div>
@@ -1257,8 +1259,9 @@ messages.<span class="fn">append</span>(<span class="fn">tool_result</span>(need
       <div class="cs-card"><div class="cs-head">MCP Concepts</div>
         <div class="cs-row"><div class="cs-k">Tools</div><div class="cs-v">Functions to call (actions)</div></div>
         <div class="cs-row"><div class="cs-k">Resources</div><div class="cs-v">Data to read (context)</div></div>
+        <div class="cs-row"><div class="cs-k">Prompts</div><div class="cs-v">Reusable prompt templates</div></div>
         <div class="cs-row"><div class="cs-k">Sampling</div><div class="cs-v">Server requests completions back</div></div>
-        <div class="cs-row"><div class="cs-k">stdio / SSE</div><div class="cs-v">Local / Remote transport</div></div>
+        <div class="cs-row"><div class="cs-k">stdio / HTTP</div><div class="cs-v">Local / Remote (Streamable HTTP)</div></div>
       </div>
       <div class="cs-card"><div class="cs-head">Context Pitfalls</div>
         <div class="cs-row"><div class="cs-k">Lost-middle</div><div class="cs-v">Key info at START/END of long input</div></div>
@@ -1284,12 +1287,12 @@ messages.<span class="fn">append</span>(<span class="fn">tool_result</span>(need
 
 <!-- ═══════ PAGE: PRACTICE ═══════ -->
 <div class="page" id="page-practice">
-  <div class="page-hero"><div class="breadcrumb">Course Home › Practice Questions</div><h1>Section 9: Practice Questions</h1><p>25 scenario-grounded questions with full explanations. Click to expand, select, then check your answer.</p></div>
+  <div class="page-hero"><div class="breadcrumb">Course Home › Practice Questions</div><h1>Section 9: Practice Questions</h1><p>30 scenario-grounded questions with full explanations. Click to expand, select, then check your answer.</p></div>
   <div class="w3-content">
     <p>These questions mirror the format, difficulty, and distractor style of the real exam. Each wrong answer is designed to look correct if you understand the concept loosely — the same way the real exam works. When you get a question wrong, read the explanation carefully: the principle at the bottom of each explanation is the mental model you need to lock in.</p>
     <p>Work through all 25 before checking your score. Then filter by domain to identify which areas need more review before your exam day.</p>
     <div class="filter-row">
-      <button class="f-btn active" onclick="filterQ('all',this)">All (25)</button>
+      <button class="f-btn active" onclick="filterQ('all',this)">All (30)</button>
       <button class="f-btn" onclick="filterQ('d1',this)">Domain 1</button>
       <button class="f-btn" onclick="filterQ('d2',this)">Domain 2</button>
       <button class="f-btn" onclick="filterQ('d3',this)">Domain 3</button>
@@ -1327,43 +1330,43 @@ messages.<span class="fn">append</span>(<span class="fn">tool_result</span>(need
     <p>The Anthropic Academy courses are authoritative because the exam is built directly from them. When exam questions use specific terminology, it matches the terminology in these courses exactly. If you have time to do only 3 courses, do: Introduction to Subagents, MCP Advanced Topics, and Claude Code Configuration.</p>
     <h2>Registration</h2>
     <table class="res-table">
-      <tr><td>Exam Access Request</td><td>anthropic.skilljar.com/claude-certified-architect-foundations-access-request</td></tr>
-      <tr><td>Anthropic Academy (13 free courses)</td><td>anthropic.skilljar.com</td></tr>
+      <tr><td>Exam Access Request</td><td><a href="https://anthropic.skilljar.com/claude-certified-architect-foundations-access-request" target="_blank">anthropic.skilljar.com/claude-certified-architect-foundations-access-request</a></td></tr>
+      <tr><td>Anthropic Academy (13 free courses)</td><td><a href="https://anthropic.skilljar.com" target="_blank">anthropic.skilljar.com</a></td></tr>
     </table>
     <h2>Claude Agent SDK</h2>
     <table class="res-table">
-      <tr><td>Overview</td><td>platform.claude.com/docs/en/agent-sdk/overview</td></tr>
-      <tr><td>Hooks</td><td>platform.claude.com/docs/en/agent-sdk/hooks</td></tr>
-      <tr><td>Subagents</td><td>platform.claude.com/docs/en/agent-sdk/subagents</td></tr>
-      <tr><td>Sessions</td><td>platform.claude.com/docs/en/agent-sdk/sessions</td></tr>
+      <tr><td>Overview</td><td><a href="https://platform.claude.com/docs/en/agent-sdk/overview" target="_blank">platform.claude.com/docs/en/agent-sdk/overview</a></td></tr>
+      <tr><td>Hooks</td><td><a href="https://platform.claude.com/docs/en/agent-sdk/hooks" target="_blank">platform.claude.com/docs/en/agent-sdk/hooks</a></td></tr>
+      <tr><td>Subagents</td><td><a href="https://platform.claude.com/docs/en/agent-sdk/subagents" target="_blank">platform.claude.com/docs/en/agent-sdk/subagents</a></td></tr>
+      <tr><td>Sessions</td><td><a href="https://platform.claude.com/docs/en/agent-sdk/sessions" target="_blank">platform.claude.com/docs/en/agent-sdk/sessions</a></td></tr>
     </table>
     <h2>Claude API</h2>
     <table class="res-table">
-      <tr><td>Messages API</td><td>platform.claude.com/docs/en/api/messages</td></tr>
-      <tr><td>Tool Use</td><td>platform.claude.com/docs/en/build-with-claude/tool-use</td></tr>
-      <tr><td>Prompt Engineering</td><td>platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview</td></tr>
+      <tr><td>Messages API</td><td><a href="https://platform.claude.com/docs/en/api/messages" target="_blank">platform.claude.com/docs/en/api/messages</a></td></tr>
+      <tr><td>Tool Use</td><td><a href="https://platform.claude.com/docs/en/build-with-claude/tool-use" target="_blank">platform.claude.com/docs/en/build-with-claude/tool-use</a></td></tr>
+      <tr><td>Prompt Engineering</td><td><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview" target="_blank">platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview</a></td></tr>
     </table>
     <h2>Claude Code</h2>
     <table class="res-table">
-      <tr><td>Overview</td><td>code.claude.com/docs/en/overview</td></tr>
-      <tr><td>CLAUDE.md & Memory</td><td>code.claude.com/docs/en/memory</td></tr>
-      <tr><td>Agent Skills (slash commands)</td><td>code.claude.com/docs/en/skills</td></tr>
-      <tr><td>Hooks</td><td>code.claude.com/docs/en/hooks</td></tr>
-      <tr><td>GitHub Actions CI/CD</td><td>code.claude.com/docs/en/github-actions</td></tr>
-      <tr><td>Headless Mode</td><td>code.claude.com/docs/en/headless</td></tr>
+      <tr><td>Overview</td><td><a href="https://code.claude.com/docs/en/overview" target="_blank">code.claude.com/docs/en/overview</a></td></tr>
+      <tr><td>CLAUDE.md &amp; Memory</td><td><a href="https://code.claude.com/docs/en/memory" target="_blank">code.claude.com/docs/en/memory</a></td></tr>
+      <tr><td>Agent Skills (slash commands)</td><td><a href="https://code.claude.com/docs/en/skills" target="_blank">code.claude.com/docs/en/skills</a></td></tr>
+      <tr><td>Hooks</td><td><a href="https://code.claude.com/docs/en/hooks" target="_blank">code.claude.com/docs/en/hooks</a></td></tr>
+      <tr><td>GitHub Actions CI/CD</td><td><a href="https://code.claude.com/docs/en/github-actions" target="_blank">code.claude.com/docs/en/github-actions</a></td></tr>
+      <tr><td>Headless Mode</td><td><a href="https://code.claude.com/docs/en/headless" target="_blank">code.claude.com/docs/en/headless</a></td></tr>
     </table>
     <h2>Model Context Protocol</h2>
     <table class="res-table">
-      <tr><td>MCP Overview</td><td>modelcontextprotocol.io</td></tr>
-      <tr><td>Tools</td><td>modelcontextprotocol.io/docs/concepts/tools</td></tr>
-      <tr><td>Resources</td><td>modelcontextprotocol.io/docs/concepts/resources</td></tr>
+      <tr><td>MCP Overview</td><td><a href="https://modelcontextprotocol.io" target="_blank">modelcontextprotocol.io</a></td></tr>
+      <tr><td>Tools</td><td><a href="https://modelcontextprotocol.io/docs/concepts/tools" target="_blank">modelcontextprotocol.io/docs/concepts/tools</a></td></tr>
+      <tr><td>Resources</td><td><a href="https://modelcontextprotocol.io/docs/concepts/resources" target="_blank">modelcontextprotocol.io/docs/concepts/resources</a></td></tr>
     </table>
     <h2>Practice Exams & Community</h2>
     <table class="res-table">
-      <tr><td>Tutorials Dojo CCA-F Practice</td><td>tutorialsdojo.com — search "CCA-F"</td></tr>
-      <tr><td>Udemy: Jon Bonso CCA-F Exams</td><td>udemy.com — search "Claude Certified Architect"</td></tr>
-      <tr><td>Community Study Guide (GitHub)</td><td>github.com/paullarionov/claude-certified-architect</td></tr>
-      <tr><td>Anthropic Cookbook</td><td>github.com/anthropics/anthropic-cookbook</td></tr>
+      <tr><td>Tutorials Dojo CCA-F Practice</td><td><a href="https://tutorialsdojo.com" target="_blank">tutorialsdojo.com</a> — search "CCA-F"</td></tr>
+      <tr><td>Udemy: Jon Bonso CCA-F Exams</td><td><a href="https://udemy.com" target="_blank">udemy.com</a> — search "Claude Certified Architect"</td></tr>
+      <tr><td>Community Study Guide (GitHub)</td><td><a href="https://github.com/paullarionov/claude-certified-architect" target="_blank">github.com/paullarionov/claude-certified-architect</a></td></tr>
+      <tr><td>Anthropic Cookbook</td><td><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank">github.com/anthropics/anthropic-cookbook</a></td></tr>
     </table>
   </div>
 </div>
@@ -1400,11 +1403,11 @@ messages.<span class="fn">append</span>(<span class="fn">tool_result</span>(need
       <pre class="w3-pre">response = client.messages.create(
     model=<span class="st">"claude-opus-4-5"</span>,
     max_tokens=<span class="num">16000</span>,
-    thinking={{
+    thinking={
         <span class="st">"type"</span>: <span class="st">"enabled"</span>,
         <span class="st">"budget_tokens"</span>: <span class="num">10000</span>  <span class="cm"># Claude can use up to 10K tokens to think</span>
-    }},
-    messages=[{{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}}]
+    },
+    messages=[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}]
 )
 
 <span class="cm"># Response contains BOTH thinking blocks AND text blocks</span>
@@ -1417,7 +1420,7 @@ messages.<span class="fn">append</span>(<span class="fn">tool_result</span>(need
 
     <h2>Extended Thinking + Tool Use</h2>
     <p>When extended thinking is enabled alongside tools, the model thinks <strong>before</strong> deciding which tool to call. This significantly improves tool selection accuracy for complex multi-step tasks.</p>
-    <div class="w3-warning">You cannot stream extended thinking responses. Streaming and <code>thinking.type = "enabled"</code> are mutually exclusive. If your architecture requires streaming, do not enable thinking.</div>
+    <div class="w3-note">Streaming now supports extended thinking (as of late 2025). Thinking content is delivered via <code>thinking_delta</code> events, followed by <code>text_delta</code> events for the final response. Use the official SDKs to handle <code>content_block_start</code>, <code>thinking_delta</code>, and <code>content_block_stop</code> events.</div>
     <div class="w3-tip">Extended thinking blocks must be passed back in subsequent turns exactly as received — do not modify or strip them. Stripping thinking blocks from multi-turn conversations breaks the reasoning chain.</div>
 
     <h2>When to Use Extended Thinking</h2>
@@ -1426,11 +1429,11 @@ messages.<span class="fn">append</span>(<span class="fn">tool_result</span>(need
       <tbody>
         <tr><td style="font-family:inherit;color:inherit">Complex multi-step reasoning (math, logic, planning)</td><td>Simple extraction or classification tasks</td></tr>
         <tr><td style="font-family:inherit;color:inherit">Ambiguous tool selection with many similar tools</td><td>High-throughput pipelines where latency matters</td></tr>
-        <tr><td style="font-family:inherit;color:inherit">Agent tasks where wrong first steps are costly</td><td>Any task requiring streaming responses</td></tr>
+        <tr><td style="font-family:inherit;color:inherit">Agent tasks where wrong first steps are costly</td><td>Simple lookups where latency budget is under 500ms</td></tr>
         <tr><td style="font-family:inherit;color:inherit">Code generation with complex requirements</td><td>Cost-sensitive pipelines (thinking tokens are billed)</td></tr>
       </tbody>
     </table></div>
-    <div class="w3-note">Extended thinking is only available on Opus and Sonnet models, not Haiku. budget_tokens must be at least 1,024 or thinking will not activate.</div>
+    <div class="w3-note">Extended thinking is available on Opus and Sonnet models, not Haiku. <code>budget_tokens</code> must be at least 1,024 or thinking will not activate. Newer models (Opus 4.6+, Sonnet 4.6+) also support <strong>adaptive thinking</strong> (<code>thinking: {type: "adaptive"}</code>) which automatically adjusts the thinking budget — this is the recommended approach for new projects.</div>
 
     <button class="sk-complete-btn" id="btn-extended" onclick="markDone('extended')">✓ Mark Complete</button>
     <button class="sk-next-btn" onclick="goto('models')">Next: Model Selection →</button>
@@ -1531,7 +1534,7 @@ doc_analysis_agent = Agent(
             <span class="kw">if</span> final.stop_reason == <span class="st">"tool_use"</span>:
                 <span class="fn">handle_tool_calls</span>(final)</pre>
     </div>
-    <div class="w3-warning">Streaming is incompatible with extended thinking. If you need extended thinking, use non-streaming API calls. If you need real-time token delivery, disable extended thinking.</div>
+    <div class="w3-note">Streaming now supports extended thinking via <code>thinking_delta</code> events. Both can be used together — the earlier incompatibility was resolved in late 2025.</div>
 
     <h2>Streaming + Agentic Loops</h2>
     <p>When streaming in an agentic loop, you must collect the <strong>full streamed response</strong> before executing tool calls. You cannot execute tools mid-stream — wait for <code>message_stop</code>, then check <code>stop_reason</code>.</p>
@@ -1555,14 +1558,14 @@ doc_analysis_agent = Agent(
       <pre class="w3-pre"><span class="cm"># Create a batch of requests</span>
 batch = client.messages.batches.create(
     requests=[
-        {{
+        {
             <span class="st">"custom_id"</span>: <span class="st">"invoice-001"</span>,
-            <span class="st">"params"</span>: {{
+            <span class="st">"params"</span>: {
                 <span class="st">"model"</span>: <span class="st">"claude-haiku-4-5-20251001"</span>,
                 <span class="st">"max_tokens"</span>: <span class="num">1024</span>,
-                <span class="st">"messages"</span>: [{{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: invoice_text}}]
-            }}
-        }}
+                <span class="st">"messages"</span>: [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: invoice_text}]
+            }
+        }
         <span class="kw">for</span> invoice_text <span class="kw">in</span> invoices  <span class="cm"># process thousands at 50% cost</span>
     ]
 )
@@ -1607,11 +1610,11 @@ batch = client.messages.batches.create(
     model=<span class="st">"claude-sonnet-4-6"</span>,
     max_tokens=<span class="num">1024</span>,
     system=[
-        {{
+        {
             <span class="st">"type"</span>: <span class="st">"text"</span>,
             <span class="st">"text"</span>: large_system_prompt,  <span class="cm"># 2000+ tokens of static instructions</span>
-            <span class="st">"cache_control"</span>: {{<span class="st">"type"</span>: <span class="st">"ephemeral"</span>}}  <span class="cm"># ← mark for caching</span>
-        }}
+            <span class="st">"cache_control"</span>: {<span class="st">"type"</span>: <span class="st">"ephemeral"</span>}  <span class="cm"># ← mark for caching</span>
+        }
     ],
     tools=tools,  <span class="cm"># tool definitions are also good cache candidates</span>
     messages=messages
@@ -1755,14 +1758,14 @@ response = client.messages.create(
     model=<span class="st">"claude-sonnet-4-6"</span>,
     max_tokens=<span class="num">4096</span>,
     tools=[
-        {{
+        {
             <span class="st">"type"</span>: <span class="st">"computer_20250124"</span>,
             <span class="st">"name"</span>: <span class="st">"computer"</span>,
             <span class="st">"display_width_px"</span>: <span class="num">1024</span>,
             <span class="st">"display_height_px"</span>: <span class="num">768</span>,
-        }},
-        {{<span class="st">"type"</span>: <span class="st">"text_editor_20250124"</span>, <span class="st">"name"</span>: <span class="st">"str_replace_based_edit_tool"</span>}},
-        {{<span class="st">"type"</span>: <span class="st">"bash_20250124"</span>, <span class="st">"name"</span>: <span class="st">"bash"</span>}},
+        },
+        {<span class="st">"type"</span>: <span class="st">"text_editor_20250124"</span>, <span class="st">"name"</span>: <span class="st">"str_replace_based_edit_tool"</span>},
+        {<span class="st">"type"</span>: <span class="st">"bash_20250124"</span>, <span class="st">"name"</span>: <span class="st">"bash"</span>},
     ],
     messages=messages
 )</pre>
@@ -1770,7 +1773,7 @@ response = client.messages.create(
 
     <h2>Key Exam Facts About Computer Use</h2>
     <ul>
-      <li>Computer use tools are <strong>beta</strong> — enabled via a <code>banthropic-beta</code> header</li>
+      <li>Computer use tools are <strong>beta</strong> — enabled via an <code>anthropic-beta</code> header</li>
       <li>The agentic loop mechanics are <strong>identical</strong> — <code>stop_reason = "tool_use"</code> drives the loop exactly the same way</li>
       <li>Screenshots are passed back as <strong>image content blocks</strong> in the tool_result</li>
       <li>Best model: <strong>Sonnet</strong> for computer use tasks (best speed/accuracy tradeoff)</li>
@@ -1897,6 +1900,21 @@ const questionsData = [
   { d:'d2', diff:'E', q:'Your agent consistently uses the built-in Read tool instead of a custom MCP tool called read_document even though your system prompt says to use read_document. What is the fix?',
     opts:['Remove the built-in Read tool from the agent\'s tool list','Enhance the read_document MCP tool description to explain its unique advantages over Read','Move the instruction to the user turn instead of system prompt','Change tool_choice to force read_document on every call'],
     ans:1, why:'Tool selection is driven by description quality, not system prompt instructions. When two tools have similar functionality, the model picks based on how well descriptions differentiate them. Strengthen MCP description to highlight concrete advantages.', p:'Tool description quality determines selection. Instructions are advisory; descriptions are deterministic.' },
+  { d:'d1', diff:'I', q:'You are building a multi-agent research system. The coordinator uses Opus, but you need to choose models for subagents doing web search (high volume, structured results) and document analysis (moderate complexity). What is the optimal model assignment?',
+    opts:['Opus for all subagents to maximize quality','Haiku for web search, Sonnet for document analysis','Sonnet for both — balanced cost and capability','Haiku for both — minimize cost since the coordinator handles complex reasoning'],
+    ans:1, why:'Web search is high-volume with well-defined structured output — Haiku is fastest and cheapest for this. Document analysis requires moderate reasoning — Sonnet provides the right balance. The coordinator (Opus) handles the complex decomposition and judgment.', p:'Use tiered models: Opus for coordination, Sonnet for moderate tasks, Haiku for high-volume structured work.' },
+  { d:'d4', diff:'I', q:'Your agent system prompt includes large static instructions (2,500 tokens) and tool definitions (1,800 tokens) that are identical across all requests. After 100 requests, you notice high input token costs. What is the most effective cost optimization?',
+    opts:['Reduce the system prompt length by summarizing instructions','Switch to a cheaper model tier','Add cache_control: {\"type\": \"ephemeral\"} to the system prompt and tool definitions to enable prompt caching','Batch all requests using the Batch API'],
+    ans:2, why:'Prompt caching gives 90% cost reduction on cache hits for static content. The system prompt and tool definitions are identical across requests — perfect cache candidates. A is lossy. B may reduce quality. D only gives 50% discount and adds latency.', p:'Cache static content (system prompts, tools, few-shot examples) with cache_control for 90% input cost reduction on repeated calls.' },
+  { d:'d1', diff:'F', q:'Your extraction pipeline needs to process 50,000 invoices. Results are not time-sensitive — a 24-hour turnaround is acceptable. Which API approach is most cost-effective?',
+    opts:['Real-time API with concurrent requests and rate limiting','Streaming API for faster token delivery','Batch API — processes up to 100,000 requests at 50% cost discount','Extended thinking with budget_tokens set to minimum'],
+    ans:2, why:'The Batch API is designed exactly for this: high-volume, non-time-sensitive processing at 50% cost reduction. Real-time API (A) costs full price. Streaming (B) doesn\\'t reduce cost. Extended thinking (D) increases cost.', p:'Use Batch API for non-urgent, high-volume processing — 50% cost savings, up to 100K requests per batch.' },
+  { d:'d1', diff:'I', q:'Your API call returns HTTP 429. What is the correct response?',
+    opts:['Fix the request parameters and retry immediately','Log the error and fail the request — 4xx errors are not retryable','Retry with exponential backoff and jitter','Switch to a different model to avoid the rate limit'],
+    ans:2, why:'429 is rate_limit_error — the ONE 4xx error that IS retryable. Exponential backoff with jitter prevents thundering herd. A (immediate retry) will hit the same limit. B is wrong — 429 is the exception to the \"4xx = don\\'t retry\" rule. D doesn\\'t solve the root cause.', p:'429 is the exception: it IS retryable with exponential backoff. All other 4xx errors (400, 401, 403, 404) are NOT retryable.' },
+  { d:'d4', diff:'I', q:'You want Claude to think through a complex multi-step problem before answering. Which configuration is correct?',
+    opts:['Set temperature to 0 and increase max_tokens','Add \"Think step by step\" to the system prompt','Enable extended thinking with thinking: {\"type\": \"enabled\", \"budget_tokens\": 10000}','Use tool_choice: \"any\" with a thinking tool'],
+    ans:2, why:'Extended thinking provides a dedicated internal scratchpad for reasoning. \"Think step by step\" (B) is a prompt technique but doesn\\'t allocate dedicated reasoning tokens. Temperature 0 (A) affects randomness, not depth. D is architecturally wrong.', p:'Extended thinking = dedicated reasoning budget. budget_tokens must be ≥ 1,024. Thinking tokens are billed at output rate.' },
 ];
 
 const studyPlan = [
@@ -2048,17 +2066,14 @@ function markDone(id) {
   const nav = document.querySelector(`[onclick="goto('${id}')"]`);
   if (nav) nav.classList.add('completed');
   // Update course progress
-  const pct = Math.round((completed.size / 8) * 100);
-  document.getElementById('course-progress').style.width = pct + '%';
-  // Update course cards
-  // update global progress
-  const pct2 = Math.round((completed.size/16)*100);
-  document.getElementById('course-progress').style.width = pct2+'%';
-  document.getElementById('prog-pct').textContent = pct2;
+  const totalSections = document.querySelectorAll('.sk-complete-btn').length;
+  const pct = Math.round((completed.size / Math.max(totalSections, 1)) * 100);
+  document.getElementById('course-progress').style.width = pct+'%';
+  document.getElementById('prog-pct').textContent = pct;
   const hpf = document.getElementById('home-progress-fill');
   const hpp = document.getElementById('home-prog-pct');
-  if (hpf) hpf.style.width = pct2+'%';
-  if (hpp) hpp.textContent = pct2;
+  if (hpf) hpf.style.width = pct+'%';
+  if (hpp) hpp.textContent = pct;
 }
 function toggleModule(id) {
   if (completed.has(id)) { completed.delete(id); document.getElementById(`mod-${id}`).classList.remove('done'); }
