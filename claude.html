@@ -1579,12 +1579,75 @@
       dominant-baseline: central;
     }
 
+    /* ══ MOBILE OVERLAY SIDEBAR ══════════════════════════════ */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      top: var(--header-h);
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 290;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .sidebar-overlay.active {
+      display: block;
+      opacity: 1;
+    }
+
     @media (max-width: 860px) {
-      #sj-sidebar {
+      /* Header adjustments for mobile */
+      .sjh-logo-zone {
+        display: none;
+      }
+      .sjh-content {
+        padding: 0 12px;
+      }
+      .sjh-course-title {
+        font-size: 13px;
+      }
+      .sjh-progress-zone {
+        gap: 8px;
+      }
+      .sjh-bar-wrap {
+        width: 80px;
+      }
+      .sjh-score {
         display: none;
       }
 
+      /* Sidebar: off-canvas slide-in overlay */
+      #sj-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 350;
+        width: 280px;
+        box-shadow: none;
+      }
+      body.sidebar-open #sj-sidebar {
+        transform: translateX(0);
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Make sure sidebar-collapsed doesn't interfere on mobile */
+      body.sidebar-collapsed #sj-sidebar {
+        width: 280px;
+        min-width: 280px;
+        padding: initial;
+        border-right: 1px solid var(--ant-border);
+        overflow: visible;
+        transform: translateX(-100%);
+      }
+      body.sidebar-collapsed.sidebar-open #sj-sidebar {
+        transform: translateX(0);
+      }
+
       #sj-main {
+        margin-left: 0;
+      }
+
+      /* Collapsed sidebar states should not affect main on mobile */
+      body.sidebar-collapsed #sj-main {
         margin-left: 0;
       }
 
@@ -1619,6 +1682,14 @@
       .ant-diagram {
         padding: 12px;
       }
+
+      /* Make toggle button more prominent on mobile */
+      .sjh-toggle {
+        width: 40px;
+        height: 40px;
+        border-color: var(--ant-coral);
+        color: var(--ant-coral);
+      }
     }
   </style>
 </head>
@@ -1646,6 +1717,9 @@
       </div>
     </div>
   </header>
+
+  <!-- Mobile sidebar overlay backdrop -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
 
   <!-- ══ SKILLJAR LEFT SIDEBAR ════════════════════════════════════════════════ -->
   <aside id="sj-sidebar">
@@ -4747,6 +4821,10 @@ response = client.messages.create(
       document.querySelectorAll('.sj-lesson').forEach(n => {
         n.classList.toggle('active', n.dataset.page === id);
       });
+      // Auto-close sidebar on mobile after navigation
+      if (window.innerWidth <= 860) {
+        closeMobileSidebar();
+      }
       window.scrollTo(0, 0);
     }
 
@@ -4774,23 +4852,56 @@ response = client.messages.create(
     }
 
     // Sidebar collapse/expand toggle
+    function isMobile() {
+      return window.innerWidth <= 860;
+    }
+
+    function closeMobileSidebar() {
+      document.body.classList.remove('sidebar-open');
+      const overlay = document.getElementById('sidebar-overlay');
+      if (overlay) overlay.classList.remove('active');
+    }
+
+    function openMobileSidebar() {
+      document.body.classList.add('sidebar-open');
+      const overlay = document.getElementById('sidebar-overlay');
+      if (overlay) overlay.classList.add('active');
+    }
+
     function toggleSidebar() {
-      document.body.classList.toggle('sidebar-collapsed');
-      const isCollapsed = document.body.classList.contains('sidebar-collapsed');
-      localStorage.setItem('sidebarCollapsed', isCollapsed ? '1' : '0');
-      // Update toggle button icon
-      const btn = document.getElementById('sidebar-toggle');
-      if (btn) {
-        btn.innerHTML = isCollapsed
-          ? '<svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>'
-          : '<svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
-        btn.title = isCollapsed ? 'Show sidebar (Ctrl+B)' : 'Hide sidebar (Ctrl+B)';
+      if (isMobile()) {
+        // On mobile: toggle overlay sidebar
+        const isOpen = document.body.classList.contains('sidebar-open');
+        if (isOpen) {
+          closeMobileSidebar();
+        } else {
+          openMobileSidebar();
+        }
+      } else {
+        // On desktop: toggle collapse
+        document.body.classList.toggle('sidebar-collapsed');
+        const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+        localStorage.setItem('sidebarCollapsed', isCollapsed ? '1' : '0');
+        // Update toggle button icon
+        const btn = document.getElementById('sidebar-toggle');
+        if (btn) {
+          btn.innerHTML = isCollapsed
+            ? '<svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>'
+            : '<svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+          btn.title = isCollapsed ? 'Show sidebar (Ctrl+B)' : 'Hide sidebar (Ctrl+B)';
+        }
       }
     }
-    // Restore sidebar state from localStorage
-    if (localStorage.getItem('sidebarCollapsed') === '1') {
+    // Restore sidebar state from localStorage (desktop only)
+    if (localStorage.getItem('sidebarCollapsed') === '1' && window.innerWidth > 860) {
       document.body.classList.add('sidebar-collapsed');
     }
+    // Close mobile sidebar on window resize to desktop
+    window.addEventListener('resize', function() {
+      if (!isMobile()) {
+        closeMobileSidebar();
+      }
+    });
     // Keyboard shortcut: Ctrl+B to toggle sidebar
     document.addEventListener('keydown', function(e) {
       if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
