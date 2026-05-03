@@ -2466,6 +2466,8 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
           bug.</div>
 
         <h2>Escalation Design</h2>
+        <p>Escalation is one of the most critical aspects of production agent architecture. The core principle: <strong>escalation decisions must be deterministic, not model-driven</strong>. You never ask the model "do you think we should escalate?" — you define explicit triggers in code that fire regardless of what the model thinks. This matters because LLMs can be persuaded by conversational pressure. A frustrated customer saying "just fix it" might cause the model to skip escalation even when policy requires it.</p>
+        <p>There are four escalation triggers the exam tests. Each has a specific rule: explicit customer requests must be honored immediately with no alternatives offered, policy conflicts must escalate <em>before</em> any action is taken, retry limits must include full diagnostic context, and high-value actions require human confirmation <em>before</em> execution, not after.</p>
     <div class="ant-diagram">
       <div class="ant-diagram-title">Architecture · Escalation Decision Tree</div>
       <img src="diagrams/escalation-design.png" alt="Escalation Decision Tree — when to escalate vs proceed autonomously based on deterministic rules" style="width:100%;border-radius:6px;">
@@ -2758,6 +2760,8 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
         </div>
 
         <h2>Structured Error Responses</h2>
+        <p>When a tool fails in a multi-agent system, the error response is not just a log entry — it is the coordinator's <strong>only source of information</strong> for deciding what to do next. An unstructured error like <code>"Error: timeout"</code> forces the coordinator to guess whether retrying will help. A structured error response with explicit fields — error category, retryability flag, partial data, human-readable message — gives the coordinator everything it needs to make an intelligent recovery decision without additional API calls.</p>
+        <p>The key fields to include: <code>isError</code> (boolean flag for error detection), <code>errorCategory</code> (timeout, auth_failure, rate_limit, validation — helps pick recovery strategy), <code>isRetryable</code> (True = retry automatically, False = escalate to human or try alternative), <code>partialData</code> (any results gathered before failure — prevents re-doing completed work), and <code>message</code> (human-readable description for logging and debugging).</p>
         <div class="w3-code-wrap">
           <div class="w3-code-header"><span class="lang">Python — MCP Tool Error Structure</span><button
               class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -2868,6 +2872,8 @@ Use parameterized queries only — no string concatenation in SQL.</pre>
         </div>
 
         <h2>Agent Skills — Custom Slash Commands</h2>
+        <p>Agent Skills (also called custom slash commands) let you package reusable workflows as <code>/commands</code> that Claude Code can execute. Each skill is defined in a <code>SKILL.md</code> file inside <code>.claude/skills/</code>. The YAML frontmatter specifies the skill's name, description, which tools it's allowed to use, and critically — its <strong>context mode</strong>.</p>
+        <p>The <code>context: fork</code> setting creates an isolated execution environment. This is essential for CI/CD use cases and parallel exploration — the skill runs in its own sandbox and cannot pollute the parent session's context. The <code>allowed-tools</code> field restricts which tools the skill can access, following the principle of least privilege. Always use <strong>repo-relative paths</strong> (not absolute) so skills work both locally and in CI where the checkout path differs (e.g., <code>/home/runner/work/</code> vs <code>/Users/dev/project/</code>).</p>
         <div class="w3-code-wrap">
           <div class="w3-code-header"><span class="lang">YAML — SKILL.md Frontmatter</span><button class="copy-btn"
               onclick="copyCode(this)">Copy</button></div>
@@ -2893,6 +2899,9 @@ Report ONLY high-confidence findings.</pre>
           break in CI where checkout path is /home/runner/work/.</div>
 
         <h2>CI/CD — Headless Mode</h2>
+        <p>Headless mode is how Claude Code runs in automated environments like GitHub Actions, GitLab CI, or Jenkins — without a human terminal session. In headless mode, Claude Code operates non-interactively: it receives a prompt, executes with the tools you've allowed, and exits. There is no interactive approval step, which means <strong>tool restrictions are critical</strong>.</p>
+        <p>The <code>--dangerouslySkipPermissions</code> flag bypasses the interactive permission prompts that normally protect against unintended tool use. In CI, there is no human to click "approve," so this flag is necessary — but it MUST always be paired with <code>--allowedTools</code> to restrict which tools the model can access. Without this pairing, the model has <strong>unrestricted access</strong> to all tools (including file writes, shell commands, and network access) in your CI environment. The exam will present scenarios where this pairing is missing and ask you to identify the security risk.</p>
+        <p>Best practices for CI integration: use <code>context: fork</code> to prevent session pollution across CI runs, restrict tools to the minimum set needed (typically <code>Read, Grep, Bash(git diff)</code> for reviews), store API keys as encrypted secrets, and design prompts that request <strong>conservative, high-confidence</strong> findings only — CI should not generate noisy, low-confidence warnings.</p>
     <div class="ant-diagram">
       <div class="ant-diagram-title">Architecture · CI/CD Integration — Headless Mode</div>
       <img src="diagrams/cicd-headless.png" alt="CI/CD flow — GitHub Actions triggers Claude Code in headless mode with restricted tools" style="width:100%;border-radius:6px;">
