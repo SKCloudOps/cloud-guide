@@ -191,6 +191,12 @@ const seoData = {
         description: 'LLMOps guide for architect interviews. LLM lifecycle management, model deployment strategies, prompt management, observability, cost optimization, guardrails, and enterprise AI governance.',
         keywords: 'LLMOps, LLM lifecycle, model deployment, prompt management, AI observability, model governance, MLOps, AI cost optimization, guardrails, responsible AI',
         canonical: 'llmops.html'
+    },
+    'claude.html': {
+        title: 'Claude Certified Architect Guide | Study Materials & Exam Prep',
+        description: 'Comprehensive study guide for the Claude Certified Architect certification. Covers Anthropic Claude models, prompt engineering, system integrations, security, and advanced LLM architecture patterns.',
+        keywords: 'Claude certification, Claude Certified Architect, Anthropic Claude, prompt engineering, AI architecture, LLM system design, Claude API, AI certification prep',
+        canonical: 'claude.html'
     }
 };
 
