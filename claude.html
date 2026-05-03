@@ -1511,10 +1511,11 @@
     }
 
     .ant-diagram img {
-      max-width: 600px;
+      max-width: 75%;
       width: 100%;
       display: block;
       margin: 0 auto;
+      border-radius: 6px;
     }
 
     .ant-diagram svg {
@@ -1660,6 +1661,10 @@
 
       .w3-content {
         padding: 0 16px 40px;
+      }
+
+      .ant-diagram img {
+        max-width: 100%;
       }
 
       .page-hero {
@@ -2310,7 +2315,7 @@
           single value. Know all four without hesitation.</p>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · The Agentic Loop — stop_reason Driven</div>
-          <img src="diagrams/agentic-loop.png" alt="Agentic Loop Architecture — stop_reason drives the entire loop: end_turn exits, tool_use continues, max_tokens truncates" style="width:100%;border-radius:6px;">
+          <img src="diagrams/agentic-loop.png" alt="Agentic Loop Architecture — stop_reason drives the entire loop: end_turn exits, tool_use continues, max_tokens truncates" >
         </div>
         <div class="w3-table-wrap">
           <table class="w3-table">
@@ -2391,7 +2396,7 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
           business rules — NOT system prompt instructions.</p>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Lifecycle Hooks Pipeline</div>
-          <img src="diagrams/lifecycle-hooks.png" alt="Lifecycle Hooks — PreSampling, PreToolUse, PostToolUse, OnError intercept points" style="width:100%;border-radius:6px;">
+          <img src="diagrams/lifecycle-hooks.png" alt="Lifecycle Hooks — PreSampling, PreToolUse, PostToolUse, OnError intercept points" >
         </div>
         <div class="w3-table-wrap">
           <table class="w3-table">
@@ -2459,7 +2464,7 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
           stateless and context-isolated.</p>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Hub & Spoke Multi-Agent Pattern</div>
-          <img src="diagrams/hub-spoke.png" alt="Hub and Spoke — Coordinator delegates to specialized subagents with explicit context passing" style="width:100%;border-radius:6px;">
+          <img src="diagrams/hub-spoke.png" alt="Hub and Spoke — Coordinator delegates to specialized subagents with explicit context passing" >
         </div>
         <div class="w3-warning"><strong>No shared memory between subagents.</strong> Every piece of data a subagent
           needs MUST be explicitly injected into its prompt. If your synthesis agent needs the web search agent's
@@ -2477,7 +2482,7 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
         <p>There are four escalation triggers the exam tests. Each has a specific rule: explicit customer requests must be honored immediately with no alternatives offered, policy conflicts must escalate <em>before</em> any action is taken, retry limits must include full diagnostic context, and high-value actions require human confirmation <em>before</em> execution, not after.</p>
     <div class="ant-diagram">
       <div class="ant-diagram-title">Architecture · Escalation Decision Tree</div>
-      <img src="diagrams/escalation-design.png" alt="Escalation Decision Tree — when to escalate vs proceed autonomously based on deterministic rules" style="width:100%;border-radius:6px;">
+      <img src="diagrams/escalation-design.png" alt="Escalation Decision Tree — when to escalate vs proceed autonomously based on deterministic rules" >
     </div>
         <div class="w3-table-wrap">
           <table class="w3-table">
@@ -2511,7 +2516,7 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
         <h2>Anti-Pattern: The "Super Agent"</h2>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Anti-Pattern: Super Agent vs Decomposed Agents</div>
-          <img src="diagrams/super-agent.png" alt="Super Agent anti-pattern — 15+ tools causes 30-40% wrong tool calls, decompose into specialized subagents" style="width:100%;border-radius:6px;">
+          <img src="diagrams/super-agent.png" alt="Super Agent anti-pattern — 15+ tools causes 30-40% wrong tool calls, decompose into specialized subagents" >
         </div>
         <p>A "super agent" is a single agent loaded with 15+ tools. This is one of the most commonly tested
           anti-patterns on the exam. When tool count exceeds ~5–7, the model's tool selection accuracy degrades
@@ -2551,7 +2556,7 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
         <h2>Trap: LLM Confidence Scores</h2>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · LLM Confidence Scores Are Not Calibrated</div>
-          <img src="diagrams/llm-confidence.png" alt="LLM confidence scores trap — never use for decisions, use deterministic business rules instead" style="width:100%;border-radius:6px;">
+          <img src="diagrams/llm-confidence.png" alt="LLM confidence scores trap — never use for decisions, use deterministic business rules instead" >
         </div>
         <p>The exam will offer "use the model's confidence score to decide whether to escalate" as a plausible answer.
           This is ALWAYS wrong. LLM confidence scores are <strong>not statistically calibrated</strong> — a model saying
@@ -2592,7 +2597,7 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
         <h2>Session Management — fork vs current</h2>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Session Management — fork vs current</div>
-          <img src="diagrams/session-fork.png" alt="Session fork creates isolated copy (CI/CD), current shares context (sequential tasks)" style="width:100%;border-radius:6px;">
+          <img src="diagrams/session-fork.png" alt="Session fork creates isolated copy (CI/CD), current shares context (sequential tasks)" >
         </div>
         <p>Claude Code sessions can be <strong>forked</strong> (isolated copy) or <strong>continued</strong> (shared
           context). Understanding when to use each is tested directly.</p>
@@ -2642,7 +2647,7 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
         <h2>Tool Descriptions — Your Routing Logic</h2>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Tool Descriptions = Routing Logic</div>
-          <img src="diagrams/tool-descriptions.png" alt="Vague descriptions cause wrong tool calls — specific descriptions with input/output formats enable correct selection" style="width:100%;border-radius:6px;">
+          <img src="diagrams/tool-descriptions.png" alt="Vague descriptions cause wrong tool calls — specific descriptions with input/output formats enable correct selection" >
         </div>
         <p>Before the model decides what to say or do next, it reads all the tool descriptions you have provided. The
           description is not a label — it is the entire basis on which the model decides whether this tool applies to
@@ -2675,7 +2680,7 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
         <h2>The tool_choice Parameter</h2>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · tool_choice Selection Control</div>
-          <img src="diagrams/tool-choice.png" alt="tool_choice — auto (model decides), any (must call some tool), tool+name (force specific tool)" style="width:100%;border-radius:6px;">
+          <img src="diagrams/tool-choice.png" alt="tool_choice — auto (model decides), any (must call some tool), tool+name (force specific tool)" >
         </div>
         <p>By default the model decides whether to call a tool or respond with text — this is <code>"auto"</code>. But
           there are two situations where you need to override this. First, when you need to guarantee that the model
@@ -2721,7 +2726,7 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
           any MCP-compatible model can use it.</p>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · MCP — Model Context Protocol</div>
-          <img src="diagrams/mcp-architecture.png" alt="MCP Architecture — Client, Transport (stdio/HTTP), Server exposing Tools, Resources, Prompts, Sampling" style="width:100%;border-radius:6px;">
+          <img src="diagrams/mcp-architecture.png" alt="MCP Architecture — Client, Transport (stdio/HTTP), Server exposing Tools, Resources, Prompts, Sampling" >
         </div>
         <p>The core mental model: an MCP server exposes <strong>Tools</strong> (things to do — functions the model can
           invoke), <strong>Resources</strong> (things to read — data the model can pull in as context), and
@@ -2785,7 +2790,7 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
         <h2>Structured Error Responses</h2>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Structured Error Responses for Recovery</div>
-          <img src="diagrams/structured-errors.png" alt="Structured errors with isError, errorCategory, isRetryable, partialData enable intelligent coordinator recovery" style="width:100%;border-radius:6px;">
+          <img src="diagrams/structured-errors.png" alt="Structured errors with isError, errorCategory, isRetryable, partialData enable intelligent coordinator recovery" >
         </div>
         <p>When a tool fails in a multi-agent system, the error response is not just a log entry — it is the coordinator's <strong>only source of information</strong> for deciding what to do next. An unstructured error like <code>"Error: timeout"</code> forces the coordinator to guess whether retrying will help. A structured error response with explicit fields — error category, retryability flag, partial data, human-readable message — gives the coordinator everything it needs to make an intelligent recovery decision without additional API calls.</p>
         <p>The key fields to include: <code>isError</code> (boolean flag for error detection), <code>errorCategory</code> (timeout, auth_failure, rate_limit, validation — helps pick recovery strategy), <code>isRetryable</code> (True = retry automatically, False = escalate to human or try alternative), <code>partialData</code> (any results gathered before failure — prevents re-doing completed work), and <code>message</code> (human-readable description for logging and debugging).</p>
@@ -2826,7 +2831,7 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
           specific file wins.</p>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · CLAUDE.md Hierarchy — CSS-Like Specificity</div>
-          <img src="diagrams/claude-md-hierarchy.png" alt="CLAUDE.md hierarchy — User global (lowest) → Project root (medium) → Directory level (highest)" style="width:100%;border-radius:6px;">
+          <img src="diagrams/claude-md-hierarchy.png" alt="CLAUDE.md hierarchy — User global (lowest) → Project root (medium) → Directory level (highest)" >
         </div>
         <div class="w3-table-wrap">
           <table class="w3-table">
@@ -2931,7 +2936,7 @@ Report ONLY high-confidence findings.</pre>
         <p>Best practices for CI integration: use <code>context: fork</code> to prevent session pollution across CI runs, restrict tools to the minimum set needed (typically <code>Read, Grep, Bash(git diff)</code> for reviews), store API keys as encrypted secrets, and design prompts that request <strong>conservative, high-confidence</strong> findings only — CI should not generate noisy, low-confidence warnings.</p>
     <div class="ant-diagram">
       <div class="ant-diagram-title">Architecture · CI/CD Integration — Headless Mode</div>
-      <img src="diagrams/cicd-headless.png" alt="CI/CD flow — GitHub Actions triggers Claude Code in headless mode with restricted tools" style="width:100%;border-radius:6px;">
+      <img src="diagrams/cicd-headless.png" alt="CI/CD flow — GitHub Actions triggers Claude Code in headless mode with restricted tools" >
     </div>
         <div class="w3-code-wrap">
           <div class="w3-code-header"><span class="lang">YAML — GitHub Actions Integration</span><button
@@ -2977,7 +2982,7 @@ jobs:
         <h2>Three-Layer Validation</h2>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Three-Layer Validation Pipeline</div>
-          <img src="diagrams/validation-pipeline.png" alt="Three-layer validation — Syntactic, Schema, Semantic layers with retry-with-feedback" style="width:100%;border-radius:6px;">
+          <img src="diagrams/validation-pipeline.png" alt="Three-layer validation — Syntactic, Schema, Semantic layers with retry-with-feedback" >
         </div>
         <div class="w3-table-wrap">
           <table class="w3-table">
@@ -3033,7 +3038,7 @@ jobs:
         <p>The correct pattern is <strong>retry-with-feedback</strong>: take the specific validation errors from the failed attempt, append them to the prompt as explicit correction instructions, and then call the API. This shifts the model's output distribution by giving it concrete information about what went wrong. Instead of "extract the invoice," the retry prompt says "your previous extraction formatted invoice_date as MM/DD/YYYY — the correct format is ISO 8601 (YYYY-MM-DD). Re-extract and correct ONLY this field." This dramatically increases the success rate on retry because the model is now working with a more constrained, corrected prompt.</p>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Retry-With-Feedback vs Blind Retry</div>
-          <img src="diagrams/retry-feedback.png" alt="Retry with feedback — append specific errors to prompt vs blind retry" style="width:100%;border-radius:6px;">
+          <img src="diagrams/retry-feedback.png" alt="Retry with feedback — append specific errors to prompt vs blind retry" >
         </div>
         <div class="w3-code-wrap">
           <div class="w3-code-header"><span class="lang">Python — Blind Retry vs Retry-With-Feedback</span><button
@@ -3117,7 +3122,7 @@ result = <span class="fn">extract</span>(document, base_prompt)
         <h2>The Lost-in-the-Middle Effect</h2>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Lost-in-the-Middle Attention Effect</div>
-          <img src="diagrams/lost-in-middle.png" alt="Lost-in-the-middle — LLMs attend strongly to start and end, miss content in the middle" style="width:100%;border-radius:6px;">
+          <img src="diagrams/lost-in-middle.png" alt="Lost-in-the-middle — LLMs attend strongly to start and end, miss content in the middle" >
         </div>
         <p>Imagine reading a 400-page document where you know you'll be tested on its contents. You will naturally pay
           close attention to the introduction and the conclusion. The middle chapters — especially if they cover
@@ -3172,7 +3177,7 @@ result = <span class="fn">extract</span>(document, base_prompt)
         <p>Context trimming means projecting tool results down to only the fields your agent actually needs for the current task. This is a <strong>PostToolUse concern</strong> — you trim after the tool returns but before the result enters the conversation. The savings are dramatic: a typical CRM customer record might be 800 tokens raw, but the 5 fields you need for the current task are only 80 tokens — a 90% reduction. Over a 10-step agent loop, that is the difference between staying within budget and hitting context limits.</p>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Context Management — Tool Output Trimming</div>
-          <img src="diagrams/context-trimming.png" alt="Context trimming — 40 fields to 5 needed fields = 90% token savings" style="width:100%;border-radius:6px;">
+          <img src="diagrams/context-trimming.png" alt="Context trimming — 40 fields to 5 needed fields = 90% token savings" >
         </div>
         <div class="w3-code-wrap">
           <div class="w3-code-header"><span class="lang">Python — 90% Context Reduction</span><button class="copy-btn"
@@ -3761,7 +3766,7 @@ messages.<span class="fn">append</span>(<span class="fn">tool_result</span>(need
         <h2>What Is Extended Thinking?</h2>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Extended Thinking — Internal Reasoning</div>
-          <img src="diagrams/extended-thinking.png" alt="Extended Thinking — thinking phase with budget_tokens, then response phase" style="width:100%;border-radius:6px;">
+          <img src="diagrams/extended-thinking.png" alt="Extended Thinking — thinking phase with budget_tokens, then response phase" >
         </div>
         <p>Extended thinking gives Claude a private scratchpad to reason through complex problems before producing its
           final response. The model generates <strong>thinking blocks</strong> — internal reasoning that is visible to
@@ -3888,7 +3893,7 @@ messages.<span class="fn">append</span>(<span class="fn">tool_result</span>(need
         <h2>The Claude Model Tiers</h2>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Model Selection — Tiered Architecture</div>
-          <img src="diagrams/model-tiers.png" alt="Model Tiers — Opus (highest capability), Sonnet (balanced), Haiku (fastest/cheapest)" style="width:100%;border-radius:6px;">
+          <img src="diagrams/model-tiers.png" alt="Model Tiers — Opus (highest capability), Sonnet (balanced), Haiku (fastest/cheapest)" >
         </div>
         <div class="w3-table-wrap">
           <table class="w3-table">
@@ -4003,7 +4008,7 @@ doc_analysis_agent = Agent(
         <h2>Streaming Responses</h2>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Streaming vs Batch API</div>
-          <img src="diagrams/streaming-batch.png" alt="Streaming (real-time tokens) vs Batch API (50% cost discount, up to 24h)" style="width:100%;border-radius:6px;">
+          <img src="diagrams/streaming-batch.png" alt="Streaming (real-time tokens) vs Batch API (50% cost discount, up to 24h)" >
         </div>
         <p>Streaming returns tokens as they are generated instead of waiting for the complete response. Critical for
           real-time user-facing applications.</p>
@@ -4129,7 +4134,7 @@ batch = client.messages.batches.create(
         <h2>How Prompt Caching Works</h2>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Prompt Caching — 90% Cost Reduction</div>
-          <img src="diagrams/prompt-caching.png" alt="Prompt Caching — cache_control marks static content for 90% cost reduction on hits" style="width:100%;border-radius:6px;">
+          <img src="diagrams/prompt-caching.png" alt="Prompt Caching — cache_control marks static content for 90% cost reduction on hits" >
         </div>
         <p>Prompt caching allows you to mark static content with <code>cache_control</code> so Claude can reuse the KV
           cache from a previous request instead of reprocessing the same tokens. This reduces both cost and
@@ -4227,7 +4232,7 @@ print(f<span class="st">"Cache write: {usage.cache_creation_input_tokens}"</span
         <h2>API Error Codes</h2>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Error Handling — Retry Decision Tree</div>
-          <img src="diagrams/error-handling.png" alt="Error handling — 4xx (don't retry) vs 429/5xx (retry with backoff)" style="width:100%;border-radius:6px;">
+          <img src="diagrams/error-handling.png" alt="Error handling — 4xx (don't retry) vs 429/5xx (retry with backoff)" >
         </div>
         <div class="w3-table-wrap">
           <table class="w3-table">
