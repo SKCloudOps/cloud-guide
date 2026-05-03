@@ -1510,10 +1510,17 @@
       font-family: 'Source Code Pro', monospace;
     }
 
+    .ant-diagram img {
+      max-width: 600px;
+      width: 100%;
+      display: block;
+      margin: 0 auto;
+    }
+
     .ant-diagram svg {
       display: block;
       margin: 0 auto;
-      max-width: 100%;
+      max-width: 600px;
     }
 
     .ant-diagram svg text {
@@ -2502,6 +2509,10 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
         </div>
 
         <h2>Anti-Pattern: The "Super Agent"</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Anti-Pattern: Super Agent vs Decomposed Agents</div>
+          <img src="diagrams/super-agent.png" alt="Super Agent anti-pattern — 15+ tools causes 30-40% wrong tool calls, decompose into specialized subagents" style="width:100%;border-radius:6px;">
+        </div>
         <p>A "super agent" is a single agent loaded with 15+ tools. This is one of the most commonly tested
           anti-patterns on the exam. When tool count exceeds ~5–7, the model's tool selection accuracy degrades
           significantly — it starts calling the wrong tool 30–40% of the time. The exam will present this as a debugging
@@ -2538,6 +2549,10 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
           descriptive. Decompose into specialized agents with 3–5 focused tools each.</div>
 
         <h2>Trap: LLM Confidence Scores</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · LLM Confidence Scores Are Not Calibrated</div>
+          <img src="diagrams/llm-confidence.png" alt="LLM confidence scores trap — never use for decisions, use deterministic business rules instead" style="width:100%;border-radius:6px;">
+        </div>
         <p>The exam will offer "use the model's confidence score to decide whether to escalate" as a plausible answer.
           This is ALWAYS wrong. LLM confidence scores are <strong>not statistically calibrated</strong> — a model saying
           "I'm 90% confident" does not mean it is correct 90% of the time. Confidence is a linguistic pattern, not a
@@ -2575,6 +2590,10 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
           count.</div>
 
         <h2>Session Management — fork vs current</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Session Management — fork vs current</div>
+          <img src="diagrams/session-fork.png" alt="Session fork creates isolated copy (CI/CD), current shares context (sequential tasks)" style="width:100%;border-radius:6px;">
+        </div>
         <p>Claude Code sessions can be <strong>forked</strong> (isolated copy) or <strong>continued</strong> (shared
           context). Understanding when to use each is tested directly.</p>
         <div class="w3-table-wrap">
@@ -2621,6 +2640,10 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
         <div class="domain-label">DOMAIN 2 <span class="dl-pct">18% of exam</span></div>
 
         <h2>Tool Descriptions — Your Routing Logic</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Tool Descriptions = Routing Logic</div>
+          <img src="diagrams/tool-descriptions.png" alt="Vague descriptions cause wrong tool calls — specific descriptions with input/output formats enable correct selection" style="width:100%;border-radius:6px;">
+        </div>
         <p>Before the model decides what to say or do next, it reads all the tool descriptions you have provided. The
           description is not a label — it is the entire basis on which the model decides whether this tool applies to
           the current situation. Think of each tool description as a contract: it tells the model exactly when to call
@@ -2760,6 +2783,10 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
         </div>
 
         <h2>Structured Error Responses</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Structured Error Responses for Recovery</div>
+          <img src="diagrams/structured-errors.png" alt="Structured errors with isError, errorCategory, isRetryable, partialData enable intelligent coordinator recovery" style="width:100%;border-radius:6px;">
+        </div>
         <p>When a tool fails in a multi-agent system, the error response is not just a log entry — it is the coordinator's <strong>only source of information</strong> for deciding what to do next. An unstructured error like <code>"Error: timeout"</code> forces the coordinator to guess whether retrying will help. A structured error response with explicit fields — error category, retryability flag, partial data, human-readable message — gives the coordinator everything it needs to make an intelligent recovery decision without additional API calls.</p>
         <p>The key fields to include: <code>isError</code> (boolean flag for error detection), <code>errorCategory</code> (timeout, auth_failure, rate_limit, validation — helps pick recovery strategy), <code>isRetryable</code> (True = retry automatically, False = escalate to human or try alternative), <code>partialData</code> (any results gathered before failure — prevents re-doing completed work), and <code>message</code> (human-readable description for logging and debugging).</p>
         <div class="w3-code-wrap">
