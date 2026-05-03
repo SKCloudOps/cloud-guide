@@ -74,6 +74,23 @@
       z-index: 400;
     }
 
+    /* Sidebar toggle button */
+    .sjh-toggle {
+      width: 36px; height: 36px; border: 1px solid var(--ant-border);
+      background: var(--ant-white); border-radius: 6px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-right: 8px; transition: all 0.15s;
+      color: var(--ant-muted); font-size: 16px;
+    }
+    .sjh-toggle:hover {
+      background: var(--ant-coral-lt); border-color: var(--ant-coral);
+      color: var(--ant-coral-dk);
+    }
+    .sjh-toggle svg {
+      width: 18px; height: 18px; stroke: currentColor;
+      stroke-width: 2; fill: none; stroke-linecap: round;
+    }
+
     .sjh-logo-zone {
       width: var(--sidebar-w);
       min-width: var(--sidebar-w);
@@ -83,6 +100,19 @@
       padding: 0 20px;
       border-right: 1px solid var(--ant-border);
       height: 100%;
+      transition: width 0.3s ease, min-width 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+      overflow: hidden;
+    }
+
+    /* Collapsed sidebar states */
+    body.sidebar-collapsed .sjh-logo-zone {
+      width: 0; min-width: 0; padding: 0; border-right: none; opacity: 0;
+    }
+    body.sidebar-collapsed #sj-sidebar {
+      width: 0; min-width: 0; padding: 0; border-right: none; overflow: hidden;
+    }
+    body.sidebar-collapsed #sj-main {
+      margin-left: 0;
     }
 
     .sjh-logo {
@@ -1601,6 +1631,9 @@
       </div>
     </div>
     <div class="sjh-content">
+      <button class="sjh-toggle" id="sidebar-toggle" onclick="toggleSidebar()" title="Toggle sidebar (Ctrl+B)">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
       <div class="sjh-course-title">CCA-F — Foundations Exam Prep</div>
       <div class="sjh-progress-zone">
         <div class="sjh-score">Practice: <b id="tb-score">0/0</b></div>
