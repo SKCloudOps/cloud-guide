@@ -2192,6 +2192,10 @@
         <h2>The Agentic Loop — stop_reason</h2>
         <p>Every Claude API response includes a <code>stop_reason</code> field. Your entire agent loop is driven by this
           single value. Know all four without hesitation.</p>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · The Agentic Loop — stop_reason Driven</div>
+          <img src="diagrams/agentic-loop.png" alt="Agentic Loop Architecture — stop_reason drives the entire loop: end_turn exits, tool_use continues, max_tokens truncates" style="width:100%;border-radius:6px;">
+        </div>
         <div class="w3-table-wrap">
           <table class="w3-table">
             <thead>
@@ -2269,6 +2273,10 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
         <h2>Lifecycle Hooks — Programmatic Enforcement</h2>
         <p>Hooks intercept execution at key points. This is the <strong>correct</strong> mechanism for enforcing hard
           business rules — NOT system prompt instructions.</p>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Lifecycle Hooks Pipeline</div>
+          <img src="diagrams/lifecycle-hooks.png" alt="Lifecycle Hooks — PreSampling, PreToolUse, PostToolUse, OnError intercept points" style="width:100%;border-radius:6px;">
+        </div>
         <div class="w3-table-wrap">
           <table class="w3-table">
             <thead>
@@ -2333,6 +2341,10 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
         <h2>Multi-Agent — Hub & Spoke Pattern</h2>
         <p>A coordinator agent decomposes tasks and delegates to specialized subagents. Each subagent is completely
           stateless and context-isolated.</p>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Hub & Spoke Multi-Agent Pattern</div>
+          <img src="diagrams/hub-spoke.png" alt="Hub and Spoke — Coordinator delegates to specialized subagents with explicit context passing" style="width:100%;border-radius:6px;">
+        </div>
         <div class="w3-warning"><strong>No shared memory between subagents.</strong> Every piece of data a subagent
           needs MUST be explicitly injected into its prompt. If your synthesis agent needs the web search agent's
           results, you pass them directly in the prompt — there is no automatic propagation.</div>
