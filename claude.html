@@ -3002,6 +3002,8 @@ jobs:
           answer is SEMANTIC validation. This is the layer most pipelines miss.</div>
 
         <h2>Retry-With-Feedback Pattern</h2>
+        <p>When a model's output fails validation, the instinct is to simply call the API again with the same prompt. This is a <strong>blind retry</strong> — and it is almost always wrong. The model is a probabilistic system: given the same input, it will produce outputs from the same distribution. If the prompt caused a specific error (like formatting dates as MM/DD/YYYY instead of ISO 8601), retrying the same prompt has a high probability of producing the exact same error.</p>
+        <p>The correct pattern is <strong>retry-with-feedback</strong>: take the specific validation errors from the failed attempt, append them to the prompt as explicit correction instructions, and then call the API. This shifts the model's output distribution by giving it concrete information about what went wrong. Instead of "extract the invoice," the retry prompt says "your previous extraction formatted invoice_date as MM/DD/YYYY — the correct format is ISO 8601 (YYYY-MM-DD). Re-extract and correct ONLY this field." This dramatically increases the success rate on retry because the model is now working with a more constrained, corrected prompt.</p>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Retry-With-Feedback vs Blind Retry</div>
           <img src="diagrams/retry-feedback.png" alt="Retry with feedback — append specific errors to prompt vs blind retry" style="width:100%;border-radius:6px;">
@@ -3109,6 +3111,8 @@ result = <span class="fn">extract</span>(document, base_prompt)
         </ul>
 
         <h2>Progressive Summarization — Numeric Precision Loss</h2>
+        <p>Progressive summarization is a context management strategy where you periodically summarize older conversation history to keep the context window manageable. The problem: <strong>every summarization pass loses precision</strong>, especially for numbers, dates, and specific values. The model treats summarization as a compression task — it preserves the narrative "shape" of information but rounds numbers, generalizes timeframes, and drops specific dollar amounts.</p>
+        <p>This is especially dangerous in financial, legal, or compliance scenarios where exact figures matter. After two rounds of summarization, "$2,847.50 refund processed on March 15th" becomes "a refund was processed" — losing both the amount and the date. The architectural fix is to maintain a <strong>separate structured log</strong> of all numeric values, dates, and critical facts alongside the summarized narrative. Your summarization can compress the conversation flow, but the raw data stays in a parallel data structure that is never summarized.</p>
         <div class="w3-table-wrap">
           <table class="w3-table">
             <thead>
@@ -3137,6 +3141,8 @@ result = <span class="fn">extract</span>(document, base_prompt)
           summarized context be the sole record for figures, percentages, and dates.</div>
 
         <h2>Tool Output Context Trimming</h2>
+        <p>Every token in the context window has a cost — both in dollars and in model attention quality. When a tool returns a full database record with 40 fields and your agent only needs 5 of them, the other 35 fields are pure waste. They consume tokens, increase latency, dilute the model's attention across irrelevant data, and push your context budget toward its limit faster.</p>
+        <p>Context trimming means projecting tool results down to only the fields your agent actually needs for the current task. This is a <strong>PostToolUse concern</strong> — you trim after the tool returns but before the result enters the conversation. The savings are dramatic: a typical CRM customer record might be 800 tokens raw, but the 5 fields you need for the current task are only 80 tokens — a 90% reduction. Over a 10-step agent loop, that is the difference between staying within budget and hitting context limits.</p>
         <div class="ant-diagram">
           <div class="ant-diagram-title">Architecture · Context Management — Tool Output Trimming</div>
           <img src="diagrams/context-trimming.png" alt="Context trimming — 40 fields to 5 needed fields = 90% token savings" style="width:100%;border-radius:6px;">
