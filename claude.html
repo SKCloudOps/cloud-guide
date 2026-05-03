@@ -2539,6 +2539,10 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
           formats with examples, edge cases, and when NOT to use it vs similar tools.</div>
 
         <h2>The tool_choice Parameter</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · tool_choice Selection Control</div>
+          <img src="diagrams/tool-choice.png" alt="tool_choice — auto (model decides), any (must call some tool), tool+name (force specific tool)" style="width:100%;border-radius:6px;">
+        </div>
         <p>By default the model decides whether to call a tool or respond with text — this is <code>"auto"</code>. But
           there are two situations where you need to override this. First, when you need to guarantee that the model
           calls <em>some</em> tool (use <code>"any"</code>) — this is the strongest way to enforce structured output
@@ -2581,6 +2585,10 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
         <p>MCP is an open standard that defines how AI models connect to external tools and data sources. Think of it as
           a universal adapter — instead of building a custom integration for every service, you build one MCP server and
           any MCP-compatible model can use it.</p>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · MCP — Model Context Protocol</div>
+          <img src="diagrams/mcp-architecture.png" alt="MCP Architecture — Client, Transport (stdio/HTTP), Server exposing Tools, Resources, Prompts, Sampling" style="width:100%;border-radius:6px;">
+        </div>
         <p>The core mental model: an MCP server exposes <strong>Tools</strong> (things to do — functions the model can
           invoke), <strong>Resources</strong> (things to read — data the model can pull in as context), and
           <strong>Prompts</strong> (reusable prompt templates). The transport layer handles communication:
@@ -2676,6 +2684,10 @@ messages = [{"role": <span class="st">"user"</span>, "content": user_input}]
           behavioral rules — without having to repeat them in every conversation.</p>
         <p>CLAUDE.md files follow CSS-like specificity. All files load and merge — when conflicts exist, the more
           specific file wins.</p>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · CLAUDE.md Hierarchy — CSS-Like Specificity</div>
+          <img src="diagrams/claude-md-hierarchy.png" alt="CLAUDE.md hierarchy — User global (lowest) → Project root (medium) → Directory level (highest)" style="width:100%;border-radius:6px;">
+        </div>
         <div class="w3-table-wrap">
           <table class="w3-table">
             <thead>
@@ -2818,6 +2830,10 @@ jobs:
         <div class="domain-label">DOMAIN 4 <span class="dl-pct">20% of exam</span></div>
 
         <h2>Three-Layer Validation</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Three-Layer Validation Pipeline</div>
+          <img src="diagrams/validation-pipeline.png" alt="Three-layer validation — Syntactic, Schema, Semantic layers with retry-with-feedback" style="width:100%;border-radius:6px;">
+        </div>
         <div class="w3-table-wrap">
           <table class="w3-table">
             <thead>
@@ -2868,6 +2884,10 @@ jobs:
           answer is SEMANTIC validation. This is the layer most pipelines miss.</div>
 
         <h2>Retry-With-Feedback Pattern</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Retry-With-Feedback vs Blind Retry</div>
+          <img src="diagrams/retry-feedback.png" alt="Retry with feedback — append specific errors to prompt vs blind retry" style="width:100%;border-radius:6px;">
+        </div>
         <div class="w3-code-wrap">
           <div class="w3-code-header"><span class="lang">Python — Blind Retry vs Retry-With-Feedback</span><button
               class="copy-btn" onclick="copyCode(this)">Copy</button></div>
@@ -2948,6 +2968,10 @@ result = <span class="fn">extract</span>(document, base_prompt)
         <div class="domain-label">DOMAIN 5 <span class="dl-pct">15% of exam</span></div>
 
         <h2>The Lost-in-the-Middle Effect</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Lost-in-the-Middle Attention Effect</div>
+          <img src="diagrams/lost-in-middle.png" alt="Lost-in-the-middle — LLMs attend strongly to start and end, miss content in the middle" style="width:100%;border-radius:6px;">
+        </div>
         <p>Imagine reading a 400-page document where you know you'll be tested on its contents. You will naturally pay
           close attention to the introduction and the conclusion. The middle chapters — especially if they cover
           similar-sounding topics — will blur together. Language models exhibit exactly this behavior, and it is
@@ -2995,6 +3019,10 @@ result = <span class="fn">extract</span>(document, base_prompt)
           summarized context be the sole record for figures, percentages, and dates.</div>
 
         <h2>Tool Output Context Trimming</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Context Management — Tool Output Trimming</div>
+          <img src="diagrams/context-trimming.png" alt="Context trimming — 40 fields to 5 needed fields = 90% token savings" style="width:100%;border-radius:6px;">
+        </div>
         <div class="w3-code-wrap">
           <div class="w3-code-header"><span class="lang">Python — 90% Context Reduction</span><button class="copy-btn"
               onclick="copyCode(this)">Copy</button></div>
@@ -3580,6 +3608,10 @@ messages.<span class="fn">append</span>(<span class="fn">tool_result</span>(need
       </div>
       <div class="w3-content">
         <h2>What Is Extended Thinking?</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Extended Thinking — Internal Reasoning</div>
+          <img src="diagrams/extended-thinking.png" alt="Extended Thinking — thinking phase with budget_tokens, then response phase" style="width:100%;border-radius:6px;">
+        </div>
         <p>Extended thinking gives Claude a private scratchpad to reason through complex problems before producing its
           final response. The model generates <strong>thinking blocks</strong> — internal reasoning that is visible to
           you but not sent back to the model as conversation history.</p>
@@ -3703,6 +3735,10 @@ messages.<span class="fn">append</span>(<span class="fn">tool_result</span>(need
       </div>
       <div class="w3-content">
         <h2>The Claude Model Tiers</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Model Selection — Tiered Architecture</div>
+          <img src="diagrams/model-tiers.png" alt="Model Tiers — Opus (highest capability), Sonnet (balanced), Haiku (fastest/cheapest)" style="width:100%;border-radius:6px;">
+        </div>
         <div class="w3-table-wrap">
           <table class="w3-table">
             <thead>
@@ -3814,6 +3850,10 @@ doc_analysis_agent = Agent(
       </div>
       <div class="w3-content">
         <h2>Streaming Responses</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Streaming vs Batch API</div>
+          <img src="diagrams/streaming-batch.png" alt="Streaming (real-time tokens) vs Batch API (50% cost discount, up to 24h)" style="width:100%;border-radius:6px;">
+        </div>
         <p>Streaming returns tokens as they are generated instead of waiting for the complete response. Critical for
           real-time user-facing applications.</p>
         <div class="w3-code-wrap">
@@ -3936,6 +3976,10 @@ batch = client.messages.batches.create(
       </div>
       <div class="w3-content">
         <h2>How Prompt Caching Works</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Prompt Caching — 90% Cost Reduction</div>
+          <img src="diagrams/prompt-caching.png" alt="Prompt Caching — cache_control marks static content for 90% cost reduction on hits" style="width:100%;border-radius:6px;">
+        </div>
         <p>Prompt caching allows you to mark static content with <code>cache_control</code> so Claude can reuse the KV
           cache from a previous request instead of reprocessing the same tokens. This reduces both cost and
           time-to-first-token.</p>
@@ -4030,6 +4074,10 @@ print(f<span class="st">"Cache write: {usage.cache_creation_input_tokens}"</span
       </div>
       <div class="w3-content">
         <h2>API Error Codes</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Error Handling — Retry Decision Tree</div>
+          <img src="diagrams/error-handling.png" alt="Error handling — 4xx (don't retry) vs 429/5xx (retry with backoff)" style="width:100%;border-radius:6px;">
+        </div>
         <div class="w3-table-wrap">
           <table class="w3-table">
             <thead>
@@ -4181,6 +4229,10 @@ response = client.messages.create(
       </div>
       <div class="w3-content">
         <h2>What Is Computer Use?</h2>
+        <div class="ant-diagram">
+          <div class="ant-diagram-title">Architecture · Computer Use — GUI Interaction Loop</div>
+          <p style="text-align:center;color:var(--ant-muted);font-size:12px;font-style:italic;margin:8px 0 0;">Diagram uses the same agentic loop pattern — stop_reason drives GUI interaction in a sandboxed environment</p>
+        </div>
         <p>Computer use allows Claude to interact with a computer's GUI — taking screenshots, moving the cursor,
           clicking, and typing — to complete tasks that require visual interaction with desktop applications or
           websites.</p>
