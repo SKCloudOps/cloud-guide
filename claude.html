@@ -390,6 +390,7 @@
       padding-top: var(--header-h);
       min-height: 100vh;
       background: var(--ant-white);
+      transition: margin-left 0.3s ease;
     }
 
     /* Page hero — Skilljar style course banner */
@@ -4771,6 +4772,32 @@ response = client.messages.create(
       const lessons = head.nextElementSibling;
       lessons.classList.toggle('open');
     }
+
+    // Sidebar collapse/expand toggle
+    function toggleSidebar() {
+      document.body.classList.toggle('sidebar-collapsed');
+      const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+      localStorage.setItem('sidebarCollapsed', isCollapsed ? '1' : '0');
+      // Update toggle button icon
+      const btn = document.getElementById('sidebar-toggle');
+      if (btn) {
+        btn.innerHTML = isCollapsed
+          ? '<svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>'
+          : '<svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+        btn.title = isCollapsed ? 'Show sidebar (Ctrl+B)' : 'Hide sidebar (Ctrl+B)';
+      }
+    }
+    // Restore sidebar state from localStorage
+    if (localStorage.getItem('sidebarCollapsed') === '1') {
+      document.body.classList.add('sidebar-collapsed');
+    }
+    // Keyboard shortcut: Ctrl+B to toggle sidebar
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+        e.preventDefault();
+        toggleSidebar();
+      }
+    });
   </script>
 
 </body>
