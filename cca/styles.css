@@ -46,13 +46,14 @@
 
 * { box-sizing: border-box; }
 
+html { font-size: 14px; }
 html, body { margin: 0; padding: 0; }
 
 body {
   font-family: var(--sans);
   background: var(--paper);
   color: var(--ink);
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
