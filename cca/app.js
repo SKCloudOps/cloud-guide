@@ -60,7 +60,7 @@
           </div>
           <div class="mock-card-actions" style="margin-top: 1.5rem; display: flex; gap: 0.8rem;">
             <a href="exam.html?mock=${mock.id}" class="btn btn-primary btn-small" style="text-decoration:none;">Start Exam</a>
-            <a href="exam.html?mock=${mock.id}&view=answers" class="btn btn-ghost btn-small" style="text-decoration:none;">View Answers</a>
+            <a href="answers.html?mock=${mock.id}" class="btn btn-ghost btn-small" style="text-decoration:none;">View Answers</a>
           </div>
         </div>
       `;
@@ -411,6 +411,78 @@
   }
 
   // -----------------------------------------------
+  // Answers Page Boot
+  // -----------------------------------------------
+  function initAnswers() {
+    const params = new URLSearchParams(window.location.search);
+    const mockId = parseInt(params.get("mock"), 10);
+    const mock = exams.find((m) => m.id === mockId);
+
+    if (!mock) {
+      $("#answers-view").innerHTML = "<h2>Mock not found</h2><p>That mock doesn't exist. <a href='index.html'>Back to the list</a>.</p>";
+      return;
+    }
+
+    document.title = `Answers: ${mock.title} · CCA-F`;
+    const num = String(mock.id).padStart(2, "0");
+    const eyebrow = $("#exam-eyebrow");
+    if (eyebrow) eyebrow.textContent = `Mock ${num} Answers`;
+    const titleEl = $("#exam-title");
+    if (titleEl) titleEl.textContent = mock.title;
+
+    const listEl = $("#review-list");
+    if (!listEl) return;
+
+    listEl.innerHTML = mock.questions.map((q, i) => {
+      const optionsHtml = q.options.map((opt) => {
+        const letter = letterOf(opt);
+        const text = stripLetter(opt);
+        const isCorrectAnswer = q.correct.includes(letter);
+        
+        let cls = "review-option";
+        let tag = "";
+        
+        if (isCorrectAnswer) {
+          cls += " correct";
+          tag = `<span class="review-option-tag">Correct${q.correct.length > 1 ? " ✓" : ""}</span>`;
+        }
+
+        return `
+          <div class="${cls}">
+            <span class="review-option-letter">${letter}</span>
+            <span class="review-option-text">${escapeHtml(text)}</span>
+            ${tag}
+          </div>
+        `;
+      }).join("");
+
+      // Build incorrect-explanations rows
+      const incorrectRows = Object.entries(q.explanation.incorrect || {}).map(([letter, text]) => `
+        <div class="explanation-incorrect-row">
+          <span class="explanation-incorrect-letter">${letter}</span>
+          <span>${escapeHtml(text)}</span>
+        </div>
+      `).join("");
+
+      return `
+        <article class="review-item">
+          <div class="review-item-header">
+            <span class="review-item-num">Question ${i + 1} · ${escapeHtml(q.domain)}</span>
+          </div>
+          <div class="review-stem">${escapeHtml(q.question)}</div>
+          <div class="review-options">${optionsHtml}</div>
+          <div class="explanation">
+            <div class="explanation-title">Why the correct answer wins</div>
+            <div class="explanation-correct">${escapeHtml(q.explanation.correct)}</div>
+            <div class="explanation-incorrect-title">Why each distractor falls short</div>
+            ${incorrectRows}
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  // -----------------------------------------------
   // Boot
   // -----------------------------------------------
   document.addEventListener("DOMContentLoaded", () => {
@@ -418,6 +490,8 @@
       initLanding();
     } else if (document.body.classList.contains("page-exam")) {
       initExam();
+    } else if (document.body.classList.contains("page-answers")) {
+      initAnswers();
     }
   });
 })();

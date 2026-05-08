@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mock Exam · CCA-F</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
+</head>
+
+<body class="page-answers">
+
+  <header class="exam-header">
+    <div class="wrap exam-header-wrap">
+      <a href="index.html" class="exam-back">← All mocks</a>
+      <div class="exam-title-block">
+        <div class="exam-title-eyebrow" id="exam-eyebrow">Mock Exam</div>
+        <h1 class="exam-title" id="exam-title">Loading…</h1>
+      </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap exam-main">
+
+    <!-- Answers view -->
+    <section id="answers-view" class="results-view">
+      <div class="review-section">
+        <h2 class="result-section-title">All Questions & Answers</h2>
+        <p class="review-hint">Read the explanations carefully — the distractor analysis is where the real learning is.</p>
+        <div id="review-list"></div>
+      </div>
+
+      <div class="result-actions">
+        <a href="index.html" class="btn btn-ghost">← Back to all mocks</a>
+      </div>
+    </section>
+
+    <!-- Error view -->
+    <section id="error-view" class="error-view" style="display:none;">
+      <h2>Mock not found</h2>
+      <p>That mock doesn't exist. <a href="index.html">Back to the list</a>.</p>
+    </section>
+
+  </main>
+
+  <script src="questions.js"></script>
+  <script src="questions-mock6.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
