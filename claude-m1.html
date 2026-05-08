@@ -1720,10 +1720,23 @@
       <div class="mock-title">${m.title}</div>
       <div class="mock-meta">25 questions · 40 min</div>
       ${done ? `<div class="score-badge">Score: ${done.score}%</div>` : ''}
+      <div style="margin-top: 16px; display: flex; gap: 12px;">
+        <button class="btn-primary" onclick="event.stopPropagation(); startMock(${i})" style="padding: 8px 16px; font-size: 0.85rem;">Start Exam</button>
+        <button class="btn-secondary" onclick="event.stopPropagation(); viewAnswers(${i})" style="padding: 8px 16px; font-size: 0.85rem;">View Answers</button>
+      </div>
     `;
         el.onclick = () => startMock(i);
         grid.appendChild(el);
       });
+    }
+
+    function viewAnswers(id) {
+      state.mockId = id;
+      state.currentQ = 0;
+      state.answers = {};
+      state.revealed = {};
+      state.secondsLeft = 40 * 60;
+      submitExam();
     }
 
     // ════════════════════════════════════════

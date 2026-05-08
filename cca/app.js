@@ -49,7 +49,7 @@
       const num = String(mock.id).padStart(2, "0");
 
       return `
-        <a class="mock-card" href="exam.html?mock=${mock.id}">
+        <div class="mock-card">
           <span class="mock-card-num">Mock ${num}</span>
           <h3 class="mock-card-title">${escapeHtml(mock.title)}</h3>
           <p class="mock-card-subtitle">${escapeHtml(mock.subtitle)}</p>
@@ -58,8 +58,11 @@
             <span class="mock-card-stat"><strong>${single}</strong> single</span>
             ${multi > 0 ? `<span class="mock-card-stat"><strong>${multi}</strong> multi</span>` : ""}
           </div>
-          <span class="mock-card-arrow">→</span>
-        </a>
+          <div class="mock-card-actions" style="margin-top: 1.5rem; display: flex; gap: 0.8rem;">
+            <a href="exam.html?mock=${mock.id}" class="btn btn-primary btn-small" style="text-decoration:none;">Start Exam</a>
+            <a href="exam.html?mock=${mock.id}&view=answers" class="btn btn-ghost btn-small" style="text-decoration:none;">View Answers</a>
+          </div>
+        </div>
       `;
     }).join("");
   }
@@ -401,6 +404,10 @@
 
     // ----- Initial render -----
     renderQuestion();
+
+    if (params.get("view") === "answers") {
+      submitExam();
+    }
   }
 
   // -----------------------------------------------
