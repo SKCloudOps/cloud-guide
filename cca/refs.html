@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCA-F — Official Reference Links</title>
+<meta name="description" content="Official Anthropic documentation links for Claude Certified Architect exam preparation.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ivory:#faf9f5;--ivory-md:#f0ede4;--ivory-dk:#e4e0d4;--dark:#141413;--dark2:#2a2925;--mid:#8a8880;--clay:#d97757;--olive:#788c5d;--blue:#6a9bcc;--plum:#7c5fbf;--good:#2e7d5e;--bad:#c0392b;--serif:"Playfair Display",Georgia,serif;--sans:"DM Sans",system-ui,sans-serif;--mono:"DM Mono",monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ivory);color:var(--dark);font-family:var(--sans);font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+nav{position:sticky;top:0;z-index:200;background:rgba(250,249,245,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--ivory-dk);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;gap:10px}
+.nb{font-family:var(--serif);font-size:14px;font-weight:500;color:var(--dark)}
+.nav-slash{width:1px;height:14px;background:var(--clay);display:inline-block;margin:0 6px;vertical-align:middle}
+.nav-links{display:flex;gap:2px}
+.nav-link{padding:5px 12px;font-family:var(--sans);font-size:11px;font-weight:500;color:var(--mid);text-decoration:none;border-radius:3px;transition:all .15s}
+.nav-link:hover{color:var(--dark);background:var(--ivory-md)}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 20px 80px}
+.hero{margin-bottom:40px}
+.hlabel{font-family:var(--mono);font-size:10px;color:var(--clay);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px}
+.hero h1{font-family:var(--serif);font-size:clamp(26px,4vw,40px);font-weight:400;line-height:1.1;letter-spacing:-.02em;margin-bottom:10px}
+.hero p{font-size:13px;font-weight:300;color:var(--dark2);max-width:560px;line-height:1.7}
+.search-bar{margin-bottom:32px}
+.search-input{width:100%;padding:10px 16px;border:1px solid var(--ivory-dk);background:#fff;font-family:var(--sans);font-size:13px;color:var(--dark);outline:none;border-radius:2px;transition:border-color .2s}
+.search-input:focus{border-color:var(--clay)}
+.search-input::placeholder{color:var(--mid)}
+.group{margin-bottom:36px}
+.group-hd{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--dark)}
+.group-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:13px;border-radius:1px;flex-shrink:0}
+.group-title{font-family:var(--serif);font-size:18px;font-weight:400;color:var(--dark)}
+.group-count{font-family:var(--mono);font-size:10px;color:var(--mid);margin-left:auto}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.card{border:1px solid var(--ivory-dk);background:#fff;padding:14px 16px;text-decoration:none;display:block;transition:border-color .2s,box-shadow .2s;position:relative}
+.card:hover{border-color:var(--clay);box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.card-cat{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.card-title{font-size:13px;font-weight:500;color:var(--dark);margin-bottom:5px;line-height:1.4}
+.card-desc{font-size:11px;color:var(--mid);line-height:1.55;font-weight:300;margin-bottom:8px}
+.card-tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{font-family:var(--mono);font-size:9px;padding:2px 6px;background:var(--ivory-md);border:1px solid var(--ivory-dk);color:var(--mid)}
+.card-arrow{position:absolute;top:14px;right:14px;font-size:11px;color:var(--mid);opacity:0;transition:opacity .2s}
+.card:hover .card-arrow{opacity:1}
+.tip-bar{background:var(--dark);color:var(--ivory);padding:16px 20px;margin-bottom:32px;display:flex;gap:14px;align-items:flex-start}
+.tip-icon{color:var(--clay);font-size:14px;flex-shrink:0;margin-top:2px}
+.tip-text{font-size:12px;font-weight:300;line-height:1.65;color:rgba(255,255,255,.8)}
+.tip-text strong{color:var(--clay);font-weight:500}
+.hidden{display:none}
+@media(max-width:600px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nb">Anthropic<span class="nav-slash"></span>CCA-F <span style="font-weight:300;font-family:var(--sans);font-size:12px;color:var(--mid)">Reference Links</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="cca.html">Concepts</a>
+    <a class="nav-link" href="exam.html">Mock Exam</a>
+    <a class="nav-link" href="answers.html">Answers</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="hlabel">&#9670; Official Documentation</div>
+    <h1>Reference Links</h1>
+    <p>Primary sources for the Claude Certified Architect Foundation exam. Every topic tested on the exam traces back to one of these official documents. Bookmark the ones you find yourself returning to.</p>
+  </div>
+
+  <div class="tip-bar">
+    <div class="tip-icon">&#9432;</div>
+    <div class="tip-text"><strong>Exam strategy:</strong> The CCA-F tests your ability to apply these docs — not memorise them. Focus on understanding <strong>why</strong> each design decision exists. The highest-yield sections are: Messages API (stop_reason), Tool Use (descriptions), Hooks (deterministic enforcement), and CLAUDE.md hierarchy (project vs user scope).</div>
+  </div>
+
+  <div class="search-bar">
+    <input class="search-input" type="text" id="searchInput" placeholder="Filter links by keyword — try &quot;hooks&quot;, &quot;batch&quot;, &quot;MCP&quot;, &quot;context&quot;..." oninput="filterCards()">
+  </div>
+
+  <!-- GROUP 1: Claude API -->
+  <div class="group" data-group="api">
+    <div class="group-hd">
+      <div class="group-icon" style="background:rgba(106,155,204,.12);color:var(--blue)">&#11042;</div>
+      <span class="group-title">Claude API</span>
+      <span class="group-count">3 links</span>
+    </div>
+    <div class="cards">
+      <a class="card" href="https://platform.claude.com/docs/en/api/messages" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--blue)">Claude API</div>
+        <div class="card-title">Messages API</div>
+        <div class="card-desc">Core API for sending messages to Claude. Covers request structure, stop_reason values, and the message history format required for agentic loops.</div>
+        <div class="card-tags"><span class="tag">stop_reason</span><span class="tag">tool_use</span><span class="tag">end_turn</span><span class="tag">message history</span></div>
+      </a>
+      <a class="card" href="https://platform.claude.com/docs/en/build-with-claude/tool-use" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--blue)">Claude API</div>
+        <div class="card-title">Tool Use</div>
+        <div class="card-desc">Defining tools for Claude to call. Covers tool descriptions, input schemas, tool_choice parameter, and processing tool_use response blocks.</div>
+        <div class="card-tags"><span class="tag">tool descriptions</span><span class="tag">tool_choice</span><span class="tag">input_schema</span><span class="tag">tool_result</span></div>
+      </a>
+      <a class="card" href="https://platform.claude.com/docs/en/build-with-claude/message-batches" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--blue)">Claude API</div>
+        <div class="card-title">Message Batches API</div>
+        <div class="card-desc">Asynchronous batch processing with 50% cost reduction. Up to 24-hour processing time with no SLA guarantee — critical exam topic for API tier decisions.</div>
+        <div class="card-tags"><span class="tag">batch processing</span><span class="tag">custom_id</span><span class="tag">latency</span><span class="tag">cost</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- GROUP 2: Claude Agent SDK -->
+  <div class="group" data-group="sdk">
+    <div class="group-hd">
+      <div class="group-icon" style="background:rgba(217,119,87,.12);color:var(--clay)">&#10070;</div>
+      <span class="group-title">Claude Agent SDK</span>
+      <span class="group-count">4 links</span>
+    </div>
+    <div class="cards">
+      <a class="card" href="https://platform.claude.com/docs/en/agent-sdk/overview" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--clay)">Agent SDK</div>
+        <div class="card-title">SDK Overview</div>
+        <div class="card-desc">Introduction to the Claude Agent SDK. Covers agentic loop architecture, multi-agent orchestration patterns, and the hub-and-spoke topology.</div>
+        <div class="card-tags"><span class="tag">agentic loop</span><span class="tag">orchestration</span><span class="tag">coordinator</span></div>
+      </a>
+      <a class="card" href="https://platform.claude.com/docs/en/agent-sdk/hooks" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--clay)">Agent SDK</div>
+        <div class="card-title">Hooks</div>
+        <div class="card-desc">Programmatic interceptors for deterministic enforcement. Pre- and post-tool hooks that cannot be bypassed by model output — the correct approach for financial rules.</div>
+        <div class="card-tags"><span class="tag">pre-hook</span><span class="tag">post-hook</span><span class="tag">deterministic</span><span class="tag">enforcement</span></div>
+      </a>
+      <a class="card" href="https://platform.claude.com/docs/en/agent-sdk/subagents" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--clay)">Agent SDK</div>
+        <div class="card-title">Subagents</div>
+        <div class="card-desc">Spawning and managing subagents from a coordinator. Context passing rules, parallel Task() calls, and why subagents never inherit coordinator history.</div>
+        <div class="card-tags"><span class="tag">Task()</span><span class="tag">context passing</span><span class="tag">parallel</span><span class="tag">isolation</span></div>
+      </a>
+      <a class="card" href="https://platform.claude.com/docs/en/agent-sdk/sessions" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--clay)">Agent SDK</div>
+        <div class="card-title">Sessions</div>
+        <div class="card-desc">Session lifecycle management including resume, fork, and fresh session strategies. When stale context should force a fresh session with injected summary.</div>
+        <div class="card-tags"><span class="tag">--resume</span><span class="tag">fork_session</span><span class="tag">stale context</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- GROUP 3: MCP -->
+  <div class="group" data-group="mcp">
+    <div class="group-hd">
+      <div class="group-icon" style="background:rgba(124,95,191,.12);color:var(--plum)">&#9670;</div>
+      <span class="group-title">Model Context Protocol (MCP)</span>
+      <span class="group-count">4 links</span>
+    </div>
+    <div class="cards">
+      <a class="card" href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--plum)">MCP</div>
+        <div class="card-title">MCP Overview</div>
+        <div class="card-desc">The open standard for connecting AI models to external data sources and tools. Foundation for understanding how MCP servers, resources, and tools work together.</div>
+        <div class="card-tags"><span class="tag">open standard</span><span class="tag">server</span><span class="tag">client</span></div>
+      </a>
+      <a class="card" href="https://modelcontextprotocol.io/docs/concepts/tools" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--plum)">MCP</div>
+        <div class="card-title">MCP Tools</div>
+        <div class="card-desc">Defining tools within MCP servers. Tool schemas, descriptions, and how MCP tools surface to the model — directly relevant to tool description best practices.</div>
+        <div class="card-tags"><span class="tag">tool schema</span><span class="tag">descriptions</span><span class="tag">server tools</span></div>
+      </a>
+      <a class="card" href="https://modelcontextprotocol.io/docs/concepts/resources" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--plum)">MCP</div>
+        <div class="card-title">MCP Resources</div>
+        <div class="card-desc">Exposing data sources (files, databases, APIs) to models via MCP. How resources differ from tools and when to use each.</div>
+        <div class="card-tags"><span class="tag">data sources</span><span class="tag">files</span><span class="tag">databases</span></div>
+      </a>
+      <a class="card" href="https://modelcontextprotocol.io/docs/concepts/servers" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--plum)">MCP</div>
+        <div class="card-title">MCP Servers</div>
+        <div class="card-desc">Building and configuring MCP servers. Server lifecycle, capability declaration, and the project vs user scope distinction tested in D2.</div>
+        <div class="card-tags"><span class="tag">.mcp.json</span><span class="tag">project scope</span><span class="tag">user scope</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- GROUP 4: Claude Code -->
+  <div class="group" data-group="code">
+    <div class="group-hd">
+      <div class="group-icon" style="background:rgba(120,140,93,.12);color:var(--olive)">&#9642;</div>
+      <span class="group-title">Claude Code</span>
+      <span class="group-count">9 links</span>
+    </div>
+    <div class="cards">
+      <a class="card" href="https://code.claude.com/docs/en/overview" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--olive)">Claude Code</div>
+        <div class="card-title">Documentation Overview</div>
+        <div class="card-desc">Introduction to Claude Code — the AI coding assistant. Architecture, capabilities, and configuration system fundamentals.</div>
+        <div class="card-tags"><span class="tag">overview</span><span class="tag">architecture</span><span class="tag">setup</span></div>
+      </a>
+      <a class="card" href="https://code.claude.com/docs/en/memory" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--olive)">Claude Code</div>
+        <div class="card-title">CLAUDE.md &amp; Memory</div>
+        <div class="card-desc">The CLAUDE.md hierarchy — project-level vs user-level configuration. The most-tested D3 concept: team standards must be project-level to be shared via git.</div>
+        <div class="card-tags"><span class="tag">CLAUDE.md</span><span class="tag">project scope</span><span class="tag">~/.claude</span><span class="tag">version control</span></div>
+      </a>
+      <a class="card" href="https://code.claude.com/docs/en/skills" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--olive)">Claude Code</div>
+        <div class="card-title">Skills &amp; Slash Commands</div>
+        <div class="card-desc">Creating reusable skills and custom /slash commands. The context:fork frontmatter option that runs skills in isolated subagents to prevent context pollution.</div>
+        <div class="card-tags"><span class="tag">slash commands</span><span class="tag">context:fork</span><span class="tag">.claude/commands</span><span class="tag">YAML frontmatter</span></div>
+      </a>
+      <a class="card" href="https://code.claude.com/docs/en/hooks" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--olive)">Claude Code</div>
+        <div class="card-title">Hooks</div>
+        <div class="card-desc">Programmatic hooks in the Claude Code context. Pre- and post-execution intercepts for enforcing team standards, audit logging, and business rules deterministically.</div>
+        <div class="card-tags"><span class="tag">pre-hook</span><span class="tag">post-hook</span><span class="tag">deterministic</span><span class="tag">enforcement</span></div>
+      </a>
+      <a class="card" href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--olive)">Claude Code</div>
+        <div class="card-title">Sub-agents</div>
+        <div class="card-desc">Spawning sub-agents from Claude Code for parallel or isolated tasks. How context isolation works in the coding assistant context.</div>
+        <div class="card-tags"><span class="tag">sub-agents</span><span class="tag">isolation</span><span class="tag">parallel tasks</span></div>
+      </a>
+      <a class="card" href="https://code.claude.com/docs/en/mcp" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--olive)">Claude Code</div>
+        <div class="card-title">MCP Integration</div>
+        <div class="card-desc">Connecting MCP servers to Claude Code. Project-scoped .mcp.json (team-shared, version-controlled) vs user-scoped ~/.claude.json (personal). Env var credential expansion.</div>
+        <div class="card-tags"><span class="tag">.mcp.json</span><span class="tag">env vars</span><span class="tag">credentials</span><span class="tag">team sharing</span></div>
+      </a>
+      <a class="card" href="https://code.claude.com/docs/en/github-actions" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--olive)">Claude Code</div>
+        <div class="card-title">GitHub Actions CI/CD</div>
+        <div class="card-desc">Integrating Claude Code into GitHub Actions pipelines. The -p (headless) flag, allowedTools restrictions for CI safety, and avoiding interactive prompts.</div>
+        <div class="card-tags"><span class="tag">-p flag</span><span class="tag">allowedTools</span><span class="tag">CI/CD</span><span class="tag">GitHub Actions</span></div>
+      </a>
+      <a class="card" href="https://code.claude.com/docs/en/gitlab-ci-cd" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--olive)">Claude Code</div>
+        <div class="card-title">GitLab CI/CD</div>
+        <div class="card-desc">Running Claude Code in GitLab pipelines. Same headless principles as GitHub Actions, adapted for GitLab CI syntax and runner configuration.</div>
+        <div class="card-tags"><span class="tag">GitLab CI</span><span class="tag">headless</span><span class="tag">pipeline</span></div>
+      </a>
+      <a class="card" href="https://code.claude.com/docs/en/headless" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--olive)">Claude Code</div>
+        <div class="card-title">Headless (Non-interactive)</div>
+        <div class="card-desc">Running Claude Code without interactive prompts. The -p flag is the documented mechanism — not CLAUDE_HEADLESS env var or stdin redirection (both exam distractors).</div>
+        <div class="card-tags"><span class="tag">-p flag</span><span class="tag">--print</span><span class="tag">non-interactive</span><span class="tag">stdout</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- GROUP 5: Prompt Engineering -->
+  <div class="group" data-group="prompting">
+    <div class="group-hd">
+      <div class="group-icon" style="background:rgba(46,125,94,.12);color:var(--good)">&#9671;</div>
+      <span class="group-title">Prompt Engineering</span>
+      <span class="group-count">2 links</span>
+    </div>
+    <div class="cards">
+      <a class="card" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--good)">Prompting</div>
+        <div class="card-title">Prompt Engineering Guide</div>
+        <div class="card-desc">Official guide covering few-shot examples, system prompts, structured output, and iterative refinement. Foundation for D4 exam domain questions.</div>
+        <div class="card-tags"><span class="tag">few-shot</span><span class="tag">system prompt</span><span class="tag">structured output</span><span class="tag">refinement</span></div>
+      </a>
+      <a class="card" href="https://platform.claude.com/docs/en/build-with-claude/extended-thinking" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--good)">Prompting</div>
+        <div class="card-title">Extended Thinking</div>
+        <div class="card-desc">Claude's extended thinking mode for complex reasoning tasks. When to enable it, budget tokens configuration, and how it affects latency and cost tradeoffs.</div>
+        <div class="card-tags"><span class="tag">thinking tokens</span><span class="tag">reasoning</span><span class="tag">budget</span><span class="tag">latency</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- GROUP 6: Examples -->
+  <div class="group" data-group="examples">
+    <div class="group-hd">
+      <div class="group-icon" style="background:rgba(192,57,43,.1);color:var(--bad)">&#9632;</div>
+      <span class="group-title">Code Examples</span>
+      <span class="group-count">1 link</span>
+    </div>
+    <div class="cards">
+      <a class="card" href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">
+        <span class="card-arrow">&#8599;</span>
+        <div class="card-cat" style="color:var(--bad)">Examples</div>
+        <div class="card-title">Anthropic Cookbook</div>
+        <div class="card-desc">Official code examples and patterns for building with Claude. Includes agentic loop implementations, tool use patterns, and multi-agent architectures — ideal for hands-on study.</div>
+        <div class="card-tags"><span class="tag">code examples</span><span class="tag">patterns</span><span class="tag">GitHub</span><span class="tag">hands-on</span></div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function filterCards() {
+  var q = document.getElementById('searchInput').value.toLowerCase().trim();
+  document.querySelectorAll('.card').forEach(function(card) {
+    var text = card.textContent.toLowerCase();
+    card.style.display = (!q || text.includes(q)) ? 'block' : 'none';
+  });
+  document.querySelectorAll('.group').forEach(function(group) {
+    var visible = Array.from(group.querySelectorAll('.card')).some(function(c) {
+      return c.style.display !== 'none';
+    });
+    group.style.display = visible ? 'block' : 'none';
+  });
+}
+</script>
+</body>
+</html>
