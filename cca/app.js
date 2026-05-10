@@ -419,7 +419,7 @@
     const mock = exams.find((m) => m.id === mockId);
 
     if (!mock) {
-      $("#answers-view").innerHTML = "<h2>Mock not found</h2><p>That mock doesn't exist. <a href='index.html'>Back to the list</a>.</p>";
+      document.getElementById("answers-view").innerHTML = "<h2>Mock not found</h2><p><a href='index.html'>Back to list</a></p>";
       return;
     }
 
@@ -433,53 +433,110 @@
     const listEl = $("#review-list");
     if (!listEl) return;
 
+    // Track which questions have been revealed
+    const revealed = {};
+
+    function revealCard(article, q) {
+      if (revealed[q.id]) return;
+      revealed[q.id] = true;
+
+      // Show the explanation panel
+      const expEl = article.querySelector(".explanation");
+      if (expEl) expEl.style.display = "block";
+
+      // Colour the options: correct = green, wrong-picked = red
+      article.querySelectorAll(".ans-option").forEach((optEl) => {
+        const letter = optEl.dataset.letter;
+        const isCorrect = q.correct.includes(letter);
+        const isSelected = optEl.classList.contains("ans-selected");
+        if (isCorrect) {
+          optEl.classList.add("ans-correct");
+          optEl.querySelector(".ans-tag").textContent = "✓ Correct";
+        } else if (isSelected) {
+          optEl.classList.add("ans-wrong");
+          optEl.querySelector(".ans-tag").textContent = "✗ Wrong";
+        }
+        optEl.classList.remove("ans-selected");
+      });
+
+      // Disable + update button
+      const btn = article.querySelector(".btn-reveal");
+      if (btn) {
+        btn.textContent = "Answer Revealed";
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+        btn.style.cursor = "default";
+      }
+      const hint = article.querySelector(".ans-hint");
+      if (hint) hint.style.display = "none";
+    }
+
+    // Build HTML
     listEl.innerHTML = mock.questions.map((q, i) => {
+      const isMulti = q.type === "multi";
+      const indicatorCls = isMulti ? "ans-check" : "ans-radio";
+      const badgeHtml = isMulti
+        ? `<span class="badge badge-multi">Multi-select · pick ${q.multiCount}</span>`
+        : `<span class="badge badge-single">Single answer</span>`;
+
       const optionsHtml = q.options.map((opt) => {
         const letter = letterOf(opt);
         const text = stripLetter(opt);
-        const isCorrectAnswer = q.correct.includes(letter);
-        
-        let cls = "review-option";
-        let tag = "";
-        
-        if (isCorrectAnswer) {
-          cls += " correct";
-          tag = `<span class="review-option-tag">Correct${q.correct.length > 1 ? " ✓" : ""}</span>`;
-        }
-
-        return `
-          <div class="${cls}">
-            <span class="review-option-letter">${letter}</span>
-            <span class="review-option-text">${escapeHtml(text)}</span>
-            ${tag}
-          </div>
-        `;
+        return `<div class="ans-option" data-letter="${letter}">
+          <span class="ans-indicator ${indicatorCls}"></span>
+          <span class="ans-letter">${letter}</span>
+          <span class="ans-text">${escapeHtml(text)}</span>
+          <span class="ans-tag"></span>
+        </div>`;
       }).join("");
 
-      // Build incorrect-explanations rows
-      const incorrectRows = Object.entries(q.explanation.incorrect || {}).map(([letter, text]) => `
-        <div class="explanation-incorrect-row">
+      const incorrectRows = Object.entries(q.explanation.incorrect || {}).map(([letter, text]) =>
+        `<div class="explanation-incorrect-row">
           <span class="explanation-incorrect-letter">${letter}</span>
           <span>${escapeHtml(text)}</span>
-        </div>
-      `).join("");
+        </div>`
+      ).join("");
 
       return `
-        <article class="review-item">
+        <article class="review-item" data-qid="${escapeHtml(String(q.id))}">
           <div class="review-item-header">
-            <span class="review-item-num">Question ${i + 1} · ${escapeHtml(q.domain)}</span>
+            <span class="review-item-num">Q${i + 1} &middot; ${escapeHtml(q.domain)}</span>
+            ${badgeHtml}
           </div>
           <div class="review-stem">${escapeHtml(q.question)}</div>
-          <div class="review-options">${optionsHtml}</div>
-          <div class="explanation">
+          ${isMulti ? `<div class="q-instruction">Select ${q.multiCount} options</div>` : ""}
+          <div class="ans-options-wrap">${optionsHtml}</div>
+          <div class="ans-footer">
+            <button class="btn btn-reveal">Reveal Answer</button>
+            <span class="ans-hint">or pick an option to auto-reveal</span>
+          </div>
+          <div class="explanation" style="display:none;">
             <div class="explanation-title">Why the correct answer wins</div>
             <div class="explanation-correct">${escapeHtml(q.explanation.correct)}</div>
-            <div class="explanation-incorrect-title">Why each distractor falls short</div>
-            ${incorrectRows}
+            ${incorrectRows ? `<div class="explanation-incorrect-title">Why each distractor falls short</div>${incorrectRows}` : ""}
           </div>
-        </article>
-      `;
+        </article>`;
     }).join("");
+
+    // Wire interactions after DOM is ready
+    mock.questions.forEach((q) => {
+      const article = listEl.querySelector(`article[data-qid="${q.id}"]`);
+      if (!article) return;
+
+      article.querySelectorAll(".ans-option").forEach((optEl) => {
+        optEl.addEventListener("click", () => {
+          if (revealed[q.id]) return;
+          if (q.type === "single") {
+            article.querySelectorAll(".ans-option").forEach(o => o.classList.remove("ans-selected"));
+          }
+          optEl.classList.toggle("ans-selected");
+          revealCard(article, q);
+        });
+      });
+
+      const btn = article.querySelector(".btn-reveal");
+      if (btn) btn.addEventListener("click", () => revealCard(article, q));
+    });
   }
 
   // -----------------------------------------------
