@@ -184,50 +184,140 @@ strong{font-weight:600;color:var(--dark)}
     </div>
     <span class="glossary-toggle" id="glossary-toggle">▾ collapse</span>
   </div>
-  <div class="glossary-body" id="glossary-body">
+    <div class="glossary-body" id="glossary-body">
     <div class="glossary-grid">
-      <div class="gterm">
-        <div class="gterm-hd">
-          <span class="gterm-badge" style="background:rgba(217,119,87,.12);color:var(--clay);border-color:rgba(217,119,87,.3)">Coordinator Agent</span>
-        </div>
-        <div class="gterm-def">The <strong>top-level orchestrator</strong> in a multi-agent system. It receives the high-level goal, decomposes it into subtasks, assigns each subtask to a specialist subagent, and aggregates the results. When output is incomplete or wrong, the root cause is almost always here — not in the subagents.</div>
-        <div class="gterm-also">Also called: <em>orchestrator</em>, <em>hub agent</em></div>
-      </div>
-      <div class="gterm">
-        <div class="gterm-hd">
-          <span class="gterm-badge" style="background:rgba(106,155,204,.12);color:var(--blue);border-color:rgba(106,155,204,.3)">Synthesis Agent</span>
-        </div>
-        <div class="gterm-def">A <strong>specialist subagent</strong> whose role is to combine, merge, and summarise findings from other agents (web search, document analysis, etc.) into a final coherent output. It should only receive pre-gathered content — it does <em>not</em> gather data itself.</div>
-        <div class="gterm-also">Also called: <em>aggregator agent</em>, <em>merge agent</em></div>
-      </div>
-      <div class="gterm">
-        <div class="gterm-hd">
-          <span class="gterm-badge" style="background:rgba(124,95,191,.12);color:var(--plum);border-color:rgba(124,95,191,.3)">Subagent</span>
-        </div>
-        <div class="gterm-def">Any agent <strong>invoked by the coordinator</strong> to handle a specific, scoped piece of work (e.g., "search for AI in music," "analyse contract PDF"). Subagents <em>never</em> automatically inherit the coordinator's conversation history — all context must be explicitly passed in their prompt.</div>
-        <div class="gterm-also">Also called: <em>worker agent</em>, <em>spoke agent</em></div>
-      </div>
-      <div class="gterm">
-        <div class="gterm-hd">
-          <span class="gterm-badge" style="background:rgba(46,125,94,.1);color:var(--good);border-color:rgba(46,125,94,.25)">Agentic Loop</span>
-        </div>
-        <div class="gterm-def">The <strong>while-true cycle</strong> that drives a single agent: call API → check <code style="font-family:var(--mono);font-size:11px;background:var(--ivory-md);padding:1px 4px">stop_reason</code> → if <code style="font-family:var(--mono);font-size:11px;background:var(--ivory-md);padding:1px 4px">tool_use</code> execute tools &amp; loop again → if <code style="font-family:var(--mono);font-size:11px;background:var(--ivory-md);padding:1px 4px">end_turn</code> return response. The loop's control signal is <em>always</em> <code style="font-family:var(--mono);font-size:11px;background:var(--ivory-md);padding:1px 4px">stop_reason</code>, never parsed text.</div>
-        <div class="gterm-also">Tested in: <em>D1 — Agent Loop (27% weight, most tested)</em></div>
-      </div>
-      <div class="gterm">
-        <div class="gterm-hd">
-          <span class="gterm-badge" style="background:rgba(120,140,93,.12);color:var(--olive);border-color:rgba(120,140,93,.3)">Hub-and-Spoke</span>
-        </div>
-        <div class="gterm-def">The standard <strong>multi-agent topology</strong> where one coordinator (hub) dispatches work to multiple independent subagents (spokes). Spokes run in parallel when the coordinator emits multiple <code style="font-family:var(--mono);font-size:11px;background:var(--ivory-md);padding:1px 4px">Task()</code> calls in a single response turn. Results return to the hub for synthesis.</div>
-        <div class="gterm-also">Key rule: <em>subagents are isolated — no shared memory between spokes</em></div>
-      </div>
-      <div class="gterm">
-        <div class="gterm-hd">
-          <span class="gterm-badge" style="background:rgba(192,57,43,.08);color:var(--bad);border-color:rgba(192,57,43,.2)">Hook</span>
-        </div>
-        <div class="gterm-def">A <strong>programmatic intercept</strong> that runs on every matching tool call — before or after execution — regardless of what the model outputs. Used for deterministic enforcement of business rules (refund caps, identity verification gates). Unlike prompt instructions, hooks <em>cannot be bypassed</em> by the model.</div>
-        <div class="gterm-also">Key distinction: <em>hooks = deterministic &nbsp;|&nbsp; prompts = probabilistic</em></div>
-      </div>
+
+      <!-- ── D1 AGENTIC ARCHITECTURE ── -->
+      <div class="gterm" style="grid-column:1/-1"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(179,65,26,.1);color:var(--accent-deep);border-color:rgba(179,65,26,.3);font-size:.65rem;letter-spacing:.12em">D1 — AGENTIC ARCHITECTURE</span></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(217,119,87,.12);color:var(--clay);border-color:rgba(217,119,87,.3)">Coordinator Agent</span></div>
+        <div class="gterm-def">The <strong>top-level orchestrator</strong> that receives the goal, decomposes it into subtasks, and dispatches each to a specialist subagent. Coverage gaps in the final output always trace back here — not to the subagents.</div>
+        <div class="gterm-also">Also called: <em>orchestrator, hub agent</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(124,95,191,.12);color:var(--plum);border-color:rgba(124,95,191,.3)">Subagent</span></div>
+        <div class="gterm-def">An agent <strong>invoked by the coordinator</strong> for a specific scoped task. Subagents <em>never</em> automatically inherit the coordinator's conversation history — all context must be explicitly passed in their prompt.</div>
+        <div class="gterm-also">Also called: <em>worker agent, spoke agent</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(106,155,204,.12);color:var(--blue);border-color:rgba(106,155,204,.3)">Synthesis Agent</span></div>
+        <div class="gterm-def">A specialist subagent that <strong>combines findings</strong> from other agents into a final output. It should receive pre-gathered content only — it does <em>not</em> gather data itself.</div>
+        <div class="gterm-also">Also called: <em>aggregator agent, merge agent</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(46,125,94,.1);color:var(--good);border-color:rgba(46,125,94,.25)">Agentic Loop</span></div>
+        <div class="gterm-def">The <strong>while-true cycle</strong>: call API → check <code style="font-family:var(--mono);font-size:11px">stop_reason</code> → if <code style="font-family:var(--mono);font-size:11px">tool_use</code> execute tools &amp; loop → if <code style="font-family:var(--mono);font-size:11px">end_turn</code> return response. Control signal is <em>always</em> <code style="font-family:var(--mono);font-size:11px">stop_reason</code>, never parsed text.</div>
+        <div class="gterm-also">Tested in: <em>D1 — most tested domain (27% weight)</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(120,140,93,.12);color:var(--olive);border-color:rgba(120,140,93,.3)">Hub-and-Spoke</span></div>
+        <div class="gterm-def">The standard multi-agent topology. One coordinator (hub) dispatches work to multiple independent subagents (spokes). Spokes run <strong>in parallel</strong> when the coordinator emits multiple <code style="font-family:var(--mono);font-size:11px">Task()</code> calls in a single response turn.</div>
+        <div class="gterm-also">Key rule: <em>subagents are isolated — no shared memory between spokes</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(192,57,43,.08);color:var(--bad);border-color:rgba(192,57,43,.2)">Hook</span></div>
+        <div class="gterm-def">A <strong>programmatic intercept</strong> that runs on every matching tool call — before or after execution — regardless of model output. Used for deterministic enforcement (refund caps, identity gates). Unlike prompts, hooks <em>cannot be bypassed</em> by the model.</div>
+        <div class="gterm-also">Key distinction: <em>hooks = deterministic &nbsp;|&nbsp; prompts = probabilistic</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(46,125,94,.1);color:var(--good);border-color:rgba(46,125,94,.25)">Structured Error Context</span></div>
+        <div class="gterm-def">When a subagent fails, it returns <strong>structured data</strong>: failure type, partial results already completed, unprocessed IDs, and <code style="font-family:var(--mono);font-size:11px">isRetryable</code>. Never suppress errors or return empty results marked as successful.</div>
+        <div class="gterm-also">Worst answer on exam: <em>"return empty result marked as successful"</em></div></div>
+
+      <!-- ── D2 TOOL DESIGN & MCP ── -->
+      <div class="gterm" style="grid-column:1/-1"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(106,155,204,.1);color:var(--blue);border-color:rgba(106,155,204,.3);font-size:.65rem;letter-spacing:.12em">D2 — TOOL DESIGN &amp; MCP</span></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(106,155,204,.12);color:var(--blue);border-color:rgba(106,155,204,.3)">Tool Description</span></div>
+        <div class="gterm-def">The <strong>primary routing mechanism</strong> for tool selection — more influential than system prompts or few-shot examples. A complete description includes: input formats, example queries, explicit use-case boundaries, and "Do NOT use for X — use Y instead" statements.</div>
+        <div class="gterm-also">Root cause of misrouting: <em>minimal or overlapping descriptions</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(106,155,204,.12);color:var(--blue);border-color:rgba(106,155,204,.3)">allowedTools</span></div>
+        <div class="gterm-def">A parameter that <strong>restricts which tools</strong> an agent can invoke. Used in CI/CD pipelines to prevent destructive operations (write, deploy, push). Also used to scope synthesis agents to only synthesis-specific tools (removes misuse of search tools).</div>
+        <div class="gterm-also">Rule: <em>restrict agent to minimum tools needed for its role</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(106,155,204,.12);color:var(--blue);border-color:rgba(106,155,204,.3)">.mcp.json vs ~/.claude.json</span></div>
+        <div class="gterm-def"><code style="font-family:var(--mono);font-size:11px">.mcp.json</code> = <strong>project-scoped</strong>, version-controlled, shared with team. <code style="font-family:var(--mono);font-size:11px">~/.claude.json</code> = <strong>user-scoped</strong>, personal only, not shared. Credentials always use <code style="font-family:var(--mono);font-size:11px">${ENV_VAR}</code> expansion — never hardcoded in version-controlled files.</div>
+        <div class="gterm-also">Rule: <em>team tools → .mcp.json &nbsp;|&nbsp; personal tools → ~/.claude.json</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(106,155,204,.12);color:var(--blue);border-color:rgba(106,155,204,.3)">Glob / Grep / Read / Bash</span></div>
+        <div class="gterm-def"><strong>Glob</strong> = find files by name/path pattern. <strong>Grep</strong> = search file <em>contents</em>. <strong>Read</strong> = open a known file. <strong>Bash</strong> = run commands (tests, lint). Use dedicated tools first; Bash only for commands, never for file discovery when a dedicated tool exists.</div>
+        <div class="gterm-also">Correct order: <em>Glob → Grep → Read (for unknown codebases)</em></div></div>
+
+      <!-- ── D3 CLAUDE CODE ── -->
+      <div class="gterm" style="grid-column:1/-1"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(120,140,93,.1);color:var(--olive);border-color:rgba(120,140,93,.3);font-size:.65rem;letter-spacing:.12em">D3 — CLAUDE CODE &amp; CONFIGURATION</span></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(120,140,93,.12);color:var(--olive);border-color:rgba(120,140,93,.3)">CLAUDE.md Hierarchy</span></div>
+        <div class="gterm-def"><code style="font-family:var(--mono);font-size:11px">~/.claude/CLAUDE.md</code> = <strong>personal only</strong>, not shared via git. <code style="font-family:var(--mono);font-size:11px">./CLAUDE.md</code> = <strong>project-level</strong>, committed, shared with the whole team. Standards that new developers must receive go in project-level config.</div>
+        <div class="gterm-also">Most-missed concept: <em>user-level config is invisible to teammates</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(120,140,93,.12);color:var(--olive);border-color:rgba(120,140,93,.3)">.claude/rules/ + glob frontmatter</span></div>
+        <div class="gterm-def">Rule files in <code style="font-family:var(--mono);font-size:11px">.claude/rules/</code> apply globally unless given a YAML frontmatter glob: <code style="font-family:var(--mono);font-size:11px">globs: ["api/**/*"]</code>. Without a glob, rules activate for <em>all</em> files — a common misconfiguration that causes irrelevant suggestions.</div>
+        <div class="gterm-also">Use when: <em>conventions apply to specific file types regardless of directory</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(120,140,93,.12);color:var(--olive);border-color:rgba(120,140,93,.3)">Plan Mode</span></div>
+        <div class="gterm-def">Claude <strong>explores and proposes</strong> a plan before making any changes. Human reviews and approves, then execution begins. Use for: large-scale architectural changes, decisions across many files, multiple valid approaches. <em>Not</em> for simple reversible operations.</div>
+        <div class="gterm-also">Key phrase: <em>"explore codebase and design approach before committing"</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(120,140,93,.12);color:var(--olive);border-color:rgba(120,140,93,.3)">context: fork (Skills)</span></div>
+        <div class="gterm-def">A skill frontmatter option that runs the skill in an <strong>isolated subagent</strong>. Only the final result returns to the main conversation — verbose output stays isolated and doesn't pollute the main context window.</div>
+        <div class="gterm-also">Use when: <em>skill output is verbose and would cause context pollution</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(120,140,93,.12);color:var(--olive);border-color:rgba(120,140,93,.3)">argument-hint (Skills)</span></div>
+        <div class="gterm-def">A skill frontmatter option that <strong>prompts the user for required parameters</strong> before the skill executes. Prevents skills from running with missing arguments and producing incorrect results.</div>
+        <div class="gterm-also">Use when: <em>skill needs inputs like service name or environment</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(120,140,93,.12);color:var(--olive);border-color:rgba(120,140,93,.3)">-p flag (Headless CI)</span></div>
+        <div class="gterm-def">The <code style="font-family:var(--mono);font-size:11px">-p</code> (--print) flag makes Claude Code <strong>non-interactive</strong>: processes the prompt, prints output to stdout, and exits. Required for CI/CD pipelines. <em>Not</em> <code style="font-family:var(--mono);font-size:11px">--batch</code> (doesn't exist) or <code style="font-family:var(--mono);font-size:11px">CLAUDE_HEADLESS=true</code> (doesn't exist).</div>
+        <div class="gterm-also">Only correct headless flag: <em>claude -p "your prompt"</em></div></div>
+
+      <!-- ── D4 PROMPT ENGINEERING ── -->
+      <div class="gterm" style="grid-column:1/-1"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(168,122,26,.1);color:var(--amber);border-color:rgba(168,122,26,.3);font-size:.65rem;letter-spacing:.12em">D4 — PROMPT ENGINEERING &amp; API FEATURES</span></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(168,122,26,.12);color:var(--amber);border-color:rgba(168,122,26,.3)">tool_choice: "any"</span></div>
+        <div class="gterm-def">Forces Claude to call a tool (producing structured JSON) rather than returning conversational text. The <strong>only guaranteed</strong> mechanism for structured output. <code style="font-family:var(--mono);font-size:11px">tool_choice: "auto"</code> allows text responses. System prompt JSON instructions are probabilistic only.</div>
+        <div class="gterm-also">Rule: <em>"any" = guaranteed structured output &nbsp;|&nbsp; "auto" = maybe</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(168,122,26,.12);color:var(--amber);border-color:rgba(168,122,26,.3)">Nullable Schema Fields</span></div>
+        <div class="gterm-def">Making schema fields <code style="font-family:var(--mono);font-size:11px">type: ["string", "null"]</code> prevents <strong>fabrication</strong> when source documents don't contain that data. Required fields force the model to invent values. Nullable fields let the model return <code style="font-family:var(--mono);font-size:11px">null</code> honestly.</div>
+        <div class="gterm-also">Cause of fabrication: <em>required schema fields when data may be absent</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(168,122,26,.12);color:var(--amber);border-color:rgba(168,122,26,.3)">Message Batches API</span></div>
+        <div class="gterm-def">Asynchronous batch processing with <strong>50% cost savings</strong> but up to 24h processing and no guaranteed SLA. For <strong>non-blocking</strong> workflows only (overnight reports, weekly audits). <em>Never</em> for blocking workflows where users wait for results.</div>
+        <div class="gterm-also">Rule: <em>blocking = real-time always &nbsp;|&nbsp; non-blocking = batch candidate</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(168,122,26,.12);color:var(--amber);border-color:rgba(168,122,26,.3)">Few-Shot Examples</span></div>
+        <div class="gterm-def">Examples that teach <strong>decision boundaries and output format</strong>. Effective for: escalation calibration, tool selection in ambiguous cases, output format consistency. <em>Not</em> for compliance enforcement (use hooks) or before fixing tool descriptions (fix root cause first).</div>
+        <div class="gterm-also">Not for: <em>financial compliance rules — those require hooks</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(168,122,26,.12);color:var(--amber);border-color:rgba(168,122,26,.3)">Resolvable vs Unresolvable Errors</span></div>
+        <div class="gterm-def"><strong>Resolvable</strong>: data exists but is formatted wrong — retries can fix it. <strong>Unresolvable</strong>: data doesn't exist in the source — retries waste API calls. When retries "consistently fail for some documents," the fix is schema redesign or input classification, not increasing retry count.</div>
+        <div class="gterm-also">Exam trap: <em>"increase retries from 3 to 10" — almost always wrong</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(168,122,26,.12);color:var(--amber);border-color:rgba(168,122,26,.3)">Self-Review Limitation</span></div>
+        <div class="gterm-def">Reviewing code in the <strong>same session</strong> that generated it is less effective because the model retains its generation reasoning and is less likely to question its own decisions. Independent review = different session, no prior generation context.</div>
+        <div class="gterm-also">Fix: <em>always use a fresh session for code review</em></div></div>
+
+      <!-- ── D5 CONTEXT MANAGEMENT ── -->
+      <div class="gterm" style="grid-column:1/-1"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(74,107,58,.1);color:var(--good);border-color:rgba(74,107,58,.3);font-size:.65rem;letter-spacing:.12em">D5 — CONTEXT &amp; MEMORY MANAGEMENT</span></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(46,125,94,.1);color:var(--good);border-color:rgba(46,125,94,.25)">Lost in the Middle</span></div>
+        <div class="gterm-def">Models reliably attend to content at the <strong>beginning and end</strong> of long inputs but miss findings in the middle. A larger context window does <em>not</em> fix this. Fix: place key findings at the top + use explicit section headers throughout.</div>
+        <div class="gterm-also">Never correct: <em>"use a larger model" or "increase context window"</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(46,125,94,.1);color:var(--good);border-color:rgba(46,125,94,.25)">Progressive Summarisation Loss</span></div>
+        <div class="gterm-def">Compressing old conversation turns loses <strong>exact numerical values</strong> (amounts, order IDs, dates) into vague summaries. Critical transactional data must be preserved in a persistent case-facts block <em>outside</em> the summarisation pipeline.</div>
+        <div class="gterm-also">Never correct: <em>"summarise more aggressively"</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(46,125,94,.1);color:var(--good);border-color:rgba(46,125,94,.25)">Case-Facts Block</span></div>
+        <div class="gterm-def">A <strong>structured block of critical data</strong> (order IDs, amounts, dates, issue types) stored outside the summarisation pipeline and included verbatim in every prompt. Prevents numerical precision loss across long multi-issue sessions.</div>
+        <div class="gterm-also">Format: <em>JSON object with exact values — never prose summaries</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(46,125,94,.1);color:var(--good);border-color:rgba(46,125,94,.25)">/compact</span></div>
+        <div class="gterm-def">A Claude Code command that <strong>reduces context window usage</strong> when the window is filling up and answers become vague or reference "typical patterns" instead of specific earlier findings. Also maintain scratchpad files to preserve key discoveries across context boundaries.</div>
+        <div class="gterm-also">Symptom: <em>Claude references "typical patterns" instead of specific findings</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(46,125,94,.1);color:var(--good);border-color:rgba(46,125,94,.25)">Disambiguation</span></div>
+        <div class="gterm-def">When a lookup returns <strong>multiple matches</strong>, the agent must ask for additional identifying information (email, phone, account number). Never select by heuristic (most recent, first result, most orders). Heuristic selection risks acting on the wrong account.</div>
+        <div class="gterm-also">Rule: <em>always ask — never guess when multiple matches exist</em></div></div>
+
+      <div class="gterm"><div class="gterm-hd"><span class="gterm-badge" style="background:rgba(46,125,94,.1);color:var(--good);border-color:rgba(46,125,94,.25)">Conflicting Sources</span></div>
+        <div class="gterm-def">When credible sources disagree, <strong>present both values with source attribution</strong> and note the discrepancy. Never: average (fabricates a number neither source supports), use the more recent source (recency ≠ accuracy), or omit (losing information from both sources).</div>
+        <div class="gterm-also">Rule: <em>preserve the conflict with attribution — never resolve arbitrarily</em></div></div>
+
     </div>
   </div>
 </div>
