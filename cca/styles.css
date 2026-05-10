@@ -143,6 +143,31 @@ em { font-style: italic; color: var(--accent-deep); }
   font-weight: 500;
 }
 
+.meta-divider {
+  color: var(--rule);
+  font-weight: 300;
+  user-select: none;
+}
+
+.meta-link {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent-deep);
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(179,65,26,0.25);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.meta-link:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-deep);
+}
+
 @media (max-width: 600px) {
   .meta-nav { display: none; }
 }
@@ -276,12 +301,14 @@ em { font-style: italic; color: var(--accent-deep); }
 
 .mocks-section,
 .how-section,
-.legend-section {
+.legend-section,
+.resources-section {
   padding: var(--gap-6) 0;
   border-bottom: 1px solid var(--rule);
 }
 
-.legend-section { border-bottom: none; }
+.legend-section { border-bottom: 1px solid var(--rule); }
+.resources-section { border-bottom: none; }
 
 /* ============================================================================
    MOCK CARDS
@@ -473,6 +500,97 @@ em { font-style: italic; color: var(--accent-deep); }
 .badge-domain { background: var(--accent-soft); color: var(--accent-deep); }
 .badge-single { background: var(--paper-deep); color: var(--ink-soft); }
 .badge-multi { background: var(--amber-soft); color: var(--amber); }
+
+/* ============================================================================
+   RESOURCES SECTION
+   ============================================================================ */
+
+.resources-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 680px) {
+  .resources-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.resource-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  padding: 1.6rem 1.8rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper-card);
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  position: relative;
+}
+
+.resource-card:hover {
+  background: var(--paper);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(26,24,20,0.08);
+  color: var(--ink);
+}
+
+.resource-card:hover .resource-card-arrow {
+  transform: translateX(4px);
+  color: var(--accent);
+}
+
+.resource-card-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.resource-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.resource-card-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.resource-card-desc {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink-mute);
+  margin: 0 0 0.7rem;
+}
+
+.resource-card-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.55rem;
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  border-radius: 100px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.resource-card-arrow {
+  font-size: 1.2rem;
+  color: var(--ink-faint);
+  flex-shrink: 0;
+  align-self: center;
+  transition: transform 0.2s ease, color 0.2s ease;
+  margin-left: 0.5rem;
+}
 
 /* ============================================================================
    FOOTER
