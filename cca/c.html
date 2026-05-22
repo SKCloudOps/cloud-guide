@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCA-F Master Prep — All 5 Domains</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8f9fb;
+  --surface: #ffffff;
+  --surface2: #f1f3f7;
+  --border: #e5e7eb;
+  --border2: #d1d5db;
+  --text: #111827;
+  --muted: #6b7280;
+  --faint: #e5e7eb;
+  --d1: #1d6ef5;
+  --d1bg: #eff6ff;
+  --d1border: #bfdbfe;
+  --d2: #059669;
+  --d2bg: #ecfdf5;
+  --d2border: #a7f3d0;
+  --d3: #d97706;
+  --d3bg: #fffbeb;
+  --d3border: #fde68a;
+  --d4: #7c3aed;
+  --d4bg: #f5f3ff;
+  --d4border: #ddd6fe;
+  --d5: #db2777;
+  --d5bg: #fdf2f8;
+  --d5border: #fbcfe8;
+  --ok: #059669;
+  --okbg: #ecfdf5;
+  --okborder: #a7f3d0;
+  --err: #dc2626;
+  --errbg: #fef2f2;
+  --errborder: #fecaca;
+  --warn: #d97706;
+  --warnbg: #fffbeb;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;font-size:15px;line-height:1.6;}
+code{font-family:'DM Mono',monospace;font-size:0.83em;background:#f1f5f9;padding:1px 6px;border-radius:4px;color:#2563eb;border:1px solid #e2e8f0;}
+
+/* === HEADER === */
+.header{background:#fff;border-bottom:1px solid var(--border);padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.header-left h1{font-family:'Fraunces',serif;font-weight:600;font-size:1.4rem;color:var(--text);letter-spacing:-0.02em;}
+.header-left p{font-size:12px;color:var(--muted);margin-top:2px;font-family:'DM Mono',monospace;}
+.domain-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.dpill{font-size:11px;font-family:'DM Mono',monospace;padding:4px 10px;border-radius:20px;font-weight:500;border:1px solid;cursor:default;}
+.dp1{color:var(--d1);background:var(--d1bg);border-color:var(--d1border);}
+.dp2{color:var(--d2);background:var(--d2bg);border-color:var(--d2border);}
+.dp3{color:var(--d3);background:var(--d3bg);border-color:var(--d3border);}
+.dp4{color:var(--d4);background:var(--d4bg);border-color:var(--d4border);}
+.dp5{color:var(--d5);background:var(--d5bg);border-color:var(--d5border);}
+
+/* === LAYOUT === */
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 73px);}
+.sidebar{background:#fff;border-right:1px solid var(--border);padding:1.5rem 0;position:sticky;top:73px;height:calc(100vh - 73px);overflow-y:auto;}
+.sidebar-section{padding:0 1rem;margin-bottom:1.5rem;}
+.sidebar-label{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;padding:0 0.5rem;}
+.nav-btn{display:flex;align-items:center;gap:10px;width:100%;padding:8px 12px;border-radius:8px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;text-align:left;transition:all 0.15s;}
+.nav-btn:hover{background:var(--surface2);color:var(--text);}
+.nav-btn.active{background:var(--surface2);color:var(--text);font-weight:500;}
+.nav-btn.active{background:var(--surface2);color:var(--text);}
+.nav-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.score-widget{margin:0 1rem;padding:1rem;background:var(--surface2);border-radius:10px;border:1px solid var(--border);}
+.score-widget .label{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:6px;}
+.score-big{font-size:2rem;font-family:'Fraunces',serif;font-weight:600;color:var(--text);}
+.score-track{height:5px;background:var(--faint);border-radius:3px;margin-top:8px;overflow:hidden;}
+.score-fill{height:5px;background:var(--ok);border-radius:3px;transition:width .5s ease;width:0%;}
+
+/* === CONTENT === */
+.content{padding:2rem;max-width:900px;}
+.tab-section{display:none;}
+.tab-section.active{display:block;}
+
+/* === DOMAIN TABS === */
+.domain-tabs{display:flex;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap;}
+.dtab{padding:6px 14px;border-radius:8px;border:1px solid var(--border2);background:#fff;color:var(--muted);cursor:pointer;font-size:12px;font-family:'DM Mono',monospace;transition:all .15s;}
+.dtab:hover{border-color:var(--border2);color:var(--text);}
+.dtab.t1.on{background:var(--d1bg);color:var(--d1);border-color:var(--d1border);}
+.dtab.t2.on{background:var(--d2bg);color:var(--d2);border-color:var(--d2border);}
+.dtab.t3.on{background:var(--d3bg);color:var(--d3);border-color:var(--d3border);}
+.dtab.t4.on{background:var(--d4bg);color:var(--d4);border-color:var(--d4border);}
+.dtab.t5.on{background:var(--d5bg);color:var(--d5);border-color:var(--d5border);}
+.dsub{display:none;}
+.dsub.on{display:block;}
+
+/* === SECTION TITLE === */
+.section-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.6rem;color:var(--text);margin-bottom:4px;letter-spacing:-.02em;}
+.section-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+
+/* === CONCEPT CARDS === */
+.card-grid{display:grid;gap:10px;}
+.ccard{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.4rem;transition:border-color .15s;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.ccard:hover{border-color:var(--border2);box-shadow:0 2px 6px rgba(0,0,0,.07);}
+.ccard-label{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:0.08em;margin-bottom:5px;}
+.ccard-title{font-size:15px;font-weight:500;color:var(--text);margin-bottom:6px;}
+.ccard-body{font-size:13.5px;color:#374151;line-height:1.7;}
+.badge{display:inline-block;font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:20px;margin-top:8px;}
+.badge-exam{background:rgba(245,158,11,0.12);color:var(--warn);border:1px solid rgba(245,158,11,0.25);}
+.badge-pat{background:var(--d2bg);color:var(--d2);border:1px solid var(--d2border);}
+.anti-card{background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:1.1rem 1.4rem;margin-top:8px;}
+.anti-label{font-size:10px;font-family:'DM Mono',monospace;color:var(--err);letter-spacing:0.08em;margin-bottom:4px;}
+.anti-title{font-size:14px;font-weight:600;color:#991b1b;margin-bottom:6px;}
+.anti-body{font-size:13px;color:#7f1d1d;line-height:1.7;}
+
+/* === ANTI-PATTERNS SECTION === */
+.acard{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.acard-domain{font-size:11px;font-family:'DM Mono',monospace;color:#dc2626;margin-bottom:6px;font-weight:500;}
+.acard-body{font-size:13px;color:#374151;line-height:1.7;}
+.master-rule{background:linear-gradient(135deg,#f0fdf4,#eff6ff);border:1px solid #bfdbfe;border-radius:12px;padding:1.25rem 1.4rem;margin-top:1.5rem;}
+.master-rule-title{font-size:15px;font-weight:600;color:#1e3a5f;margin-bottom:8px;}
+.master-rule-body{font-size:13.5px;color:#1e3a5f;line-height:1.7;}
+
+/* === QUIZ === */
+.quiz-score-row{display:flex;align-items:center;gap:12px;margin-bottom:1.25rem;padding:1rem 1.25rem;background:#fff;border-radius:12px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.quiz-score-row .label{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;}
+.quiz-score-row .track{flex:1;height:4px;background:var(--faint);border-radius:2px;overflow:hidden;}
+.quiz-score-row .fill{height:4px;background:var(--ok);border-radius:2px;transition:width 0.5s;width:0%;}
+.quiz-score-row .num{font-size:14px;font-weight:500;font-family:'DM Mono',monospace;color:var(--text);}
+.qcard{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.qcard-domain{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:6px;}
+.qcard-text{font-size:14px;font-weight:500;color:var(--text);line-height:1.6;margin-bottom:10px;}
+.opt{display:block;width:100%;text-align:left;padding:9px 14px;margin-bottom:6px;border:1px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:13px;color:#374151;font-family:'DM Sans',sans-serif;transition:all .15s;}
+.opt:hover:not(:disabled){background:var(--surface2);border-color:var(--border2);color:var(--text);}
+.opt.ok{background:#ecfdf5;color:#065f46;border-color:#a7f3d0;font-weight:500;}
+.opt.no{background:#fef2f2;color:#991b1b;border-color:#fecaca;}
+.expl{font-size:12.5px;color:#4b5563;border-left:3px solid #93c5fd;background:#eff6ff;padding:9px 12px;margin-top:8px;line-height:1.65;border-radius:0 6px 6px 0;display:none;}
+
+/* === CHEAT SHEET === */
+.cheat-domain-title{font-size:11px;font-family:'DM Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:1.25rem 0 6px;border-top:1px solid var(--border);margin-top:1.25rem;}
+.cheat-domain-title:first-child{border-top:none;margin-top:0;padding-top:0;}
+.crow{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--faint);font-size:13px;}
+.ck{min-width:210px;font-weight:500;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;}
+.cv{color:#374151;line-height:1.55;flex:1;}
+
+/* === RESPONSIVE === */
+@media(max-width:700px){
+  .layout{grid-template-columns:1fr;}
+  .sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:4px;padding:1rem;}
+  .sidebar-section{margin-bottom:0;}
+  .score-widget{display:none;}
+  .header{flex-direction:column;gap:10px;align-items:flex-start;}
+  .domain-pills{display:none;}
+  .content{padding:1rem;}
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.tab-section.active{animation:fadeUp 0.2s ease;}
+
+.ccard-detail{font-size:13px;color:#4b5563;line-height:1.7;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.ccard-detail ul{margin-left:1.2rem;margin-top:6px;}
+.ccard-detail li{margin-bottom:5px;}
+.ccard-example{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;margin-top:10px;font-size:12.5px;color:#475569;line-height:1.6;}
+.ccard-example .ex-label{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;}
+.anti-fix{font-size:13px;color:#065f46;background:var(--okbg);border:1px solid var(--okborder,#a7f3d0);border-radius:8px;padding:8px 12px;margin-top:8px;line-height:1.65;}
+.acard-wrong{font-size:13px;color:#991b1b;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:9px 12px;margin-bottom:8px;line-height:1.65;}
+.acard-right{font-size:13px;color:#065f46;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:9px 12px;line-height:1.65;}
+.acard-why{font-size:13px;color:#374151;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);line-height:1.7;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>CCA-F Master Prep</h1>
+    <p>Claude Certified Architect — Foundations · All 5 Domains</p>
+  </div>
+  <div class="domain-pills">
+    <span class="dpill dp1">D1 Agentic 27%</span>
+    <span class="dpill dp2">D2 Tool/MCP 18%</span>
+    <span class="dpill dp3">D3 Claude Code 20%</span>
+    <span class="dpill dp4">D4 Prompt Eng 20%</span>
+    <span class="dpill dp5">D5 Context 15%</span>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Study</div>
+      <button class="nav-btn active" onclick="showTab('concepts',this)">
+        <span class="nav-dot" style="background:#4f8ef7"></span>Key concepts
+      </button>
+      <button class="nav-btn" onclick="showTab('antipatterns',this)">
+        <span class="nav-dot" style="background:#f87171"></span>Anti-patterns
+      </button>
+      <button class="nav-btn" onclick="showTab('cheat',this)">
+        <span class="nav-dot" style="background:#34d399"></span>Cheat sheet
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Practice</div>
+      <button class="nav-btn" onclick="showTab('quiz',this)">
+        <span class="nav-dot" style="background:#a78bfa"></span>Quiz · 25 Questions
+      </button>
+    </div>
+    <div class="score-widget">
+      <div class="label">Quiz score</div>
+      <div class="score-big" id="sb-score">0<span style="font-size:1rem;color:var(--muted);font-family:'DM Mono',monospace;"> / 25</span></div>
+      <div class="score-track"><div class="score-fill" id="sb-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ============ CONCEPTS ============ -->
+    <div class="tab-section active" id="tab-concepts">
+      <div class="section-title">Key Concepts</div>
+      <div class="section-sub">Select a domain to review all concepts and anti-pattern.</div>
+      <div class="domain-tabs">
+        <button class="dtab t1 on" onclick="SD('c',1,this)">D1 · Agentic</button>
+        <button class="dtab t2" onclick="SD('c',2,this)">D2 · Tool/MCP</button>
+        <button class="dtab t3" onclick="SD('c',3,this)">D3 · Claude Code</button>
+        <button class="dtab t4" onclick="SD('c',4,this)">D4 · Prompt Eng</button>
+        <button class="dtab t5" onclick="SD('c',5,this)">D5 · Context</button>
+      </div>
+
+      <div class="dsub on" id="c1">
+        <div class="card-grid">
+          <div class="ccard"><div class="ccard-label">D1 · CONCEPT 1</div><div class="ccard-title">Agentic loop</div><div class="ccard-body">The core cycle: send request → inspect <code>stop_reason</code> → if <code>tool_use</code>, execute tool and return result → repeat until <code>end_turn</code> or <code>max_tokens</code>. The loop is driven entirely by the orchestration layer, not by Claude itself.</div><span class="badge badge-exam">Highest-weight domain · 27%</span></div>
+          <div class="ccard"><div class="ccard-label">D1 · CONCEPT 2</div><div class="ccard-title">Hub-and-spoke coordinator pattern</div><div class="ccard-body">Most common multi-agent architecture. A coordinator (orchestrator) agent routes tasks to specialized subagents. The coordinator holds the master plan and aggregates results; subagents execute atomic, scoped tasks.</div><span class="badge badge-exam">Expect scenario questions on this</span></div>
+          <div class="ccard"><div class="ccard-label">D1 · CONCEPT 3</div><div class="ccard-title">Subagent context isolation</div><div class="ccard-body">Subagents have their own isolated context window — they do <strong>not</strong> inherit the coordinator's context. The coordinator must explicitly pass any required information in each subagent call. A common trick question on the exam.</div><span class="badge badge-exam">Common trick question</span></div>
+          <div class="ccard"><div class="ccard-label">D1 · CONCEPT 4</div><div class="ccard-title">Parallel execution</div><div class="ccard-body">Claude can emit multiple <code>tool_use</code> blocks in a single response. The orchestration layer executes these in parallel and returns all results together in the next <code>tool_result</code> batch — reducing total latency for independent tasks.</div><span class="badge badge-pat">Pattern</span></div>
+          <div class="ccard"><div class="ccard-label">D1 · CONCEPT 5</div><div class="ccard-title">PostToolUse hooks</div><div class="ccard-body">Hooks that fire after a tool call completes. Used for data normalization (reshape output format), validation (schema compliance checks), and audit logging — all before results re-enter the model context. One of the 4 hook types.</div><span class="badge badge-exam">High-frequency</span></div>
+          <div class="ccard"><div class="ccard-label">D1 · CONCEPT 6</div><div class="ccard-title">Escalation with confidence scoring</div><div class="ccard-body">Agents should self-assess certainty after each step. When confidence falls below a defined threshold, escalate to human review or a higher-capability model rather than proceeding silently. Prevents cascading failures.</div><span class="badge badge-exam">High-frequency</span></div>
+          <div class="ccard"><div class="ccard-label">D1 · CONCEPT 7</div><div class="ccard-title">4 stop_reason values</div><div class="ccard-body">The four values you must know cold: <code>end_turn</code> (finished normally), <code>tool_use</code> (wants to call a tool), <code>max_tokens</code> (cut off by length), <code>stop_sequence</code> (custom stop triggered). The agent loop branches on each.</div><span class="badge badge-exam">Exact values tested</span></div>
+        </div>
+        <div class="anti-card"><div class="anti-label">✕ ANTI-PATTERN · D1</div><div class="anti-title">Prompt-only behavior enforcement</div><div class="anti-body">Relying on prompt instructions alone to enforce critical behaviors (e.g., "never delete files") is unreliable — prompts can be misinterpreted by the model. Use <strong>hooks and programmatic code-level controls</strong> instead. The exam always favors code over prompt for enforcement.</div></div>
+      </div>
+
+      <div class="dsub" id="c2">
+        <div class="card-grid">
+          <div class="ccard"><div class="ccard-label">D2 · CONCEPT 1</div><div class="ccard-title">MCP = Model Context Protocol</div><div class="ccard-body">Anthropic's open standard for connecting Claude to external services, databases, and APIs. MCP servers expose tools that Claude can discover and invoke. Think of it as a standardized plugin system — the interface is consistent regardless of what the server provides.</div><span class="badge badge-exam">Definition must-know</span></div>
+          <div class="ccard"><div class="ccard-label">D2 · CONCEPT 2</div><div class="ccard-title">Tool description quality</div><div class="ccard-body">Clear, specific tool descriptions are the primary driver of correct tool selection. Good descriptions state: what the tool does, when to use it, what it returns, and — critically — what it does <em>not</em> do (disambiguation from similar tools).</div><span class="badge badge-exam">High-frequency</span></div>
+          <div class="ccard"><div class="ccard-label">D2 · CONCEPT 3</div><div class="ccard-title">Limited tools per agent</div><div class="ccard-body">Optimal tool count per agent is small and focused. More tools = higher selection confusion. The pattern: specialized agents with 3–5 tightly scoped tools outperform a single agent with 20+ tools. Split large toolsets into specialized subagents.</div><span class="badge badge-pat">Design principle</span></div>
+          <div class="ccard"><div class="ccard-label">D2 · CONCEPT 4</div><div class="ccard-title">Structured error responses</div><div class="ccard-body">Tool errors should return structured objects with three fields: <code>isError</code> (bool), <code>isRetryable</code> (bool — tells the agent if retrying makes sense), <code>errorCategory</code> (string — auth, network, validation, etc.).</div><span class="badge badge-exam">Exact field names tested</span></div>
+          <div class="ccard"><div class="ccard-label">D2 · CONCEPT 5</div><div class="ccard-title">tool_choice configuration</div><div class="ccard-body"><code>'auto'</code> — Claude decides whether to use a tool. <code>'any'</code> — Claude must use at least one tool. <strong>Forced specific tool</strong> — Claude must use exactly the named tool. Use forced mode when you need guaranteed structured output via tool_use.</div><span class="badge badge-exam">Enum values tested</span></div>
+          <div class="ccard"><div class="ccard-label">D2 · CONCEPT 6</div><div class="ccard-title">Single responsibility per tool</div><div class="ccard-body">Each tool should do one thing well. Avoid combining retrieval + transformation + storage into one tool. The orchestrator is responsible for composing simple tools — the tools themselves stay atomic and independently testable.</div><span class="badge badge-pat">Design principle</span></div>
+        </div>
+        <div class="anti-card"><div class="anti-label">✕ ANTI-PATTERN · D2</div><div class="anti-title">Vague tool descriptions</div><div class="anti-body">A vague description like "gets data" causes Claude to guess — and guess wrong. The fix is specificity with explicit exclusions: <em>"Retrieves customer order history by customer_id from the orders database. Returns last 90 days only. Does not handle returns or refunds."</em></div></div>
+      </div>
+
+      <div class="dsub" id="c3">
+        <div class="card-grid">
+          <div class="ccard"><div class="ccard-label">D3 · CONCEPT 1</div><div class="ccard-title">Claude Code = CLI tool</div><div class="ccard-body">Claude Code is the command-line interface for developers interacting with Claude in coding workflows. Not a web UI — it's a terminal-native agent that reads and modifies your local codebase directly.</div></div>
+          <div class="ccard"><div class="ccard-label">D3 · CONCEPT 2</div><div class="ccard-title">CLAUDE.md hierarchy</div><div class="ccard-body">Instructions cascade: project root <code>CLAUDE.md</code> provides global context → <code>.claude/rules/*.md</code> adds modular domain-specific overrides. Examples: <code>testing.md</code>, <code>security.md</code>, <code>api-style.md</code>. Each file owns one concern.</div><span class="badge badge-exam">Hierarchy order tested</span></div>
+          <div class="ccard"><div class="ccard-label">D3 · CONCEPT 3</div><div class="ccard-title">Custom slash commands</div><div class="ccard-body">Project-specific shortcuts defined in CLAUDE.md: <code>/review</code> (code review workflow), <code>/test</code> (test suite with analysis), <code>/deploy</code> (deployment pipeline). Version-controlled, portable across the team.</div><span class="badge badge-pat">Pattern</span></div>
+          <div class="ccard"><div class="ccard-label">D3 · CONCEPT 4</div><div class="ccard-title">Plan mode vs direct execution</div><div class="ccard-body">Plan mode: Claude outlines what it will do before acting — safer for destructive or irreversible operations, allows human review of the plan. Direct execution: Claude acts immediately — faster for low-risk, well-defined, reversible tasks. The choice hinges on reversibility.</div><span class="badge badge-exam">High-frequency decision scenario</span></div>
+          <div class="ccard"><div class="ccard-label">D3 · CONCEPT 5</div><div class="ccard-title">Modular rules files</div><div class="ccard-body">Splitting CLAUDE.md into multiple <code>.claude/rules/*.md</code> files improves maintainability and avoids monolithic config drift. Each file is scoped to one concern and can be updated independently without touching global config.</div><span class="badge badge-pat">Best practice</span></div>
+        </div>
+        <div class="anti-card"><div class="anti-label">✕ ANTI-PATTERN · D3</div><div class="anti-title">One giant CLAUDE.md</div><div class="anti-body">A single large CLAUDE.md becomes hard to maintain, hard to review, and creates context bloat. The exam-correct answer is always to use <strong>modular <code>.claude/rules/*.md</code> files</strong> scoped to specific domains of concern.</div></div>
+      </div>
+
+      <div class="dsub" id="c4">
+        <div class="card-grid">
+          <div class="ccard"><div class="ccard-label">D4 · CONCEPT 1</div><div class="ccard-title">Few-shot prompting</div><div class="ccard-body">Provide 2–3 input/output examples for ambiguous or format-sensitive tasks. Examples teach the expected pattern more reliably than lengthy instructions alone. Especially effective for classification and structured extraction tasks.</div><span class="badge badge-exam">High-frequency</span></div>
+          <div class="ccard"><div class="ccard-label">D4 · CONCEPT 2</div><div class="ccard-title">Structured output via tool_use</div><div class="ccard-body">The correct way to get guaranteed JSON structure is to define a tool with a JSON Schema and set <code>tool_choice</code> to force it. Asking Claude to "return JSON" in a text prompt is unreliable — the model may add prose, markdown fences, or deviate from schema.</div><span class="badge badge-exam">Most important anti-pattern flip</span></div>
+          <div class="ccard"><div class="ccard-label">D4 · CONCEPT 3</div><div class="ccard-title">JSON Schema fields</div><div class="ccard-body">In tool schemas: <code>required</code> array lists fields Claude must always populate. Optional fields may be omitted. <code>enum</code> constrains allowed values. <code>strict</code> mode prevents additional properties outside the defined schema.</div><span class="badge badge-exam">Schema mechanics tested</span></div>
+          <div class="ccard"><div class="ccard-label">D4 · CONCEPT 4</div><div class="ccard-title">Message Batches API</div><div class="ccard-body">Processes large volumes of requests asynchronously at ~50% cost reduction. Best for: data enrichment pipelines, bulk classification, offline analysis. Not suitable for real-time user-facing interactions requiring low latency.</div><span class="badge badge-exam">Cost/use-case tradeoff tested</span></div>
+          <div class="ccard"><div class="ccard-label">D4 · CONCEPT 5</div><div class="ccard-title">Validation-retry loops</div><div class="ccard-body">After receiving model output, validate against schema/business rules programmatically. On failure, re-prompt with the validation error as context. Cap retries (typically 3) to avoid infinite loops. The error message itself is the key input for self-correction.</div><span class="badge badge-pat">Reliability pattern</span></div>
+          <div class="ccard"><div class="ccard-label">D4 · CONCEPT 6</div><div class="ccard-title">Chain-of-thought (CoT)</div><div class="ccard-body">For complex multi-step reasoning, instruct Claude to think step-by-step before answering. Use <code>&lt;thinking&gt;</code> tags to separate internal reasoning from the final answer when you need clean output extraction downstream.</div><span class="badge badge-pat">Pattern</span></div>
+        </div>
+        <div class="anti-card"><div class="anti-label">✕ ANTI-PATTERN · D4</div><div class="anti-title">JSON in text vs tool_use</div><div class="anti-body">Asking Claude to "respond with JSON" in a text prompt is unreliable and schema-unsafe. Always use <strong><code>tool_use</code> with a JSON Schema</strong> and forced <code>tool_choice</code> for guaranteed structured output. One of the most frequently tested anti-patterns across all domains.</div></div>
+      </div>
+
+      <div class="dsub" id="c5">
+        <div class="card-grid">
+          <div class="ccard"><div class="ccard-label">D5 · CONCEPT 1</div><div class="ccard-title">Lost-in-the-middle effect</div><div class="ccard-body">LLMs attend strongly to the beginning and end of the context window. Content placed in the middle is underweighted and effectively ignored. Critical instructions buried mid-prompt in long contexts are not reliably followed.</div><span class="badge badge-exam">High-frequency</span></div>
+          <div class="ccard"><div class="ccard-label">D5 · CONCEPT 2</div><div class="ccard-title">Progressive summarization</div><div class="ccard-body">Compress earlier conversation turns into a running summary. Inject the summary at the top of the next request; discard the original turns. Preserves semantic history without exceeding the context window.</div><span class="badge badge-pat">Pattern</span></div>
+          <div class="ccard"><div class="ccard-label">D5 · CONCEPT 3</div><div class="ccard-title">Context extraction</div><div class="ccard-body">Rather than inserting full documents, retrieve only relevant sections via embedding similarity or keyword search. Inject extracted sections near the start or end of the prompt to benefit from primacy/recency attention.</div><span class="badge badge-pat">Pattern</span></div>
+          <div class="ccard"><div class="ccard-label">D5 · CONCEPT 4</div><div class="ccard-title">Escalation with confidence thresholds</div><div class="ccard-body">Agents must define a numeric or qualitative threshold below which output is too uncertain to act on. At that threshold: pause, escalate to human or stronger model. Never silently propagate uncertain outputs downstream in the pipeline.</div><span class="badge badge-exam">High-frequency</span></div>
+          <div class="ccard"><div class="ccard-label">D5 · CONCEPT 5</div><div class="ccard-title">Scratchpad files</div><div class="ccard-body">Persist intermediate reasoning and state to an external store (file, DB, KV). Only the distilled final result re-enters the model context for the next call. Keeps context lean and provides auditability of reasoning steps.</div><span class="badge badge-pat">Pattern</span></div>
+          <div class="ccard"><div class="ccard-label">D5 · CONCEPT 6</div><div class="ccard-title">Context window management</div><div class="ccard-body">Combined strategy: token budgeting (<code>usable_input = context_limit − max_output_tokens</code>), sliding window (drop oldest turns after summarizing), priority ordering (system → task → retrieved context → history), selective extraction for large docs.</div><span class="badge badge-exam">High-frequency</span></div>
+        </div>
+        <div class="anti-card"><div class="anti-label">✕ ANTI-PATTERN · D5</div><div class="anti-title">Dumping entire documents</div><div class="anti-body">Inserting full documents into every request causes context bloat, triggers the lost-in-the-middle effect, and leaves insufficient headroom for output. Always <strong>extract relevant sections</strong>. Use RAG/embedding retrieval for large corpora.</div></div>
+      </div>
+    </div><!-- /tab-concepts -->
+
+    <!-- ============ ANTI-PATTERNS ============ -->
+    <div class="tab-section" id="tab-antipatterns">
+      <div class="section-title">Anti-Patterns</div>
+      <div class="section-sub">All 5 domain anti-patterns — know these cold. They appear as the wrong answers in scenario questions.</div>
+      <div class="acard"><div class="acard-domain">D1 · Agentic Architecture · 27%</div><div class="acard-body"><strong style="color:#fca5a5;">What to avoid:</strong> Relying on prompts alone to enforce behavior (no-delete, no-external-calls, etc.)<br><strong style="color:#34d399;">Correct approach:</strong> Use hooks and programmatic code-level enforcement. Prompts can be overridden by model interpretation; code cannot.</div></div>
+      <div class="acard"><div class="acard-domain">D2 · Tool Design & MCP · 18%</div><div class="acard-body"><strong style="color:#fca5a5;">What to avoid:</strong> Vague tool descriptions like "gets data" or "processes request"<br><strong style="color:#34d399;">Correct approach:</strong> Specific, scoped descriptions with explicit exclusions. Tell Claude what the tool does AND what it does not do.</div></div>
+      <div class="acard"><div class="acard-domain">D3 · Claude Code · 20%</div><div class="acard-body"><strong style="color:#fca5a5;">What to avoid:</strong> One monolithic CLAUDE.md file that tries to cover everything<br><strong style="color:#34d399;">Correct approach:</strong> Modular <code>.claude/rules/*.md</code> files, each scoped to a single concern (testing, deployment, security, style).</div></div>
+      <div class="acard"><div class="acard-domain">D4 · Prompt Engineering & Structured Output · 20%</div><div class="acard-body"><strong style="color:#fca5a5;">What to avoid:</strong> Asking Claude to "return JSON" in a text prompt<br><strong style="color:#34d399;">Correct approach:</strong> Use <code>tool_use</code> with a JSON Schema and forced <code>tool_choice</code> for guaranteed, schema-validated structured output.</div></div>
+      <div class="acard"><div class="acard-domain">D5 · Context Management & Reliability · 15%</div><div class="acard-body"><strong style="color:#fca5a5;">What to avoid:</strong> Dumping entire documents into every request<br><strong style="color:#34d399;">Correct approach:</strong> Extract only relevant sections and inject them near the prompt boundaries. Use RAG for large corpora.</div></div>
+      <div class="master-rule">
+        <div class="master-rule-title" style="color:var(--d3);">⬡ Master rule behind all anti-patterns</div>
+        <div class="master-rule-body">Programmatic enforcement &gt; prompt-based guidance. Structured mechanisms — hooks, schemas, modular files, <code>tool_use</code> — always win over relying on the model to follow instructions. When the exam presents a scenario with a reliability or correctness problem, the answer that uses <strong>code / hooks / schemas over prompts</strong> is almost always correct.</div>
+      </div>
+    </div>
+
+    <!-- ============ QUIZ ============ -->
+    <div class="tab-section" id="tab-quiz">
+      <div class="section-title">Practice Quiz</div>
+      <div class="section-sub">25 scenario questions · 5 per domain · Running score tracks across all.</div>
+      <div class="quiz-score-row">
+        <span class="label">Score</span>
+        <div class="track"><div class="fill" id="qfill"></div></div>
+        <span class="num" id="qlbl">0 / 25</span>
+      </div>
+      <div class="domain-tabs">
+        <button class="dtab t1 on" onclick="SQ(1,this)">D1 · Agentic (5)</button>
+        <button class="dtab t2" onclick="SQ(2,this)">D2 · Tool/MCP (5)</button>
+        <button class="dtab t3" onclick="SQ(3,this)">D3 · Claude Code (5)</button>
+        <button class="dtab t4" onclick="SQ(4,this)">D4 · Prompt (5)</button>
+        <button class="dtab t5" onclick="SQ(5,this)">D5 · Context (5)</button>
+      </div>
+
+      <!-- D1 -->
+      <div class="dsub on" id="qs1">
+        <div class="qcard" id="q1_1"><div class="qcard-domain">D1 · Agentic Architecture</div><div class="qcard-text">1. An agent needs to enforce that it never writes to production databases. What is the BEST approach?</div><button class="opt" onclick="A(this,'q1_1',false,'Prompt instructions can be overridden by model interpretation — unreliable for critical constraints.')">Add a strong instruction in the system prompt</button><button class="opt" onclick="A(this,'q1_1',false,'Repeating the constraint does not make prompt-based enforcement reliable.')">Repeat the constraint in every user message</button><button class="opt" onclick="A(this,'q1_1',true,'Programmatic hooks intercept at the infrastructure layer and cannot be bypassed by model behavior.')">Implement a PostToolUse hook that rejects any tool call targeting a production DB</button><button class="opt" onclick="A(this,'q1_1',false,'Fine-tuning is expensive and still not a reliable enforcement mechanism for runtime constraints.')">Fine-tune the model to refuse such requests</button><div class="expl" id="q1_1-ex"></div></div>
+        <div class="qcard" id="q1_2"><div class="qcard-domain">D1 · Agentic Architecture</div><div class="qcard-text">2. In a hub-and-spoke architecture, a subagent needs context from the coordinator's conversation. How is this achieved?</div><button class="opt" onclick="A(this,'q1_2',false,'Subagents have isolated context — they do not inherit anything from the coordinator automatically.')">Automatically — subagents inherit the coordinator's context</button><button class="opt" onclick="A(this,'q1_2',true,'Context isolation is a key property. The coordinator must explicitly pass any required information.')">The coordinator explicitly passes the required context in the subagent call</button><button class="opt" onclick="A(this,'q1_2',false,'There is no shared in-memory context pool in the standard architecture.')">Via a shared in-memory context pool accessible to all agents</button><button class="opt" onclick="A(this,'q1_2',false,'Reading history is not how subagent context works — each call is independent.')">The subagent reads the coordinator's message history directly</button><div class="expl" id="q1_2-ex"></div></div>
+        <div class="qcard" id="q1_3"><div class="qcard-domain">D1 · Agentic Architecture</div><div class="qcard-text">3. Claude's response contains three tool_use blocks in one reply. What does this indicate?</div><button class="opt" onclick="A(this,'q1_3',false,'Tool errors produce tool_result blocks with isError=true, not multiple tool_use blocks.')">An error occurred requiring retry</button><button class="opt" onclick="A(this,'q1_3',false,'Multiple tool_use blocks are intentional, not a formatting issue.')">The model formatted its response incorrectly</button><button class="opt" onclick="A(this,'q1_3',true,'Multiple tool_use blocks in one response signal parallel execution intent — all three should run simultaneously.')">Claude intends to execute three tools in parallel</button><button class="opt" onclick="A(this,'q1_3',false,'Three tool_use blocks means three distinct calls, not sequential retries of one tool.')">Claude is retrying one tool call three times</button><div class="expl" id="q1_3-ex"></div></div>
+        <div class="qcard" id="q1_4"><div class="qcard-domain">D1 · Agentic Architecture</div><div class="qcard-text">4. Which stop_reason indicates Claude wants to call a tool?</div><button class="opt" onclick="A(this,'q1_4',false,'end_turn means Claude finished generation without needing any tool.')">end_turn</button><button class="opt" onclick="A(this,'q1_4',true,'tool_use is the stop_reason that signals the agent loop should execute tools and return results.')">tool_use</button><button class="opt" onclick="A(this,'q1_4',false,'max_tokens means the response was cut off due to the output token limit being reached.')">max_tokens</button><button class="opt" onclick="A(this,'q1_4',false,'stop_sequence means a custom stop string was triggered, ending generation early.')">stop_sequence</button><div class="expl" id="q1_4-ex"></div></div>
+        <div class="qcard" id="q1_5"><div class="qcard-domain">D1 · Agentic Architecture</div><div class="qcard-text">5. PostToolUse hooks are BEST used for which of the following?</div><button class="opt" onclick="A(this,'q1_5',false,'Tool selection happens before execution — PostToolUse fires after the tool has already run.')">Choosing which tool to call next</button><button class="opt" onclick="A(this,'q1_5',false,'System prompt injection happens at request construction time, not after tool execution.')">Injecting system prompt content dynamically</button><button class="opt" onclick="A(this,'q1_5',true,'PostToolUse hooks fire after execution — ideal for normalizing output and validating before it re-enters model context.')">Normalizing and validating tool output before it re-enters the model context</button><button class="opt" onclick="A(this,'q1_5',false,'Authentication is a pre-execution concern — use PreToolUse hooks or API-level auth instead.')">Authenticating tool calls before they execute</button><div class="expl" id="q1_5-ex"></div></div>
+      </div>
+
+      <!-- D2 -->
+      <div class="dsub" id="qs2">
+        <div class="qcard" id="q2_1"><div class="qcard-domain">D2 · Tool Design & MCP</div><div class="qcard-text">6. Claude keeps selecting the wrong tool from a set of 15 available tools. The BEST fix is:</div><button class="opt" onclick="A(this,'q2_1',false,'Temperature reduction helps output variability but does not fix tool selection accuracy when descriptions are vague.')">Lower the temperature setting</button><button class="opt" onclick="A(this,'q2_1',false,'max_tokens controls output length, not tool selection accuracy.')">Increase max_tokens</button><button class="opt" onclick="A(this,'q2_1',true,'Fewer, well-described tools dramatically improve selection accuracy. Split into specialized agents if needed.')">Reduce tools per agent and improve description specificity with explicit exclusions</button><button class="opt" onclick="A(this,'q2_1',false,'Retrying with the same vague tool set will not fix the root cause — the descriptions.')">Add a retry loop for tool selection errors</button><div class="expl" id="q2_1-ex"></div></div>
+        <div class="qcard" id="q2_2"><div class="qcard-domain">D2 · Tool Design & MCP</div><div class="qcard-text">7. A tool call fails with a network timeout. What isRetryable value should the error response return?</div><button class="opt" onclick="A(this,'q2_2',false,'false would tell the agent not to retry — wrong for transient network errors that may succeed on retry.')">false</button><button class="opt" onclick="A(this,'q2_2',true,'Network timeouts are transient — retrying is appropriate. isRetryable: true signals this correctly to the agent.')">true</button><button class="opt" onclick="A(this,'q2_2',false,'null is not a valid value for the isRetryable field — always provide a boolean.')">null</button><button class="opt" onclick="A(this,'q2_2',false,'Omitting the field leaves the agent without retry guidance — structured error fields must always be present.')">Omit the field entirely</button><div class="expl" id="q2_2-ex"></div></div>
+        <div class="qcard" id="q2_3"><div class="qcard-domain">D2 · Tool Design & MCP</div><div class="qcard-text">8. You need Claude to always use a tool — never respond in plain text. Which tool_choice value achieves this?</div><button class="opt" onclick="A(this,'q2_3',false,\"'auto' lets Claude decide — it may legitimately choose to respond in text without any tool.\")">auto</button><button class="opt" onclick="A(this,'q2_3',true,\"'any' forces Claude to use at least one tool from the available set on every response turn.\")">any</button><button class="opt" onclick="A(this,'q2_3',false,\"'none' prevents all tool use — the opposite of what's needed here.\")">none</button><button class="opt" onclick="A(this,'q2_3',false,\"'required' is not a valid tool_choice value in the Claude API.\")">required</button><div class="expl" id="q2_3-ex"></div></div>
+        <div class="qcard" id="q2_4"><div class="qcard-domain">D2 · Tool Design & MCP</div><div class="qcard-text">9. What is MCP's primary role in Claude's architecture?</div><button class="opt" onclick="A(this,'q2_4',false,'MCP is for tool and service connections, not for compressing context windows.')">Compressing context windows for efficiency</button><button class="opt" onclick="A(this,'q2_4',false,'MCP is a connection standard for runtime use, not a training data mechanism.')">Providing training data to Claude</button><button class="opt" onclick="A(this,'q2_4',true,'MCP is the standardized open protocol for connecting Claude to external tools, services, and data sources at runtime.')">Standardizing how Claude connects to external tools and services</button><button class="opt" onclick="A(this,'q2_4',false,'Multi-agent coordination uses orchestration patterns — MCP handles the tool connection layer specifically.')">Coordinating multi-agent orchestration workflows</button><div class="expl" id="q2_4-ex"></div></div>
+        <div class="qcard" id="q2_5"><div class="qcard-domain">D2 · Tool Design & MCP</div><div class="qcard-text">10. A tool that handles search, filter, transform, AND store operations is an example of:</div><button class="opt" onclick="A(this,'q2_5',false,'Combining multiple operations into one tool creates selection confusion, not efficiency gains.')">Good efficiency design — fewer tool calls per workflow</button><button class="opt" onclick="A(this,'q2_5',false,'Parallel execution requires multiple atomic tools that can run independently, not one compound tool.')">Parallel execution readiness</button><button class="opt" onclick="A(this,'q2_5',true,'This violates single-responsibility. Each operation should be a separate, composable, independently testable tool.')">Violation of the single-responsibility principle</button><button class="opt" onclick="A(this,'q2_5',false,'Fewer tool calls ≠ better design when the tool scope is too broad to select reliably.')">Optimal tool count reduction strategy</button><div class="expl" id="q2_5-ex"></div></div>
+      </div>
+
+      <!-- D3 -->
+      <div class="dsub" id="qs3">
+        <div class="qcard" id="q3_1"><div class="qcard-domain">D3 · Claude Code</div><div class="qcard-text">11. A developer needs to add security-specific coding rules to a project that already uses CLAUDE.md. The BEST approach is:</div><button class="opt" onclick="A(this,'q3_1',false,'Appending to one file creates the monolithic anti-pattern — hard to maintain and review.')">Append the security rules to the existing CLAUDE.md file</button><button class="opt" onclick="A(this,'q3_1',true,'Modular rules files are the exam-correct pattern. Security belongs in its own scoped file.')">Create .claude/rules/security.md with the security-specific rules</button><button class="opt" onclick="A(this,'q3_1',false,'System prompts override CLAUDE.md in a different scope — not the right place for project-scoped rules.')">Add the security rules to the API system prompt instead</button><button class="opt" onclick="A(this,'q3_1',false,'Separate projects break team collaboration on a shared codebase.')">Create a separate Claude Code project just for security rules</button><div class="expl" id="q3_1-ex"></div></div>
+        <div class="qcard" id="q3_2"><div class="qcard-domain">D3 · Claude Code</div><div class="qcard-text">12. Before executing a database migration script, which Claude Code mode should be used?</div><button class="opt" onclick="A(this,'q3_2',false,'Direct execution on irreversible operations like migrations is high-risk — no human review checkpoint.')">Direct execution mode — faster</button><button class="opt" onclick="A(this,'q3_2',true,'Database migrations are irreversible. Plan mode lets Claude outline steps for human review before any action is taken.')">Plan mode — for human review before execution</button><button class="opt" onclick="A(this,'q3_2',false,'Batch mode is for processing multiple files in parallel, not for safety-gating irreversible operations.')">Batch mode — for processing multiple files</button><button class="opt" onclick="A(this,'q3_2',false,'Review mode is a custom slash command concept, not a built-in Claude Code execution mode.')">Review mode — built-in safety mode</button><div class="expl" id="q3_2-ex"></div></div>
+        <div class="qcard" id="q3_3"><div class="qcard-domain">D3 · Claude Code</div><div class="qcard-text">13. The relationship between CLAUDE.md (root) and .claude/rules/*.md files is:</div><button class="opt" onclick="A(this,'q3_3',false,'Rules files extend the root, they do not replace it — both are loaded.')">Rules files replace the root CLAUDE.md when present</button><button class="opt" onclick="A(this,'q3_3',false,'Root CLAUDE.md is always loaded — it provides global context that rules files extend.')">Root CLAUDE.md is ignored when rules files exist</button><button class="opt" onclick="A(this,'q3_3',true,'Root provides global context; rules files add domain-specific overrides in a cascading modular hierarchy.')">Root CLAUDE.md provides global context; rules files add modular domain-specific extensions</button><button class="opt" onclick="A(this,'q3_3',false,'They serve different scopes and load at different levels — they are not interchangeable.')">They are functionally identical — use whichever is convenient</button><div class="expl" id="q3_3-ex"></div></div>
+        <div class="qcard" id="q3_4"><div class="qcard-domain">D3 · Claude Code</div><div class="qcard-text">14. Custom slash commands like /review and /deploy are defined where?</div><button class="opt" onclick="A(this,'q3_4',false,'Environment variables are for config values, not for defining workflow commands.')">In environment variables</button><button class="opt" onclick="A(this,'q3_4',true,'Custom slash commands are defined in CLAUDE.md — making them version-controlled and portable across the team.')">In the CLAUDE.md configuration file</button><button class="opt" onclick="A(this,'q3_4',false,'The Claude.ai web UI is not used for Claude Code CLI configuration.')">In the Claude.ai web UI settings panel</button><button class="opt" onclick="A(this,'q3_4',false,'Shell aliases are external to Claude Code\'s configuration system and not project-portable.')">In shell aliases (.bashrc / .zshrc)</button><div class="expl" id="q3_4-ex"></div></div>
+        <div class="qcard" id="q3_5"><div class="qcard-domain">D3 · Claude Code</div><div class="qcard-text">15. When is direct execution mode preferred over plan mode?</div><button class="opt" onclick="A(this,'q3_5',false,'Database migrations are irreversible — plan mode is always required before execution.')">Running a database migration on production</button><button class="opt" onclick="A(this,'q3_5',false,'Deleting production files is irreversible — plan mode is required to review what will be removed.')">Deleting a set of files from a production directory</button><button class="opt" onclick="A(this,'q3_5',true,'Adding a unit test is well-defined, low-risk, and fully reversible — direct execution is ideal.')">Adding a well-defined unit test to an existing test file</button><button class="opt" onclick="A(this,'q3_5',false,'Refactoring across 20 files risks unintended changes — plan mode for human review is the safer choice.')">Refactoring a core module across 20 files</button><div class="expl" id="q3_5-ex"></div></div>
+      </div>
+
+      <!-- D4 -->
+      <div class="dsub" id="qs4">
+        <div class="qcard" id="q4_1"><div class="qcard-domain">D4 · Prompt Engineering & Structured Output</div><div class="qcard-text">16. You need Claude to return a strict JSON object with specific fields on every call. The BEST approach is:</div><button class="opt" onclick="A(this,'q4_1',false,'Text instructions for JSON are unreliable — the model may add prose, markdown fences, or deviate from schema.')">Instruct Claude in the system prompt to always return valid JSON</button><button class="opt" onclick="A(this,'q4_1',false,'Temperature 0 improves determinism but does not guarantee schema compliance or field structure.')">Set temperature to 0</button><button class="opt" onclick="A(this,'q4_1',true,'tool_use with a JSON Schema and forced tool_choice is the only reliable mechanism for guaranteed structured output.')">Define a tool with a JSON Schema and set tool_choice to force it</button><button class="opt" onclick="A(this,'q4_1',false,'Regex parsing is brittle, fails on edge cases, and treats a symptom rather than fixing the root cause.')">Parse the text response with a regex extractor</button><div class="expl" id="q4_1-ex"></div></div>
+        <div class="qcard" id="q4_2"><div class="qcard-domain">D4 · Prompt Engineering & Structured Output</div><div class="qcard-text">17. The Message Batches API is MOST appropriate for:</div><button class="opt" onclick="A(this,'q4_2',false,'Real-time chat requires synchronous, low-latency responses — async batch processing cannot deliver this.')">Real-time customer chat responses</button><button class="opt" onclick="A(this,'q4_2',true,'Bulk ticket classification is non-urgent, high-volume, and benefits from the ~50% cost savings of async batch processing.')">Classifying 50,000 customer support tickets overnight</button><button class="opt" onclick="A(this,'q4_2',false,'Live code completion needs sub-second latency — batch processing has completion delays of minutes to hours.')">Live code autocompletion in an IDE</button><button class="opt" onclick="A(this,'q4_2',false,'Real-time streaming medical responses require synchronous interaction, not async batch delivery.')">Streaming medical advice responses in real-time</button><div class="expl" id="q4_2-ex"></div></div>
+        <div class="qcard" id="q4_3"><div class="qcard-domain">D4 · Prompt Engineering & Structured Output</div><div class="qcard-text">18. Few-shot examples are MOST valuable when:</div><button class="opt" onclick="A(this,'q4_3',false,'Factual recall is well-handled zero-shot — adding examples for it adds overhead without much gain.')">The task requires factual recall</button><button class="opt" onclick="A(this,'q4_3',false,'Simple yes/no questions are clear enough to handle zero-shot.')">Answering simple yes/no questions</button><button class="opt" onclick="A(this,'q4_3',true,'Ambiguous or format-sensitive tasks benefit most from 2–3 examples that demonstrate the expected pattern explicitly.')">The task is ambiguous or has a specific output format the model must learn from examples</button><button class="opt" onclick="A(this,'q4_3',false,'Translation is well-defined — few-shot adds overhead without meaningful improvement on standard language pairs.')">Translating text between common languages</button><div class="expl" id="q4_3-ex"></div></div>
+        <div class="qcard" id="q4_4"><div class="qcard-domain">D4 · Prompt Engineering & Structured Output</div><div class="qcard-text">19. When Claude's output fails schema validation in a retry loop, the BEST next step is:</div><button class="opt" onclick="A(this,'q4_4',false,'Logging without correction leaves a broken pipeline and propagates invalid data downstream.')">Log the error and return the invalid output anyway</button><button class="opt" onclick="A(this,'q4_4',false,'Waiting and retrying with an identical prompt will not fix the schema issue — the model lacks the error context.')">Wait 5 seconds and retry with the identical prompt</button><button class="opt" onclick="A(this,'q4_4',true,'Re-prompting with the specific validation error gives the model the context it needs to self-correct. Cap retries to avoid loops.')">Re-prompt with the validation error as context; cap retries at ~3</button><button class="opt" onclick="A(this,'q4_4',false,'Switching models arbitrarily adds cost and latency without addressing the root cause — the schema constraint.')">Immediately switch to a different model</button><div class="expl" id="q4_4-ex"></div></div>
+        <div class="qcard" id="q4_5"><div class="qcard-domain">D4 · Prompt Engineering & Structured Output</div><div class="qcard-text">20. In a tool's JSON Schema, the "required" array controls:</div><button class="opt" onclick="A(this,'q4_5',false,'Data types are set per-field with the "type" property — the required array controls field presence, not type.')">The data type of each field</button><button class="opt" onclick="A(this,'q4_5',true,'The required array lists which fields Claude must always populate in the tool call output — omitting them is a violation.')">Which fields Claude must always include in the output</button><button class="opt" onclick="A(this,'q4_5',false,'Allowed values are controlled by the "enum" property on individual fields, not the required array.')">The set of allowed values for enum-type fields</button><button class="opt" onclick="A(this,'q4_5',false,'Tool selection is controlled by the tool_choice parameter, not by the schema\'s required array.')">Which tools Claude is allowed to select</button><div class="expl" id="q4_5-ex"></div></div>
+      </div>
+
+      <!-- D5 -->
+      <div class="dsub" id="qs5">
+        <div class="qcard" id="q5_1"><div class="qcard-domain">D5 · Context Management & Reliability</div><div class="qcard-text">21. Critical instructions are placed in the middle of a 50,000-token prompt and being ignored. The most likely cause is:</div><button class="opt" onclick="A(this,'q5_1',false,'Temperature affects output randomness, not the model\'s positional attention over the context.')">Temperature is set too high</button><button class="opt" onclick="A(this,'q5_1',true,'Lost-in-the-middle: LLM attention is strongest at the start and end. Middle content is systematically underweighted.')">The lost-in-the-middle effect — middle content receives less model attention</button><button class="opt" onclick="A(this,'q5_1',false,'Incorrectly written instructions would cause wrong behavior, not position-dependent selective ignoring.')">The instructions are written incorrectly</button><button class="opt" onclick="A(this,'q5_1',false,'Model size affects general capability, not the specific positional attention pattern described here.')">The model is too small for this context size</button><div class="expl" id="q5_1-ex"></div></div>
+        <div class="qcard" id="q5_2"><div class="qcard-domain">D5 · Context Management & Reliability</div><div class="qcard-text">22. A 10-turn conversation is approaching the context limit. The BEST approach to manage history is:</div><button class="opt" onclick="A(this,'q5_2',false,'Hard truncation abruptly loses information — summarization first is always better.')">Truncate the oldest turns without summarizing them</button><button class="opt" onclick="A(this,'q5_2',true,'Progressive summarization preserves semantic history without consuming full context. Inject summary at top, discard originals.')">Summarize the oldest turns into a running summary and inject it at the top of the next request</button><button class="opt" onclick="A(this,'q5_2',false,'Starting fresh loses all conversation context — not appropriate for ongoing multi-turn tasks.')">Start a new conversation with no history</button><button class="opt" onclick="A(this,'q5_2',false,'max_tokens expands the output budget, not the input context window size.')">Increase max_tokens to create more room</button><div class="expl" id="q5_2-ex"></div></div>
+        <div class="qcard" id="q5_3"><div class="qcard-domain">D5 · Context Management & Reliability</div><div class="qcard-text">23. Where should intermediate agent reasoning steps be stored in a multi-step pipeline?</div><button class="opt" onclick="A(this,'q5_3',false,'Storing every reasoning step in context bloats the window rapidly across many steps.')">In the context window so every subsequent call can reference them directly</button><button class="opt" onclick="A(this,'q5_3',false,'Discarding steps removes auditability and the ability to recover or resume partial work.')">Discarded after each step to save tokens</button><button class="opt" onclick="A(this,'q5_3',true,'Scratchpad/external store keeps context lean. Only the distilled final result re-enters context for the next call.')">In an external scratchpad or store; only the distilled final result re-enters context</button><button class="opt" onclick="A(this,'q5_3',false,'The system prompt holds static instructions, not dynamic intermediate state that changes per step.')">In the system prompt for persistence across calls</button><div class="expl" id="q5_3-ex"></div></div>
+        <div class="qcard" id="q5_4"><div class="qcard-domain">D5 · Context Management & Reliability</div><div class="qcard-text">24. You have a 200K context model and need 8K output tokens. How many tokens are available for input?</div><button class="opt" onclick="A(this,'q5_4',false,'You must subtract the output headroom — using the full 200K would truncate your output.')">200,000</button><button class="opt" onclick="A(this,'q5_4',false,'208,000 exceeds the model\'s total capacity — you cannot add input and output tokens together.')">208,000</button><button class="opt" onclick="A(this,'q5_4',true,'usable_input = context_limit − max_output_tokens = 200,000 − 8,000 = 192,000 tokens for input.')">192,000</button><button class="opt" onclick="A(this,'q5_4',false,'100,000 would be leaving far more headroom than the 8K output requires.')">100,000</button><div class="expl" id="q5_4-ex"></div></div>
+        <div class="qcard" id="q5_5"><div class="qcard-domain">D5 · Context Management & Reliability</div><div class="qcard-text">25. For optimal prompt construction, the correct priority order for context placement is:</div><button class="opt" onclick="A(this,'q5_5',false,'History should come last — it\'s the lowest priority and benefits least from positional primacy attention.')">History → retrieved context → task → system prompt</button><button class="opt" onclick="A(this,'q5_5',true,'System prompt and task get primacy attention. Conversation history (lowest priority) goes last where it has least impact.')">System prompt → task instructions → retrieved context → conversation history</button><button class="opt" onclick="A(this,'q5_5',false,'Retrieved context should follow task instructions, not precede the system prompt.')">Retrieved context → system prompt → task → history</button><button class="opt" onclick="A(this,'q5_5',false,'Reversing the order puts the most critical content in the worst positional attention zones.')">Conversation history → retrieved context → task → system prompt</button><div class="expl" id="q5_5-ex"></div></div>
+      </div>
+    </div><!-- /tab-quiz -->
+
+    <!-- ============ CHEAT SHEET ============ -->
+    <div class="tab-section" id="tab-cheat">
+      <div class="section-title">Cheat Sheet</div>
+      <div class="section-sub">Every key fact in one-liner format — review this before the exam.</div>
+
+      <div class="cheat-domain-title" style="color:var(--d1);">D1 · Agentic Architecture · 27%</div>
+      <div class="crow"><div class="ck">Agentic loop</div><div class="cv">request → stop_reason → tool_use → execute → return result → repeat</div></div>
+      <div class="crow"><div class="ck">Hub-and-spoke</div><div class="cv">Coordinator routes to specialized subagents. Most common architecture.</div></div>
+      <div class="crow"><div class="ck">Subagent context</div><div class="cv">ISOLATED — not inherited. Coordinator must pass info explicitly.</div></div>
+      <div class="crow"><div class="ck">Parallel execution</div><div class="cv">Multiple tool_use blocks in one response = parallel intent</div></div>
+      <div class="crow"><div class="ck">PostToolUse hooks</div><div class="cv">Normalize + validate tool output before it re-enters context</div></div>
+      <div class="crow"><div class="ck">Enforcement rule</div><div class="cv">Hooks + code > prompt instructions. Always.</div></div>
+      <div class="crow"><div class="ck">4 stop_reasons</div><div class="cv"><code>end_turn</code> · <code>tool_use</code> · <code>max_tokens</code> · <code>stop_sequence</code></div></div>
+      <div class="crow"><div class="ck">4 hook types</div><div class="cv">PreToolUse · PostToolUse · PreResponse · PostResponse</div></div>
+
+      <div class="cheat-domain-title" style="color:var(--d2);">D2 · Tool Design & MCP · 18%</div>
+      <div class="crow"><div class="ck">MCP</div><div class="cv">Model Context Protocol — open standard for external tool/service connections</div></div>
+      <div class="crow"><div class="ck">Tool descriptions</div><div class="cv">Specific + scoped + exclusions stated = correct tool selection</div></div>
+      <div class="crow"><div class="ck">Tool count</div><div class="cv">Fewer per agent = better. Split into specialized agents for large sets.</div></div>
+      <div class="crow"><div class="ck">Error structure</div><div class="cv"><code>isError</code> (bool) · <code>isRetryable</code> (bool) · <code>errorCategory</code> (string)</div></div>
+      <div class="crow"><div class="ck">tool_choice values</div><div class="cv"><code>'auto'</code> (Claude decides) · <code>'any'</code> (must use ≥1) · forced name (must use exact tool)</div></div>
+      <div class="crow"><div class="ck">Single responsibility</div><div class="cv">One tool = one operation. Orchestrator composes tools.</div></div>
+
+      <div class="cheat-domain-title" style="color:var(--d3);">D3 · Claude Code · 20%</div>
+      <div class="crow"><div class="ck">Claude Code</div><div class="cv">CLI tool for developers — terminal-native, operates on local codebase</div></div>
+      <div class="crow"><div class="ck">Config hierarchy</div><div class="cv">CLAUDE.md (root, global) → .claude/rules/*.md (modular, scoped)</div></div>
+      <div class="crow"><div class="ck">Slash commands</div><div class="cv">Defined in CLAUDE.md: <code>/review</code> · <code>/test</code> · <code>/deploy</code></div></div>
+      <div class="crow"><div class="ck">Plan mode</div><div class="cv">Outlines before acting. Use for irreversible/destructive operations.</div></div>
+      <div class="crow"><div class="ck">Direct execution</div><div class="cv">Acts immediately. Use for low-risk, well-defined, reversible tasks.</div></div>
+      <div class="crow"><div class="ck">Anti-pattern</div><div class="cv">One giant CLAUDE.md → use modular .claude/rules/*.md instead</div></div>
+
+      <div class="cheat-domain-title" style="color:var(--d4);">D4 · Prompt Engineering & Structured Output · 20%</div>
+      <div class="crow"><div class="ck">Few-shot</div><div class="cv">2–3 examples for ambiguous or format-sensitive tasks</div></div>
+      <div class="crow"><div class="ck">Structured output</div><div class="cv">tool_use + JSON Schema + forced tool_choice (NOT "return JSON" in text)</div></div>
+      <div class="crow"><div class="ck">JSON Schema</div><div class="cv"><code>required</code> (must-have fields) · <code>enum</code> (allowed values) · <code>strict</code> (no extra properties)</div></div>
+      <div class="crow"><div class="ck">Batches API</div><div class="cv">~50% cost savings · async · non-urgent bulk tasks only</div></div>
+      <div class="crow"><div class="ck">Validation-retry</div><div class="cv">Fail → re-prompt with error as context → cap at ~3 retries</div></div>
+      <div class="crow"><div class="ck">Chain-of-thought</div><div class="cv">Step-by-step reasoning for complex tasks. Use &lt;thinking&gt; tags.</div></div>
+
+      <div class="cheat-domain-title" style="color:var(--d5);">D5 · Context Management & Reliability · 15%</div>
+      <div class="crow"><div class="ck">Lost-in-the-middle</div><div class="cv">Middle content underattended → place critical items at START and END</div></div>
+      <div class="crow"><div class="ck">Progressive summarization</div><div class="cv">Compress old turns → inject summary → discard originals</div></div>
+      <div class="crow"><div class="ck">Context extraction</div><div class="cv">Pull relevant sections only (embedding/keyword). Never full documents.</div></div>
+      <div class="crow"><div class="ck">Escalation threshold</div><div class="cv">confidence &lt; threshold → human/stronger model. Never silent failure.</div></div>
+      <div class="crow"><div class="ck">Scratchpad</div><div class="cv">Intermediate state → external store. Only distilled result back to context.</div></div>
+      <div class="crow"><div class="ck">Token budget formula</div><div class="cv">usable_input = context_limit − max_output_tokens</div></div>
+      <div class="crow" style="border-bottom:none;"><div class="ck">Priority order</div><div class="cv">System prompt → task → retrieved context → conversation history</div></div>
+
+      <div class="master-rule" style="margin-top:1.5rem;">
+        <div class="master-rule-title" style="color:var(--d3);font-size:15px;">⬡ The master rule — applies to all 5 domains</div>
+        <div class="master-rule-body" style="margin-top:6px;">Programmatic enforcement &gt; prompt-based guidance. Structured mechanisms — hooks, schemas, modular config, <code>tool_use</code> — always win over relying on the model to follow instructions. When the exam presents a reliability or correctness problem, the answer that uses <strong style="color:var(--text);">code / hooks / schemas over prompts</strong> is almost always correct.</div>
+      </div>
+    </div><!-- /tab-cheat -->
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+
+<script>
+var correct=0,answered={},total=25;
+
+function showTab(id,btn){
+  document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function SD(prefix,n,btn){
+  var container=btn.closest('.tab-section');
+  container.querySelectorAll('.dsub').forEach(s=>s.classList.remove('on'));
+  btn.closest('.domain-tabs').querySelectorAll('.dtab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(prefix+n).classList.add('on');
+  btn.classList.add('on');
+}
+
+function SQ(n,btn){
+  document.querySelectorAll('#tab-quiz .dsub').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('#tab-quiz .dtab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('qs'+n).classList.add('on');
+  btn.classList.add('on');
+}
+
+function A(el,qid,isCorrect,explanation){
+  if(answered[qid])return;
+  answered[qid]=true;
+  var opts=el.closest('.qcard').querySelectorAll('.opt');
+  opts.forEach(o=>o.disabled=true);
+  if(isCorrect){el.classList.add('ok');correct++;}
+  else{
+    el.classList.add('no');
+    opts.forEach(o=>{if(o.getAttribute('onclick')&&o.getAttribute('onclick').includes('true'))o.classList.add('ok');});
+  }
+  var ex=document.getElementById(qid+'-ex');
+  ex.textContent=explanation;
+  ex.style.display='block';
+  var pct=Math.round((correct/total)*100);
+  document.getElementById('qlbl').textContent=correct+' / '+total;
+  document.getElementById('qfill').style.width=pct+'%';
+  document.getElementById('sb-score').innerHTML=correct+'<span style="font-size:1rem;color:var(--muted);font-family:\'DM Mono\',monospace;"> / '+total+'</span>';
+  document.getElementById('sb-fill').style.width=pct+'%';
+}
+</script>
+</body>
+</html>
