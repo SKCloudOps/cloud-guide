@@ -1,4 +1,4 @@
-
+﻿
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -178,30 +178,30 @@
                     `Your diagnosis and the refund amount only.`,
                     `The customer's original complaint verbatim plus the tool result excerpts showing duplicate transactions.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `A customer writes: "I've been going back and forth on this return for days. I just want to speak to someone who can actually help me." The agent has confirmed via <code>lookup_order</code> that the return is straightforward—within policy and eligible for immediate processing. What should the agent do?`,
+                q: `A customer writes: "I've been going back and forth on this return for days. I just want to speak to someone who can actually help me." The agent has confirmed via <code>lookup_order</code> that the return is straightforwardâ€”within policy and eligible for immediate processing. What should the agent do?`,
                 o: [
                     `Acknowledge frustration, inform them this is resolvable now, and offer to complete it or escalate`,
                     `Ask what specifically hasn't worked in previous attempts before deciding whether to escalate or resolve automatically`,
                     `Call <code>escalate_to_human</code> immediately to honor the customer's request`,
                     `Process the refund via <code>process_refund</code> to resolve the underlying issue, then inform them it's complete`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `After expanding the agent's MCP tools with delivery-specific capabilities (<code>check_delivery_status</code>, <code>contact_driver</code>, <code>issue_credit</code>, <code>apply_promo_code</code>, <code>update_delivery_address</code>, <code>reschedule_delivery</code>), the total tool count has grown from 4 to 10. Your evaluation suite shows tool selection accuracy has dropped from 88% to 71%. Log analysis reveals the majority of errors involve the agent selecting between semantically overlapping tools — calling <code>issue_credit</code> when <code>process_refund</code> was correct, and calling <code>check_delivery_status</code> when <code>lookup_order</code> already returns the needed data. Which approach structurally eliminates the semantic overlap identified in the logs as the error source?`,
+                q: `After expanding the agent's MCP tools with delivery-specific capabilities (<code>check_delivery_status</code>, <code>contact_driver</code>, <code>issue_credit</code>, <code>apply_promo_code</code>, <code>update_delivery_address</code>, <code>reschedule_delivery</code>), the total tool count has grown from 4 to 10. Your evaluation suite shows tool selection accuracy has dropped from 88% to 71%. Log analysis reveals the majority of errors involve the agent selecting between semantically overlapping tools â€” calling <code>issue_credit</code> when <code>process_refund</code> was correct, and calling <code>check_delivery_status</code> when <code>lookup_order</code> already returns the needed data. Which approach structurally eliminates the semantic overlap identified in the logs as the error source?`,
                 o: [
                     `Add few-shot examples to the system prompt demonstrating correct selection for each ambiguous tool pair, such as showing when <code>issue_credit</code> applies versus when <code>process_refund</code> is appropriate.`,
                     `Enable the tool search tool with <code>defer_loading</code> on the six new tools, keeping the original four always loaded, so the agent dynamically discovers specialized tools only when needed.`,
-                    `Split the tools across two sub-agents — a "financial resolution" agent with <code>process_refund</code>, <code>issue_credit</code>, and <code>apply_promo_code</code>, and a "delivery operations" agent with the remaining delivery tools — with a coordinator routing between them.`,
-                    `Consolidate semantically overlapping tools — merge <code>issue_credit</code> and <code>process_refund</code> into a single <code>resolve_compensation</code> tool with an <code>action</code> parameter, and fold <code>check_delivery_status</code> into <code>lookup_order</code> with an optional <code>include_tracking</code> flag.`
+                    `Split the tools across two sub-agents â€” a "financial resolution" agent with <code>process_refund</code>, <code>issue_credit</code>, and <code>apply_promo_code</code>, and a "delivery operations" agent with the remaining delivery tools â€” with a coordinator routing between them.`,
+                    `Consolidate semantically overlapping tools â€” merge <code>issue_credit</code> and <code>process_refund</code> into a single <code>resolve_compensation</code> tool with an <code>action</code> parameter, and fold <code>check_delivery_status</code> into <code>lookup_order</code> with an optional <code>include_tracking</code> flag.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `Your agent is handling a billing dispute. After calling <code>get_customer</code> and <code>lookup_order</code>, it identifies that the dispute involves a promotional pricing error requiring manager approval—beyond the agent's authorization level. How should the workflow handle this mid-process escalation?`,
+                q: `Your agent is handling a billing dispute. After calling <code>get_customer</code> and <code>lookup_order</code>, it identifies that the dispute involves a promotional pricing error requiring manager approvalâ€”beyond the agent's authorization level. How should the workflow handle this mid-process escalation?`,
                 o: [
                     `Attempt the refund with <code>process_refund</code> anyway, escalating only if the system rejects the transaction.`,
                     `Persist the complete conversation and tool response history to a database, then call <code>escalate_to_human</code> with a reference ID.`,
@@ -273,12 +273,12 @@
             {
                 q: `Production logs show that when the agent handles complex billing disputes requiring 6+ tool calls, it sometimes exhausts its <code>max_turns</code> limit after gathering data but before completing resolution or escalating. The team's goal is to guarantee that every customer interaction ends with either a completed resolution or a human handoff, regardless of how the agent loop terminates. Which approach achieves this guarantee?`,
                 o: [
-                    `Add orchestration-layer code that checks the agent's outcome after each loop termination — if the loop ended without a completed resolution or escalation, programmatically call <code>escalate_to_human</code> with the accumulated conversation context and tool results.`,
+                    `Add orchestration-layer code that checks the agent's outcome after each loop termination â€” if the loop ended without a completed resolution or escalation, programmatically call <code>escalate_to_human</code> with the accumulated conversation context and tool results.`,
                     `Add system prompt instructions telling the agent to call <code>escalate_to_human</code> with a summary of its findings whenever it determines it cannot complete resolution within its remaining actions.`,
                     `Implement a pre-tool-use hook that counts tool invocations and terminates the loop with an automatic escalation once the agent reaches 80% of its <code>max_turns</code> limit.`,
-                    `Split the workflow into two sequential agent invocations — a first agent gathers information via <code>get_customer</code> and <code>lookup_order</code>, then a second agent receives that data and handles <code>process_refund</code> or <code>escalate_to_human</code>, each with separate turn budgets.`
+                    `Split the workflow into two sequential agent invocations â€” a first agent gathers information via <code>get_customer</code> and <code>lookup_order</code>, then a second agent receives that data and handles <code>process_refund</code> or <code>escalate_to_human</code>, each with separate turn budgets.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `The agent verifies customer identity through a multi-step process before resetting passwords. During testing, you notice that after the customer answers the third verification question, the agent asks them to provide their name again, as if the earlier exchange never happened. What's the most likely cause of this behavior?`,
@@ -288,17 +288,17 @@
                     `The prompt lacks instructions telling Claude to remember information across multiple exchanges.`,
                     `Claude's memory retention is limited to two conversational turns by default, requiring explicit configuration to extend it.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `Compliance requires that refunds exceeding $500 must automatically escalate to a human agent—this rule cannot be left to model discretion. Despite clear system prompt instructions, production logs show the agent occasionally processes high-value refunds directly (3% failure rate). How should you achieve guaranteed compliance?`,
+                q: `Compliance requires that refunds exceeding $500 must automatically escalate to a human agentâ€”this rule cannot be left to model discretion. Despite clear system prompt instructions, production logs show the agent occasionally processes high-value refunds directly (3% failure rate). How should you achieve guaranteed compliance?`,
                 o: [
                     `Add few-shot examples to the prompt showing correct escalation behavior at various refund amounts ($400, $500, $600).`,
-                    `Modify the refund tool to return an error with message "Amount exceeds policy limit—please escalate" when threshold is exceeded.`,
+                    `Modify the refund tool to return an error with message "Amount exceeds policy limitâ€”please escalate" when threshold is exceeded.`,
                     `Implement a hook to intercept tool calls; when the refund process amount exceeds $500, block it and invoke human escalation.`,
                     `Strengthen the system prompt with emphatic language: "CRITICAL POLICY: Refunds over $500 MUST trigger human escalation. NEVER process these directly."`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `During a billing dispute resolution, your agent successfully retrieves customer info via <code>get_customer</code> and order details via <code>lookup_order</code>, but when attempting to call <code>process_refund</code>, the tool returns a timeout error. The agent has enough information to explain the charges and verify refund eligibility, but cannot actually process the refund due to the backend failure. What approach best balances first-contact resolution with appropriate error handling?`,
@@ -308,37 +308,37 @@
                     `Escalate immediately to a human agent since the refund action cannot be completed`,
                     `Explain the billing, confirm refund eligibility, acknowledge the system issue preventing immediate processing, and offer escalation or retry later`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `Your team is extracting structured data from 50,000 legacy legal contracts under a two-week deadline. Initial testing with 500 sample documents shows 82% pass JSON schema validation on the first attempt, while the remaining 18% fail due to diverse issues—missing required fields, malformed dates, and incorrectly identified parties. Documents that fail typically need 2-3 prompt refinements targeting their specific failure modes before extraction succeeds. Which batch processing strategy is the most cost-efficient while still meeting the deadline?`,
+                q: `Your team is extracting structured data from 50,000 legacy legal contracts under a two-week deadline. Initial testing with 500 sample documents shows 82% pass JSON schema validation on the first attempt, while the remaining 18% fail due to diverse issuesâ€”missing required fields, malformed dates, and incorrectly identified parties. Documents that fail typically need 2-3 prompt refinements targeting their specific failure modes before extraction succeeds. Which batch processing strategy is the most cost-efficient while still meeting the deadline?`,
                 o: [
                     `Split documents into 10 sequential batches of 5,000 each, analyzing results and refining prompts between batches to improve extraction quality progressively.`,
                     `Process 2,000 sample documents via real-time API to identify failure patterns and refine prompts, then batch process all 50,000 with the optimized prompts.`,
                     `Use the real-time API for all 50,000 documents since the batch API's 24-hour processing window creates unacceptable deadline risk.`,
-                    `Submit all 50,000 documents via batch API, then submit failed extractions in successive batches—refining prompts between each batch—until all documents pass validation.`
+                    `Submit all 50,000 documents via batch API, then submit failed extractions in successive batchesâ€”refining prompts between each batchâ€”until all documents pass validation.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `Your system has been running for 3 weeks and human reviewers have corrected 847 extractions. Analysis reveals a recurring pattern: when recipes use informal measurements like "a handful" or "a splash," the model either invents specific amounts or leaves fields empty—accounting for 23% of all corrections. How should you use this feedback to improve extraction accuracy?`,
+                q: `Your system has been running for 3 weeks and human reviewers have corrected 847 extractions. Analysis reveals a recurring pattern: when recipes use informal measurements like "a handful" or "a splash," the model either invents specific amounts or leaves fields emptyâ€”accounting for 23% of all corrections. How should you use this feedback to improve extraction accuracy?`,
                 o: [
-                    `Add few-shot examples to your prompt demonstrating correct handling of informal measurements—extracting them verbatim rather than converting or omitting them.`,
+                    `Add few-shot examples to your prompt demonstrating correct handling of informal measurementsâ€”extracting them verbatim rather than converting or omitting them.`,
                     `Fine-tune the model on the 847 corrected extractions.`,
                     `Implement a post-processing layer that uses pattern matching to detect informal measurement phrases in source text and automatically populate values when the extraction is empty.`,
                     `Update your JSON schema to add a "measurement_type" enum field (precise/informal).`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `After implementing tool use with strict schema definitions, JSON syntax errors are eliminated, but 5% of extractions still have valid JSON with empty arrays or null values for required fields like citations and methodology. Spot-checking reveals that source documents contain this information, but in varied formats—inline citations vs. bibliographies, methodology sections vs. details embedded in introductions. What's the most effective way to address these failures?`,
+                q: `After implementing tool use with strict schema definitions, JSON syntax errors are eliminated, but 5% of extractions still have valid JSON with empty arrays or null values for required fields like citations and methodology. Spot-checking reveals that source documents contain this information, but in varied formatsâ€”inline citations vs. bibliographies, methodology sections vs. details embedded in introductions. What's the most effective way to address these failures?`,
                 o: [
                     `Modify your schema to make citations and methodology optional, and flag incomplete records for manual review rather than failing validation.`,
-                    `Add few-shot examples demonstrating extractions from documents with varied structures—showing how to identify citations in different formats and locate methodology details across section types.`,
+                    `Add few-shot examples demonstrating extractions from documents with varied structuresâ€”showing how to identify citations in different formats and locate methodology details across section types.`,
                     `Build a regex-based post-processing layer that scans source documents for citation patterns and methodology keywords, populating empty fields when the model fails to extract.`,
                     `Implement retry logic that re-sends requests when validation detects empty required fields.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `The system processes product reviews using tool use with a defined schema: rating (integer 1-5), pros (string array), cons (string array), and overall_sentiment (enum: positive, negative, mixed). Testing reveals two issues with brief or ambiguous reviews (~20% of the dataset): (1) for reviews like "Great product!", Claude fabricates specific pros and cons rather than indicating this information isn't explicitly stated, and (2) for sarcastic reviews like "Well that was... interesting", Claude picks sentiment arbitrarily since there's no option for ambiguous cases. What schema modification best addresses both issues?`,
@@ -348,17 +348,17 @@
                     `Add an extraction_confidence field (0.0-1.0) for each value, and filter outputs where any confidence falls below a threshold.`,
                     `Make pros and cons optional fields, and add "neutral" and "unclear" to the sentiment enum.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `The system routes documents with extraction confidence below 85% to human review. A quarterly audit reveals that 12% of high-confidence extractions (≥85%) also contain errors—cases where the model finds plausible-but-incorrect values. Error sources vary: comparison tables showing competitor specs, appendices referencing different product variants, and ambiguous phrasing the model misinterprets. You need a sustainable strategy to catch these high-confidence errors and measure whether improvements reduce the error rate over time. What approach is most effective?`,
+                q: `The system routes documents with extraction confidence below 85% to human review. A quarterly audit reveals that 12% of high-confidence extractions (â‰¥85%) also contain errorsâ€”cases where the model finds plausible-but-incorrect values. Error sources vary: comparison tables showing competitor specs, appendices referencing different product variants, and ambiguous phrasing the model misinterprets. You need a sustainable strategy to catch these high-confidence errors and measure whether improvements reduce the error rate over time. What approach is most effective?`,
                 o: [
                     `Implement stratified random sampling reviewing a fixed percentage of high-confidence extractions weekly, enabling error rate measurement and novel pattern detection.`,
                     `Implement heuristic rules that flag documents containing comparison tables or appendices for review regardless of confidence score.`,
                     `Add a verification pass that re-extracts from each high-confidence document, flagging cases where the two extraction attempts produce different results.`,
                     `Lower the confidence threshold from 85% to 70%, routing a larger volume of extractions to human review.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `Monitoring shows 12% of extractions fail Pydantic validation with specific errors like "expected float for quantity, got '2 to 3'". Retrying these requests without modification produces identical failures. What's the most effective approach to recover from these validation failures?`,
@@ -368,17 +368,17 @@
                     `Implement a secondary pipeline using a larger model tier to reprocess documents that fail validation`,
                     `Set temperature to 0 to eliminate output variability and ensure consistent formatting`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `The system needs to extract candidate information (name, contact details, skills, work experience, education) from uploaded resumes. The extracted data must strictly conform to a predefined JSON schema, as missing required fields or incorrect data types will cause downstream validation failures. What is the most reliable approach to ensure Claude's output consistently matches the schema?`,
                 o: [
-                    `Make two separate API calls—first extracting information as text, then asking Claude to format that text as JSON.`,
+                    `Make two separate API callsâ€”first extracting information as text, then asking Claude to format that text as JSON.`,
                     `Parse Claude's text response with regex patterns to extract JSON objects, using retry logic for malformed responses.`,
                     `Define a tool with an input schema matching your required JSON structure and extract the data from Claude's <code>tool_use</code> response.`,
                     `Include detailed JSON formatting instructions and a template example in the system prompt, asking Claude to output only valid JSON.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `After deployment, you find that 12% of extractions contain semantic errors that pass JSON schema validation (e.g., a duration like "30 minutes" incorrectly placed in an ingredient quantity field). Human reviewers have capacity to check only 20% of extractions. Which approach most effectively allocates reviewer attention?`,
@@ -388,17 +388,17 @@
                     `Have the model output field-level confidence scores, then calibrate review thresholds using a labeled validation set.`,
                     `Randomly sample 20% of extractions for review, using corrections to track accuracy and identify error patterns.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `Your extraction uses tool use with a JSON schema where <code>property_type</code> is defined as an enum: <code>['house', 'apartment', 'condo', 'townhouse']</code>. After deployment, 8% of extractions fail schema validation. Investigation reveals listings mention many uncommon property types—"studio", "loft", "duplex", "mobile home", "tiny house", "converted warehouse"—and new types continue appearing regularly. What's the most effective long-term solution?`,
+                q: `Your extraction uses tool use with a JSON schema where <code>property_type</code> is defined as an enum: <code>['house', 'apartment', 'condo', 'townhouse']</code>. After deployment, 8% of extractions fail schema validation. Investigation reveals listings mention many uncommon property typesâ€”"studio", "loft", "duplex", "mobile home", "tiny house", "converted warehouse"â€”and new types continue appearing regularly. What's the most effective long-term solution?`,
                 o: [
                     `Add an "other" value to your enum with a separate <code>property_type_detail</code> string field for specifics when "other" is selected.`,
                     `Continuously expand the enum to include newly observed property types and add monitoring for additional edge cases.`,
                     `Add few-shot examples to your prompt demonstrating how to map unexpected property types to the closest existing enum value.`,
                     `Change <code>property_type</code> from an enum to a free-form string and implement a normalization step in post-processing.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `Documents arrive continuously throughout business hours and need structured data extracted. To reduce costs, you want to use the Message Batches API (50% discount, up-to-24-hour processing window). Your SLA specifies that extraction results must be available within 30 hours of document arrival with 99.9% reliability. Which batching strategy is most appropriate?`,
@@ -408,7 +408,7 @@
                     `Submit batches every 4 hours containing documents from that window`,
                     `Use the real-time API for all documents instead of batch processing`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `Your system must extract event details from calendar invitations and output JSON that strictly conforms to a schema with fields for title, date, time, location, and attendees. Downstream systems reject any malformed or non-conformant JSON. What approach provides the most reliable schema compliance?`,
@@ -418,17 +418,17 @@
                     `Pre-fill Claude's response with an opening brace to force JSON output, then complete and parse the response.`,
                     `Append instructions like "Output only valid JSON matching the schema exactly" and implement retry logic to re-prompt when JSON parsing fails.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `Your extraction pipeline processes invoices and extracts line items, subtotals, tax amounts, and grand totals. During evaluation, you discover that in 18% of extractions, the sum of extracted line item amounts doesn't match the extracted grand total—sometimes due to OCR errors in the source document, sometimes due to extraction mistakes by the model. Downstream accounting systems reject records with mismatched totals. What's the most effective approach to improve extraction reliability?`,
+                q: `Your extraction pipeline processes invoices and extracts line items, subtotals, tax amounts, and grand totals. During evaluation, you discover that in 18% of extractions, the sum of extracted line item amounts doesn't match the extracted grand totalâ€”sometimes due to OCR errors in the source document, sometimes due to extraction mistakes by the model. Downstream accounting systems reject records with mismatched totals. What's the most effective approach to improve extraction reliability?`,
                 o: [
                     `Add few-shot examples demonstrating invoices where extracted line items sum correctly to the stated total, encouraging the model to produce mathematically consistent extractions.`,
                     `Extract line items and totals independently, then use a separate validation model to reconcile discrepancies by determining which extracted values are most likely correct.`,
                     `Implement post-processing that automatically adjusts line item amounts proportionally when their sum doesn't match the stated total.`,
                     `Add a "calculated_total" field where the model sums extracted line items alongside a "stated_total" field. Flag records for human review when values differ.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `Your pipeline uses a tool called <code>extract_metadata</code> with a JSON schema for paper details. You've also defined <code>lookup_citations</code> and <code>verify_doi</code> tools for enrichment. During testing, you notice that when users include requests like "extract the metadata and tell me how cited it is," Claude sometimes calls <code>lookup_citations</code> first, which fails because it needs the DOI that <code>extract_metadata</code> would provide. What's the most effective way to ensure structured metadata extraction happens first?`,
@@ -438,7 +438,7 @@
                     `Set <code>tool_choice</code> to "auto" and reorder the tool definitions so <code>extract_metadata</code> appears first in the tools array, since Claude prioritizes earlier-listed tools.`,
                     `Set <code>tool_choice</code> to <code>{"type": "tool", "name": "extract_metadata"}</code> and process the enrichment requests in subsequent turns after receiving the extracted metadata.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `Your extraction pipeline validates outputs against JSON schemas, but you need to implement human review given limited reviewer capacity (they can handle approximately 5% of total extraction volume). What's the most effective basis for selecting which extractions to route for human review?`,
@@ -448,17 +448,17 @@
                     `Route extractions containing specific high-priority entity types (e.g., financial figures, dates) for human review, regardless of extraction confidence.`,
                     `Route extractions where the model indicates low confidence or where source documents contain ambiguous or contradictory information.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `The extraction pipeline receives documents of varying types—some are invoices, others are contracts, and some are receipts. You've defined separate extraction tools, each with its own JSON schema tailored to the document type. During testing, you observe that with <code>tool_choice: "auto"</code>, Claude sometimes returns conversational text instead of calling an extraction tool, causing downstream parsing failures. You need guaranteed structured output without knowing the document type in advance. What's the most effective approach?`,
+                q: `The extraction pipeline receives documents of varying typesâ€”some are invoices, others are contracts, and some are receipts. You've defined separate extraction tools, each with its own JSON schema tailored to the document type. During testing, you observe that with <code>tool_choice: "auto"</code>, Claude sometimes returns conversational text instead of calling an extraction tool, causing downstream parsing failures. You need guaranteed structured output without knowing the document type in advance. What's the most effective approach?`,
                 o: [
                     `Add a preliminary classification call, then make a second call with <code>tool_choice</code> forced to the identified extraction tool.`,
                     `Set <code>tool_choice: "any"</code> with all extraction tools defined.`,
                     `Keep <code>tool_choice: "auto"</code> with system prompt instructions requiring tool use.`,
                     `Consolidate all document types into a single unified-schema extraction tool and force that tool.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `Your team is configuring MCP servers in Claude Code. You want to add a shared venue lookup server that all team members should have access to, and you personally want to add an experimental music playlist server that only you are testing. Which configuration approach correctly applies MCP server scopes?`,
@@ -468,7 +468,7 @@
                     `Add venue server to <code>.mcp.json</code> and playlist server to <code>~/.claude.json</code>`,
                     `Add both servers to your local <code>~/.claude.json</code>`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `A security audit requires updating your authentication library from v2 to v3. The migration guide documents breaking changes: <code>authenticate()</code> now returns a Promise instead of accepting a callback, the <code>User</code> type has restructured fields, and three deprecated methods were removed. Grep shows the library is imported in 45 files across several modules. What's the most effective approach?`,
@@ -478,7 +478,7 @@
                     `Paste the migration guide's breaking changes into your prompt and use direct execution to update all usages across the 45 files.`,
                     `Create a custom slash command encapsulating the migration transformations, then execute it against each file without prior codebase exploration.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `Your team wants Claude to follow a detailed code review checklist (8 items covering API changes, test coverage, documentation, security, etc.) when reviewing pull requests. The team also uses Claude extensively for other tasks: writing new features, debugging production issues, and generating documentation. Currently, developers paste the checklist at the start of each review session. Which approach best addresses this workflow need?`,
@@ -488,17 +488,17 @@
                     `Create a <code>/review</code> slash command containing the checklist, invoked when starting reviews.`,
                     `Create a dedicated review subagent with the checklist embedded in its configuration.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `You're implementing a new payment processing module that must follow your project's established patterns for database transactions, error handling, and audit logging. You've identified three existing modules that exemplify these patterns: <code>db_utils.py</code>, <code>error_handlers.py</code>, and <code>audit_logger.py</code>. This is a one-off integration task—these patterns are well-documented in your team wiki and don't need additional project-level documentation. What's the most effective approach?`,
+                q: `You're implementing a new payment processing module that must follow your project's established patterns for database transactions, error handling, and audit logging. You've identified three existing modules that exemplify these patterns: <code>db_utils.py</code>, <code>error_handlers.py</code>, and <code>audit_logger.py</code>. This is a one-off integration taskâ€”these patterns are well-documented in your team wiki and don't need additional project-level documentation. What's the most effective approach?`,
                 o: [
                     `Ask Claude to explore your codebase to find and understand the transaction, error handling, and logging patterns before generating the new module.`,
                     `Add documentation of each pattern to your CLAUDE.md file, establishing them as project conventions that Claude will apply automatically.`,
                     `Use @ references to include the three modules directly in your prompt, giving Claude concrete code examples of the patterns to follow.`,
                     `Describe the patterns from the three modules in natural language in your prompt, explaining the transaction handling approach, error format, and logging conventions Claude should follow.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `Your team has three requirements for Claude Code's behavior in your project:\n1. Claude must never modify files in the <code>db/migrations/</code> directory\n2. Claude should prefer your custom logging module over <code>console.log</code>\n3. All TypeScript files must be auto-formatted with Prettier after every edit\n\nAll three are currently written as instructions in your project's CLAUDE.md. During a complex refactoring session, a developer discovers that Claude edited a migration file, violating requirement #1. How should you restructure these requirements across Claude Code's configuration mechanisms?`,
@@ -508,17 +508,17 @@
                     `Add <code>Edit(./db/migrations/**)</code> to <code>permissions.deny</code> in the project settings, keep the logging preference in CLAUDE.md, and add a <code>PostToolUse</code> hook on the Edit tool that runs Prettier on changed TypeScript files.`,
                     `Configure hooks for all three: a <code>PreToolUse</code> hook script that blocks Edit calls targeting <code>db/migrations/</code>, a <code>PreToolUse</code> hook script that adds logging convention context before edits, and a <code>PostToolUse</code> hook that runs Prettier after TypeScript edits.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `You're implementing a caching layer for API responses to speed up the <code>/products</code> endpoint. You have a rough idea—Redis with a 5-minute TTL—but you're new to production caching and aren't sure what other considerations a robust implementation requires. What's the most effective way to start your iterative workflow?`,
+                q: `You're implementing a caching layer for API responses to speed up the <code>/products</code> endpoint. You have a rough ideaâ€”Redis with a 5-minute TTLâ€”but you're new to production caching and aren't sure what other considerations a robust implementation requires. What's the most effective way to start your iterative workflow?`,
                 o: [
                     `Start with a minimal request: "Add Redis caching to /products with 5-minute TTL." Add features and fix issues through follow-up prompts as problems surface during testing.`,
                     `Use plan mode to analyze the current /products endpoint implementation, then provide your caching requirements once Claude explains how the existing code is structured.`,
                     `Write a specification with your known requirements and "TBD" markers for uncertain areas, having Claude propose solutions for each TBD as it implements.`,
                     `Ask Claude to interview you about the caching requirements before implementing, surfacing considerations like invalidation strategies, cache layers, consistency guarantees, and failure modes.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `Your team frequently migrates React components to Vue. You've written a step-by-step workflow for Claude Code to follow during each migration, and you want every developer on the team to invoke it by typing <code>/migrate-component</code>. The workflow should stay in sync as the team iterates on it. Where should you place the skill file?`,
@@ -528,7 +528,7 @@
                     `As a detailed instruction block in the project's root CLAUDE.md file`,
                     `In the project's <code>.claude/settings.json</code> using a skillOverrides entry to register and define the workflow`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `You need to add a date validation check ensuring event dates are in the future. This requires adding a conditional statement to one existing function in a single file. What is the most appropriate approach?`,
@@ -538,7 +538,7 @@
                     `Enter plan mode first to create a detailed implementation strategy before making the change`,
                     `Use direct execution to make the change`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `You've asked Claude to write a data migration script, but the initial output doesn't correctly handle records with null values in required fields. What's the most effective way to iterate toward a working solution?`,
@@ -548,7 +548,7 @@
                     `Describe the null value problem in detail and ask Claude to regenerate the entire script with improved edge case handling.`,
                     `Provide a test case with example input containing null values and the expected output, then ask Claude to fix it.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `Your team has connected a custom MCP server that provides DevOps workflow templates. The server exposes several MCP prompts (such as <code>deploy_checklist</code> and <code>incident_response</code>) in addition to tools. How do these MCP prompts become accessible within Claude Code?`,
@@ -558,7 +558,7 @@
                     `They appear as slash commands (e.g., <code>/mcp_servername__deploy_checklist</code>) that you can invoke, with arguments passed after the command name.`,
                     `They are surfaced as <code>@</code>-mentionable resources alongside files, fetched and attached to your message when referenced.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `Your monorepo contains shared coding standards in <code>/docs/standards/</code>: <code>security-rules.md</code> (for services handling user data), <code>testing-patterns.md</code> (for all packages), and <code>api-conventions.md</code> (for API-facing services). Your 15 packages are organized by feature domain (<code>/packages/auth/</code>, <code>/packages/billing/</code>, <code>/packages/notifications/</code>, etc.) without naming conventions indicating which handle user data or expose APIs. Package maintainers are expected to configure their own local development settings, as they understand their package's domain requirements. Currently, all package CLAUDE.md files duplicate all three standards, applying irrelevant guidance. What's the most effective approach?`,
@@ -568,7 +568,7 @@
                     `Create a <code>shared-standards.md</code> that uses @imports to combine all three standards, then have each package's CLAUDE.md import that combined file.`,
                     `Create <code>.claude/rules/</code> files for each standard with YAML frontmatter paths listing every package directory where that standard should apply.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `You're implementing a complex graph traversal algorithm with specific performance requirements and edge cases to handle (disconnected nodes, cycles, weighted edges). You want to structure your workflow for efficient iterative refinement with Claude. What approach will most effectively enable progressive improvement across multiple iterations?`,
@@ -578,17 +578,17 @@
                     `Provide Claude with a detailed natural language specification of the algorithm, including all requirements and edge cases. Review each output manually and provide descriptive feedback on what behavior needs to change.`,
                     `Provide Claude with a reference implementation from documentation, then ask it to rewrite the code to match your codebase style and add the required edge case handling, comparing outputs against the reference.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `You've asked Claude Code to build a PDF report generation feature. The initial implementation queries the database correctly, but the output has formatting issues: table columns are too narrow causing content truncation, dates display without proper formatting, and page break handling is incorrect. You've noticed these issues interact—changing column widths affects how dates render, and page breaks depend on content height. What's the most effective approach for iterating toward a working solution?`,
+                q: `You've asked Claude Code to build a PDF report generation feature. The initial implementation queries the database correctly, but the output has formatting issues: table columns are too narrow causing content truncation, dates display without proper formatting, and page break handling is incorrect. You've noticed these issues interactâ€”changing column widths affects how dates render, and page breaks depend on content height. What's the most effective approach for iterating toward a working solution?`,
                 o: [
                     `Show Claude an example of a correctly formatted report and ask it to match that output, rather than listing the specific technical issues.`,
                     `Start fresh with a detailed prompt specifying all formatting requirements upfront.`,
-                    `Address the column width issue first with specific measurements, verify it works, then fix date formatting within the corrected columns, then adjust page breaks—testing after each change.`,
+                    `Address the column width issue first with specific measurements, verify it works, then fix date formatting within the corrected columns, then adjust page breaksâ€”testing after each change.`,
                     `Provide all three issues in a single detailed message with exact specifications for each, allowing Claude to address them together in one update.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `You've documented API error handling conventions in a <code>CLAUDE.md</code> file at your project root, specifying that endpoint handlers should use a custom <code>ApiError</code> class. After several sessions, you notice Claude Code sometimes follows these conventions and sometimes uses generic <code>try/catch</code> blocks with string messages. The inconsistency appears random across different coding sessions. What's the most efficient first diagnostic step?`,
@@ -598,7 +598,7 @@
                     `Search for conflicting instructions in <code>~/.claude/CLAUDE.md</code> or <code>~/.claude/rules/</code> that might override your project conventions.`,
                     `Add more detailed code examples to your CLAUDE.md showing the exact <code>ApiError</code> usage pattern for different endpoint types.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `You're tasked with adding real-time updates to the application. This could be implemented using WebSockets, Server-Sent Events, or polling, each with different complexity, browser support, and infrastructure requirements. What's the most effective way to begin this task?`,
@@ -608,7 +608,7 @@
                     `Start direct execution with WebSockets, then refactor if infrastructure issues arise.`,
                     `Use direct execution with a prompt asking Claude to analyze all approaches and implement the one it determines is best.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `You've configured your Claude agent with three MCP servers: one for git operations, one for Jira ticket management, and one for documentation search. When a user asks the agent to "create a branch for JIRA-123 and add documentation links to the ticket," how does the agent access tools across these servers?`,
@@ -618,27 +618,27 @@
                     `The agent automatically selects the most relevant server based on the request and loads only that server's tools.`,
                     `You must specify which MCP server to use for each turn, and the agent can only access one server's tools at a time.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `An engineer used the agent yesterday to analyze a legacy authentication module, identifying two distinct refactoring approaches: extracting a microservice versus refactoring in-place. Today, they want to explore both approaches in depth—having the agent propose specific code changes for each—before deciding which to implement. What's the most effective way to structure this exploration?`,
+                q: `An engineer used the agent yesterday to analyze a legacy authentication module, identifying two distinct refactoring approaches: extracting a microservice versus refactoring in-place. Today, they want to explore both approaches in depthâ€”having the agent propose specific code changes for eachâ€”before deciding which to implement. What's the most effective way to structure this exploration?`,
                 o: [
                     `Resume yesterday's session to explore the first approach, then start a new session for the second, manually recreating the original context.`,
                     `Use <code>fork_session</code> to create two branches from yesterday's analysis, exploring one approach in each fork.`,
                     `Start two fresh sessions, manually providing a summary of yesterday's analysis findings to establish context.`,
                     `Resume yesterday's session and explore both approaches sequentially within the same conversation thread.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `After integrating a local MCP server providing code analysis tools (<code>analyze_dependencies</code>, <code>find_dead_code</code>, <code>calculate_complexity</code>), you verify the server is healthy and tools appear in the <code>tools/list</code> response. However, you observe that the agent consistently uses Grep to search for import statements instead of calling <code>analyze_dependencies</code>—even when users explicitly ask about "code dependencies."\n\nExamining tool definitions reveals:\n• MCP: <code>analyze_dependencies</code> — "Analyzes dependency graph"\n• Built-in: Grep — "Search file contents for a pattern using regular expressions. Returns matching lines with line numbers and surrounding context."\n\nWhat's the most effective approach to improve the agent's selection of MCP tools?`,
+                q: `After integrating a local MCP server providing code analysis tools (<code>analyze_dependencies</code>, <code>find_dead_code</code>, <code>calculate_complexity</code>), you verify the server is healthy and tools appear in the <code>tools/list</code> response. However, you observe that the agent consistently uses Grep to search for import statements instead of calling <code>analyze_dependencies</code>â€”even when users explicitly ask about "code dependencies."\n\nExamining tool definitions reveals:\nâ€¢ MCP: <code>analyze_dependencies</code> â€” "Analyzes dependency graph"\nâ€¢ Built-in: Grep â€” "Search file contents for a pattern using regular expressions. Returns matching lines with line numbers and surrounding context."\n\nWhat's the most effective approach to improve the agent's selection of MCP tools?`,
                 o: [
                     `Remove Grep from available tools when the MCP server is connected to eliminate functional overlap.`,
-                    `Expand MCP tool descriptions to detail capabilities and outputs—e.g., "Builds dependency graph showing direct imports, transitive dependencies, and cycles."`,
+                    `Expand MCP tool descriptions to detail capabilities and outputsâ€”e.g., "Builds dependency graph showing direct imports, transitive dependencies, and cycles."`,
                     `Split <code>analyze_dependencies</code> into granular tools (<code>list_imports</code>, <code>resolve_transitive_deps</code>, <code>detect_circular_deps</code>) so each has a focused purpose less likely to overlap with Grep.`,
                     `Add routing instructions to the system prompt specifying that dependency-related questions should use MCP tools rather than Grep.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `An engineer sees an unfamiliar error message "SYNC_CONFLICT: entity version mismatch detected" in production logs but doesn't know which of the 12 services in the codebase generates it. They ask the agent to help locate the source code. What exploration approach will most efficiently find the responsible code?`,
@@ -648,7 +648,7 @@
                     `Use Grep to search for distinctive text from the error message (like "SYNC_CONFLICT" or "entity version mismatch"), then Read the matching files to understand context.`,
                     `Use Glob to find files in directories commonly associated with error handling (such as <code>errors/</code>, <code>exceptions/</code>, or <code>handlers/</code>) across all services, then Read each matching file.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `Your codebase exploration tool stores session IDs to allow engineers to continue investigations across work sessions. An engineer spent an hour yesterday analyzing a legacy authentication module, building context about its architecture and dependencies. They want to continue today. The session ID is valid, but version control shows 3 of the 12 files the agent previously read were modified overnight by a teammate's merge. What approach best balances efficiency and accuracy?`,
@@ -658,47 +658,47 @@
                     `Resume the session and immediately have the agent re-read all 12 previously analyzed files`,
                     `Start a fresh session to ensure the agent works with current codebase state without stale assumptions`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `Your productivity agent connects to three MCP servers: an issue tracker (<code>search_issues</code>, <code>get_issue</code>, <code>create_comment</code>), a documentation wiki (<code>search_docs</code>, <code>get_page</code>, <code>list_spaces</code>), and a database explorer (<code>run_query</code>, <code>get_schema</code>, <code>list_databases</code>). When engineers ask cross-system questions like "What database tables are affected by the authentication refactor in PROJ-1234?", monitoring shows the agent makes 8-10 sequential tool calls, frequently issues exploratory calls because it lacks visibility into what content each server contains, and exhausts context space before completing complex investigations. What architectural change best leverages MCP capabilities to address these issues?`,
                 o: [
-                    `Expose each server's content catalog as MCP resources—issue summaries, documentation hierarchy, database schemas`,
+                    `Expose each server's content catalog as MCP resourcesâ€”issue summaries, documentation hierarchy, database schemas`,
                     `Consolidate all three servers into a unified MCP server with cross-referencing capabilities`,
                     `Add a <code>prepare_investigation</code> tool to each server that accepts a natural language question and returns relevant content summaries`,
                     `Add an orchestrator that routes questions to a single server based on keywords`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `An engineer asks your agent to identify untested code paths in a legacy payment processing module spanning 45 files. After reading the first 8 source files, the agent's responses are becoming noticeably less accurate—it's forgetting previously discussed code patterns and hasn't yet located all test files or traced critical payment flows. What's the most effective approach to complete this investigation?`,
+                q: `An engineer asks your agent to identify untested code paths in a legacy payment processing module spanning 45 files. After reading the first 8 source files, the agent's responses are becoming noticeably less accurateâ€”it's forgetting previously discussed code patterns and hasn't yet located all test files or traced critical payment flows. What's the most effective approach to complete this investigation?`,
                 o: [
                     `Spawn subagents to investigate specific questions (e.g., "find all test files for payment processing," "trace refund flow dependencies") while the main agent coordinates findings and preserves high-level understanding.`,
                     `Clear context with <code>/clear</code>, then selectively re-read only the most critical files discovered so far, writing key findings to a scratchpad file that persists between context resets.`,
                     `Switch to using Grep to search for specific function names instead of reading full files, reducing the content loaded into context for remaining exploration.`,
                     `Document all current findings in a summary report, clear context completely, then use that report as the sole reference for continuing the investigation.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `Your agent needs to insert a new helper function into the middle of a 150-line utility module, between two existing functions. The Edit tool fails because its <code>old_string</code> parameter cannot find unique text to match — the file has repetitive docstrings, variable names, and structural patterns. What's the most reliable way to complete this insertion?`,
+                q: `Your agent needs to insert a new helper function into the middle of a 150-line utility module, between two existing functions. The Edit tool fails because its <code>old_string</code> parameter cannot find unique text to match â€” the file has repetitive docstrings, variable names, and structural patterns. What's the most reliable way to complete this insertion?`,
                 o: [
                     `Use Read to load the file, add the function at the appropriate location, then Write the updated file`,
                     `Use Edit with an extremely long <code>old_string</code> capturing 30+ lines of context to guarantee uniqueness`,
                     `Use Edit's <code>replace_all</code> parameter to target a common pattern and embed the new function in the replacement text`,
                     `Use Bash to append the function definition to the end of the file using heredoc syntax`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `Engineers frequently ask the agent to cross-reference code changes with Jira tickets during reviews—checking ticket descriptions, acceptance criteria, and recent comments. This currently requires manually copy-pasting content into conversations. The team wants the agent to access this standard Jira ticket data directly. What's the most effective approach?`,
+                q: `Engineers frequently ask the agent to cross-reference code changes with Jira tickets during reviewsâ€”checking ticket descriptions, acceptance criteria, and recent comments. This currently requires manually copy-pasting content into conversations. The team wants the agent to access this standard Jira ticket data directly. What's the most effective approach?`,
                 o: [
                     `Export Jira tickets to markdown files in the repository that the agent accesses using the Read tool.`,
                     `Build a custom MCP server wrapping Jira's API with tools designed specifically for this team's code review workflow.`,
                     `Integrate an existing Jira MCP server that exposes tickets, comments, and metadata through discoverable tool interfaces.`,
                     `Use the Bash tool with <code>curl</code> to call Jira's REST API, including authentication headers and parsing JSON responses inline.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `An engineer's exploration subagent spent 30 minutes analyzing a legacy payment system, reading 47 files and documenting data flows. The session was interrupted when the engineer's connection dropped. While away, a teammate merged a PR that renamed two utility functions. The engineer wants to continue the same exploration. What's the most effective approach?`,
@@ -706,9 +706,9 @@
                     `Resume the subagent from its previous transcript and inform it about the renamed functions.`,
                     `Launch a fresh subagent and include the prior transcript in the initial prompt for context.`,
                     `Launch a fresh subagent with a summary of prior findings.`,
-                    `Resume the subagent from its previous transcript without mentioning the changes—the architecture understanding remains valid.`
+                    `Resume the subagent from its previous transcript without mentioning the changesâ€”the architecture understanding remains valid.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `An engineer who just joined the team asks the agent to help them understand the authentication and authorization architecture before making security improvements. The codebase has 800+ files across multiple services. What exploration strategy will most effectively build understanding, given Claude built-in tools and context limits?`,
@@ -718,27 +718,27 @@
                     `Use Grep to find authentication entry points, read those files, then follow imports and function calls to map the auth flow incrementally.`,
                     `Launch parallel subagents to explore different services simultaneously, then synthesize their findings into an architectural overview.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `Your agent has analyzed a complex service module—reading 23 source files, tracing request flows, and identifying error handling patterns. A developer wants to compare two testing strategies before committing to one: end-to-end tests with mocked external services vs. snapshot tests capturing expected outputs. They need to independently develop both approaches to evaluate trade-offs. How should you manage the sessions?`,
+                q: `Your agent has analyzed a complex service moduleâ€”reading 23 source files, tracing request flows, and identifying error handling patterns. A developer wants to compare two testing strategies before committing to one: end-to-end tests with mocked external services vs. snapshot tests capturing expected outputs. They need to independently develop both approaches to evaluate trade-offs. How should you manage the sessions?`,
                 o: [
                     `Start two fresh sessions, having each re-read the relevant source files before beginning.`,
                     `Resume the analysis session with <code>fork_session</code> enabled, creating a separate branch for each testing strategy.`,
                     `Export the analysis session's key findings to a file, then create two new sessions that reference this file.`,
                     `Continue in the original session, developing end-to-end tests first, then snapshot tests sequentially.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
-                q: `An engineer submits two requests:\n• Request A: "Rename the <code>getUserData</code> function to <code>fetchUserProfile</code> everywhere it's used."\n• Request B: "Improve error handling throughout the data processing module—add try/catch blocks, meaningful error messages, and ensure failures don't silently corrupt data."\n\nFor which request does specifying an explicit multi-phase workflow (such as analyze -> propose -> implement with review) most improve outcome quality?`,
+                q: `An engineer submits two requests:\nâ€¢ Request A: "Rename the <code>getUserData</code> function to <code>fetchUserProfile</code> everywhere it's used."\nâ€¢ Request B: "Improve error handling throughout the data processing moduleâ€”add try/catch blocks, meaningful error messages, and ensure failures don't silently corrupt data."\n\nFor which request does specifying an explicit multi-phase workflow (such as analyze -> propose -> implement with review) most improve outcome quality?`,
                 o: [
                     `Both requests benefit equally`,
                     `Request A, the function rename task`,
                     `Neither request benefits significantly`,
                     `Request B, the error handling task`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `An engineer asks the agent to understand how the caching layer works before adding a new cache invalidation trigger. After initial Grep searches, the agent has identified that caching logic spans 15 files including decorators, middleware, and service classes (~8,000 lines total). What's the most effective next step for building understanding while managing context constraints?`,
@@ -748,7 +748,7 @@
                     `Use Glob to find files matching common caching patterns (<code>cache.py</code>, <code>caching/</code>), prioritize the largest files by reading them first, then check smaller files for gaps.`,
                     `Analyze imports and class hierarchies to identify the base cache class, Read that file to understand the interface, then trace specific invalidation implementations.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             },
             {
                 q: `An engineer asks the agent to find all callers of a function before removing it. The function is defined in a core library but is also exposed through wrapper modules that rename the function for domain-specific use (e.g., <code>calculateTax</code> in the library becomes <code>computeOrderTax</code> in the orders module). What exploration strategy will most reliably identify all callers?`,
@@ -758,7 +758,7 @@
                     `Read the library and wrapper modules to identify all exposed names for the function, then Grep for each name across the codebase.`,
                     `Search for the function name in project documentation to understand intended usage patterns and navigate to documented integration points.`
                 ],
-                a: `Pending Official Key`
+                a: `B`
             }
         ];
 
@@ -804,3 +804,4 @@
     </script>
 </body>
 </html>
+

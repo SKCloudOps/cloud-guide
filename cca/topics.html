@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCA-F — All Topics Explained</title>
+<meta name="description" content="Comprehensive explanation of all five CCA-F exam domains: Agentic Architecture, Tool Design & MCP, Claude Code Workflows, Prompt Engineering, and Context Management.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ivory:#faf9f5;--ivory-md:#f0ede4;--ivory-dk:#e4e0d4;
+  --dark:#141413;--dark2:#2a2925;--mid:#8a8880;--mid-lt:#d4d1c9;
+  --clay:#d97757;--clay-dk:#a8553a;--clay-soft:rgba(217,119,87,.10);
+  --olive:#788c5d;--olive-soft:rgba(120,140,93,.10);
+  --blue:#6a9bcc;--blue-soft:rgba(106,155,204,.10);
+  --plum:#7c5fbf;--plum-soft:rgba(124,95,191,.10);
+  --good:#2e7d5e;--good-soft:rgba(46,125,94,.10);
+  --bad:#c0392b;
+  --serif:"Playfair Display",Georgia,serif;
+  --sans:"DM Sans",system-ui,sans-serif;
+  --mono:"DM Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ivory);color:var(--dark);font-family:var(--sans);font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;background:rgba(250,249,245,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--ivory-dk);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;gap:10px}
+.nb{font-family:var(--serif);font-size:14px;font-weight:500;color:var(--dark)}
+.nav-slash{width:1px;height:14px;background:var(--clay);display:inline-block;margin:0 6px;vertical-align:middle}
+.nav-links{display:flex;gap:2px}
+.nav-link{padding:5px 12px;font-family:var(--sans);font-size:11px;font-weight:500;color:var(--mid);text-decoration:none;border-radius:3px;transition:all .15s}
+.nav-link:hover{color:var(--dark);background:var(--ivory-md)}
+.nav-link.active{color:var(--dark);background:var(--ivory-dk)}
+
+/* ── LAYOUT ── */
+.wrap{max-width:1060px;margin:0 auto;padding:40px 20px 80px}
+
+/* ── HERO ── */
+.hero{margin-bottom:48px;padding-bottom:40px;border-bottom:1px solid var(--ivory-dk)}
+.hlabel{font-family:var(--mono);font-size:10px;color:var(--clay);text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px}
+.hero h1{font-family:var(--serif);font-size:clamp(28px,5vw,48px);font-weight:500;line-height:1.05;letter-spacing:-.02em;margin-bottom:12px}
+.hero h1 em{font-style:italic;color:var(--clay-dk)}
+.hero p{font-size:13.5px;font-weight:300;color:var(--dark2);max-width:580px;line-height:1.75}
+.domain-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.dpill{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border:1px solid;border-radius:2px;font-family:var(--mono);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;text-decoration:none;transition:all .18s}
+.dpill:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.08)}
+.dpill-d1{color:var(--clay);border-color:rgba(217,119,87,.35);background:var(--clay-soft)}
+.dpill-d2{color:var(--blue);border-color:rgba(106,155,204,.35);background:var(--blue-soft)}
+.dpill-d3{color:var(--olive);border-color:rgba(120,140,93,.35);background:var(--olive-soft)}
+.dpill-d4{color:var(--plum);border-color:rgba(124,95,191,.35);background:var(--plum-soft)}
+.dpill-d5{color:var(--good);border-color:rgba(46,125,94,.3);background:var(--good-soft)}
+
+/* ── DOMAIN SECTION ── */
+.domain-section{margin-bottom:60px}
+.domain-hd{display:flex;align-items:flex-start;gap:16px;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--dark)}
+.domain-icon{width:42px;height:42px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:2px}
+.domain-hd-text{}
+.domain-num{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.14em;margin-bottom:4px}
+.domain-title{font-family:var(--serif);font-size:24px;font-weight:500;letter-spacing:-.01em;line-height:1.15}
+.domain-weight{font-family:var(--mono);font-size:10px;color:var(--mid);margin-top:4px}
+
+/* ── WHAT IS ── */
+.what-is{background:#fff;border:1px solid var(--ivory-dk);padding:18px 22px;margin-bottom:24px}
+.what-is-label{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--mid);margin-bottom:8px}
+.what-is-text{font-size:13px;color:var(--dark2);line-height:1.72;font-weight:300}
+.what-is-text strong{color:var(--dark);font-weight:600}
+
+/* ── KEY TERMS GRID ── */
+.section-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--mid);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.section-label::after{content:"";flex:1;height:1px;background:var(--ivory-dk)}
+
+.terms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;margin-bottom:28px}
+.term-card{border:1px solid var(--ivory-dk);background:#fff;padding:14px 16px;position:relative;transition:border-color .2s,box-shadow .2s}
+.term-card:hover{border-color:var(--mid-lt);box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.term-name{font-family:var(--mono);font-size:11px;font-weight:500;margin-bottom:7px;line-height:1.3}
+.term-def{font-size:12px;color:var(--dark2);line-height:1.65;font-weight:300;margin-bottom:8px}
+.term-def strong{color:var(--dark);font-weight:600}
+.term-rule{font-family:var(--mono);font-size:10px;color:var(--mid);border-top:1px solid var(--ivory-dk);padding-top:7px;margin-top:4px;line-height:1.55}
+.term-rule em{font-style:italic}
+.term-tag{display:inline-block;font-family:var(--mono);font-size:9px;padding:2px 7px;background:var(--ivory-md);border:1px solid var(--ivory-dk);color:var(--mid);text-transform:uppercase;letter-spacing:.06em;position:absolute;top:10px;right:10px}
+
+/* ── RULES TABLE ── */
+.rules-table{width:100%;border-collapse:collapse;margin-bottom:24px;font-size:12px}
+.rules-table th{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.07em;padding:8px 12px;text-align:left;border-bottom:2px solid var(--dark);background:var(--ivory-md);color:var(--mid)}
+.rules-table td{padding:9px 12px;border-bottom:1px solid var(--ivory-dk);vertical-align:top;line-height:1.55;color:var(--dark2);font-weight:300}
+.rules-table tr:last-child td{border-bottom:none}
+.rules-table td:first-child{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--dark);white-space:nowrap}
+.row-correct td{background:rgba(46,125,94,.05)}
+.row-correct td:first-child{color:var(--good)}
+.row-wrong td{background:rgba(192,57,43,.04)}
+.row-wrong td:first-child{color:var(--bad)}
+
+/* ── CODE BLOCK ── */
+.code-block{background:var(--dark);color:#c8d0e0;font-family:var(--mono);font-size:11px;line-height:1.8;padding:16px 20px;overflow-x:auto;white-space:pre;margin-bottom:24px;border-radius:1px}
+.code-comment{color:#6a7a8e}
+.code-key{color:#e4a96b}
+.code-val{color:#88c5a0}
+.code-str{color:#b5c9e8}
+
+/* ── TIP BAR ── */
+.tip-bar{display:flex;gap:12px;align-items:flex-start;padding:14px 18px;background:var(--dark);color:var(--ivory);margin-bottom:28px}
+.tip-icon{color:var(--clay);font-size:14px;flex-shrink:0;margin-top:2px}
+.tip-text{font-size:12px;font-weight:300;line-height:1.65;color:rgba(255,255,255,.8)}
+.tip-text strong{color:var(--clay);font-weight:500}
+
+/* ── IRON RULES ── */
+.iron-rules{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:24px}
+.iron-rule{padding:12px 16px;border-left:3px solid;font-size:12px;color:var(--dark2);line-height:1.6;font-weight:300}
+.iron-rule strong{display:block;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--dark);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.ir-d1{border-color:var(--clay);background:var(--clay-soft)}
+.ir-d2{border-color:var(--blue);background:var(--blue-soft)}
+.ir-d3{border-color:var(--olive);background:var(--olive-soft)}
+.ir-d4{border-color:var(--plum);background:var(--plum-soft)}
+.ir-d5{border-color:var(--good);background:var(--good-soft)}
+
+/* ── TRAP CARDS ── */
+.traps{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:24px}
+.trap-card{border:1px solid rgba(192,57,43,.2);background:rgba(192,57,43,.04);padding:13px 15px}
+.trap-head{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--bad);margin-bottom:6px;font-weight:500}
+.trap-text{font-size:12px;color:var(--dark2);line-height:1.6;font-weight:300}
+.trap-text strong{color:var(--dark);font-weight:600}
+
+/* ── COMPARE ── */
+.compare-pair{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--ivory-dk);margin-bottom:24px}
+@media(max-width:540px){.compare-pair{grid-template-columns:1fr}}
+.cmp-half{padding:14px 16px;font-size:12px;line-height:1.65;font-weight:300}
+.cmp-half.wrong{background:rgba(192,57,43,.04);border-right:1px solid var(--ivory-dk)}
+.cmp-half.right{background:rgba(46,125,94,.04)}
+.cmp-lbl{font-family:var(--mono);font-size:10px;font-weight:500;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
+.lbl-wrong{color:var(--bad)}.lbl-right{color:var(--good)}
+
+/* ── SEPARATOR ── */
+.domain-sep{border:none;border-top:1px solid var(--ivory-dk);margin:0 0 60px}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--ivory-dk);padding:28px 20px;background:var(--ivory-md);text-align:center}
+footer p{font-family:var(--serif);font-size:12px;font-style:italic;color:var(--mid)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){.nav-links{display:none}.terms-grid{grid-template-columns:1fr}.iron-rules{grid-template-columns:1fr}.traps{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nb">Anthropic<span class="nav-slash"></span>CCA-F <span style="font-weight:300;font-family:var(--sans);font-size:12px;color:var(--mid)">All Topics</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="cca.html">Deep Prep</a>
+    <a class="nav-link active" href="topics.html">Topics</a>
+    <a class="nav-link" href="refs.html">References</a>
+    <a class="nav-link" href="answers.html">Answers</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hlabel">&#9670; CCA-F Exam Domains — Complete Reference</div>
+    <h1>All Topics <em>Explained</em></h1>
+    <p>Every domain covered at exam depth. Definitions, iron rules, decision logic, and the exact traps that appear in the real CCA-F question set. Use this as your primary reference before attempting any mock exam.</p>
+    <div class="domain-pills">
+      <a class="dpill dpill-d1" href="#d1">D1 · Agentic Architecture</a>
+      <a class="dpill dpill-d2" href="#d2">D2 · Tool Design &amp; MCP</a>
+      <a class="dpill dpill-d3" href="#d3">D3 · Claude Code</a>
+      <a class="dpill dpill-d4" href="#d4">D4 · Prompt Engineering</a>
+      <a class="dpill dpill-d5" href="#d5">D5 · Context Management</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       D1 — AGENTIC ARCHITECTURE
+  ════════════════════════════════════════════════════ -->
+  <div class="domain-section" id="d1">
+    <div class="domain-hd">
+      <div class="domain-icon" style="background:var(--clay-soft);color:var(--clay)">&#9711;</div>
+      <div class="domain-hd-text">
+        <div class="domain-num" style="color:var(--clay)">Domain 01</div>
+        <div class="domain-title">Agentic Architecture &amp; Orchestration</div>
+        <div class="domain-weight">27% exam weight &nbsp;·&nbsp; Most Tested Domain</div>
+      </div>
+    </div>
+
+    <div class="what-is">
+      <div class="what-is-label">What This Domain Covers</div>
+      <div class="what-is-text">How Claude-powered agents are built, how they loop, and how multiple agents coordinate. The <strong>agentic loop</strong> is the fundamental execution pattern: call the API → read <code>stop_reason</code> → execute tools if <code>tool_use</code> → terminate if <code>end_turn</code>. Multi-agent systems layer a <strong>hub-and-spoke topology</strong> on top, where a coordinator decomposes tasks and dispatches isolated subagents. This domain also covers session management (resume vs. fork), escalation design, and failure handling.</div>
+    </div>
+
+    <div class="tip-bar">
+      <div class="tip-icon">&#9432;</div>
+      <div class="tip-text"><strong>Exam Strategy:</strong> Every agentic loop question traces back to one rule — <strong>stop_reason is the ONLY reliable control signal</strong>. Iteration caps, text parsing, and sentiment checks are always wrong answers. For multi-agent questions, remember subagents <em>never</em> inherit coordinator context.</div>
+    </div>
+
+    <div class="section-label">Key Terms</div>
+    <div class="terms-grid">
+      <div class="term-card">
+        <div class="term-tag" style="color:var(--clay)">Core</div>
+        <div class="term-name" style="color:var(--clay)">Agentic Loop</div>
+        <div class="term-def">The <strong>while-true cycle</strong> at the heart of every Claude agent: call API → check <code>stop_reason</code> → if <code>tool_use</code> execute tools &amp; append results → if <code>end_turn</code> return final response. Loop control must use the structured API field, never parsed text.</div>
+        <div class="term-rule">stop_reason = "tool_use" → continue &nbsp;|&nbsp; "end_turn" → terminate</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--clay)">Coordinator Agent</div>
+        <div class="term-def">The <strong>top-level orchestrator</strong> that receives the goal, decomposes it into subtasks, and dispatches each to a specialist subagent. Coverage gaps in the final output <em>always</em> trace back here — not to the subagents.</div>
+        <div class="term-rule">Also called: <em>hub agent, orchestrator</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--clay)">Subagent</div>
+        <div class="term-def">An agent <strong>invoked by the coordinator</strong> for a specific scoped task. Subagents <em>never</em> automatically inherit the coordinator's conversation history — all context must be <strong>explicitly passed</strong> in their dispatch prompt.</div>
+        <div class="term-rule">Also called: <em>worker agent, spoke agent</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--clay)">Synthesis Agent</div>
+        <div class="term-def">A specialist subagent that <strong>combines findings</strong> from other agents into a final output. It should receive <em>pre-gathered</em> content only — it does not gather data itself. Giving it search tools causes misuse.</div>
+        <div class="term-rule">Also called: <em>aggregator agent, merge agent</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--clay)">Hub-and-Spoke Topology</div>
+        <div class="term-def">The standard multi-agent pattern. One coordinator (hub) dispatches work to multiple independent subagents (spokes). Spokes run <strong>in parallel</strong> when the coordinator emits multiple <code>Task()</code> calls in a single response turn.</div>
+        <div class="term-rule">Key rule: <em>no shared memory between spokes — each is isolated</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--clay)">Parallel Task() Dispatch</div>
+        <div class="term-def">When independent tasks have no data dependencies, the coordinator should <strong>emit all Task tool calls in a single response</strong>. Total elapsed time equals the <em>longest single task</em>, not the sum of all tasks.</div>
+        <div class="term-rule">Use when: <em>tasks are independent — no output of one feeds another</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--clay)">Hook (Pre / Post)</div>
+        <div class="term-def">A <strong>programmatic intercept</strong> that runs on every matching tool call — before or after execution — regardless of model output. Used for <strong>deterministic enforcement</strong> (refund caps, identity gates). Unlike prompts, hooks <em>cannot be bypassed</em> by the model.</div>
+        <div class="term-rule">Hooks = deterministic &nbsp;|&nbsp; system-prompt rules = probabilistic</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--clay)">--resume &lt;session-name&gt;</div>
+        <div class="term-def">Restores the <strong>complete conversation state</strong> of an interrupted session — all prior messages, tool results, and reasoning. Picks up <em>exactly</em> where the session left off without any lossy summarization.</div>
+        <div class="term-rule">Use when: <em>continuing an interrupted session on the same thread</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--clay)">fork_session</div>
+        <div class="term-def">Creates an <strong>independent branch</strong> from the current session state. The fork inherits all prior context but diverges independently. Changes in the fork don't affect the main session — ideal for exploring alternative hypotheses.</div>
+        <div class="term-rule">Use when: <em>side investigation without polluting the main thread</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--clay)">Structured Error Context</div>
+        <div class="term-def">When a subagent fails, it must return <strong>structured data</strong>: failure type, partial results already completed, unprocessed IDs, and <code>isRetryable</code>. Never suppress errors or return empty results marked as successful.</div>
+        <div class="term-rule">Worst exam answer: <em>"return empty result marked as successful"</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--clay)">Escalation Criteria</div>
+        <div class="term-def">Reliable escalation triggers are <strong>objective and programmatic</strong>: (1) customer explicitly requests human, (2) policy is ambiguous, (3) agent cannot make progress. Sentiment and self-reported confidence are <em>not</em> reliable triggers.</div>
+        <div class="term-rule">Never: <em>escalate on sentiment alone — calm users may need humans too</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--clay)">Progress Detection</div>
+        <div class="term-def">An agent stuck in a loop should <strong>detect lack of progress</strong> (same tool, same params, same error) and terminate with a clear failure report. A generous token budget or wall-clock timeout is the correct safety net — not a fixed iteration cap.</div>
+        <div class="term-rule">Anti-pattern: <em>fixed iteration cap of 5 regardless of ticket complexity</em></div>
+      </div>
+    </div>
+
+    <div class="section-label">Iron Rules — Always True on Exam</div>
+    <div class="iron-rules">
+      <div class="iron-rule ir-d1"><strong>Rule 1</strong>stop_reason is the ONLY reliable loop control signal. Never parse assistant text for completion phrases.</div>
+      <div class="iron-rule ir-d1"><strong>Rule 2</strong>Subagents never inherit coordinator context. All required information must be explicitly passed in the dispatch prompt.</div>
+      <div class="iron-rule ir-d1"><strong>Rule 3</strong>Coverage gaps trace to the coordinator's decomposition — not the individual subagents.</div>
+      <div class="iron-rule ir-d1"><strong>Rule 4</strong>Compliance rules (money limits, identity gates) belong in tool code (hooks), never in system prompts.</div>
+      <div class="iron-rule ir-d1"><strong>Rule 5</strong>Independent tasks should be dispatched in parallel (single response, multiple Task() calls) to minimize latency.</div>
+    </div>
+
+    <div class="section-label">Common Exam Traps</div>
+    <div class="traps">
+      <div class="trap-card"><div class="trap-head">&#9888; Trap</div><div class="trap-text">Using a <strong>fixed iteration cap (e.g., 5)</strong> as the primary loop stop mechanism — truncates valid multi-step resolutions mid-flight.</div></div>
+      <div class="trap-card"><div class="trap-head">&#9888; Trap</div><div class="trap-text">Assuming subagents <strong>automatically inherit</strong> the coordinator's message history — they never do.</div></div>
+      <div class="trap-card"><div class="trap-head">&#9888; Trap</div><div class="trap-text">Using <strong>sentiment analysis</strong> as the escalation trigger — sentiment ≠ complexity of the ticket.</div></div>
+      <div class="trap-card"><div class="trap-head">&#9888; Trap</div><div class="trap-text">Using <strong>Claude's self-reported confidence</strong> for escalation — LLM confidence is poorly calibrated and non-deterministic.</div></div>
+      <div class="trap-card"><div class="trap-head">&#9888; Trap</div><div class="trap-text">Blaming a <strong>subagent</strong> for coverage gaps in the final output — always blame the coordinator's task decomposition.</div></div>
+      <div class="trap-card"><div class="trap-head">&#9888; Trap</div><div class="trap-text">Using <strong>fork_session</strong> to resume an interrupted session — use <code>--resume</code> instead; fork creates a divergent branch.</div></div>
+    </div>
+  </div>
+
+  <hr class="domain-sep">
+
+  <!-- ═══════════════════════════════════════════════════
+       D2 — TOOL DESIGN & MCP
+  ════════════════════════════════════════════════════ -->
+  <div class="domain-section" id="d2">
+    <div class="domain-hd">
+      <div class="domain-icon" style="background:var(--blue-soft);color:var(--blue)">&#9670;</div>
+      <div class="domain-hd-text">
+        <div class="domain-num" style="color:var(--blue)">Domain 02</div>
+        <div class="domain-title">Tool Design &amp; MCP</div>
+        <div class="domain-weight">~20% exam weight &nbsp;·&nbsp; High Frequency</div>
+      </div>
+    </div>
+
+    <div class="what-is">
+      <div class="what-is-label">What This Domain Covers</div>
+      <div class="what-is-text">How to design tools Claude can call effectively, and how the Model Context Protocol (MCP) structures external integrations. The critical insight: <strong>tool descriptions are the primary routing mechanism</strong> — more influential than system prompts or few-shot examples. MCP separates tools (actions) from resources (read-only data) and defines a two-scope configuration system: project-level vs. user-level.</div>
+    </div>
+
+    <div class="tip-bar">
+      <div class="tip-icon">&#9432;</div>
+      <div class="tip-text"><strong>Exam Strategy:</strong> When a question says an agent is "calling the wrong tool," the fix is always <strong>improve the tool description</strong> — not add system-prompt instructions. Know the .mcp.json vs. ~/.claude.json split cold.</div>
+    </div>
+
+    <div class="section-label">Key Terms</div>
+    <div class="terms-grid">
+      <div class="term-card">
+        <div class="term-tag" style="color:var(--blue)">Core</div>
+        <div class="term-name" style="color:var(--blue)">Tool Description</div>
+        <div class="term-def">The <strong>primary routing mechanism</strong> for tool selection — more influential than system prompts or few-shot examples. A complete description includes: input formats, example queries, explicit use-case boundaries, and <em>"Do NOT use for X — use Y instead"</em> statements.</div>
+        <div class="term-rule">Root cause of misrouting: <em>minimal or overlapping descriptions</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--blue)">allowedTools</div>
+        <div class="term-def">A parameter that <strong>restricts which tools</strong> an agent or subagent can invoke. Used in CI/CD pipelines to prevent destructive operations (write, deploy, push). Also scopes synthesis agents to only their intended tools.</div>
+        <div class="term-rule">Rule: <em>give each agent the minimum tools needed for its role</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--blue)">.mcp.json</div>
+        <div class="term-def"><strong>Project-scoped</strong> MCP configuration file. Committed to version control and shared with the entire team via git. Team MCP servers (Jira, GitHub, Slack) go here. Credentials use <code>${ENV_VAR}</code> expansion — never hardcoded.</div>
+        <div class="term-rule">Rule: <em>team tools → .mcp.json (version-controlled)</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--blue)">~/.claude.json</div>
+        <div class="term-def"><strong>User-scoped</strong> MCP configuration file. Personal only — not shared via git, invisible to teammates. Personal tools and preferences go here. New team members will NOT receive these settings.</div>
+        <div class="term-rule">Rule: <em>personal tools → ~/.claude.json (not shared)</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--blue)">MCP Resources vs Tools</div>
+        <div class="term-def"><strong>Resources</strong> = read-only data sources (files, databases, APIs) exposed to the model for context. <strong>Tools</strong> = callable actions with side effects (write, notify, update). Side-effecting operations must be exposed as tools, not resources.</div>
+        <div class="term-rule">Resources = read-only context &nbsp;|&nbsp; Tools = side-effecting actions</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--blue)">Glob / Grep / Read / Bash</div>
+        <div class="term-def"><strong>Glob</strong> = find files by name/path pattern. <strong>Grep</strong> = search file <em>contents</em>. <strong>Read</strong> = open a known file. <strong>Bash</strong> = run shell commands (tests, lint). Use dedicated tools first; Bash only when no dedicated tool exists for the operation.</div>
+        <div class="term-rule">Correct order: <em>Glob → Grep → Read (for unknown codebases)</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--blue)">Tool Granularity</div>
+        <div class="term-def">Each tool should have a <strong>single, clear purpose</strong>. Prefer separate focused tools (<code>update_status</code>, <code>send_notification</code>, <code>log_interaction</code>) over a single god-tool with an action enum. Focused descriptions give the model clear selection signals.</div>
+        <div class="term-rule">Anti-pattern: <em>manage_ticket(action: enum) — hides real input shapes</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--blue)">Optimal Tool Count</div>
+        <div class="term-def">Anthropic guidance recommends <strong>4–5 tools per agent</strong> as the optimal range. Too many tools dilute description clarity; too few limits capability. Synthesis agents in particular should be scoped to only their synthesis-specific tools.</div>
+        <div class="term-rule">Anti-pattern: <em>raw SQL access — unbounded surface, no enforcement</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--blue)">${ENV_VAR} Credential Expansion</div>
+        <div class="term-def">MCP server credentials (API keys, tokens) must use <strong>environment variable expansion</strong> in config files — never hardcoded strings. This keeps secrets out of version-controlled files while keeping configuration shareable.</div>
+        <div class="term-rule">Never: <em>hardcode API keys in .mcp.json (version controlled)</em></div>
+      </div>
+    </div>
+
+    <div class="section-label">Decision Table — Which Config File?</div>
+    <table class="rules-table" style="margin-bottom:24px">
+      <thead><tr><th>Scenario</th><th>Correct File</th><th>Reason</th></tr></thead>
+      <tbody>
+        <tr class="row-correct"><td>.mcp.json</td><td>Team Jira/GitHub/Slack servers</td><td>Shared via git; all developers get the same tools without manual setup</td></tr>
+        <tr class="row-correct"><td>~/.claude.json</td><td>Personal database GUI, private API key</td><td>Not version-controlled; invisible to teammates; personal preference</td></tr>
+        <tr class="row-wrong"><td>Hardcoded key in .mcp.json</td><td>Never</td><td>Credentials exposed in version history; use ${ENV_VAR} expansion instead</td></tr>
+        <tr class="row-wrong"><td>Team tool in ~/.claude.json</td><td>Never</td><td>New team members won't receive it; defeats the purpose of team standardization</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-label">Common Exam Traps</div>
+    <div class="traps">
+      <div class="trap-card"><div class="trap-head">&#9888; Trap</div><div class="trap-text">Fixing tool misrouting by <strong>adding system prompt instructions</strong> — tool descriptions are more influential and are the correct fix.</div></div>
+      <div class="trap-card"><div class="trap-head">&#9888; Trap</div><div class="trap-text">Putting <strong>team MCP servers in ~/.claude.json</strong> — they won't be shared with new team members.</div></div>
+      <div class="trap-card"><div class="trap-head">&#9888; Trap</div><div class="trap-text">Exposing <strong>write/notify/update actions as MCP resources</strong> — side-effecting operations must be tools, not resources.</div></div>
+      <div class="trap-card"><div class="trap-head">&#9888; Trap</div><div class="trap-text">Giving a <strong>synthesis agent search tools</strong> — allowedTools should restrict it to synthesis-only operations.</div></div>
+    </div>
+  </div>
+
+  <hr class="domain-sep">
+
+  <!-- ═══════════════════════════════════════════════════
+       D3 — CLAUDE CODE WORKFLOWS
+  ════════════════════════════════════════════════════ -->
+  <div class="domain-section" id="d3">
+    <div class="domain-hd">
+      <div class="domain-icon" style="background:var(--olive-soft);color:var(--olive)">&#9642;</div>
+      <div class="domain-hd-text">
+        <div class="domain-num" style="color:var(--olive)">Domain 03</div>
+        <div class="domain-title">Claude Code Workflows &amp; Configuration</div>
+        <div class="domain-weight">~22% exam weight &nbsp;·&nbsp; High Frequency</div>
+      </div>
+    </div>
+
+    <div class="what-is">
+      <div class="what-is-label">What This Domain Covers</div>
+      <div class="what-is-text">How Claude Code is configured, deployed, and extended. The most-tested concept is the <strong>CLAUDE.md hierarchy</strong>: project-level config (committed to git, shared with team) vs. user-level config (personal, invisible to teammates). This domain also covers <strong>headless CI/CD operation</strong> (the <code>-p</code> flag), <strong>Skills and slash commands</strong>, Plan Mode, and Claude Code hooks.</div>
+    </div>
+
+    <div class="tip-bar">
+      <div class="tip-icon">&#9432;</div>
+      <div class="tip-text"><strong>Exam Strategy:</strong> If a question asks how to share Claude Code configuration with a team, the answer always involves the <strong>project-level CLAUDE.md</strong> (committed, in git). If it asks how to run Claude Code in CI/CD without interaction, the answer is always the <strong><code>-p</code> flag</strong> — not <code>CLAUDE_HEADLESS=true</code> (doesn't exist) or <code>--batch</code> (doesn't exist).</div>
+    </div>
+
+    <div class="section-label">Key Terms</div>
+    <div class="terms-grid">
+      <div class="term-card">
+        <div class="term-tag" style="color:var(--olive)">Core</div>
+        <div class="term-name" style="color:var(--olive)">CLAUDE.md Hierarchy</div>
+        <div class="term-def"><code>./CLAUDE.md</code> = <strong>project-level</strong>, committed to git, shared with the whole team. <code>~/.claude/CLAUDE.md</code> = <strong>user-level</strong>, personal only, not shared via git. Standards that new developers must receive go in project-level config.</div>
+        <div class="term-rule">Most-missed: <em>user-level config is invisible to teammates</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--olive)">-p Flag (Headless / --print)</div>
+        <div class="term-def">Makes Claude Code <strong>non-interactive</strong>: processes the prompt, prints output to stdout, and exits. Required for all CI/CD pipelines. The <em>only</em> documented headless mechanism — not <code>CLAUDE_HEADLESS=true</code> (doesn't exist) or <code>--batch</code> (doesn't exist).</div>
+        <div class="term-rule">Only correct syntax: <em>claude -p "your prompt"</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--olive)">Plan Mode</div>
+        <div class="term-def">Claude <strong>explores and proposes a plan</strong> before making any changes. Human reviews and approves, then execution begins. Use for: large-scale architectural changes, decisions across many files, multiple valid approaches. <em>Not</em> for simple reversible operations.</div>
+        <div class="term-rule">Key phrase: <em>"explore codebase and design approach before committing"</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--olive)">.claude/rules/ + glob frontmatter</div>
+        <div class="term-def">Rule files in <code>.claude/rules/</code> apply <strong>globally unless given a YAML frontmatter glob</strong>: <code>globs: ["api/**/*"]</code>. Without a glob, rules activate for <em>all</em> files — a common misconfiguration that causes irrelevant suggestions.</div>
+        <div class="term-rule">Use when: <em>conventions apply to specific file types regardless of directory</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--olive)">context: fork (Skills)</div>
+        <div class="term-def">A skill frontmatter option that runs the skill in an <strong>isolated subagent</strong>. Only the final result returns to the main conversation — verbose intermediate output stays isolated and doesn't pollute the main context window.</div>
+        <div class="term-rule">Use when: <em>skill output is verbose and would cause context pollution</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--olive)">argument-hint (Skills)</div>
+        <div class="term-def">A skill frontmatter option that <strong>prompts the user for required parameters</strong> before the skill executes. Prevents skills from running with missing arguments and producing incorrect or incomplete results.</div>
+        <div class="term-rule">Use when: <em>skill needs inputs like service name or environment target</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--olive)">Claude Code Hooks</div>
+        <div class="term-def">Programmatic hooks in Claude Code: <strong>pre- and post-execution intercepts</strong> for enforcing team standards, audit logging, and business rules deterministically. Bypass-proof — execute on every matching tool call regardless of model output.</div>
+        <div class="term-rule">Use for: <em>enforcing non-negotiable standards regardless of model output</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--olive)">allowedTools in CI</div>
+        <div class="term-def">In GitHub Actions / GitLab CI, restrict Claude Code to <strong>read-only tools</strong> (Glob, Grep, Read, Bash for tests/lint). Prevent destructive operations by excluding write, deploy, push tools from the allowedTools list entirely.</div>
+        <div class="term-rule">CI safety: <em>read-only tools only — never write/push in automated pipelines</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--olive)">Two-Pass Code Review</div>
+        <div class="term-def">For large PRs (14+ files), a single-pass review causes <strong>attention dilution</strong> and contradictory feedback. Fix: Pass 1 = per-file analysis (parallelizable). Pass 2 = cross-file integration pass for data flow and shared interfaces.</div>
+        <div class="term-rule">Never: <em>"use a larger context window model" — doesn't fix attention quality</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--olive)">Independent Review Instances</div>
+        <div class="term-def">When reviewing code for multiple concerns (security, performance, style), use <strong>separate review instances per concern</strong> without sharing each other's context. Prevents cross-contamination and contradictory suggestions.</div>
+        <div class="term-rule">Anti-pattern: <em>one agent reviewing all concerns — produces contradictions</em></div>
+      </div>
+    </div>
+
+    <div class="section-label">Decision Table — Configuration Scope</div>
+    <table class="rules-table" style="margin-bottom:24px">
+      <thead><tr><th>Requirement</th><th>Correct Location</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr class="row-correct"><td>Team coding standards (shared)</td><td>./CLAUDE.md (project-level)</td><td>Committed to git — all team members receive it automatically on clone</td></tr>
+        <tr class="row-correct"><td>Personal workflow preferences</td><td>~/.claude/CLAUDE.md (user-level)</td><td>Personal only — doesn't affect teammates</td></tr>
+        <tr class="row-correct"><td>File-type-specific rules (e.g. API files)</td><td>.claude/rules/ with glob frontmatter</td><td>Glob scopes rules to matching files only</td></tr>
+        <tr class="row-correct"><td>Headless CI pipeline</td><td>claude -p "prompt"</td><td>The only documented non-interactive flag</td></tr>
+        <tr class="row-wrong"><td>CI headless (wrong)</td><td>CLAUDE_HEADLESS=true</td><td>Does not exist — common exam distractor</td></tr>
+        <tr class="row-wrong"><td>CI headless (wrong)</td><td>claude --batch</td><td>Does not exist — common exam distractor</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="domain-sep">
+
+  <!-- ═══════════════════════════════════════════════════
+       D4 — PROMPT ENGINEERING & API FEATURES
+  ════════════════════════════════════════════════════ -->
+  <div class="domain-section" id="d4">
+    <div class="domain-hd">
+      <div class="domain-icon" style="background:var(--plum-soft);color:var(--plum)">&#9671;</div>
+      <div class="domain-hd-text">
+        <div class="domain-num" style="color:var(--plum)">Domain 04</div>
+        <div class="domain-title">Prompt Engineering &amp; API Features</div>
+        <div class="domain-weight">~18% exam weight &nbsp;·&nbsp; Medium-High</div>
+      </div>
+    </div>
+
+    <div class="what-is">
+      <div class="what-is-label">What This Domain Covers</div>
+      <div class="what-is-text">How to elicit reliable, structured output from Claude and how to choose the right API feature for each use case. Key topics include guaranteeing structured output with <code>tool_choice: "any"</code>, preventing fabrication with nullable schema fields, using few-shot examples for decision calibration, the Message Batches API tradeoffs, and understanding when extended thinking adds value.</div>
+    </div>
+
+    <div class="tip-bar">
+      <div class="tip-icon">&#9432;</div>
+      <div class="tip-text"><strong>Exam Strategy:</strong> <code>tool_choice: "any"</code> is the <em>only</em> guaranteed mechanism for structured output — system-prompt JSON instructions are probabilistic. The Message Batches API is correct only for <em>non-blocking</em> workflows. Few-shot examples fix <em>calibration</em> issues, not compliance rules (hooks do that).</div>
+    </div>
+
+    <div class="section-label">Key Terms</div>
+    <div class="terms-grid">
+      <div class="term-card">
+        <div class="term-tag" style="color:var(--plum)">Core</div>
+        <div class="term-name" style="color:var(--plum)">tool_choice: "any"</div>
+        <div class="term-def">Forces Claude to call a tool (producing structured JSON) rather than returning conversational text. The <strong>only guaranteed mechanism</strong> for structured output. <code>tool_choice: "auto"</code> allows text responses. System-prompt JSON instructions are probabilistic only.</div>
+        <div class="term-rule">"any" = guaranteed structured JSON &nbsp;|&nbsp; "auto" = maybe text</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--plum)">Nullable Schema Fields</div>
+        <div class="term-def">Making schema fields <code>type: ["string", "null"]</code> prevents <strong>fabrication</strong> when source documents don't contain that data. Required fields force the model to invent values; nullable fields let the model return <code>null</code> honestly.</div>
+        <div class="term-rule">Cause of fabrication: <em>required schema fields when data may be absent</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--plum)">Few-Shot Examples</div>
+        <div class="term-def">Examples that teach <strong>decision boundaries and output format</strong>. Effective for: escalation calibration, tool selection in ambiguous cases, output format consistency. <em>Not</em> for compliance enforcement (use hooks) or before fixing tool descriptions (fix root cause first).</div>
+        <div class="term-rule">Not for: <em>financial compliance rules — those require programmatic hooks</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--plum)">Message Batches API</div>
+        <div class="term-def">Asynchronous batch processing with <strong>50% cost savings</strong> but up to 24h processing time and no SLA guarantee. Correct for <strong>non-blocking</strong> workflows (overnight reports, weekly audits). <em>Never</em> for blocking workflows where users wait for results.</div>
+        <div class="term-rule">Blocking = real-time only &nbsp;|&nbsp; non-blocking = batch candidate</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--plum)">Extended Thinking</div>
+        <div class="term-def">Claude's extended thinking mode for <strong>complex reasoning tasks</strong>. When to enable: multi-step logical problems, code architecture, mathematical reasoning. Tradeoffs: higher latency, higher cost, larger token budget required. Do not use for simple factual tasks.</div>
+        <div class="term-rule">Use when: <em>problem genuinely benefits from step-by-step internal reasoning</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--plum)">Resolvable vs Unresolvable Errors</div>
+        <div class="term-def"><strong>Resolvable</strong>: data exists but is formatted wrong — retries can fix it. <strong>Unresolvable</strong>: data doesn't exist in the source — retries waste API calls. When retries consistently fail for <em>some</em> documents, the fix is schema redesign, not increasing retry count.</div>
+        <div class="term-rule">Exam trap: <em>"increase retries from 3 to 10" — almost always wrong</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--plum)">Self-Review Limitation</div>
+        <div class="term-def">Reviewing code in the <strong>same session</strong> that generated it is less effective — the model retains its generation reasoning and confirmation-biases toward its own decisions. Independent review = different session, no prior generation context.</div>
+        <div class="term-rule">Fix: <em>always use a fresh session for code review — different context</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--plum)">System Prompt Scope</div>
+        <div class="term-def">System prompt instructions are <strong>guidance, not enforcement</strong>. Prompt injection, long contexts, or unusual user phrasing can cause the model to ignore system-prompt rules. Compliance-critical rules must live in tool code (hooks), not in the system prompt.</div>
+        <div class="term-rule">Rule: <em>probabilistic guidance only — can be bypassed by the model</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--plum)">Prompt Chaining vs Dynamic Decomposition</div>
+        <div class="term-def"><strong>Prompt chaining</strong>: all steps known upfront, fixed pipeline (PR review with known passes). <strong>Dynamic decomposition</strong>: scope unknown, plan adapts to discoveries (exploring unfamiliar legacy codebase). Match the pattern to the task structure.</div>
+        <div class="term-rule">Use dynamic: <em>when discoveries determine the next step</em></div>
+      </div>
+    </div>
+
+    <div class="section-label">Structured Output — Comparison</div>
+    <div class="compare-pair">
+      <div class="cmp-half wrong">
+        <div class="cmp-lbl lbl-wrong">&#10007; Probabilistic — Don't Rely On</div>
+        System prompt: "Always respond in JSON format"<br><br>
+        Instructions for JSON shape in the prompt<br><br>
+        tool_choice: "auto" (may return text instead)<br><br>
+        Response parsing with regex fallbacks
+      </div>
+      <div class="cmp-half right">
+        <div class="cmp-lbl lbl-right">&#10003; Guaranteed — Use This</div>
+        tool_choice: "any" (forces a tool call)<br><br>
+        Tool schema with precise field definitions<br><br>
+        Nullable fields for optional data (prevents fabrication)<br><br>
+        Tool result as structured data, not parsed text
+      </div>
+    </div>
+  </div>
+
+  <hr class="domain-sep">
+
+  <!-- ═══════════════════════════════════════════════════
+       D5 — CONTEXT & MEMORY MANAGEMENT
+  ════════════════════════════════════════════════════ -->
+  <div class="domain-section" id="d5">
+    <div class="domain-hd">
+      <div class="domain-icon" style="background:var(--good-soft);color:var(--good)">&#9675;</div>
+      <div class="domain-hd-text">
+        <div class="domain-num" style="color:var(--good)">Domain 05</div>
+        <div class="domain-title">Context &amp; Memory Management</div>
+        <div class="domain-weight">~13% exam weight &nbsp;·&nbsp; Medium</div>
+      </div>
+    </div>
+
+    <div class="what-is">
+      <div class="what-is-label">What This Domain Covers</div>
+      <div class="what-is-text">How information is preserved, degraded, and managed across long conversations and large inputs. Key failure modes include the <strong>Lost in the Middle</strong> phenomenon, <strong>Progressive Summarisation Loss</strong> of exact numerical values, and how to handle conflicting sources and multi-match disambiguation. The <code>/compact</code> command and scratchpad files are the primary mitigation tools in Claude Code.</div>
+    </div>
+
+    <div class="tip-bar">
+      <div class="tip-icon">&#9432;</div>
+      <div class="tip-text"><strong>Exam Strategy:</strong> For "Lost in the Middle" questions, the correct fix is always <strong>restructure input placement</strong> (key content at top/bottom) — never "use a larger model." For numerical precision loss, the fix is a <strong>case-facts block</strong> outside the summarisation pipeline, never "summarise more aggressively."</div>
+    </div>
+
+    <div class="section-label">Key Terms</div>
+    <div class="terms-grid">
+      <div class="term-card">
+        <div class="term-tag" style="color:var(--good)">Core</div>
+        <div class="term-name" style="color:var(--good)">Lost in the Middle</div>
+        <div class="term-def">Models reliably attend to content at the <strong>beginning and end</strong> of long inputs but miss findings in the middle. A larger context window does <em>not</em> fix this. Fix: place key findings at the top + use explicit section headers throughout the document.</div>
+        <div class="term-rule">Never correct: <em>"use a larger model" or "increase context window"</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--good)">Progressive Summarisation Loss</div>
+        <div class="term-def">Compressing old conversation turns loses <strong>exact numerical values</strong> (amounts, order IDs, dates) into vague summaries. Critical transactional data must be preserved in a persistent case-facts block <em>outside</em> the summarisation pipeline.</div>
+        <div class="term-rule">Never correct: <em>"summarise more aggressively"</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--good)">Case-Facts Block</div>
+        <div class="term-def">A <strong>structured block of critical data</strong> (order IDs, amounts, dates, issue types) stored outside the summarisation pipeline and included verbatim in every prompt. Prevents numerical precision loss across long multi-issue sessions.</div>
+        <div class="term-rule">Format: <em>JSON with exact values — never prose summaries</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--good)">/compact</div>
+        <div class="term-def">A Claude Code command that <strong>reduces context window usage</strong> when the window is filling up and answers become vague or reference "typical patterns" instead of specific earlier findings. Pair with scratchpad files to preserve key discoveries.</div>
+        <div class="term-rule">Symptom: <em>Claude references "typical patterns" instead of specific findings</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--good)">Disambiguation Rule</div>
+        <div class="term-def">When a lookup returns <strong>multiple matches</strong>, the agent must ask for additional identifying information (email, phone, account number). Never select by heuristic (most recent, first result, most orders). Heuristic selection risks acting on the wrong account.</div>
+        <div class="term-rule">Rule: <em>always ask — never guess when multiple matches exist</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--good)">Conflicting Sources</div>
+        <div class="term-def">When credible sources disagree, <strong>present both values with source attribution</strong> and note the discrepancy. Never: average (fabricates a number neither source supports), use the more recent (recency ≠ accuracy), or omit (losing information).</div>
+        <div class="term-rule">Rule: <em>preserve the conflict with attribution — never resolve arbitrarily</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--good)">Scratchpad Files</div>
+        <div class="term-def">External files used by Claude Code to <strong>persist key discoveries</strong> across context boundaries. When the context window fills and <code>/compact</code> is run, scratchpad files ensure important findings aren't lost in the compression.</div>
+        <div class="term-rule">Use alongside: <em>/compact — one compresses, one preserves</em></div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--good)">Context Window vs Attention</div>
+        <div class="term-def">A larger <strong>context window size</strong> does not improve <strong>attention quality</strong>. Increasing the window just lets the model ignore more content simultaneously. The fix for attention problems is input structure (placement, headers), not window size.</div>
+        <div class="term-rule">Larger window ≠ better attention to middle content</div>
+      </div>
+    </div>
+
+    <div class="section-label">Iron Rules — Always True on Exam</div>
+    <div class="iron-rules">
+      <div class="iron-rule ir-d5"><strong>Rule 1</strong>Exact numerical values (amounts, IDs, dates) must be preserved in a case-facts block outside the summarisation pipeline.</div>
+      <div class="iron-rule ir-d5"><strong>Rule 2</strong>A larger context window does NOT fix "Lost in the Middle." Restructure input placement instead.</div>
+      <div class="iron-rule ir-d5"><strong>Rule 3</strong>When multiple records match a lookup, always ask for disambiguation — never select by heuristic.</div>
+      <div class="iron-rule ir-d5"><strong>Rule 4</strong>When sources conflict, present both with attribution. Never average, never pick arbitrarily.</div>
+      <div class="iron-rule ir-d5"><strong>Rule 5</strong>Summarise more aggressively is always the wrong answer for numerical precision loss.</div>
+    </div>
+
+    <div class="section-label">Common Exam Traps</div>
+    <div class="traps">
+      <div class="trap-card"><div class="trap-head">&#9888; Trap</div><div class="trap-text">Fixing "Lost in the Middle" by <strong>upgrading to a larger model</strong> — window size doesn't fix attention quality.</div></div>
+      <div class="trap-card"><div class="trap-head">&#9888; Trap</div><div class="trap-text">Fixing numerical precision loss by <strong>summarising more aggressively</strong> — more compression causes more loss, not less.</div></div>
+      <div class="trap-card"><div class="trap-head">&#9888; Trap</div><div class="trap-text">Resolving conflicting sources by <strong>averaging the values</strong> — averaging fabricates a number neither source supports.</div></div>
+      <div class="trap-card"><div class="trap-head">&#9888; Trap</div><div class="trap-text">Selecting the <strong>most recent matched record</strong> when multiple exist — recency is a heuristic that risks acting on the wrong account.</div></div>
+    </div>
+  </div>
+
+  <!-- QUICK REFERENCE TABLE -->
+  <div style="margin-bottom:40px">
+    <div class="section-label">All-Domain Quick Reference</div>
+    <table class="rules-table">
+      <thead><tr><th>Domain</th><th>Weight</th><th>The One Rule You Cannot Get Wrong</th><th>Biggest Trap</th></tr></thead>
+      <tbody>
+        <tr><td>D1 Agentic Architecture</td><td>27%</td><td>stop_reason is the ONLY reliable loop control signal</td><td>Fixed iteration cap as primary stop</td></tr>
+        <tr><td>D2 Tool Design &amp; MCP</td><td>~20%</td><td>Tool descriptions are the primary routing mechanism — more influential than system prompts</td><td>Fixing misrouting with system-prompt instructions</td></tr>
+        <tr><td>D3 Claude Code</td><td>~22%</td><td>CLAUDE.md project-level = committed &amp; shared | user-level = personal &amp; invisible</td><td>Using CLAUDE_HEADLESS=true (doesn't exist)</td></tr>
+        <tr><td>D4 Prompt Engineering</td><td>~18%</td><td>tool_choice: "any" is the only guarantee of structured output</td><td>Using Message Batches API for blocking workflows</td></tr>
+        <tr><td>D5 Context Management</td><td>~13%</td><td>Larger context window does NOT fix Lost in the Middle</td><td>"Summarise more aggressively" for precision loss</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  <p>CCA-F Topics Reference &mdash; All five exam domains &mdash; Study with the mock exams at <a href="index.html" style="color:var(--clay-dk)">cca/index.html</a></p>
+</footer>
+
+</body>
+</html>
