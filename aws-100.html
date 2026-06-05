@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS 100 — Cloud Fundamentals Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ivory:#faf9f5;--ivory-md:#f0ede4;--ivory-dk:#e4e0d4;--dark:#141413;--dark2:#2a2925;--mid:#8a8880;--mid-lt:#d4d1c9;--clay:#d97757;--clay-dk:#a8553a;--olive:#788c5d;--blue:#6a9bcc;--plum:#7c5fbf;--good:#2e7d5e;--bad:#c0392b;--amber:#a87c1a;--serif:"Playfair Display",Georgia,serif;--sans:"DM Sans",system-ui,sans-serif;--mono:"DM Mono",monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ivory);color:var(--dark);font-family:var(--sans);font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+nav{position:sticky;top:0;z-index:200;background:rgba(250,249,245,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--ivory-dk);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;gap:10px}
+.nb{font-family:var(--serif);font-size:14px;font-weight:500;color:var(--dark)}
+.nav-slash{width:1px;height:14px;background:var(--clay);display:inline-block;margin:0 6px;vertical-align:middle}
+.ntabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.ntabs::-webkit-scrollbar{display:none}
+.nt{padding:5px 12px;border:none;background:transparent;font-family:var(--sans);font-size:11px;font-weight:500;color:var(--mid);cursor:pointer;border-radius:3px;white-space:nowrap;transition:all .15s}
+.nt:hover{color:var(--dark);background:var(--ivory-md)}
+.nt.on{color:var(--dark);background:var(--ivory-dk)}
+.badge{font-family:var(--mono);font-size:10px;color:var(--clay);background:rgba(217,119,87,.1);border:1px solid rgba(217,119,87,.25);padding:2px 8px;border-radius:0 0 3px 3px;white-space:nowrap;flex-shrink:0}
+.page{display:none;max-width:1000px;margin:0 auto;padding:36px 20px 80px}
+.page.on{display:block}
+/* HERO */
+.hero{margin-bottom:36px}
+.hlabel{font-family:var(--mono);font-size:10px;color:var(--clay);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px}
+.hero h1{font-family:var(--serif);font-size:clamp(26px,4vw,42px);font-weight:400;line-height:1.1;letter-spacing:-.02em;margin-bottom:10px}
+.hero h1 u{text-decoration:underline;text-decoration-color:var(--clay);text-underline-offset:4px;text-decoration-thickness:2px;font-style:normal}
+.hero p{font-size:13px;font-weight:300;color:var(--dark2);max-width:560px;line-height:1.7}
+/* SECTION NAV */
+.snav{display:flex;gap:0;border:1px solid var(--ivory-dk);margin-bottom:20px;overflow-x:auto;scrollbar-width:none}
+.snav::-webkit-scrollbar{display:none}
+.snt{flex:1;min-width:fit-content;padding:8px 12px;border:none;border-right:1px solid var(--ivory-dk);background:var(--ivory);font-family:var(--sans);font-size:11px;font-weight:500;cursor:pointer;color:var(--mid);transition:all .15s;text-align:center;white-space:nowrap}
+.snt:last-child{border-right:none}
+.snt:hover{background:var(--ivory-md);color:var(--dark)}
+.snt.on{background:var(--dark);color:var(--ivory)}
+.spane{display:none}.spane.on{display:block}
+/* CONCEPT SECTIONS */
+.concept{margin-bottom:32px;border:1px solid var(--ivory-dk)}
+.concept-hd{background:var(--dark);color:var(--ivory);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.concept-title{font-family:var(--serif);font-size:16px;font-weight:400}
+.concept-tag{font-family:var(--mono);font-size:9px;color:var(--clay);background:rgba(217,119,87,.15);border:1px solid rgba(217,119,87,.3);padding:2px 8px;text-transform:uppercase;letter-spacing:.08em}
+.concept-body{padding:18px 20px}
+/* QA CARDS */
+.qa-list{display:flex;flex-direction:column;gap:12px}
+.qa{border:1px solid var(--ivory-dk);overflow:hidden}
+.qa-q{padding:12px 16px;background:var(--ivory-md);border-bottom:1px solid var(--ivory-dk);display:flex;gap:12px;align-items:flex-start}
+.qa-num{font-family:var(--mono);font-size:10px;color:var(--clay);background:rgba(217,119,87,.1);border:1px solid rgba(217,119,87,.25);padding:2px 7px;flex-shrink:0;margin-top:1px;font-weight:500}
+.qa-qtext{font-size:13px;font-weight:500;color:var(--dark);line-height:1.55}
+.qa-a{padding:12px 16px;font-size:13px;color:var(--dark2);line-height:1.7;font-weight:300}
+.qa-a strong{color:var(--dark);font-weight:600}
+.qa-a ul{margin:6px 0 4px 18px}
+.qa-a li{font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300}
+.qa-a li strong{color:var(--dark)}
+/* RULE BLOCKS */
+.rule{margin-bottom:12px;padding:12px 16px;border-left:3px solid var(--clay);background:rgba(217,119,87,.04)}
+.rule-title{font-size:12px;font-weight:600;color:var(--dark);margin-bottom:4px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em}
+.rule-body{font-size:13px;color:var(--dark2);line-height:1.65;font-weight:300}
+/* DECISION TABLE */
+.dtable{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}
+.dtable th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;padding:8px 10px;text-align:left;border-bottom:2px solid var(--dark);background:var(--ivory-md);color:var(--mid)}
+.dtable td{padding:9px 10px;border-bottom:1px solid var(--ivory-dk);vertical-align:top;line-height:1.5;color:var(--dark2)}
+.dtable tr:last-child td{border-bottom:none}
+.dtable td:first-child{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--dark)}
+.dtable tr.hl td{background:rgba(46,125,94,.05)}
+/* TIP */
+.tip{margin-top:10px;padding:10px 14px;background:var(--ivory-md);border-left:2px solid var(--clay);font-size:12px;color:var(--dark2);line-height:1.6}
+.tip strong{color:var(--dark);font-weight:600}
+/* COMPARE */
+.compare{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--ivory-dk);margin:10px 0}
+@media(max-width:600px){.compare{grid-template-columns:1fr}}
+.cmp{padding:12px 14px;font-size:12px;line-height:1.65;border-right:1px solid var(--ivory-dk)}
+.cmp:last-child{border-right:none}
+.cmp-lbl{font-family:var(--mono);font-size:10px;font-weight:500;margin-bottom:6px;color:var(--clay);text-transform:uppercase;letter-spacing:.07em}
+/* TOPIC DEF */
+.topic-def{margin-bottom:20px;border:1px solid var(--ivory-dk);overflow:hidden}
+.topic-def-hd{background:var(--dark2);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.topic-def-title{font-family:var(--serif);font-size:17px;font-weight:400;color:var(--ivory);letter-spacing:-.015em}
+.topic-def-pills{display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0}
+.tdpill{font-family:var(--mono);font-size:9px;padding:2px 8px;border:1px solid;text-transform:uppercase;letter-spacing:.07em}
+.tdpill-weight{color:var(--clay);border-color:rgba(217,119,87,.4);background:rgba(217,119,87,.1)}
+.tdpill-tag{color:var(--blue);border-color:rgba(106,155,204,.35);background:rgba(106,155,204,.08)}
+.topic-def-body{padding:16px 18px;background:var(--ivory)}
+/* LABELS */
+.lbl{font-family:var(--mono);font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.lbl::after{content:"";flex:1;height:1px;background:var(--ivory-dk)}
+h3{font-family:var(--serif);font-size:16px;font-weight:500;margin:16px 0 8px}
+h4{font-size:12px;font-weight:600;color:var(--dark);margin:12px 0 6px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em}
+p{font-size:13px;color:var(--dark2);line-height:1.65;margin-bottom:8px;font-weight:300}
+strong{font-weight:600;color:var(--dark)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nb">AWS<span class="nav-slash"></span>100 <span style="font-weight:300;font-family:var(--sans);font-size:12px;color:var(--mid)">Cloud Fundamentals</span></div>
+  <div class="ntabs">
+    <button class="nt on" onclick="showPage('guide',this)">Study Guide</button>
+  </div>
+  <span class="badge">AWS 100 Q&amp;A</span>
+</nav>
+
+<div class="page on" id="page-guide">
+
+  <div class="hero">
+    <div class="hlabel">AWS Cloud Fundamentals &middot; 100 Core Questions</div>
+    <h1>AWS <u>100</u> Study Guide</h1>
+    <p>All 100 core AWS questions grouped by domain — from global infrastructure and IAM through compute, storage, networking, databases, serverless, monitoring, security, and DevOps.</p>
+  </div>
+
+  <!-- SECTION NAV -->
+  <div class="snav">
+    <button class="snt on"  onclick="switchSection('s1',this)">☁️ Cloud Basics</button>
+    <button class="snt"     onclick="switchSection('s2',this)">🔐 IAM</button>
+    <button class="snt"     onclick="switchSection('s3',this)">🖥️ Compute</button>
+    <button class="snt"     onclick="switchSection('s4',this)">📦 Storage</button>
+    <button class="snt"     onclick="switchSection('s5',this)">🌐 Networking</button>
+    <button class="snt"     onclick="switchSection('s6',this)">🗄️ Databases</button>
+    <button class="snt"     onclick="switchSection('s7',this)">⚡ Serverless</button>
+    <button class="snt"     onclick="switchSection('s8',this)">📊 Monitoring</button>
+    <button class="snt"     onclick="switchSection('s9',this)">🔒 Security</button>
+    <button class="snt"     onclick="switchSection('s10',this)">🛠️ DevOps</button>
+    <button class="snt"     onclick="switchSection('s11',this)">🎯 Scenarios</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       S1 — CLOUD BASICS & GLOBAL INFRASTRUCTURE
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane on" id="sp-s1">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">☁️ Cloud Basics &amp; Global Infrastructure</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">Q1 – Q6</span>
+          <span class="tdpill tdpill-tag">Foundations</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Understanding what AWS is, its core benefits, the three cloud service models, and the key geographic building blocks — Regions, Availability Zones, and Edge Locations — is the foundation of every other AWS topic.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q1</span><span class="qa-qtext">What is AWS?</span></div>
+        <div class="qa-a">AWS (Amazon Web Services) is a cloud computing platform that provides <strong>on-demand computing services</strong> like servers, storage, networking, databases, AI, and analytics using a <strong>pay-as-you-go</strong> pricing model.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q2</span><span class="qa-qtext">What are the main benefits of AWS?</span></div>
+        <div class="qa-a">Scalability, high availability, cost-effective pricing, security, flexibility, and global infrastructure.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q3</span><span class="qa-qtext">What are the types of cloud computing models?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>IaaS (Infrastructure as a Service):</strong> You manage OS, data, and apps (e.g., EC2).</li>
+            <li><strong>PaaS (Platform as a Service):</strong> AWS manages the OS and runtime; you just bring code (e.g., Elastic Beanstalk).</li>
+            <li><strong>SaaS (Software as a Service):</strong> Completely managed application (e.g., Microsoft 365, AWS Honeycode).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q4</span><span class="qa-qtext">What is an AWS Region?</span></div>
+        <div class="qa-a">A region is a <strong>geographic area</strong> where AWS has multiple, physically isolated data centers.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q5</span><span class="qa-qtext">What is an Availability Zone (AZ)?</span></div>
+        <div class="qa-a">An AZ consists of <strong>one or more discrete data centers</strong> with redundant power, networking, and connectivity within an AWS Region.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q6</span><span class="qa-qtext">What is an Edge Location?</span></div>
+        <div class="qa-a">Edge locations are endpoints used by <strong>CloudFront (CDN)</strong> and <strong>Route 53 (DNS)</strong> to cache and deliver content with ultra-low latency to global users.</div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Key distinction:</strong> Region → AZ → Edge Location. Regions contain multiple AZs for fault tolerance. Edge locations are much more numerous than AZs and serve only caching/DNS — not general compute.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       S2 — IAM
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-s2">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔐 Identity &amp; Access Management (IAM)</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">Q7 – Q10</span>
+          <span class="tdpill tdpill-tag">Security Foundation</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>IAM is the global service that controls <em>who</em> can do <em>what</em> in your AWS account. Understanding Users vs Roles vs Policies is critical for both security design and exam questions.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q7</span><span class="qa-qtext">What is AWS IAM?</span></div>
+        <div class="qa-a">Identity and Access Management controls access to AWS resources securely using <strong>authentication</strong> (who you are) and <strong>authorization</strong> (what you can do).</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q8</span><span class="qa-qtext">What is the difference between an IAM User and an IAM Role?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>IAM User:</strong> A permanent identity with <strong>long-term credentials</strong> (password / access keys) mapping to a specific person or application.</li>
+            <li><strong>IAM Role:</strong> An identity with <strong>temporary credentials</strong> meant to be assumed by trusted entities (like an EC2 instance or an external user) without sharing permanent keys.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q9</span><span class="qa-qtext">What is an IAM Policy?</span></div>
+        <div class="qa-a">A <strong>JSON document</strong> that explicitly defines permissions (Allows or Denies) to access specific AWS resources.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q10</span><span class="qa-qtext">What is MFA in AWS?</span></div>
+        <div class="qa-a"><strong>Multi-Factor Authentication</strong> adds an extra layer of security by requiring a second verification factor (like a software token) beyond a standard password.</div>
+      </div>
+
+    </div>
+
+    <div class="rule" style="margin-top:16px">
+      <div class="rule-title">Security Best Practice</div>
+      <div class="rule-body">Never use the root account for day-to-day tasks. Create individual IAM users, enforce MFA on the root account and privileged users, and use Roles instead of long-term access keys for applications running on AWS.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       S3 — COMPUTE
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-s3">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🖥️ Compute — EC2 &amp; Auto Scaling</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">Q11 – Q18, Q37, Q38, Q97</span>
+          <span class="tdpill tdpill-tag">Core Compute · Containers</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>EC2 is the backbone of AWS compute. Know the instance families, how AMIs, Auto Scaling, and ELB work together to build scalable, highly available applications.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q11</span><span class="qa-qtext">What is Amazon EC2?</span></div>
+        <div class="qa-a"><strong>Elastic Compute Cloud</strong> provides resizable, on-demand virtual servers (instances) in the cloud.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q12</span><span class="qa-qtext">What are the EC2 instance types?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>General Purpose:</strong> Balanced compute, memory, and networking.</li>
+            <li><strong>Compute Optimized:</strong> High-performance processors.</li>
+            <li><strong>Memory Optimized:</strong> Fast performance for large datasets in memory.</li>
+            <li><strong>Storage Optimized:</strong> High, sequential read/write for local storage.</li>
+            <li><strong>Accelerated Computing (GPU):</strong> Hardware accelerators for machine learning / graphics.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q13</span><span class="qa-qtext">What is an AMI?</span></div>
+        <div class="qa-a">An <strong>Amazon Machine Image</strong> is a pre-configured template (containing an OS, application server, and applications) used to launch EC2 instances.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q97</span><span class="qa-qtext">What is AMI baking?</span></div>
+        <div class="qa-a">The process of fully pre-configuring an AMI with all necessary software, security patches, and dependencies installed so instances <strong>boot up quickly</strong> without needing startup scripts.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q14</span><span class="qa-qtext">What is Auto Scaling?</span></div>
+        <div class="qa-a">A service that dynamically <strong>adjusts the number of EC2 instances</strong> up or down based on current demand or scheduled policies.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q15</span><span class="qa-qtext">What is an Elastic Load Balancer (ELB)?</span></div>
+        <div class="qa-a">Automatically <strong>distributes incoming application traffic</strong> across multiple targets, such as EC2 instances, containers, and IP addresses.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q16</span><span class="qa-qtext">What are the types of Load Balancers in AWS?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Application Load Balancer (ALB):</strong> Routes traffic at <strong>Layer 7</strong> (HTTP/HTTPS) level; supports path/host routing rules.</li>
+            <li><strong>Network Load Balancer (NLB):</strong> Routes traffic at <strong>Layer 4</strong> (TCP/UDP) for ultra-high performance and low latency.</li>
+            <li><strong>Gateway Load Balancer (GWLB):</strong> Deploys and manages third-party virtual network appliances.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q17</span><span class="qa-qtext">What is a Security Group?</span></div>
+        <div class="qa-a">A <strong>virtual firewall</strong> acting at the instance level to control allowed inbound and outbound traffic.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q18</span><span class="qa-qtext">What is a Key Pair?</span></div>
+        <div class="qa-a">A set of security credentials (public key stored by AWS, private key kept by you) used to securely log into EC2 instances via <strong>SSH or RDP</strong>.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q37</span><span class="qa-qtext">What is Amazon ECS?</span></div>
+        <div class="qa-a"><strong>Elastic Container Service</strong> is a highly scalable container orchestration service that supports Docker containers, letting you run and manage containerized applications without managing the underlying cluster infrastructure.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q38</span><span class="qa-qtext">What is AWS Fargate?</span></div>
+        <div class="qa-a">A <strong>serverless compute engine for containers</strong> that works with both ECS and EKS. Fargate eliminates the need to provision and manage servers — you specify CPU and memory, and AWS runs the containers.</div>
+      </div>
+
+    </div>
+
+    <table class="dtable" style="margin-top:16px">
+      <tr><th>LB Type</th><th>OSI Layer</th><th>Protocol</th><th>Best For</th></tr>
+      <tr><td>ALB</td><td>Layer 7</td><td>HTTP / HTTPS</td><td>Web apps, microservices, path-based routing</td></tr>
+      <tr><td>NLB</td><td>Layer 4</td><td>TCP / UDP</td><td>Real-time gaming, IoT, ultra-low latency</td></tr>
+      <tr class="hl"><td>GWLB</td><td>Layer 3</td><td>IP</td><td>Third-party virtual appliances (firewalls, IDS)</td></tr>
+    </table>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       S4 — STORAGE
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-s4">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">📦 Storage — S3, EBS, EFS</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">Q19 – Q30, Q76 – Q78</span>
+          <span class="tdpill tdpill-tag">Object · Block · File</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>AWS storage spans three paradigms — object (S3), block (EBS), and file (EFS). Knowing when to use each, plus S3's rich feature set, is heavily tested.</p>
+      </div>
+    </div>
+
+    <div class="compare" style="margin-bottom:20px">
+      <div class="cmp">
+        <div class="cmp-lbl">S3 — Object Storage</div>
+        <strong>Access:</strong> Web URL / API (anywhere)<br>
+        <strong>Best For:</strong> Images, videos, backups, static websites
+      </div>
+      <div class="cmp">
+        <div class="cmp-lbl">EBS — Block Storage</div>
+        <strong>Access:</strong> Attached to 1 EC2 instance at a time<br>
+        <strong>Best For:</strong> Boot volumes, transactional databases
+      </div>
+      <div class="cmp">
+        <div class="cmp-lbl">EFS — File System</div>
+        <strong>Access:</strong> Shared across thousands of EC2 instances<br>
+        <strong>Best For:</strong> Shared app data, content management
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q21</span><span class="qa-qtext">What is Amazon S3?</span></div>
+        <div class="qa-a"><strong>Simple Storage Service</strong> is an object storage platform designed to store and retrieve any amount of data from anywhere on the web.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q22</span><span class="qa-qtext">What are S3 buckets?</span></div>
+        <div class="qa-a">Globally unique logical containers used to organize and store objects within S3.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q23</span><span class="qa-qtext">What is S3 versioning?</span></div>
+        <div class="qa-a">A mechanism to <strong>preserve, retrieve, and restore</strong> every version of every object stored in a bucket, guarding against accidental deletion or overwrites.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q24 &amp; Q30</span><span class="qa-qtext">What is an S3 Lifecycle Policy / Object Lifecycle Management?</span></div>
+        <div class="qa-a">Automated rules that optimize storage costs by <strong>moving objects to cheaper storage tiers</strong> or permanently deleting them after a set period.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q25</span><span class="qa-qtext">What are the S3 storage classes?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Standard:</strong> High durability, availability, and frequent access.</li>
+            <li><strong>Standard-IA:</strong> Infrequent access, but requires rapid availability when needed.</li>
+            <li><strong>One Zone-IA:</strong> Lower cost, stored in a single AZ (less resilient).</li>
+            <li><strong>Glacier Flexible Retrieval:</strong> Low-cost archive; retrieval within minutes to hours.</li>
+            <li><strong>Glacier Deep Archive:</strong> Lowest cost; retrieval time within 12 hours.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q27</span><span class="qa-qtext">What is S3 replication?</span></div>
+        <div class="qa-a">Automated, asynchronous copying of objects across buckets — in the same region (<strong>SRR</strong>) or different regions (<strong>CRR</strong>).</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q28</span><span class="qa-qtext">What is a pre-signed URL?</span></div>
+        <div class="qa-a">A temporary URL generated by an owner to grant <strong>time-limited access</strong> to private objects without altering bucket permissions.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q29</span><span class="qa-qtext">What is an S3 event notification?</span></div>
+        <div class="qa-a">An alert feature that triggers downstream services (like Lambda or SQS) <strong>automatically whenever a specific event occurs</strong>, such as an object upload.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q19</span><span class="qa-qtext">What is EBS?</span></div>
+        <div class="qa-a"><strong>Elastic Block Store</strong> provides high-performance, persistent block-level storage volumes for use with Amazon EC2 instances.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q20</span><span class="qa-qtext">What is the difference between EBS and Instance Store?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>EBS:</strong> <em>Persistent</em> storage. Data survives an instance stop/termination.</li>
+            <li><strong>Instance Store:</strong> <em>Ephemeral</em> (temporary) storage physically attached to the host computer. Data is <strong>permanently lost</strong> if the instance stops or terminates.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q76</span><span class="qa-qtext">What is EFS?</span></div>
+        <div class="qa-a"><strong>Elastic File System</strong> provides a serverless, fully managed, elastic network file system that can be shared simultaneously among thousands of EC2 instances.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q77</span><span class="qa-qtext">What is FSx?</span></div>
+        <div class="qa-a">Fully managed, high-performance file systems for specific commercial engines: <strong>FSx for Windows File Server</strong> and <strong>FSx for Lustre</strong>.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q78</span><span class="qa-qtext">What is Storage Gateway?</span></div>
+        <div class="qa-a">A hybrid cloud storage service that gives on-premises environments access to virtually unlimited cloud storage via local caching.</div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Cost order (cheapest → most expensive):</strong> Glacier Deep Archive → Glacier Flexible Retrieval → One Zone-IA → Standard-IA → Standard. Use lifecycle policies to automate tier transitions automatically.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       S5 — NETWORKING
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-s5">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🌐 Networking — VPC &amp; Traffic Routing</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">Q31 – Q40, Q91 – Q93</span>
+          <span class="tdpill tdpill-tag">VPC · DNS · CDN</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>VPC is your isolated cloud network. Mastering subnets, gateways, route tables, and the Security Group vs NACL distinction is essential for architecting secure systems.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q31</span><span class="qa-qtext">What is a VPC?</span></div>
+        <div class="qa-a"><strong>Virtual Private Cloud</strong> is a logically isolated virtual network dedicated to your AWS account.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q32</span><span class="qa-qtext">What is a Subnet?</span></div>
+        <div class="qa-a">A designated segment of an IP address range inside a VPC where you can isolate resources.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q33</span><span class="qa-qtext">What are the types of subnets?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Public Subnet:</strong> Connected directly to an Internet Gateway; resources have public IPs.</li>
+            <li><strong>Private Subnet:</strong> Isolated from the open internet; resources use internal IPs only.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q34</span><span class="qa-qtext">What is an Internet Gateway (IGW)?</span></div>
+        <div class="qa-a">A horizontally scaled, redundant VPC component that allows communication between instances in your VPC and the <strong>open internet</strong>.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q35</span><span class="qa-qtext">What is a NAT Gateway?</span></div>
+        <div class="qa-a">Allows resources in a <strong>private subnet</strong> to securely initiate <em>outbound</em> traffic to the internet while <strong>preventing incoming connections</strong> from the internet.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q36</span><span class="qa-qtext">What is a Route Table?</span></div>
+        <div class="qa-a">A set of rules (routes) used to determine <strong>where network traffic</strong> from your subnet or gateway is directed.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q37</span><span class="qa-qtext">What is VPC Peering?</span></div>
+        <div class="qa-a">A networking connection that allows you to route traffic between two VPCs privately using <strong>private IP addresses</strong>.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q38</span><span class="qa-qtext">What is an AWS VPN?</span></div>
+        <div class="qa-a">Creates a secure, encrypted <strong>IPsec tunnel</strong> over the public internet between your on-premises network and your AWS VPC.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q39</span><span class="qa-qtext">What is AWS Direct Connect?</span></div>
+        <div class="qa-a">A cloud service that establishes a <strong>dedicated, physical network connection</strong> bypassing the public internet entirely — from your premises to AWS.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q40</span><span class="qa-qtext">What is the difference between a Security Group and a NACL?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Security Group:</strong> Operates at the <strong>instance level</strong>, supports <em>Allow rules only</em>, and is <strong>stateful</strong> (inbound traffic allowed is automatically permitted back out).</li>
+            <li><strong>Network ACL (NACL):</strong> Operates at the <strong>subnet level</strong>, supports <em>Allow and Deny rules</em>, and is <strong>stateless</strong> (return traffic must be explicitly allowed).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q91</span><span class="qa-qtext">What is CloudFront?</span></div>
+        <div class="qa-a">A global <strong>content delivery network (CDN)</strong> service that securely delivers data, videos, applications, and APIs to users with low latency.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q92</span><span class="qa-qtext">What is Route 53?</span></div>
+        <div class="qa-a">A highly available, scalable <strong>Domain Name System (DNS)</strong> web service that routes user requests to internet applications.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q93</span><span class="qa-qtext">What is an Elastic IP?</span></div>
+        <div class="qa-a">A static, public IPv4 address allocated to your account that can be <strong>rapidly remapped</strong> to another instance to mask instance failures.</div>
+      </div>
+
+    </div>
+
+    <table class="dtable" style="margin-top:16px">
+      <tr><th>Feature</th><th>Security Group</th><th>NACL</th></tr>
+      <tr><td>Level</td><td>Instance</td><td>Subnet</td></tr>
+      <tr><td>Rules</td><td>Allow only</td><td>Allow + Deny</td></tr>
+      <tr><td>Statefulness</td><td>Stateful</td><td>Stateless</td></tr>
+      <tr class="hl"><td>Return traffic</td><td>Automatic</td><td>Must be explicitly allowed</td></tr>
+    </table>
+
+    <div class="tip" style="margin-top:16px"><strong>VPN vs Direct Connect:</strong> VPN = encrypted tunnel over public internet (quick to set up, lower cost). Direct Connect = dedicated private line (higher cost, consistent bandwidth, lower latency). Use Direct Connect for high-throughput, latency-sensitive workloads.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       S6 — DATABASES
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-s6">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🗄️ Databases</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">Q41 – Q48, Q50</span>
+          <span class="tdpill tdpill-tag">RDS · DynamoDB · Cache</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>AWS offers managed relational (RDS, Aurora), NoSQL (DynamoDB), analytical (Redshift), and caching (ElastiCache) services. Know which engine to choose and the HA/scaling options within each.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q41</span><span class="qa-qtext">What is Amazon RDS?</span></div>
+        <div class="qa-a"><strong>Relational Database Service</strong> makes it easy to set up, operate, and scale a relational database in the cloud.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q42</span><span class="qa-qtext">What are the supported RDS engines?</span></div>
+        <div class="qa-a">MySQL, PostgreSQL, MariaDB, Oracle, Microsoft SQL Server, and Amazon Aurora.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q43</span><span class="qa-qtext">What is Amazon Aurora?</span></div>
+        <div class="qa-a">A cloud-native, high-performance relational database engine fully compatible with <strong>MySQL and PostgreSQL</strong>, built for the cloud with up to 5× MySQL throughput.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q47</span><span class="qa-qtext">What is Multi-AZ in RDS?</span></div>
+        <div class="qa-a">An architectural deployment model that automatically provisions a synchronous <strong>standby replica</strong> in a different AZ for <strong>High Availability / Disaster Recovery</strong>.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q48</span><span class="qa-qtext">What is a Read Replica?</span></div>
+        <div class="qa-a">An asynchronous copy of a primary database used to <strong>offload read traffic</strong> and improve read scaling / performance.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q44</span><span class="qa-qtext">What is DynamoDB?</span></div>
+        <div class="qa-a">A fully managed, serverless <strong>NoSQL key-value and document database</strong> designed for single-digit millisecond performance at any scale.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q45</span><span class="qa-qtext">What is Redshift?</span></div>
+        <div class="qa-a">A fast, fully managed, petabyte-scale <strong>data warehouse</strong> service used to run complex analytical queries over massive datasets.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q46</span><span class="qa-qtext">What is ElastiCache?</span></div>
+        <div class="qa-a">A fully managed <strong>in-memory data store and caching service</strong> (supporting Redis and Memcached) used to speed up application read latency.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q50</span><span class="qa-qtext">What is a database snapshot?</span></div>
+        <div class="qa-a">A <strong>point-in-time, storage-level backup</strong> of a database instance.</div>
+      </div>
+
+    </div>
+
+    <table class="dtable" style="margin-top:16px">
+      <tr><th>Service</th><th>Type</th><th>Best For</th></tr>
+      <tr><td>RDS</td><td>Relational (SQL)</td><td>Traditional apps, OLTP workloads</td></tr>
+      <tr><td>Aurora</td><td>Relational (SQL)</td><td>High-throughput cloud-native SQL</td></tr>
+      <tr><td>DynamoDB</td><td>NoSQL (Key-Value / Doc)</td><td>Serverless, millisecond latency at scale</td></tr>
+      <tr><td>Redshift</td><td>Data Warehouse</td><td>OLAP, analytics over terabytes</td></tr>
+      <tr class="hl"><td>ElastiCache</td><td>In-memory Cache</td><td>Session stores, leaderboards, hot reads</td></tr>
+    </table>
+
+    <div class="rule" style="margin-top:16px">
+      <div class="rule-title">Multi-AZ vs Read Replica</div>
+      <div class="rule-body"><strong>Multi-AZ</strong> = High Availability (synchronous standby, automatic failover). Does NOT improve read performance. <strong>Read Replica</strong> = Read Scaling (asynchronous copy, manual promotion). Does NOT provide automatic HA failover.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       S7 — SERVERLESS
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-s7">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">⚡ Serverless &amp; Event-Driven Architecture</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">Q51 – Q55 · SNS · SQS</span>
+          <span class="tdpill tdpill-tag">Lambda · API GW · Messaging</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Serverless removes infrastructure management. Lambda, API Gateway, Step Functions, and EventBridge form the core event-driven building blocks in AWS.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q51</span><span class="qa-qtext">What is AWS Lambda?</span></div>
+        <div class="qa-a">A serverless compute service that lets you run code <strong>in response to events</strong> without provisioning or managing underlying servers.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q52</span><span class="qa-qtext">What are some common Lambda triggers?</span></div>
+        <div class="qa-a">S3 bucket uploads, API Gateway HTTP requests, DynamoDB data modifications (Streams), and CloudWatch time-based (scheduled) events.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q53</span><span class="qa-qtext">What is API Gateway?</span></div>
+        <div class="qa-a">A fully managed service for creating, publishing, maintaining, monitoring, and securing <strong>REST, HTTP, and WebSocket APIs</strong> at scale.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q54</span><span class="qa-qtext">What is Step Functions?</span></div>
+        <div class="qa-a">A serverless <strong>visual workflow orchestrator</strong> used to sequence multiple AWS services and Lambda functions into step-by-step applications.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q55</span><span class="qa-qtext">What is EventBridge?</span></div>
+        <div class="qa-a">A serverless <strong>event bus</strong> that makes it easy to connect applications together using data from your own apps, SaaS applications, and AWS services.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SNS</span><span class="qa-qtext">What is Amazon SNS?</span></div>
+        <div class="qa-a"><strong>Simple Notification Service</strong> is a fully managed <strong>pub/sub messaging service</strong> that enables you to decouple microservices and distribute messages to a large number of subscribers (email, SMS, HTTP, Lambda, SQS) simultaneously.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SQS</span><span class="qa-qtext">What is Amazon SQS?</span></div>
+        <div class="qa-a"><strong>Simple Queue Service</strong> is a fully managed <strong>message queuing service</strong> that enables decoupling and scaling of microservices and distributed systems. Messages are stored in the queue until a consumer processes and deletes them.</div>
+      </div>
+
+    </div>
+
+    <div class="rule" style="margin-top:16px">
+      <div class="rule-title">SNS vs SQS</div>
+      <div class="rule-body"><strong>SNS (push):</strong> One message fans out to <em>many</em> subscribers at once (pub/sub). <strong>SQS (pull):</strong> Messages queue up and a single consumer pulls and processes each one. Common pattern: SNS → SQS (fan-out to multiple queues for parallel processing).</div>
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Event-driven pattern:</strong> An event source (S3, DynamoDB, API GW) triggers Lambda → Lambda processes and writes to a destination (DynamoDB, S3, SQS). Step Functions orchestrate multi-step Lambda workflows with retries, branching, and parallel execution.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       S8 — MONITORING
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-s8">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">📊 Monitoring, Governance, &amp; Pricing</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">Q56 – Q60, Q74 – Q75</span>
+          <span class="tdpill tdpill-tag">CloudWatch · CloudTrail · Config</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Operational visibility comes from CloudWatch (metrics/alarms), CloudTrail (API audit logs), and AWS Config (compliance tracking). Cost Explorer and Trusted Advisor add cost and best-practice guidance.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q56 &amp; Q57</span><span class="qa-qtext">What is CloudWatch &amp; CloudWatch Metrics?</span></div>
+        <div class="qa-a">A monitoring and management service that collects <strong>performance data (Metrics</strong> like CPU utilization) to give you operational visibility into applications and infrastructure.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q58</span><span class="qa-qtext">What is a CloudWatch Alarm?</span></div>
+        <div class="qa-a">A watch configuration that monitors a single metric over a specified time period and performs <strong>actions</strong> (sending an SNS alert or triggering Auto Scaling) if a threshold is crossed.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q59</span><span class="qa-qtext">What is CloudTrail?</span></div>
+        <div class="qa-a">An auditing and governance service that logs and tracks all <strong>API calls and account activity</strong> — <em>Who did What, When, and From Where</em>.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q60</span><span class="qa-qtext">What is AWS Config?</span></div>
+        <div class="qa-a">A service that continuously <strong>monitors, records, and evaluates</strong> the configuration history of your AWS resources to ensure compliance with best practices.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q74</span><span class="qa-qtext">What is Cost Explorer?</span></div>
+        <div class="qa-a">A management tool that enables you to <strong>visualize, understand, and analyze</strong> your AWS spending and usage over time.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q75</span><span class="qa-qtext">What is Trusted Advisor?</span></div>
+        <div class="qa-a">An online tool that provides real-time recommendations across five categories: <strong>Cost Optimization, Security, Fault Tolerance, Performance, and Service Limits</strong>.</div>
+      </div>
+
+    </div>
+
+    <table class="dtable" style="margin-top:16px">
+      <tr><th>Service</th><th>Purpose</th><th>Question it answers</th></tr>
+      <tr><td>CloudWatch</td><td>Metrics &amp; Alarms</td><td>"Is my CPU above 80%?"</td></tr>
+      <tr><td>CloudTrail</td><td>API Audit Log</td><td>"Who deleted that S3 bucket?"</td></tr>
+      <tr><td>AWS Config</td><td>Config Compliance</td><td>"Was this security group ever open to 0.0.0.0/0?"</td></tr>
+      <tr class="hl"><td>Cost Explorer</td><td>Cost Analysis</td><td>"Which service is driving my bill up?"</td></tr>
+    </table>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       S9 — SECURITY
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-s9">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔒 Security &amp; Identity Services</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">Q61 – Q65 · Inspector · Shared Resp.</span>
+          <span class="tdpill tdpill-tag">KMS · WAF · Shield · Cognito</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>AWS security services protect data at rest (KMS), secrets (Secrets Manager), application traffic (WAF), DDoS attacks (Shield), and user authentication (Cognito).</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q61</span><span class="qa-qtext">What is KMS?</span></div>
+        <div class="qa-a"><strong>Key Management Service</strong> makes it easy to create and manage cryptographic encryption keys used to protect your data across AWS services.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q64</span><span class="qa-qtext">What is Secrets Manager?</span></div>
+        <div class="qa-a">A service designed to securely <strong>store, rotate, manage, and retrieve secrets</strong> like database credentials, API keys, and passwords.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q62</span><span class="qa-qtext">What is AWS Shield?</span></div>
+        <div class="qa-a">A managed <strong>DDoS protection</strong> service that safeguards applications running on AWS. Shield Standard is free; Shield Advanced offers enhanced protection with 24/7 DRT support.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q63</span><span class="qa-qtext">What is AWS WAF?</span></div>
+        <div class="qa-a">A <strong>Web Application Firewall</strong> that helps protect web applications from common exploits like SQL injection and Cross-Site Scripting (XSS).</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q65</span><span class="qa-qtext">What is AWS Cognito?</span></div>
+        <div class="qa-a">A service that provides easy <strong>user sign-up, sign-in, and access control</strong> to your web and mobile applications.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Shared Responsibility</span><span class="qa-qtext">What is the Shared Responsibility Model?</span></div>
+        <div class="qa-a">A framework defining who is responsible for what in the cloud:
+          <ul>
+            <li><strong>AWS is responsible for security <em>of</em> the cloud:</strong> Physical hardware, data centers, networking infrastructure, hypervisor, and managed service software.</li>
+            <li><strong>Customer is responsible for security <em>in</em> the cloud:</strong> Operating systems, application code, data, IAM configurations, network/firewall settings, and encryption.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Inspector</span><span class="qa-qtext">What is AWS Inspector?</span></div>
+        <div class="qa-a">An <strong>automated security assessment service</strong> that continuously scans EC2 instances, container images (ECR), and Lambda functions for software vulnerabilities and unintended network exposure, then provides prioritized findings.</div>
+      </div>
+
+    </div>
+
+    <table class="dtable" style="margin-top:16px">
+      <tr><th>Service</th><th>Protects Against</th><th>Layer</th></tr>
+      <tr><td>KMS</td><td>Unauthorized data access (at rest)</td><td>Data encryption</td></tr>
+      <tr><td>Secrets Manager</td><td>Exposed credentials in code</td><td>Secrets lifecycle</td></tr>
+      <tr><td>Shield</td><td>DDoS volume attacks</td><td>Network / Transport</td></tr>
+      <tr><td>WAF</td><td>SQLi, XSS, OWASP Top 10</td><td>Application (L7)</td></tr>
+      <tr class="hl"><td>Cognito</td><td>Unauthenticated app access</td><td>Application auth</td></tr>
+    </table>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       S10 — DEVOPS
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-s10">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🛠️ DevOps, Migration, &amp; Enterprise Management</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">Q66 – Q72</span>
+          <span class="tdpill tdpill-tag">IaC · CI/CD · PaaS</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Infrastructure as Code (CloudFormation), managed deployment (Elastic Beanstalk), and the AWS CI/CD suite (CodeCommit, CodeBuild, CodeDeploy, CodePipeline) form the DevOps backbone on AWS.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q70</span><span class="qa-qtext">What is Infrastructure as Code (IaC)?</span></div>
+        <div class="qa-a">The practice of provisioning and managing computing infrastructure using <strong>machine-readable configuration files</strong> rather than physical hardware configuration or interactive tools.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q71</span><span class="qa-qtext">What is CloudFormation?</span></div>
+        <div class="qa-a">AWS's native <strong>Infrastructure as Code</strong> service that allows you to model, provision, and update your entire AWS resource stack using <strong>JSON or YAML templates</strong>.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Q72</span><span class="qa-qtext">What is Elastic Beanstalk?</span></div>
+        <div class="qa-a">An easy-to-use <strong>PaaS service</strong> for deploying and scaling web applications developed with Java, .NET, PHP, Node.js, Python, Ruby, Go, and Docker — without managing the underlying infrastructure.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">OpsWorks</span><span class="qa-qtext">What is AWS OpsWorks?</span></div>
+        <div class="qa-a">A <strong>configuration management service</strong> that provides managed instances of <strong>Chef and Puppet</strong> — tools that automate server configuration, deployment, and management across your instances.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SSM</span><span class="qa-qtext">What is AWS Systems Manager?</span></div>
+        <div class="qa-a">Provides <strong>visibility and control of your infrastructure</strong> on AWS. Key capabilities include: Run Command (execute scripts remotely), Parameter Store (secure config/secrets storage), Patch Manager (automate OS patching), and Session Manager (browser-based shell without SSH).</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">Cloud9</span><span class="qa-qtext">What is AWS Cloud9?</span></div>
+        <div class="qa-a">A <strong>cloud-based IDE</strong> accessible in a web browser, with built-in code completion, a debugger, and a terminal with direct AWS CLI access — no local setup required.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">CodeStar</span><span class="qa-qtext">What is AWS CodeStar?</span></div>
+        <div class="qa-a">A <strong>unified project dashboard</strong> that provides a single place to manage software development activity: quickly set up a CI/CD pipeline, track issues, and monitor builds — integrating CodeCommit, CodeBuild, CodeDeploy, and CodePipeline.</div>
+      </div>
+
+    </div>
+
+    <div class="lbl" style="margin-top:20px">AWS CI/CD Suite — Q66–Q69</div>
+
+    <table class="dtable">
+      <tr><th>Service</th><th>Role</th><th>Analogy</th></tr>
+      <tr><td>CodeCommit</td><td>Managed Git source control repository</td><td>GitHub / GitLab on AWS</td></tr>
+      <tr><td>CodeBuild</td><td>Fully managed build &amp; test service</td><td>Jenkins Build Server</td></tr>
+      <tr><td>CodeDeploy</td><td>Automated deployment to EC2, Lambda, ECS, on-prem</td><td>Deployment automation</td></tr>
+      <tr class="hl"><td>CodePipeline</td><td>Orchestrates the full CI/CD workflow end-to-end</td><td>The pipeline glue</td></tr>
+    </table>
+
+    <div class="rule" style="margin-top:16px">
+      <div class="rule-title">CloudFormation vs Elastic Beanstalk</div>
+      <div class="rule-body"><strong>CloudFormation:</strong> Full control over every AWS resource — you define everything in a template. Best when you need precise infrastructure configuration. <strong>Elastic Beanstalk:</strong> Opinionated PaaS — you upload code, AWS handles capacity, load balancing, scaling, and health monitoring. Best for developers who want to focus on code, not infrastructure.</div>
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Pipeline flow:</strong> CodeCommit (source) → CodeBuild (build &amp; test) → CodeDeploy (deploy) — all orchestrated by <strong>CodePipeline</strong>. Each stage can have manual approval gates.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       S11 — SCENARIOS (HOW-TO)
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-s11">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🎯 Scenario &amp; How-To Questions</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">SC1 – SC11</span>
+          <span class="tdpill tdpill-tag">Architecture · Operations · Security</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Practical scenario questions test your ability to apply AWS knowledge to real-world problems: migrations, HA design, DR, CI/CD, cost optimization, logging, and networking.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SC1</span><span class="qa-qtext">How would you migrate an on-premises application to AWS?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Assess:</strong> Inventory the app, dependencies, and data using AWS Migration Hub or Application Discovery Service.</li>
+            <li><strong>Choose a strategy:</strong> Rehost (lift-and-shift to EC2), Replatform (move to RDS/Elastic Beanstalk), or Refactor (re-architect using serverless/containers).</li>
+            <li><strong>Migrate:</strong> Use AWS Database Migration Service (DMS) for databases and AWS Server Migration Service (SMS) or Application Migration Service for servers.</li>
+            <li><strong>Validate:</strong> Run in parallel, test thoroughly, then cut over.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SC2</span><span class="qa-qtext">How do you ensure high availability on AWS?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li>Deploy resources across <strong>multiple Availability Zones</strong>.</li>
+            <li>Use <strong>Elastic Load Balancing</strong> to distribute traffic and detect unhealthy targets.</li>
+            <li>Configure <strong>EC2 Auto Scaling</strong> to replace failed instances automatically.</li>
+            <li>Use <strong>RDS Multi-AZ</strong> for automatic database failover.</li>
+            <li>Design with <strong>stateless application tiers</strong> so any instance can serve any request.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SC3</span><span class="qa-qtext">How do you secure data at rest in S3?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li>Enable <strong>Server-Side Encryption (SSE)</strong> — use SSE-S3 (AWS-managed keys) or SSE-KMS (customer-managed keys via KMS).</li>
+            <li>Apply <strong>S3 bucket policies and IAM policies</strong> to restrict access to authorized principals only.</li>
+            <li>Block public access using the <strong>S3 Block Public Access</strong> setting.</li>
+            <li>Enable <strong>S3 Versioning</strong> to protect against accidental deletion.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SC4</span><span class="qa-qtext">How do you handle disaster recovery on AWS?</span></div>
+        <div class="qa-a">Choose a DR strategy based on RTO/RPO requirements:
+          <ul>
+            <li><strong>Backup &amp; Restore:</strong> Lowest cost, highest RTO. Regularly back up data to S3 and restore from snapshots when needed.</li>
+            <li><strong>Pilot Light:</strong> Core infrastructure (DB) always running; app servers launched on failover.</li>
+            <li><strong>Warm Standby:</strong> Scaled-down but fully functional copy in another region; scale up on failover.</li>
+            <li><strong>Multi-Site Active-Active:</strong> Full production stack in multiple regions; fastest RTO/RPO, highest cost.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SC5</span><span class="qa-qtext">How do you monitor AWS resources?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>CloudWatch:</strong> Collect metrics (CPU, memory, custom), set alarms, create dashboards, and stream logs via CloudWatch Logs.</li>
+            <li><strong>CloudTrail:</strong> Audit all API calls — who changed what, when, and from where.</li>
+            <li><strong>AWS Config:</strong> Track resource configuration changes and evaluate compliance rules over time.</li>
+            <li><strong>AWS Health Dashboard:</strong> Monitor service events that may affect your account.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SC6</span><span class="qa-qtext">How do you optimize costs in AWS?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Right-size instances:</strong> Use CloudWatch metrics and Compute Optimizer to match instance size to actual usage.</li>
+            <li><strong>Reserved Instances / Savings Plans:</strong> Commit to 1–3 year usage for up to 72% discount vs on-demand.</li>
+            <li><strong>Spot Instances:</strong> Use for fault-tolerant, interruptible workloads (batch jobs, CI/CD) at up to 90% discount.</li>
+            <li><strong>S3 Lifecycle Policies:</strong> Auto-transition objects to cheaper storage tiers.</li>
+            <li><strong>Cost Explorer + Billing Alerts:</strong> Track spending trends and set budget alarms.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SC7</span><span class="qa-qtext">How do you implement CI/CD on AWS?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Source:</strong> Store code in CodeCommit (or GitHub).</li>
+            <li><strong>Build &amp; Test:</strong> CodeBuild compiles code and runs unit/integration tests.</li>
+            <li><strong>Deploy:</strong> CodeDeploy pushes the artifact to EC2, Lambda, or ECS.</li>
+            <li><strong>Orchestrate:</strong> CodePipeline ties all stages together, with optional manual approval gates between stages.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SC8</span><span class="qa-qtext">How do you manage secrets and credentials on AWS?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li>Use <strong>AWS Secrets Manager</strong> to store, rotate, and retrieve secrets (DB passwords, API keys) — supports automatic rotation with Lambda.</li>
+            <li>Use <strong>Systems Manager Parameter Store</strong> for application configuration values (non-secret or encrypted with KMS).</li>
+            <li><strong>Never hardcode</strong> credentials in code or environment variables; use IAM Roles for applications on AWS services.</li>
+            <li>Set <strong>least-privilege IAM policies</strong> on who can access each secret.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SC9</span><span class="qa-qtext">How do you scale a web application on AWS?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Compute:</strong> EC2 Auto Scaling group with scale-out/in policies based on CPU or request count.</li>
+            <li><strong>Traffic:</strong> Application Load Balancer distributes requests across all healthy instances.</li>
+            <li><strong>Caching:</strong> CloudFront caches static assets at the edge; ElastiCache caches hot database queries.</li>
+            <li><strong>Database:</strong> RDS Read Replicas offload read traffic; Aurora Auto Scaling adds read replicas on demand.</li>
+            <li><strong>Sessions:</strong> Store session state in ElastiCache or DynamoDB (not on instance) to keep app tier stateless.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SC10</span><span class="qa-qtext">How do you implement logging on AWS?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>CloudTrail:</strong> Enable in all regions; send logs to an S3 bucket for long-term retention and audit.</li>
+            <li><strong>CloudWatch Logs:</strong> Install the CloudWatch agent on EC2; use log groups for application, OS, and access logs.</li>
+            <li><strong>VPC Flow Logs:</strong> Capture IP traffic metadata for network troubleshooting and security analysis.</li>
+            <li><strong>S3 Access Logs / ALB Access Logs:</strong> Enable per-service access logging to S3 for request-level audit trails.</li>
+            <li><strong>CloudWatch Alarms &amp; Dashboards:</strong> Set threshold alerts on log-based metrics (e.g., error rate spikes).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SC11</span><span class="qa-qtext">How do you set up a VPC with public and private subnets?</span></div>
+        <div class="qa-a">
+          <ol style="margin:6px 0 4px 18px">
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300">Create a <strong>VPC</strong> with a CIDR block (e.g., 10.0.0.0/16).</li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300">Create <strong>public subnets</strong> (e.g., 10.0.1.0/24) and <strong>private subnets</strong> (e.g., 10.0.2.0/24) — preferably across multiple AZs.</li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300">Attach an <strong>Internet Gateway (IGW)</strong> to the VPC.</li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300">Update the <strong>public subnet route table</strong>: add a route 0.0.0.0/0 → IGW.</li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300">Create a <strong>NAT Gateway</strong> in the public subnet.</li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300">Update the <strong>private subnet route table</strong>: add a route 0.0.0.0/0 → NAT Gateway.</li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300">Place public-facing resources (ALB, bastion) in public subnets; databases and app servers in private subnets.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>DR strategy selection:</strong> RTO = how fast you need to recover. RPO = how much data loss is acceptable. Lower RTO/RPO = higher cost. Match strategy to business requirements: Backup &amp; Restore for dev/test; Warm Standby or Active-Active for production mission-critical systems.</div>
+  </div>
+
+</div><!-- /page-guide -->
+
+<script>
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nt').forEach(b => b.classList.remove('on'));
+  document.getElementById('page-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+function switchSection(id, btn) {
+  document.querySelectorAll('.spane').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.snt').forEach(b => b.classList.remove('on'));
+  document.getElementById('sp-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+</script>
+</body>
+</html>
