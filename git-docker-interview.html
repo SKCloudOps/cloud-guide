@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git &amp; Docker — Advanced Interview Questions</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ivory:#faf9f5;--ivory-md:#f0ede4;--ivory-dk:#e4e0d4;--dark:#141413;--dark2:#2a2925;--mid:#8a8880;--mid-lt:#d4d1c9;--clay:#d97757;--clay-dk:#a8553a;--olive:#788c5d;--blue:#6a9bcc;--plum:#7c5fbf;--good:#2e7d5e;--bad:#c0392b;--amber:#a87c1a;--serif:"Playfair Display",Georgia,serif;--sans:"DM Sans",system-ui,sans-serif;--mono:"DM Mono",monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ivory);color:var(--dark);font-family:var(--sans);font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+nav{position:sticky;top:0;z-index:200;background:rgba(250,249,245,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--ivory-dk);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;gap:10px}
+.nb{font-family:var(--serif);font-size:14px;font-weight:500;color:var(--dark)}
+.nav-slash{width:1px;height:14px;background:var(--clay);display:inline-block;margin:0 6px;vertical-align:middle}
+.ntabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.ntabs::-webkit-scrollbar{display:none}
+.nt{padding:5px 12px;border:none;background:transparent;font-family:var(--sans);font-size:11px;font-weight:500;color:var(--mid);cursor:pointer;border-radius:3px;white-space:nowrap;transition:all .15s}
+.nt:hover{color:var(--dark);background:var(--ivory-md)}
+.nt.on{color:var(--dark);background:var(--ivory-dk)}
+.badge{font-family:var(--mono);font-size:10px;color:var(--clay);background:rgba(217,119,87,.1);border:1px solid rgba(217,119,87,.25);padding:2px 8px;border-radius:0 0 3px 3px;white-space:nowrap;flex-shrink:0}
+.page{display:none;max-width:1000px;margin:0 auto;padding:36px 20px 80px}
+.page.on{display:block}
+.hero{margin-bottom:36px}
+.hlabel{font-family:var(--mono);font-size:10px;color:var(--clay);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px}
+.hero h1{font-family:var(--serif);font-size:clamp(26px,4vw,42px);font-weight:400;line-height:1.1;letter-spacing:-.02em;margin-bottom:10px}
+.hero h1 u{text-decoration:underline;text-decoration-color:var(--clay);text-underline-offset:4px;text-decoration-thickness:2px;font-style:normal}
+.hero p{font-size:13px;font-weight:300;color:var(--dark2);max-width:560px;line-height:1.7}
+.snav{display:flex;gap:0;border:1px solid var(--ivory-dk);margin-bottom:20px;flex-wrap:wrap}
+.snt{flex:1;min-width:fit-content;padding:8px 12px;border:none;border-right:1px solid var(--ivory-dk);border-bottom:1px solid var(--ivory-dk);background:var(--ivory);font-family:var(--sans);font-size:11px;font-weight:500;cursor:pointer;color:var(--mid);transition:all .15s;text-align:center;white-space:nowrap}
+.snt:last-child{border-right:none}
+.snt:hover{background:var(--ivory-md);color:var(--dark)}
+.snt.on{background:var(--dark);color:var(--ivory)}
+.spane{display:none}.spane.on{display:block}
+.topic-def{margin-bottom:20px;border:1px solid var(--ivory-dk);overflow:hidden}
+.topic-def-hd{background:var(--dark2);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.topic-def-title{font-family:var(--serif);font-size:17px;font-weight:400;color:var(--ivory);letter-spacing:-.015em}
+.topic-def-pills{display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0}
+.tdpill{font-family:var(--mono);font-size:9px;padding:2px 8px;border:1px solid;text-transform:uppercase;letter-spacing:.07em}
+.tdpill-weight{color:var(--clay);border-color:rgba(217,119,87,.4);background:rgba(217,119,87,.1)}
+.tdpill-tag{color:var(--blue);border-color:rgba(106,155,204,.35);background:rgba(106,155,204,.08)}
+.topic-def-body{padding:16px 18px;background:var(--ivory)}
+.qa-list{display:flex;flex-direction:column;gap:12px}
+.qa{border:1px solid var(--ivory-dk);overflow:hidden}
+.qa-q{padding:12px 16px;background:var(--ivory-md);border-bottom:1px solid var(--ivory-dk);display:flex;gap:12px;align-items:flex-start}
+.qa-num{font-family:var(--mono);font-size:10px;color:var(--clay);background:rgba(217,119,87,.1);border:1px solid rgba(217,119,87,.25);padding:2px 7px;flex-shrink:0;margin-top:1px;font-weight:500}
+.qa-qtext{font-size:13px;font-weight:500;color:var(--dark);line-height:1.55}
+.qa-a{padding:12px 16px;font-size:13px;color:var(--dark2);line-height:1.7;font-weight:300}
+.qa-a strong{color:var(--dark);font-weight:600}
+.qa-a ul{margin:6px 0 4px 18px}
+.qa-a li{font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300}
+.qa-a li strong{color:var(--dark)}
+.qa-a code{font-family:var(--mono);font-size:12px;background:var(--ivory-md);border:1px solid var(--ivory-dk);padding:1px 5px;border-radius:2px;color:var(--dark)}
+.rule{margin-bottom:12px;padding:12px 16px;border-left:3px solid var(--clay);background:rgba(217,119,87,.04)}
+.rule-title{font-size:12px;font-weight:600;color:var(--dark);margin-bottom:4px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em}
+.rule-body{font-size:13px;color:var(--dark2);line-height:1.65;font-weight:300}
+.rule-body code{font-family:var(--mono);font-size:12px;background:var(--ivory-dk);padding:1px 5px;border-radius:2px;color:var(--dark)}
+.dtable{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}
+.dtable th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;padding:8px 10px;text-align:left;border-bottom:2px solid var(--dark);background:var(--ivory-md);color:var(--mid)}
+.dtable td{padding:9px 10px;border-bottom:1px solid var(--ivory-dk);vertical-align:top;line-height:1.5;color:var(--dark2)}
+.dtable tr:last-child td{border-bottom:none}
+.dtable td:first-child{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--dark)}
+.dtable tr.hl td{background:rgba(46,125,94,.05)}
+.tip{margin-top:10px;padding:10px 14px;background:var(--ivory-md);border-left:2px solid var(--clay);font-size:12px;color:var(--dark2);line-height:1.6}
+.tip strong{color:var(--dark);font-weight:600}
+.tip code{font-family:var(--mono);font-size:11px;background:var(--ivory-dk);padding:1px 5px;border-radius:2px;color:var(--dark)}
+.lbl{font-family:var(--mono);font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.lbl::after{content:"";flex:1;height:1px;background:var(--ivory-dk)}
+h3{font-family:var(--serif);font-size:16px;font-weight:500;margin:16px 0 8px}
+p{font-size:13px;color:var(--dark2);line-height:1.65;margin-bottom:8px;font-weight:300}
+strong{font-weight:600;color:var(--dark)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nb">Dev<span class="nav-slash"></span>Tools <span style="font-weight:300;font-family:var(--sans);font-size:12px;color:var(--mid)">Advanced Interview</span></div>
+  <div class="ntabs">
+    <button class="nt on" onclick="showPage('guide',this)">Study Guide</button>
+  </div>
+  <span class="badge">Git &amp; Docker Q&amp;A</span>
+</nav>
+
+<div class="page on" id="page-guide">
+
+  <div class="hero">
+    <div class="hlabel">Advanced Interview Prep &middot; Git &amp; Docker</div>
+    <h1><u>Git</u> &amp; <u>Docker</u> Interview Questions</h1>
+    <p>Advanced Git branching, rebasing, conflict resolution, and internals — plus Docker architecture, multi-stage builds, networking, security, and orchestration patterns.</p>
+  </div>
+
+  <!-- SECTION NAV -->
+  <div class="snav">
+    <button class="snt on"  onclick="switchSection('git-core',this)">🔀 Git Core</button>
+    <button class="snt"     onclick="switchSection('git-branch',this)">🌿 Branching</button>
+    <button class="snt"     onclick="switchSection('git-adv',this)">⚡ Advanced Git</button>
+    <button class="snt"     onclick="switchSection('docker-core',this)">🐳 Docker Core</button>
+    <button class="snt"     onclick="switchSection('docker-build',this)">🏗️ Builds &amp; Images</button>
+    <button class="snt"     onclick="switchSection('docker-net',this)">🌐 Networking</button>
+    <button class="snt"     onclick="switchSection('docker-adv',this)">🔒 Security &amp; Prod</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       GIT CORE
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane on" id="sp-git-core">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔀 Git Internals &amp; Core Concepts</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">G1 – G10</span>
+          <span class="tdpill tdpill-tag">Internals · Objects · Index</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Understanding how Git stores data — blobs, trees, commits, and tags — lets you diagnose any situation and recover from disasters confidently.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G1</span><span class="qa-qtext">What are the four Git object types and how are they related?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Blob:</strong> Stores raw file content (no filename, no metadata).</li>
+            <li><strong>Tree:</strong> Maps filenames/directories to blobs and other trees — represents a directory snapshot.</li>
+            <li><strong>Commit:</strong> Points to a root tree, parent commit(s), author, committer, and message.</li>
+            <li><strong>Tag:</strong> Named pointer to a specific commit (annotated tags store extra metadata; lightweight tags are just refs).</li>
+          </ul>
+          Every object is content-addressed by its <strong>SHA-1 hash</strong> and stored in <code>.git/objects/</code>.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G2</span><span class="qa-qtext">What is the difference between the working directory, the staging area (index), and the repository?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Working directory:</strong> The files you see and edit on disk.</li>
+            <li><strong>Staging area (index):</strong> A prepared snapshot of what will go into the <em>next</em> commit. Lives in <code>.git/index</code>.</li>
+            <li><strong>Repository (.git):</strong> The permanent object database of all commits, trees, and blobs.</li>
+          </ul>
+          <code>git add</code> moves changes from working directory → index. <code>git commit</code> moves the index → repository.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G3</span><span class="qa-qtext">What does <code>git reset</code> do, and what is the difference between --soft, --mixed, and --hard?</span></div>
+        <div class="qa-a">
+          <code>git reset</code> moves the current branch pointer (HEAD) to a target commit:
+          <ul>
+            <li><strong>--soft:</strong> Moves HEAD only. Index and working tree unchanged. Changes appear as staged.</li>
+            <li><strong>--mixed (default):</strong> Moves HEAD and resets the index. Changes appear as unstaged modifications.</li>
+            <li><strong>--hard:</strong> Moves HEAD, resets index, <em>and</em> overwrites the working tree. Changes are <strong>discarded</strong> — use with caution.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G4</span><span class="qa-qtext">What is the difference between <code>git reset</code> and <code>git revert</code>?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>git reset:</strong> Rewrites history by moving the branch pointer backward. <em>Dangerous on shared branches</em> — force-push required, disrupts collaborators.</li>
+            <li><strong>git revert:</strong> Creates a <em>new commit</em> that undoes a previous commit's changes. History is preserved — safe on shared branches.</li>
+          </ul>
+          Use <code>revert</code> on <code>main</code>; use <code>reset</code> only on local/private branches.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G5</span><span class="qa-qtext">What is <code>git stash</code> and when would you use it?</span></div>
+        <div class="qa-a">
+          <code>git stash</code> saves your uncommitted changes (staged and unstaged) onto a stack and reverts the working directory to the last commit — letting you switch context cleanly.
+          <ul>
+            <li><code>git stash push -m "message"</code> — save with a label.</li>
+            <li><code>git stash list</code> — view all stashes.</li>
+            <li><code>git stash pop</code> — apply the latest stash and drop it from the stack.</li>
+            <li><code>git stash apply stash@{2}</code> — apply a specific stash without dropping it.</li>
+          </ul>
+          <strong>Use case:</strong> You're mid-feature when an urgent hotfix arrives — stash, fix, push, then pop your stash.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G6</span><span class="qa-qtext">What is the difference between <code>git fetch</code> and <code>git pull</code>?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>git fetch:</strong> Downloads remote commits and updates remote-tracking refs (<code>origin/main</code>) but does <em>not</em> touch your local branch or working tree. Safe — just updates your knowledge of the remote.</li>
+            <li><strong>git pull:</strong> Fetch + merge (or rebase if configured). Immediately integrates remote changes into your current branch.</li>
+          </ul>
+          <strong>Best practice:</strong> <code>git fetch</code> then inspect before merging; or configure <code>git pull --rebase</code> to keep a linear history.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G7</span><span class="qa-qtext">What is a detached HEAD state and how do you recover from it?</span></div>
+        <div class="qa-a">
+          Normally HEAD points to a <em>branch</em>. In detached HEAD state, HEAD points directly to a <em>commit SHA</em> — no branch tracks new commits you make.<br><br>
+          <strong>How it happens:</strong> <code>git checkout &lt;commit-sha&gt;</code> or <code>git checkout v1.0</code> (a tag).<br><br>
+          <strong>Recovery:</strong>
+          <ul>
+            <li>If you made commits in detached HEAD: <code>git branch new-branch-name</code> to save them, then checkout the branch.</li>
+            <li>If you made no commits: simply <code>git checkout main</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G8</span><span class="qa-qtext">How does <code>git cherry-pick</code> work and when should you use it?</span></div>
+        <div class="qa-a">
+          <code>git cherry-pick &lt;commit-sha&gt;</code> applies the changes introduced by a specific commit onto the current branch as a <em>new commit</em> (different SHA, same diff).<br><br>
+          <strong>Use cases:</strong>
+          <ul>
+            <li>Backporting a bug fix to a release branch without merging the whole feature branch.</li>
+            <li>Pulling a single commit from a colleague's branch.</li>
+          </ul>
+          <strong>Caution:</strong> Creates duplicate commits — if both branches ever merge, you'll have conflict noise. Use sparingly.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G9</span><span class="qa-qtext">What is <code>git reflog</code> and how can it save you?</span></div>
+        <div class="qa-a">
+          <code>git reflog</code> records every time HEAD moves — including after <code>reset --hard</code>, amends, and rebases. It's a <em>local</em> safety net that retains entries for 90 days by default.<br><br>
+          <strong>Recovery scenario:</strong> You accidentally ran <code>git reset --hard HEAD~3</code> and lost 3 commits. Run <code>git reflog</code>, find the SHA before the reset, then <code>git checkout -b recovery &lt;sha&gt;</code>.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G10</span><span class="qa-qtext">What is the difference between a fast-forward merge and a three-way merge?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Fast-forward merge:</strong> Possible when the target branch has not diverged from the source. Git simply moves the branch pointer forward — no merge commit created. Linear history.</li>
+            <li><strong>Three-way merge:</strong> Required when both branches have diverged. Git finds the common ancestor and combines the two sets of changes, creating a <em>merge commit</em> with two parents.</li>
+          </ul>
+          Force a merge commit even when FF is possible: <code>git merge --no-ff feature</code> — useful to preserve branch history.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Quick mental model:</strong> Git is a content-addressed filesystem. Every state of every file is stored once by hash. Branches are just 40-byte files containing a SHA. Virtually nothing is ever truly deleted until <code>git gc</code> runs.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       GIT BRANCHING
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-git-branch">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🌿 Branching Strategies &amp; Workflows</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">G11 – G18</span>
+          <span class="tdpill tdpill-tag">GitFlow · Trunk · PRs</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Branching strategy choice directly impacts release velocity, merge conflict frequency, and CI/CD reliability. Knowing the trade-offs is essential for senior roles.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G11</span><span class="qa-qtext">Compare GitFlow, GitHub Flow, and Trunk-Based Development.</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Strategy</th><th>Branches</th><th>Release Model</th><th>Best For</th></tr>
+            <tr><td>GitFlow</td><td>main, develop, feature/*, release/*, hotfix/*</td><td>Scheduled/versioned releases</td><td>Software products with distinct versions</td></tr>
+            <tr><td>GitHub Flow</td><td>main + short-lived feature branches</td><td>Continuous deployment from main</td><td>Web apps, SaaS — deploy on every merge</td></tr>
+            <tr class="hl"><td>Trunk-Based</td><td>Single trunk (main); feature flags hide WIP</td><td>Multiple deploys per day</td><td>High-velocity teams with strong CI</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G12</span><span class="qa-qtext">What is <code>git rebase</code> and how does it differ from merge?</span></div>
+        <div class="qa-a">
+          <code>git rebase base-branch</code> re-applies your commits <em>on top of</em> the base branch one by one, rewriting their SHAs — producing a <strong>linear history</strong>.<br><br>
+          <strong>Merge</strong> creates a merge commit preserving the exact history of both branches.<br><br>
+          <strong>Golden rule of rebase:</strong> Never rebase commits that have been pushed to a shared remote branch — it rewrites SHAs and will force everyone else to reconcile diverged history.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G13</span><span class="qa-qtext">What is an interactive rebase and what can you do with it?</span></div>
+        <div class="qa-a">
+          <code>git rebase -i HEAD~N</code> opens an editor listing the last N commits. You can:
+          <ul>
+            <li><strong>pick:</strong> Keep a commit as-is.</li>
+            <li><strong>squash / fixup:</strong> Combine commit with the previous one (squash prompts for new message; fixup silently discards the message).</li>
+            <li><strong>reword:</strong> Change a commit message.</li>
+            <li><strong>edit:</strong> Pause at a commit to amend files or split it into multiple commits.</li>
+            <li><strong>drop:</strong> Delete a commit entirely.</li>
+            <li><strong>reorder:</strong> Change the order of commits.</li>
+          </ul>
+          <strong>Use before opening a PR</strong> to clean up "WIP", "fix typo", "oops" commits into a coherent story.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G14</span><span class="qa-qtext">How do you resolve a merge conflict?</span></div>
+        <div class="qa-a">
+          <ol style="margin:6px 0 4px 18px">
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300"><code>git status</code> — identify conflicted files.</li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300">Open each file; find conflict markers (<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>).</li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300">Edit the file to the desired final state and remove all markers.</li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300"><code>git add &lt;file&gt;</code> to mark resolved.</li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300"><code>git merge --continue</code> (or <code>git rebase --continue</code>) to finish.</li>
+          </ol>
+          Use a merge tool: <code>git mergetool</code> (integrates with VS Code, vimdiff, IntelliJ). Configure with <code>git config --global merge.tool vscode</code>.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G15</span><span class="qa-qtext">What is <code>git bisect</code> and how do you use it?</span></div>
+        <div class="qa-a">
+          <code>git bisect</code> performs a <strong>binary search</strong> through commit history to find the exact commit that introduced a bug.
+          <ul>
+            <li><code>git bisect start</code></li>
+            <li><code>git bisect bad</code> — mark current commit as broken.</li>
+            <li><code>git bisect good v2.3.0</code> — mark a known-good commit.</li>
+            <li>Git checks out the midpoint; you test and run <code>git bisect good</code> or <code>git bisect bad</code>.</li>
+            <li>After O(log N) steps Git identifies the culprit commit.</li>
+            <li><code>git bisect reset</code> returns you to the original HEAD.</li>
+          </ul>
+          Can be automated: <code>git bisect run ./test.sh</code> — script returns exit 0 for good, non-zero for bad.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G16</span><span class="qa-qtext">How do you squash multiple commits before merging a PR?</span></div>
+        <div class="qa-a">
+          Two approaches:
+          <ul>
+            <li><strong>Interactive rebase:</strong> <code>git rebase -i origin/main</code>, mark all but the first commit as <code>squash</code>, then force-push: <code>git push --force-with-lease</code>.</li>
+            <li><strong>Merge squash:</strong> <code>git merge --squash feature-branch</code> on main — stages all changes as a single uncommitted diff; then commit once. This doesn't rewrite the feature branch itself.</li>
+          </ul>
+          <strong>--force-with-lease</strong> is safer than <code>--force</code>: it rejects the push if someone else has pushed to the branch since you last fetched.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G17</span><span class="qa-qtext">What are Git hooks and give practical examples?</span></div>
+        <div class="qa-a">
+          Git hooks are shell scripts in <code>.git/hooks/</code> that run automatically at lifecycle events.
+          <ul>
+            <li><strong>pre-commit:</strong> Run linters (ESLint, Black) and block commit if they fail.</li>
+            <li><strong>commit-msg:</strong> Enforce commit message format (e.g., conventional commits pattern).</li>
+            <li><strong>pre-push:</strong> Run tests before allowing <code>git push</code>.</li>
+            <li><strong>post-merge:</strong> Auto-run <code>npm install</code> if <code>package-lock.json</code> changed.</li>
+          </ul>
+          Use <strong>Husky</strong> (Node.js) or <strong>pre-commit</strong> (Python) to manage hooks in version control so the whole team shares them.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G18</span><span class="qa-qtext">What is <code>git worktree</code> and when is it useful?</span></div>
+        <div class="qa-a">
+          <code>git worktree add ../hotfix hotfix/v2.1</code> creates an additional working directory linked to the same repository but checked out to a <em>different branch</em> — without stashing or switching branches.<br><br>
+          <strong>Use cases:</strong>
+          <ul>
+            <li>Review a PR while still working on a feature — two terminals, two branches, one repo clone.</li>
+            <li>Run a slow build on a release branch without interrupting active development.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Rebase vs Merge decision:</strong> Use rebase to maintain a clean linear history on <em>your local feature branch</em> before pushing. Use merge commits on shared long-lived branches (develop, main) to preserve the true history of integrations.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       ADVANCED GIT
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-git-adv">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">⚡ Advanced Git — Performance, Submodules &amp; Monorepos</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">G19 – G26</span>
+          <span class="tdpill tdpill-tag">Submodules · LFS · Monorepos</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Large-scale Git usage introduces challenges around repository size, dependency management across repos, and tooling for monorepo architectures.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G19</span><span class="qa-qtext">What is Git LFS (Large File Storage) and when do you need it?</span></div>
+        <div class="qa-a">
+          Git stores every version of every file in <code>.git/objects/</code>. Large binary files (videos, datasets, compiled artifacts) bloat the repo permanently.<br><br>
+          <strong>Git LFS</strong> replaces large files with lightweight text pointers in the repo; actual binary content lives on a remote LFS server. The working tree shows the real file — only the store is offloaded.<br><br>
+          <code>git lfs track "*.psd"</code> → updates <code>.gitattributes</code>. Then commit and push normally.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G20</span><span class="qa-qtext">What are Git submodules vs git subtree, and which should you prefer?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Submodules (<code>.gitmodules</code>):</strong> A pointer to a specific commit in another repository. The sub-repo stays separate. <em>Downside:</em> Complex UX — developers must remember <code>git submodule update --init --recursive</code>; detached HEAD in submodule; CI friction.</li>
+            <li><strong>Git subtree:</strong> Merges another repo's history into a subdirectory. The parent repo is self-contained. <em>Downside:</em> History is mixed; pushing back to the remote subtree is a manual step.</li>
+          </ul>
+          <strong>Prefer subtree</strong> for teams new to this pattern; prefer submodules when the dependency is truly external and must track upstream changes independently.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G21</span><span class="qa-qtext">How do you handle secrets accidentally committed to Git?</span></div>
+        <div class="qa-a">
+          Assume the secret is compromised — rotate it immediately. Then remove from history:
+          <ul>
+            <li><strong>BFG Repo Cleaner</strong> (fast): <code>bfg --delete-files secrets.txt</code> then <code>git push --force</code>.</li>
+            <li><strong>git filter-repo</strong> (official replacement for filter-branch): <code>git filter-repo --path secrets.txt --invert-paths</code>.</li>
+          </ul>
+          <strong>Prevention:</strong> Use <code>git-secrets</code> or <strong>pre-commit hooks</strong> to scan for secret patterns before commit. Add secrets to <code>.gitignore</code>. Use environment variables or Vault/Secrets Manager instead of files.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G22</span><span class="qa-qtext">What is shallow cloning and when is it useful in CI/CD?</span></div>
+        <div class="qa-a">
+          <code>git clone --depth 1 &lt;url&gt;</code> downloads only the latest commit rather than the full history — drastically reducing clone time and disk usage for large repos.<br><br>
+          <strong>CI/CD benefit:</strong> Each pipeline run clones fresh — shallow clones can cut clone time from minutes to seconds.<br><br>
+          <strong>Limitation:</strong> Commands that require history (<code>git log</code>, <code>git bisect</code>, <code>git describe</code>) won't work correctly. Deepen with <code>git fetch --unshallow</code> if needed.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G23</span><span class="qa-qtext">How do you sign commits with GPG and why does it matter?</span></div>
+        <div class="qa-a">
+          Anyone can set any name/email as a Git committer — commit attribution is unauthenticated by default.<br><br>
+          <strong>GPG-signed commits</strong> prove the commit was authored by the holder of a specific private key:
+          <ul>
+            <li>Configure: <code>git config --global user.signingkey &lt;key-id&gt;</code></li>
+            <li>Sign commits: <code>git commit -S -m "message"</code></li>
+            <li>Auto-sign: <code>git config --global commit.gpgsign true</code></li>
+          </ul>
+          GitHub/GitLab show a "Verified" badge. Required in high-compliance environments (SLSA level 2+, SOC 2 code integrity controls).
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G24</span><span class="qa-qtext">What is <code>git sparse-checkout</code> and how does it help with monorepos?</span></div>
+        <div class="qa-a">
+          In a monorepo with hundreds of packages, most developers only need a subset of the tree. <code>git sparse-checkout</code> configures Git to only populate specific paths in the working directory while still having access to the full history.<br><br>
+          <code>git sparse-checkout set packages/api packages/shared</code><br><br>
+          Combined with <strong>partial clones</strong> (<code>--filter=blob:none</code>), you avoid downloading blobs you never open — making monorepo development on slow connections practical.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G25</span><span class="qa-qtext">How do you use <code>git blame</code> effectively for code archaeology?</span></div>
+        <div class="qa-a">
+          <code>git blame &lt;file&gt;</code> annotates every line with the last commit SHA, author, and date that changed it.<br><br>
+          <strong>Advanced usage:</strong>
+          <ul>
+            <li><code>git blame -L 20,40 app.py</code> — blame only lines 20–40.</li>
+            <li><code>git blame -w</code> — ignore whitespace-only changes.</li>
+            <li><code>git blame -M</code> — detect lines moved within a file.</li>
+            <li><code>git blame -C</code> — detect lines copied from other files in the same commit.</li>
+            <li>Once you find a commit SHA, <code>git show &lt;sha&gt;</code> reveals the full context of why the change was made.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">G26</span><span class="qa-qtext">What is <code>git gc</code> and when should you run it?</span></div>
+        <div class="qa-a">
+          <code>git gc</code> (garbage collection) runs housekeeping tasks:
+          <ul>
+            <li>Packs loose objects into packfiles for efficiency.</li>
+            <li>Prunes objects no longer reachable from any ref (after the 2-week grace period).</li>
+            <li>Expires old reflog entries.</li>
+          </ul>
+          Git runs <code>git gc --auto</code> automatically after certain operations. Manually useful after removing large files with BFG/filter-repo to actually reclaim disk space. <code>git gc --aggressive</code> does a more thorough but slower repack.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Monorepo tooling:</strong> For very large monorepos, pair Git sparse-checkout with tools like <strong>Nx</strong>, <strong>Turborepo</strong>, or <strong>Bazel</strong> for affected-only builds, and <strong>git-cliff</strong> or <strong>semantic-release</strong> for per-package changelogs.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       DOCKER CORE
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-docker-core">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🐳 Docker Architecture &amp; Core Concepts</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">D1 – D10</span>
+          <span class="tdpill tdpill-tag">Engine · Images · Containers</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Docker's architecture — daemon, client, containerd, runc, and the image layer model — underpins every operational and debugging question you'll face.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D1</span><span class="qa-qtext">Explain Docker's architecture: daemon, containerd, and runc.</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Docker CLI:</strong> The client that sends commands to the daemon via REST API.</li>
+            <li><strong>Docker daemon (dockerd):</strong> Manages images, volumes, networks, and delegates container lifecycle to containerd.</li>
+            <li><strong>containerd:</strong> An industry-standard container runtime that manages image pull, storage, and container execution. Can run independently of Docker.</li>
+            <li><strong>runc:</strong> A low-level OCI-compliant runtime that actually creates and runs containers using Linux namespaces and cgroups. containerd calls runc.</li>
+          </ul>
+          This layered design allows Kubernetes to use containerd directly, bypassing dockerd entirely.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D2</span><span class="qa-qtext">What is the difference between an image and a container?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Image:</strong> A read-only, layered template built from a Dockerfile. Stored in a registry. Immutable — the same image produces the same container every time.</li>
+            <li><strong>Container:</strong> A running (or stopped) instance of an image. Has a thin read-write layer on top of the image layers. Ephemeral by default — write layer is discarded when the container is removed.</li>
+          </ul>
+          Analogy: Image = class definition; Container = object instance.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D3</span><span class="qa-qtext">How does the Union File System / overlay2 layer model work?</span></div>
+        <div class="qa-a">
+          Docker images are built as a <strong>stack of read-only layers</strong>. Each Dockerfile instruction that changes the filesystem creates a new layer. The <strong>overlay2</strong> storage driver merges these layers into a unified view using Linux's OverlayFS.<br><br>
+          When a container runs, a thin <strong>read-write layer</strong> (container layer) is added on top. Changes write here via <strong>copy-on-write (CoW)</strong> — a file is copied from a lower layer to the writable layer on first modification.<br><br>
+          <strong>Benefit:</strong> Layers are shared across images and containers. 10 containers from the same image share the same read-only layers — only 10 thin writable layers are created.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D4</span><span class="qa-qtext">What is the difference between <code>COPY</code> and <code>ADD</code> in a Dockerfile?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>COPY:</strong> Copies files/directories from the build context to the image. Simple, explicit, preferred.</li>
+            <li><strong>ADD:</strong> Does everything COPY does, plus: auto-extracts local <code>.tar</code> archives, and can fetch from remote URLs.</li>
+          </ul>
+          <strong>Best practice:</strong> Always prefer <code>COPY</code>. The auto-extract behavior of <code>ADD</code> is surprising and the URL-fetching bypasses layer caching usefully only in rare cases. Use <code>RUN curl | tar</code> explicitly if you need remote files.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D5</span><span class="qa-qtext">What is the difference between <code>CMD</code> and <code>ENTRYPOINT</code>?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>ENTRYPOINT:</strong> Sets the executable that always runs. Cannot be overridden from <code>docker run</code> (only with <code>--entrypoint</code> flag).</li>
+            <li><strong>CMD:</strong> Sets default arguments passed to the ENTRYPOINT (or the default command if no ENTRYPOINT is set). Easily overridden by arguments after the image name in <code>docker run</code>.</li>
+          </ul>
+          <strong>Best pattern:</strong> <code>ENTRYPOINT ["node", "server.js"]</code> + <code>CMD ["--port", "3000"]</code> — the CMD provides overridable defaults; the entrypoint stays fixed.<br><br>
+          <strong>exec form</strong> (<code>["cmd", "arg"]</code>) is preferred over shell form (<code>cmd arg</code>) — exec form runs the process directly without a shell, so signals (SIGTERM) are delivered correctly for graceful shutdown.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D6</span><span class="qa-qtext">What is <code>docker compose</code> and how does it differ from running containers manually?</span></div>
+        <div class="qa-a">
+          Docker Compose defines multi-container applications in a <code>compose.yaml</code> file — services, networks, volumes, environment variables, and dependencies in one place.<br><br>
+          <strong>Key benefits over manual <code>docker run</code>:</strong>
+          <ul>
+            <li>Single command startup: <code>docker compose up -d</code>.</li>
+            <li>Service dependency ordering with <code>depends_on</code>.</li>
+            <li>Shared networks created automatically — services reach each other by service name DNS.</li>
+            <li>Named volumes persist across restarts.</li>
+            <li>Easy teardown: <code>docker compose down -v</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D7</span><span class="qa-qtext">What is a Docker volume and how does it differ from a bind mount?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Volume (<code>-v mydata:/app/data</code>):</strong> Docker-managed storage in <code>/var/lib/docker/volumes/</code>. Portable, can be backed up with <code>docker volume</code> commands. Survives container removal. Best for persistent application data (databases).</li>
+            <li><strong>Bind mount (<code>-v /host/path:/container/path</code>):</strong> Mounts a specific host directory into the container. Depends on host filesystem structure. Best for development (mount source code to enable hot-reload).</li>
+            <li><strong>tmpfs mount:</strong> In-memory only — data is lost when container stops. Best for sensitive data that must not touch disk.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D8</span><span class="qa-qtext">How do you debug a running container?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><code>docker logs &lt;container&gt; -f</code> — stream stdout/stderr.</li>
+            <li><code>docker exec -it &lt;container&gt; sh</code> — open an interactive shell inside the container.</li>
+            <li><code>docker inspect &lt;container&gt;</code> — JSON dump of all configuration, network settings, mounts, and environment variables.</li>
+            <li><code>docker stats</code> — live CPU, memory, network, and disk I/O metrics.</li>
+            <li><code>docker top &lt;container&gt;</code> — running processes inside the container.</li>
+            <li><strong>Distroless / scratch images</strong> have no shell — use <code>docker debug &lt;container&gt;</code> (Docker Desktop feature) or ephemeral debug sidecar containers (<code>kubectl debug</code> in Kubernetes).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D9</span><span class="qa-qtext">What is the <code>.dockerignore</code> file and why is it important?</span></div>
+        <div class="qa-a">
+          The build context (everything sent to the Docker daemon for a build) includes all files in the directory by default. <code>.dockerignore</code> excludes files/directories from the context — similar to <code>.gitignore</code>.<br><br>
+          <strong>Why it matters:</strong>
+          <ul>
+            <li>Smaller build context → faster <code>docker build</code> (less data transferred to daemon).</li>
+            <li>Prevents secrets (<code>.env</code>, <code>*.pem</code>) from accidentally ending up in the image.</li>
+            <li>Prevents <code>node_modules/</code> or <code>.git/</code> bloating the image.</li>
+          </ul>
+          Always add: <code>.git</code>, <code>node_modules</code>, <code>*.log</code>, <code>.env*</code>, <code>Dockerfile</code>, <code>README.md</code>.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D10</span><span class="qa-qtext">What does it mean for a container to be stateless, and how do you persist data?</span></div>
+        <div class="qa-a">
+          A stateless container stores no data in its writable layer — all state lives externally. When the container is replaced (upgrade, crash), no data is lost because it was never inside the container.<br><br>
+          <strong>Persistence strategies:</strong>
+          <ul>
+            <li><strong>Docker Volumes:</strong> For databases, file uploads, any mutable app data.</li>
+            <li><strong>External services:</strong> S3 for files, RDS/managed DBs for relational data, Redis for sessions.</li>
+            <li><strong>Environment config:</strong> Pass configuration via environment variables or mounted config files — not baked into the image.</li>
+          </ul>
+          This aligns with the <strong>12-Factor App</strong> principle: treat backing services as attached resources.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Key distinction:</strong> Containers are cattle, not pets. Design them to be replaceable at any time. Any data that matters lives in a volume or external service — never only in the container's writable layer.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       DOCKER BUILDS & IMAGES
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-docker-build">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🏗️ Dockerfile Best Practices &amp; Multi-Stage Builds</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">D11 – D18</span>
+          <span class="tdpill tdpill-tag">Multi-Stage · Caching · Image Size</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Optimized Dockerfiles produce small, cacheable, secure images — directly impacting CI/CD speed, registry costs, and attack surface.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D11</span><span class="qa-qtext">What is a multi-stage build and what problem does it solve?</span></div>
+        <div class="qa-a">
+          A multi-stage build uses multiple <code>FROM</code> instructions in a single Dockerfile. Early stages handle building/compiling; only the final stage produces the runtime image — you <code>COPY --from=builder</code> only the compiled artifacts.<br><br>
+          <strong>Problem solved:</strong> Without multi-stage builds, the runtime image would include the compiler, build tools, test frameworks, and source code — often 10–50× larger than necessary.<br><br>
+          <strong>Example:</strong>
+          <ul>
+            <li>Stage 1 (builder): <code>FROM node:20 AS builder</code> → <code>npm ci</code> → <code>npm run build</code></li>
+            <li>Stage 2 (runtime): <code>FROM node:20-alpine</code> → <code>COPY --from=builder /app/dist ./dist</code></li>
+          </ul>
+          Result: Final image has only the Alpine base + compiled dist — no node_modules, no source, no dev dependencies.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D12</span><span class="qa-qtext">How does Docker layer caching work and how do you optimize it?</span></div>
+        <div class="qa-a">
+          Each Dockerfile instruction produces a layer. Docker caches layers and reuses them if the instruction and all its inputs are identical. Once a layer is invalidated, all subsequent layers are rebuilt.<br><br>
+          <strong>Optimization principle — put stable things first, changing things last:</strong>
+          <ul>
+            <li>Copy dependency manifests first, install dependencies, <em>then</em> copy source code.</li>
+            <li>Bad: <code>COPY . .</code> then <code>RUN npm ci</code> — any source change rebuilds the expensive install step.</li>
+            <li>Good: <code>COPY package*.json .</code> → <code>RUN npm ci</code> → <code>COPY . .</code> — the install step is cached as long as package.json is unchanged.</li>
+          </ul>
+          Use <code>--mount=type=cache</code> (BuildKit) to persist package manager caches across builds without committing them to layers.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D13</span><span class="qa-qtext">How do you reduce Docker image size?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Use minimal base images:</strong> <code>alpine</code> (~5 MB) vs <code>ubuntu</code> (~80 MB). Use <code>distroless</code> (Google) for production — no shell, no package manager, minimal attack surface.</li>
+            <li><strong>Multi-stage builds:</strong> Ship only compiled artifacts, not build tools.</li>
+            <li><strong>Combine RUN commands:</strong> Each RUN is a layer. Chain with <code>&amp;&amp;</code> and clean up in the same layer: <code>RUN apt-get update &amp;&amp; apt-get install -y curl &amp;&amp; rm -rf /var/lib/apt/lists/*</code></li>
+            <li><strong>.dockerignore:</strong> Exclude test files, docs, <code>.git</code>.</li>
+            <li><strong>Avoid installing unnecessary packages:</strong> <code>apt-get install --no-install-recommends</code>.</li>
+            <li><strong>Analyze layers:</strong> Use <code>dive</code> (CLI tool) to inspect each layer's size contribution.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D14</span><span class="qa-qtext">What is BuildKit and what does it add over classic Docker build?</span></div>
+        <div class="qa-a">
+          BuildKit is Docker's next-generation build engine (default since Docker 23). Key improvements:
+          <ul>
+            <li><strong>Parallel stage execution:</strong> Independent stages in a multi-stage build run concurrently.</li>
+            <li><strong>Cache mounts (<code>--mount=type=cache</code>):</strong> Persistent package manager cache that doesn't bloat image layers.</li>
+            <li><strong>Secret mounts (<code>--mount=type=secret</code>):</strong> Inject secrets at build time without baking them into any layer.</li>
+            <li><strong>SSH agent forwarding (<code>--mount=type=ssh</code>):</strong> Use SSH keys for private repo access during build without embedding keys.</li>
+            <li><strong>Inline cache:</strong> Push cache metadata to a registry for faster CI builds.</li>
+          </ul>
+          Enable: <code>DOCKER_BUILDKIT=1 docker build .</code> or use <code>docker buildx build</code>.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D15</span><span class="qa-qtext">How do you handle environment-specific configuration in Docker images?</span></div>
+        <div class="qa-a">
+          <strong>Principle:</strong> Build the image once; configure it at runtime — never bake environment-specific values into the image.
+          <ul>
+            <li><strong>Environment variables:</strong> <code>docker run -e DB_HOST=prod.db.internal</code> or via <code>compose.yaml env_file</code>.</li>
+            <li><strong>Config files mounted at runtime:</strong> <code>-v /etc/myapp/config.yaml:/app/config.yaml:ro</code>.</li>
+            <li><strong>Secrets manager:</strong> Container entrypoint fetches secrets from AWS Secrets Manager / Vault at startup.</li>
+            <li><strong>Build ARGs:</strong> <code>ARG</code> is for build-time variables only (e.g., version numbers). Do not use ARG for secrets — ARG values are visible in <code>docker history</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D16</span><span class="qa-qtext">What is image tagging strategy for production?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Never rely on <code>:latest</code> in production</strong> — it's mutable, making deployments non-reproducible and rollbacks impossible.</li>
+            <li><strong>Semantic versions:</strong> <code>myapp:2.3.1</code> — explicit, rollback-friendly.</li>
+            <li><strong>Git SHA:</strong> <code>myapp:a3f8c12</code> — immutable, ties image to exact code state. Preferred in CI/CD.</li>
+            <li><strong>Multi-tag:</strong> Tag the same image as <code>myapp:2.3.1</code>, <code>myapp:2.3</code>, <code>myapp:2</code>, and <code>myapp:latest</code> for flexible referencing.</li>
+            <li><strong>Digest pinning:</strong> <code>myapp@sha256:abc123...</code> — absolutely immutable, even if the tag is moved.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D17</span><span class="qa-qtext">How do you scan Docker images for vulnerabilities?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Docker Scout / docker scan:</strong> <code>docker scout cves myapp:latest</code> — built-in, scans against CVE databases.</li>
+            <li><strong>Trivy (Aqua Security):</strong> <code>trivy image myapp:latest</code> — fast, open-source, scans OS packages and language dependencies (npm, pip, go.sum). Widely used in CI pipelines.</li>
+            <li><strong>Snyk:</strong> <code>snyk container test myapp:latest</code> — integrates with GitHub PRs for inline vulnerability comments.</li>
+            <li><strong>Grype (Anchore):</strong> SBOM-aware scanner.</li>
+          </ul>
+          <strong>Best practice:</strong> Scan in CI before pushing to registry; block builds with Critical/High CVEs; rescan images periodically even after deployment (new CVEs emerge).
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D18</span><span class="qa-qtext">What is an SBOM (Software Bill of Materials) in the context of Docker?</span></div>
+        <div class="qa-a">
+          An SBOM is a machine-readable inventory of all software components, libraries, and their versions packaged in an image — like an ingredient list for your container.<br><br>
+          <strong>Why it matters (supply chain security):</strong>
+          <ul>
+            <li>When a new CVE is disclosed (e.g., Log4Shell), you can immediately query your SBOMs to find every image containing that library.</li>
+            <li>Required by executive orders and frameworks like SLSA, NIST SSDF, and CISA guidance.</li>
+          </ul>
+          Generate: <code>docker buildx build --sbom=true --output type=registry .</code> or with <code>syft myapp:latest</code>. Stored as OCI attestation alongside the image in the registry.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Cache invalidation rule:</strong> Every line in a Dockerfile that changes (or follows a changed line) re-executes. Sort instructions: OS deps → dependency manifests → dependency install → source copy → build. This maximizes cache hits in CI where source changes are frequent but dependencies are not.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       DOCKER NETWORKING
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-docker-net">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🌐 Docker Networking</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">D19 – D24</span>
+          <span class="tdpill tdpill-tag">bridge · host · overlay · DNS</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Understanding Docker network drivers and how container-to-container and container-to-host communication works is essential for both debugging and production architecture.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D19</span><span class="qa-qtext">Explain Docker's network drivers: bridge, host, none, overlay, and macvlan.</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Driver</th><th>Description</th><th>Use Case</th></tr>
+            <tr><td>bridge</td><td>Private virtual network on the host; containers communicate by IP or DNS name on user-defined bridges</td><td>Default for single-host multi-container apps (Compose)</td></tr>
+            <tr><td>host</td><td>Container shares the host's network namespace — no NAT, no port mapping</td><td>High-performance apps; removes networking overhead</td></tr>
+            <tr><td>none</td><td>Container has only a loopback interface — completely isolated</td><td>Batch jobs, security-sensitive processing</td></tr>
+            <tr class="hl"><td>overlay</td><td>Spans multiple Docker hosts; encrypted cross-host container communication</td><td>Docker Swarm, multi-host clusters</td></tr>
+            <tr><td>macvlan</td><td>Assigns a MAC address to the container; appears as a physical device on the LAN</td><td>Legacy apps that expect to be on the LAN directly</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D20</span><span class="qa-qtext">How does DNS resolution work between containers in a user-defined bridge network?</span></div>
+        <div class="qa-a">
+          Docker's embedded DNS server (running at <code>127.0.0.11</code> inside containers) automatically resolves container names and service names to their internal IP addresses — but <em>only on user-defined networks</em>.<br><br>
+          The default <code>bridge</code> network does <em>not</em> support automatic DNS — containers must use <code>--link</code> (deprecated) or IP addresses. Always create a named network in Compose or with <code>docker network create</code>.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D21</span><span class="qa-qtext">What is port publishing and how does it work internally?</span></div>
+        <div class="qa-a">
+          <code>docker run -p 8080:80 myapp</code> maps host port 8080 → container port 80 via <strong>iptables NAT rules</strong> that Docker manages automatically.<br><br>
+          <strong>Variants:</strong>
+          <ul>
+            <li><code>-p 8080:80</code> — bind on all host interfaces (0.0.0.0).</li>
+            <li><code>-p 127.0.0.1:8080:80</code> — bind on localhost only (more secure for dev tools).</li>
+            <li><code>-p 80</code> — expose port 80 on a random host port (use <code>docker port</code> to find it).</li>
+          </ul>
+          <strong>EXPOSE in Dockerfile</strong> is documentation only — it does not actually publish the port. You must still use <code>-p</code> at runtime.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D22</span><span class="qa-qtext">How do you isolate containers on different networks in a Compose app?</span></div>
+        <div class="qa-a">
+          Define multiple networks in <code>compose.yaml</code> and attach each service only to the networks it needs:
+          <ul>
+            <li><code>frontend</code> service on <code>public</code> network only — reachable from the proxy.</li>
+            <li><code>api</code> service on both <code>public</code> and <code>private</code> networks — bridge between tiers.</li>
+            <li><code>db</code> service on <code>private</code> network only — never reachable from the public-facing tier directly.</li>
+          </ul>
+          This provides <strong>network segmentation</strong> without any firewall rules — containers simply cannot resolve each other's names if they share no network.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D23</span><span class="qa-qtext">When would you use <code>--network host</code> and what are the risks?</span></div>
+        <div class="qa-a">
+          Host networking bypasses Docker's NAT and virtual bridge — the container process binds directly to host ports with no mapping overhead.<br><br>
+          <strong>Use cases:</strong> Network monitoring tools that must see raw host traffic; extremely latency-sensitive apps where the NAT overhead matters.<br><br>
+          <strong>Risks:</strong>
+          <ul>
+            <li>No network isolation — a compromised container can directly reach every service on the host.</li>
+            <li>Port conflicts — container and host must not bind the same port.</li>
+            <li>Not available on Docker Desktop (macOS/Windows) — only works on Linux.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D24</span><span class="qa-qtext">How do you debug container networking issues?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><code>docker network ls</code> — list networks.</li>
+            <li><code>docker network inspect &lt;network&gt;</code> — see connected containers and their IPs.</li>
+            <li><code>docker exec -it &lt;container&gt; ping &lt;other-service&gt;</code> — test DNS resolution and reachability.</li>
+            <li><code>docker exec -it &lt;container&gt; nslookup &lt;service-name&gt;</code> — test DNS directly.</li>
+            <li>Install <code>curl</code>/<code>wget</code> in the image during development to test HTTP endpoints from inside a container.</li>
+            <li>Use a temporary <code>nicolaka/netshoot</code> container attached to the target network — it includes <code>tcpdump</code>, <code>netstat</code>, <code>traceroute</code>, and more without modifying the target image.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Always use user-defined networks in Compose</strong> — never rely on the default bridge. User-defined networks provide automatic DNS, better isolation, and the ability to connect/disconnect containers at runtime without restart.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       DOCKER SECURITY & PRODUCTION
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-docker-adv">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔒 Docker Security, Resource Limits &amp; Production Patterns</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">D25 – D34</span>
+          <span class="tdpill tdpill-tag">Security · cgroups · Health · Orchestration</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Running Docker securely in production requires understanding privilege escalation risks, resource constraints, health checks, and the role of Docker in a Kubernetes architecture.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D25</span><span class="qa-qtext">Why should you never run containers as root, and how do you prevent it?</span></div>
+        <div class="qa-a">
+          A process running as root inside a container maps to UID 0 on the host. If an attacker escapes the container namespace (via a kernel exploit), they have root on the host.<br><br>
+          <strong>Prevention:</strong>
+          <ul>
+            <li>Create a non-root user in the Dockerfile: <code>RUN addgroup -S app &amp;&amp; adduser -S app -G app</code> then <code>USER app</code>.</li>
+            <li>Use <code>--user 1000:1000</code> flag at runtime to override even if the image didn't specify USER.</li>
+            <li>In Kubernetes: set <code>runAsNonRoot: true</code> and <code>runAsUser: 1000</code> in the pod's securityContext.</li>
+            <li>Use <code>--read-only</code> filesystem + tmpfs mounts for writable paths to limit blast radius.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D26</span><span class="qa-qtext">What are Linux capabilities in Docker and how do you use them?</span></div>
+        <div class="qa-a">
+          Linux root privileges are divided into ~40 discrete <strong>capabilities</strong> (e.g., <code>CAP_NET_BIND_SERVICE</code> to bind port &lt;1024, <code>CAP_SYS_ADMIN</code> for broad system operations). Docker grants containers a limited default set.<br><br>
+          <strong>Principle of least privilege:</strong>
+          <ul>
+            <li><code>--cap-drop ALL</code> — remove all capabilities from the container.</li>
+            <li><code>--cap-add NET_BIND_SERVICE</code> — add back only what's needed.</li>
+          </ul>
+          Use <code>--security-opt no-new-privileges:true</code> to prevent processes from gaining additional privileges via setuid binaries.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D27</span><span class="qa-qtext">How do you set CPU and memory limits on a container and why is it important?</span></div>
+        <div class="qa-a">
+          Without limits, a single misbehaving container can starve all other containers and host processes of resources.<br><br>
+          <code>docker run --memory="512m" --memory-swap="512m" --cpus="1.5" myapp</code>
+          <ul>
+            <li><code>--memory</code>: Hard limit; container is OOM-killed if exceeded.</li>
+            <li><code>--memory-swap</code>: Total memory + swap. Set equal to <code>--memory</code> to disable swap.</li>
+            <li><code>--cpus</code>: CPU quota (1.5 = 150% of one core across all cores).</li>
+            <li><code>--cpu-shares</code>: Relative weight for CPU scheduling when contention exists.</li>
+          </ul>
+          In Kubernetes, set <code>resources.requests</code> (scheduling hint) and <code>resources.limits</code> (enforcement) on every container.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D28</span><span class="qa-qtext">What is a HEALTHCHECK in Docker and how does it affect container orchestration?</span></div>
+        <div class="qa-a">
+          <code>HEALTHCHECK</code> in a Dockerfile defines a command Docker runs periodically to test if the container is healthy:
+          <br><br>
+          <code>HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD curl -f http://localhost:8080/health || exit 1</code>
+          <br><br>
+          Container states: <strong>starting → healthy | unhealthy</strong>.<br><br>
+          <strong>Orchestration impact:</strong>
+          <ul>
+            <li><strong>Docker Compose:</strong> <code>depends_on: condition: service_healthy</code> waits for the dependency to be healthy before starting dependent services.</li>
+            <li><strong>Docker Swarm / Kubernetes:</strong> Unhealthy containers are automatically restarted or replaced. Traffic is not routed to unhealthy instances.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D29</span><span class="qa-qtext">How do you handle graceful shutdown in a Docker container?</span></div>
+        <div class="qa-a">
+          <code>docker stop</code> sends <strong>SIGTERM</strong> to PID 1. After a timeout (default 10s), it sends <strong>SIGKILL</strong>. Your app must handle SIGTERM to drain connections and clean up.<br><br>
+          <strong>Common pitfall:</strong> Shell form CMD/ENTRYPOINT (<code>CMD node server.js</code>) wraps the process in <code>/bin/sh -c</code> — signals are sent to the shell, not Node. The shell doesn't forward signals → app gets killed immediately by SIGKILL.<br><br>
+          <strong>Fix:</strong> Use exec form: <code>CMD ["node", "server.js"]</code> — Node becomes PID 1 and receives SIGTERM directly. Or use <code>dumb-init</code>/<code>tini</code> as an init process that forwards signals properly.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D30</span><span class="qa-qtext">What is the difference between Docker Swarm and Kubernetes?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Aspect</th><th>Docker Swarm</th><th>Kubernetes</th></tr>
+            <tr><td>Complexity</td><td>Simple, built into Docker CLI</td><td>Complex, steep learning curve</td></tr>
+            <tr><td>Setup</td><td><code>docker swarm init</code></td><td>Multiple control plane components</td></tr>
+            <tr><td>Scaling</td><td>Basic horizontal scaling</td><td>Advanced: HPA, VPA, KEDA</td></tr>
+            <tr><td>Networking</td><td>Built-in overlay network</td><td>Requires CNI plugin (Calico, Flannel)</td></tr>
+            <tr class="hl"><td>Ecosystem</td><td>Small, Docker-native</td><td>Massive: Helm, Istio, Argo, Prometheus…</td></tr>
+            <tr><td>Production adoption</td><td>Declining; simpler workloads</td><td>Industry standard for containers at scale</td></tr>
+          </table>
+          <strong>When to use Swarm:</strong> Small teams, simple deployments, already comfortable with Compose syntax. <strong>Use Kubernetes</strong> for everything else.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D31</span><span class="qa-qtext">What is a Docker Content Trust (DCT) and image signing?</span></div>
+        <div class="qa-a">
+          Docker Content Trust uses <strong>Notary</strong> (based on The Update Framework) to sign images and verify their integrity before pulling.<br><br>
+          <code>DOCKER_CONTENT_TRUST=1 docker pull myrepo/myimage:1.0</code><br><br>
+          With DCT enabled: Docker verifies the publisher's signature — unsigned or tampered images are refused. Keys are stored in <code>~/.docker/trust/</code>.<br><br>
+          <strong>Modern alternative:</strong> <strong>Sigstore / Cosign</strong> — keyless signing using short-lived certificates tied to OIDC identity (GitHub Actions identity, for example). Increasingly adopted for SLSA supply chain compliance.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D32</span><span class="qa-qtext">What is a rootless Docker and why is it more secure?</span></div>
+        <div class="qa-a">
+          Standard Docker daemon runs as root on the host. If the daemon is compromised, the attacker has root.<br><br>
+          <strong>Rootless Docker</strong> runs both the daemon and containers as a non-root user, using user namespaces to map container UID 0 → an unprivileged host UID.<br><br>
+          <strong>Benefits:</strong>
+          <ul>
+            <li>Daemon compromise does not grant host root.</li>
+            <li>Containers can't mount host paths that require root.</li>
+          </ul>
+          <strong>Limitations:</strong> Some features unavailable (e.g., <code>--network host</code>, <code>--privileged</code>). Performance overhead from user namespace mapping.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D33</span><span class="qa-qtext">How do you implement a CI/CD pipeline that builds and deploys Docker images?</span></div>
+        <div class="qa-a">
+          <ol style="margin:6px 0 4px 18px">
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300"><strong>Build:</strong> <code>docker buildx build --platform linux/amd64,linux/arm64 -t myrepo/myapp:$GIT_SHA .</code></li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300"><strong>Scan:</strong> <code>trivy image myrepo/myapp:$GIT_SHA</code> — fail build on Critical CVEs.</li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300"><strong>Test:</strong> <code>docker run --rm myrepo/myapp:$GIT_SHA npm test</code>.</li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300"><strong>Push:</strong> <code>docker push myrepo/myapp:$GIT_SHA</code> and <code>:latest</code>.</li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300"><strong>Sign:</strong> <code>cosign sign myrepo/myapp:$GIT_SHA</code>.</li>
+            <li style="font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300"><strong>Deploy:</strong> Update Kubernetes manifest or Helm chart with new image tag; <code>kubectl rollout status</code> to verify.</li>
+          </ol>
+          Use <strong>GitHub Actions</strong> / <strong>GitLab CI</strong> with Docker layer cache (<code>--cache-from type=registry</code>) to avoid rebuilding unchanged layers on every run.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">D34</span><span class="qa-qtext">What is the difference between <code>docker save</code>/<code>load</code> and <code>docker export</code>/<code>import</code>?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>docker save / load:</strong> Exports/imports a full <em>image</em> with all layers, tags, and history. Preserves the complete image structure. Use to transfer images between registries or air-gapped environments: <code>docker save myapp:1.0 | gzip &gt; myapp.tar.gz</code> → <code>docker load &lt; myapp.tar.gz</code>.</li>
+            <li><strong>docker export / import:</strong> Exports/imports a running or stopped <em>container's</em> filesystem as a flat tarball — layers are squashed, history is lost, no metadata. Results in a slightly smaller image but loses caching benefits. Rarely used in production workflows.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rule" style="margin-top:20px">
+      <div class="rule-title">Docker Security Checklist</div>
+      <div class="rule-body">
+        ✓ Non-root USER in Dockerfile &nbsp;·&nbsp;
+        ✓ Read-only root filesystem (<code>--read-only</code>) &nbsp;·&nbsp;
+        ✓ Drop all capabilities, add only required &nbsp;·&nbsp;
+        ✓ No secrets in ENV or image layers &nbsp;·&nbsp;
+        ✓ Minimal base image (distroless/alpine) &nbsp;·&nbsp;
+        ✓ Image scanning in CI (Trivy/Snyk) &nbsp;·&nbsp;
+        ✓ Resource limits (CPU + memory) &nbsp;·&nbsp;
+        ✓ HEALTHCHECK defined &nbsp;·&nbsp;
+        ✓ No <code>:latest</code> tag in production &nbsp;·&nbsp;
+        ✓ .dockerignore excludes secrets &amp; .git
+      </div>
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Container escape mitigations:</strong> Keep the host kernel patched, use <code>seccomp</code> profiles to restrict syscalls, enable <code>AppArmor</code>/<code>SELinux</code> profiles, avoid <code>--privileged</code> mode entirely in production, and use gVisor or Kata Containers for hardware-level isolation on multi-tenant workloads.</div>
+  </div>
+
+</div><!-- /page-guide -->
+
+<script>
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nt').forEach(b => b.classList.remove('on'));
+  document.getElementById('page-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+function switchSection(id, btn) {
+  document.querySelectorAll('.spane').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.snt').forEach(b => b.classList.remove('on'));
+  document.getElementById('sp-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+</script>
+</body>
+</html>
