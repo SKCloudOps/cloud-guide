@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CI/CD &amp; Ansible — Advanced Interview Questions</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ivory:#faf9f5;--ivory-md:#f0ede4;--ivory-dk:#e4e0d4;--dark:#141413;--dark2:#2a2925;--mid:#8a8880;--mid-lt:#d4d1c9;--clay:#d97757;--clay-dk:#a8553a;--olive:#788c5d;--blue:#6a9bcc;--plum:#7c5fbf;--good:#2e7d5e;--bad:#c0392b;--amber:#a87c1a;--serif:"Playfair Display",Georgia,serif;--sans:"DM Sans",system-ui,sans-serif;--mono:"DM Mono",monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ivory);color:var(--dark);font-family:var(--sans);font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+nav{position:sticky;top:0;z-index:200;background:rgba(250,249,245,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--ivory-dk);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;gap:10px}
+.nb{font-family:var(--serif);font-size:14px;font-weight:500;color:var(--dark)}
+.nav-slash{width:1px;height:14px;background:var(--clay);display:inline-block;margin:0 6px;vertical-align:middle}
+.ntabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.ntabs::-webkit-scrollbar{display:none}
+.nt{padding:5px 12px;border:none;background:transparent;font-family:var(--sans);font-size:11px;font-weight:500;color:var(--mid);cursor:pointer;border-radius:3px;white-space:nowrap;transition:all .15s}
+.nt:hover{color:var(--dark);background:var(--ivory-md)}
+.nt.on{color:var(--dark);background:var(--ivory-dk)}
+.badge{font-family:var(--mono);font-size:10px;color:var(--clay);background:rgba(217,119,87,.1);border:1px solid rgba(217,119,87,.25);padding:2px 8px;border-radius:0 0 3px 3px;white-space:nowrap;flex-shrink:0}
+.page{display:none;max-width:1000px;margin:0 auto;padding:36px 20px 80px}
+.page.on{display:block}
+.hero{margin-bottom:36px}
+.hlabel{font-family:var(--mono);font-size:10px;color:var(--clay);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px}
+.hero h1{font-family:var(--serif);font-size:clamp(26px,4vw,42px);font-weight:400;line-height:1.1;letter-spacing:-.02em;margin-bottom:10px}
+.hero h1 u{text-decoration:underline;text-decoration-color:var(--clay);text-underline-offset:4px;text-decoration-thickness:2px;font-style:normal}
+.hero p{font-size:13px;font-weight:300;color:var(--dark2);max-width:560px;line-height:1.7}
+.snav{display:flex;gap:0;border:1px solid var(--ivory-dk);margin-bottom:20px;flex-wrap:wrap}
+.snt{flex:1;min-width:fit-content;padding:8px 12px;border:none;border-right:1px solid var(--ivory-dk);border-bottom:1px solid var(--ivory-dk);background:var(--ivory);font-family:var(--sans);font-size:11px;font-weight:500;cursor:pointer;color:var(--mid);transition:all .15s;text-align:center;white-space:nowrap}
+.snt:last-child{border-right:none}
+.snt:hover{background:var(--ivory-md);color:var(--dark)}
+.snt.on{background:var(--dark);color:var(--ivory)}
+.spane{display:none}.spane.on{display:block}
+.topic-def{margin-bottom:20px;border:1px solid var(--ivory-dk);overflow:hidden}
+.topic-def-hd{background:var(--dark2);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.topic-def-title{font-family:var(--serif);font-size:17px;font-weight:400;color:var(--ivory);letter-spacing:-.015em}
+.topic-def-pills{display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0}
+.tdpill{font-family:var(--mono);font-size:9px;padding:2px 8px;border:1px solid;text-transform:uppercase;letter-spacing:.07em}
+.tdpill-weight{color:var(--clay);border-color:rgba(217,119,87,.4);background:rgba(217,119,87,.1)}
+.tdpill-tag{color:var(--blue);border-color:rgba(106,155,204,.35);background:rgba(106,155,204,.08)}
+.topic-def-body{padding:16px 18px;background:var(--ivory)}
+.qa-list{display:flex;flex-direction:column;gap:12px}
+.qa{border:1px solid var(--ivory-dk);overflow:hidden}
+.qa-q{padding:12px 16px;background:var(--ivory-md);border-bottom:1px solid var(--ivory-dk);display:flex;gap:12px;align-items:flex-start}
+.qa-num{font-family:var(--mono);font-size:10px;color:var(--clay);background:rgba(217,119,87,.1);border:1px solid rgba(217,119,87,.25);padding:2px 7px;flex-shrink:0;margin-top:1px;font-weight:500}
+.qa-qtext{font-size:13px;font-weight:500;color:var(--dark);line-height:1.55}
+.qa-a{padding:12px 16px;font-size:13px;color:var(--dark2);line-height:1.7;font-weight:300}
+.qa-a strong{color:var(--dark);font-weight:600}
+.qa-a ul{margin:6px 0 4px 18px}
+.qa-a li{font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300}
+.qa-a li strong{color:var(--dark)}
+.qa-a code{font-family:var(--mono);font-size:12px;background:var(--ivory-md);border:1px solid var(--ivory-dk);padding:1px 5px;border-radius:2px;color:var(--dark)}
+.qa-a ol{margin:6px 0 4px 18px}
+.qa-a ol li{font-size:13px;color:var(--dark2);line-height:1.6;margin-bottom:4px;font-weight:300}
+.rule{margin-bottom:12px;padding:12px 16px;border-left:3px solid var(--clay);background:rgba(217,119,87,.04)}
+.rule-title{font-size:12px;font-weight:600;color:var(--dark);margin-bottom:4px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em}
+.rule-body{font-size:13px;color:var(--dark2);line-height:1.65;font-weight:300}
+.rule-body code{font-family:var(--mono);font-size:12px;background:var(--ivory-dk);padding:1px 5px;border-radius:2px;color:var(--dark)}
+.dtable{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}
+.dtable th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;padding:8px 10px;text-align:left;border-bottom:2px solid var(--dark);background:var(--ivory-md);color:var(--mid)}
+.dtable td{padding:9px 10px;border-bottom:1px solid var(--ivory-dk);vertical-align:top;line-height:1.5;color:var(--dark2)}
+.dtable tr:last-child td{border-bottom:none}
+.dtable td:first-child{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--dark)}
+.dtable tr.hl td{background:rgba(46,125,94,.05)}
+.tip{margin-top:10px;padding:10px 14px;background:var(--ivory-md);border-left:2px solid var(--clay);font-size:12px;color:var(--dark2);line-height:1.6}
+.tip strong{color:var(--dark);font-weight:600}
+.tip code{font-family:var(--mono);font-size:11px;background:var(--ivory-dk);padding:1px 5px;border-radius:2px;color:var(--dark)}
+.lbl{font-family:var(--mono);font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:.1em;margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.lbl::after{content:"";flex:1;height:1px;background:var(--ivory-dk)}
+p{font-size:13px;color:var(--dark2);line-height:1.65;margin-bottom:8px;font-weight:300}
+strong{font-weight:600;color:var(--dark)}
+pre{font-family:var(--mono);font-size:12px;background:var(--dark);color:#e8e6df;padding:14px 16px;overflow-x:auto;line-height:1.7;margin:8px 0}
+pre .c{color:#6a8a6a}
+pre .k{color:#d97757}
+pre .s{color:#a3c97a}
+pre .n{color:#6a9bcc}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nb">Dev<span class="nav-slash"></span>Tools <span style="font-weight:300;font-family:var(--sans);font-size:12px;color:var(--mid)">Advanced Interview</span></div>
+  <div class="ntabs">
+    <button class="nt on" onclick="showPage('guide',this)">Study Guide</button>
+  </div>
+  <span class="badge">CI/CD &amp; Ansible Q&amp;A</span>
+</nav>
+
+<div class="page on" id="page-guide">
+
+  <div class="hero">
+    <div class="hlabel">Advanced Interview Prep &middot; CI/CD &amp; Ansible</div>
+    <h1><u>CI/CD</u> &amp; <u>Ansible</u> Interview Questions</h1>
+    <p>Advanced CI/CD pipeline design, GitHub Actions, Jenkins, deployment strategies, and artifact management — plus Ansible architecture, playbooks, roles, Vault, and production automation patterns.</p>
+  </div>
+
+  <!-- SECTION NAV -->
+  <div class="snav">
+    <button class="snt on"  onclick="switchSection('cicd-core',this)">⚙️ CI/CD Core</button>
+    <button class="snt"     onclick="switchSection('cicd-pipelines',this)">🔁 Pipelines</button>
+    <button class="snt"     onclick="switchSection('cicd-deploy',this)">🚀 Deploy Strategies</button>
+    <button class="snt"     onclick="switchSection('cicd-adv',this)">🔐 Security &amp; Advanced</button>
+    <button class="snt"     onclick="switchSection('ansible-core',this)">📋 Ansible Core</button>
+    <button class="snt"     onclick="switchSection('ansible-playbooks',this)">📝 Playbooks &amp; Roles</button>
+    <button class="snt"     onclick="switchSection('ansible-adv',this)">⚡ Advanced Ansible</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CI/CD CORE
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane on" id="sp-cicd-core">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">⚙️ CI/CD Fundamentals &amp; Concepts</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">C1 – C10</span>
+          <span class="tdpill tdpill-tag">CI · CD · Pipelines</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Understanding the distinction between Continuous Integration, Continuous Delivery, and Continuous Deployment — and how each stage fits into the software delivery lifecycle — is the foundation of every CI/CD interview.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C1</span><span class="qa-qtext">What is the difference between Continuous Integration, Continuous Delivery, and Continuous Deployment?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Continuous Integration (CI):</strong> Developers merge code to a shared branch frequently (multiple times per day). Each merge triggers an automated build and test suite — catching integration issues early.</li>
+            <li><strong>Continuous Delivery (CD):</strong> Every passing build is automatically prepared and proven deployable to production, but the actual deployment trigger is <em>manual</em>. Suitable when business or compliance requires human approval gates.</li>
+            <li><strong>Continuous Deployment:</strong> Every passing build is deployed to production <em>automatically</em> with no human intervention. Requires very high test coverage and robust monitoring/rollback capability.</li>
+          </ul>
+          <strong>Key distinction:</strong> Delivery = always ready to deploy; Deployment = always deployed.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C2</span><span class="qa-qtext">What are the key stages in a CI/CD pipeline?</span></div>
+        <div class="qa-a">
+          A typical pipeline flows through:
+          <ol>
+            <li><strong>Source:</strong> Code push or PR triggers the pipeline (Git webhook).</li>
+            <li><strong>Build:</strong> Compile code, resolve dependencies, produce an artifact.</li>
+            <li><strong>Test:</strong> Unit tests → integration tests → end-to-end tests → coverage gates.</li>
+            <li><strong>Static Analysis:</strong> SAST, linting, dependency vulnerability scan (Trivy, Snyk, SonarQube).</li>
+            <li><strong>Package &amp; Publish:</strong> Build Docker image, push to registry; or package to S3 / Artifactory.</li>
+            <li><strong>Deploy to Staging:</strong> Deploy artifact to a staging/pre-prod environment.</li>
+            <li><strong>Acceptance Tests:</strong> Smoke tests, performance tests against staging.</li>
+            <li><strong>Deploy to Production:</strong> Manual gate (CD) or automatic (Continuous Deployment) with canary/blue-green strategy.</li>
+            <li><strong>Monitor &amp; Notify:</strong> Track error rates, latency; alert on anomalies; auto-rollback on SLO breach.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C3</span><span class="qa-qtext">What is a pipeline as code and why is it important?</span></div>
+        <div class="qa-a">
+          Pipeline as code means the CI/CD pipeline definition lives in a file versioned alongside the application source code (e.g., <code>.github/workflows/ci.yml</code>, <code>Jenkinsfile</code>, <code>.gitlab-ci.yml</code>).<br><br>
+          <strong>Benefits:</strong>
+          <ul>
+            <li><strong>Version control:</strong> Every pipeline change is tracked, reviewable, and reversible.</li>
+            <li><strong>PR reviews:</strong> Pipeline changes go through the same review process as code.</li>
+            <li><strong>Reproducibility:</strong> The pipeline that built version 1.2.3 can be checked out and re-run years later.</li>
+            <li><strong>Consistency:</strong> All branches and forks share the same pipeline definition.</li>
+            <li><strong>Auditability:</strong> Know exactly who changed what in the pipeline and when.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C4</span><span class="qa-qtext">Compare GitHub Actions, GitLab CI, and Jenkins.</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Tool</th><th>Architecture</th><th>Strengths</th><th>Weaknesses</th></tr>
+            <tr><td>GitHub Actions</td><td>Cloud-hosted runners; YAML workflows</td><td>Tight GitHub integration, massive marketplace, free tier, OIDC-native</td><td>Vendor lock-in; limited self-hosted control vs Jenkins</td></tr>
+            <tr><td>GitLab CI</td><td>YAML pipelines; GitLab runners (shared or self-hosted)</td><td>All-in-one DevOps platform; strong security scanning built-in; DAG pipelines</td><td>Self-hosting GitLab is heavy; feature complexity</td></tr>
+            <tr class="hl"><td>Jenkins</td><td>Self-hosted master/agent; Jenkinsfile (Groovy DSL)</td><td>Maximum flexibility; thousands of plugins; on-premises / air-gapped friendly</td><td>High maintenance burden; slower innovation; complex at scale</td></tr>
+          </table>
+          <strong>Modern default:</strong> GitHub Actions for GitHub repos; GitLab CI for GitLab repos; Jenkins when you need full on-premises control or have legacy investment.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C5</span><span class="qa-qtext">What is a CI/CD artifact and how should artifacts be managed?</span></div>
+        <div class="qa-a">
+          An artifact is the immutable, versioned output of a build stage — a Docker image, JAR file, ZIP, binary, or Helm chart — stored in an artifact repository.<br><br>
+          <strong>Management best practices:</strong>
+          <ul>
+            <li><strong>Immutability:</strong> Never overwrite a published artifact. If a build fails, publish a new version.</li>
+            <li><strong>Versioning:</strong> Tag artifacts with Git SHA or semantic version — never use <code>latest</code> for production deploys.</li>
+            <li><strong>Central registry:</strong> Use JFrog Artifactory, Nexus, AWS ECR, GitHub Packages, or GitLab Package Registry.</li>
+            <li><strong>Retention policies:</strong> Automatically expire old artifacts (keep last 10 builds of non-release branches; retain all release tags).</li>
+            <li><strong>Promotion:</strong> Promote the same artifact through dev → staging → prod. Never rebuild for each environment.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C6</span><span class="qa-qtext">What is the shift-left security principle in CI/CD?</span></div>
+        <div class="qa-a">
+          Shift-left means moving security testing earlier in the pipeline — as close to the developer's commit as possible — rather than leaving it for a late-stage security scan or manual pen test.<br><br>
+          <strong>Shift-left layers:</strong>
+          <ul>
+            <li><strong>Pre-commit hooks:</strong> Secret scanning (<code>git-secrets</code>, <code>detect-secrets</code>), linting.</li>
+            <li><strong>PR / build stage:</strong> SAST (SonarQube, Semgrep, CodeQL), dependency CVE scan (Snyk, Trivy, OWASP Dependency-Check).</li>
+            <li><strong>Artifact stage:</strong> Container image scan before push to registry.</li>
+            <li><strong>Deploy stage:</strong> DAST (OWASP ZAP) against staging environment.</li>
+            <li><strong>Runtime:</strong> RASP, WAF, anomaly detection in production.</li>
+          </ul>
+          Finding a vulnerability at commit time costs ~$100 to fix; in production it costs ~$10,000+.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C7</span><span class="qa-qtext">What are pipeline quality gates and how do you implement them?</span></div>
+        <div class="qa-a">
+          Quality gates are automated pass/fail checks that block pipeline progression unless defined thresholds are met.<br><br>
+          <strong>Common gates:</strong>
+          <ul>
+            <li><strong>Test coverage:</strong> Fail if coverage drops below 80% (SonarQube, Istanbul/NYC).</li>
+            <li><strong>Test pass rate:</strong> Any failing test fails the pipeline.</li>
+            <li><strong>Code duplication:</strong> Block merges if duplication exceeds threshold.</li>
+            <li><strong>Security vulnerabilities:</strong> Block on Critical/High CVEs in dependencies or container images.</li>
+            <li><strong>Performance regression:</strong> Fail if p95 latency increases &gt;20% vs baseline (k6, Gatling).</li>
+            <li><strong>License compliance:</strong> Block GPL-licensed dependencies in proprietary code.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C8</span><span class="qa-qtext">What is a monorepo CI/CD strategy and what are the challenges?</span></div>
+        <div class="qa-a">
+          In a monorepo (all services in one Git repo), naively running all pipelines on every commit is wasteful and slow.<br><br>
+          <strong>Affected-only builds:</strong> Detect which services changed and run only their pipelines.
+          <ul>
+            <li><strong>GitHub Actions:</strong> <code>paths</code> filter on workflow triggers; or tools like <strong>Nx affected</strong> / <strong>Turborepo</strong> for smart task graphs.</li>
+            <li><strong>GitLab CI:</strong> <code>rules: changes:</code> directives per job.</li>
+            <li><strong>Bazel / Buck2:</strong> Build-system-level change detection with remote caching.</li>
+          </ul>
+          <strong>Challenges:</strong> Shared library changes may affect many downstream services (require dependency graph analysis); pipeline configuration sprawl; slow CI if not parallelized; merge queue contention.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C9</span><span class="qa-qtext">What is GitOps and how does it differ from traditional CI/CD?</span></div>
+        <div class="qa-a">
+          GitOps uses Git as the <strong>single source of truth for infrastructure and application desired state</strong>. An agent running in the cluster (Argo CD, Flux) continuously reconciles the live state with what is declared in Git — no pipeline pushes deployments.<br><br>
+          <table class="dtable">
+            <tr><th>Aspect</th><th>Traditional CI/CD (push)</th><th>GitOps (pull)</th></tr>
+            <tr><td>Deploy trigger</td><td>Pipeline runs kubectl/helm commands</td><td>Agent detects Git divergence &amp; self-heals</td></tr>
+            <tr><td>Credentials</td><td>Pipeline needs cluster access (high risk)</td><td>Agent runs inside cluster (no external creds)</td></tr>
+            <tr><td>Audit trail</td><td>Pipeline logs</td><td>Git history is the audit log</td></tr>
+            <tr class="hl"><td>Drift detection</td><td>Manual or ad-hoc</td><td>Automatic continuous reconciliation</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C10</span><span class="qa-qtext">What metrics do you use to measure CI/CD pipeline health?</span></div>
+        <div class="qa-a">
+          The <strong>DORA (DevOps Research and Assessment) metrics</strong> are the industry standard:
+          <ul>
+            <li><strong>Deployment Frequency:</strong> How often code is deployed to production. Elite = multiple times/day.</li>
+            <li><strong>Lead Time for Changes:</strong> Time from code commit to running in production. Elite = &lt;1 hour.</li>
+            <li><strong>Change Failure Rate:</strong> % of deployments causing incidents/rollbacks. Elite = 0–5%.</li>
+            <li><strong>Mean Time to Restore (MTTR):</strong> How quickly you recover from a failed deployment. Elite = &lt;1 hour.</li>
+          </ul>
+          Additional pipeline-specific metrics: <strong>build duration</strong>, <strong>flaky test rate</strong>, <strong>queue wait time</strong>, <strong>cache hit rate</strong>.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>DORA benchmark:</strong> Elite performers deploy 973× more frequently and have 3× lower change failure rates than low performers. The single biggest lever is reducing batch size — smaller, more frequent commits surface issues earlier.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CI/CD PIPELINES (GitHub Actions / Jenkins)
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-cicd-pipelines">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔁 GitHub Actions &amp; Jenkins Pipelines</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">C11 – C20</span>
+          <span class="tdpill tdpill-tag">Actions · Jenkins · Runners</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Deep knowledge of GitHub Actions YAML structure and Jenkins declarative pipelines separates candidates who have actually built and maintained pipelines from those who only know the theory.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C11</span><span class="qa-qtext">Explain the structure of a GitHub Actions workflow file.</span></div>
+        <div class="qa-a">
+          A workflow lives at <code>.github/workflows/&lt;name&gt;.yml</code>:
+          <ul>
+            <li><strong>name:</strong> Display name in the Actions UI.</li>
+            <li><strong>on:</strong> Event triggers — <code>push</code>, <code>pull_request</code>, <code>schedule</code>, <code>workflow_dispatch</code>, <code>workflow_call</code>.</li>
+            <li><strong>env:</strong> Workflow-level environment variables.</li>
+            <li><strong>jobs:</strong> One or more jobs running in parallel (or sequentially with <code>needs:</code>). Each job runs on a runner.</li>
+            <li><strong>steps:</strong> Ordered commands within a job — <code>uses:</code> (reusable action) or <code>run:</code> (shell script).</li>
+          </ul>
+          Jobs run in parallel by default. Use <code>needs: [build, test]</code> to enforce ordering. Use <code>strategy.matrix</code> to fan-out across multiple OS or language versions in one job definition.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C12</span><span class="qa-qtext">What are GitHub Actions reusable workflows and composite actions?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Reusable Workflow (<code>workflow_call</code>):</strong> An entire workflow file that can be called from another workflow. Runs as a separate job. Best for sharing complete pipeline patterns (e.g., a standardized deploy workflow) across multiple repos. Inputs, secrets, and outputs are passed explicitly.</li>
+            <li><strong>Composite Action (<code>action.yaml</code> with <code>using: composite</code>):</strong> A sequence of steps bundled into a single <code>uses:</code> step. Runs inline within the caller's job — shares the same runner and environment. Best for extracting common step sequences (e.g., setup + auth + deploy steps).</li>
+          </ul>
+          <strong>Key difference:</strong> Reusable workflow = separate job (own runner, environment isolation); Composite action = steps within the same job.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C13</span><span class="qa-qtext">How do you securely pass secrets in GitHub Actions?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Repository/organization secrets:</strong> Stored encrypted in GitHub; injected as environment variables via <code>env: MY_SECRET: ${{ secrets.MY_SECRET }}</code>. Never printed in logs (masked).</li>
+            <li><strong>OIDC (preferred for cloud):</strong> Use <code>permissions: id-token: write</code> + <code>aws-actions/configure-aws-credentials</code> with <code>role-to-assume</code>. GitHub issues a short-lived JWT; AWS/GCP/Azure exchanges it for temporary credentials. <strong>No stored cloud credentials at all.</strong></li>
+            <li><strong>Environments:</strong> Scope secrets to specific environments (staging, production) with required reviewers for deployment gates.</li>
+          </ul>
+          <strong>Never:</strong> Echo secrets in run steps, pass secrets as workflow inputs (they appear in logs), or store credentials in the repository.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C14</span><span class="qa-qtext">How do you optimize GitHub Actions for speed and cost?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Caching:</strong> <code>actions/cache</code> to cache <code>node_modules</code>, Maven <code>~/.m2</code>, pip, Go modules. Cache key on lock file hash — invalidate only when dependencies change.</li>
+            <li><strong>Docker layer cache:</strong> <code>cache-from: type=gha</code> with <code>docker/build-push-action</code> to reuse unchanged image layers across runs.</li>
+            <li><strong>Concurrency groups:</strong> Cancel in-progress runs when a new commit is pushed to the same PR — avoid wasting minutes on stale builds.</li>
+            <li><strong>Path filters:</strong> Only trigger workflows when relevant files change.</li>
+            <li><strong>Matrix parallelism:</strong> Fan tests across multiple runners simultaneously.</li>
+            <li><strong>Larger runners:</strong> GitHub's 8-core or 16-core runners can halve build time for CPU-intensive builds at proportional cost.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C15</span><span class="qa-qtext">What is a self-hosted runner and when would you use one?</span></div>
+        <div class="qa-a">
+          A self-hosted runner is a machine you manage that executes GitHub Actions (or GitLab CI) jobs — instead of using GitHub's hosted runners.<br><br>
+          <strong>When to use:</strong>
+          <ul>
+            <li>Jobs that need access to private network resources (internal registries, on-prem databases, VPN).</li>
+            <li>Air-gapped environments with no internet access.</li>
+            <li>Specific hardware (GPU for ML builds, ARM for cross-compilation).</li>
+            <li>High-volume pipelines where hosted runner minutes cost more than self-hosted infrastructure.</li>
+          </ul>
+          <strong>Security considerations:</strong> Self-hosted runners on public repos are a serious security risk — a malicious PR can run arbitrary code on your runner. Restrict to private repos or use ephemeral runners (launch fresh VM per job, terminate after).
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C16</span><span class="qa-qtext">What is the difference between a declarative and scripted Jenkins pipeline?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Declarative pipeline:</strong> Structured YAML-like Groovy DSL with a strict <code>pipeline { }</code> block containing <code>stages { }</code>, <code>agent</code>, <code>environment</code>, <code>post { }</code> sections. Easier to read and validate; built-in linting; Blue Ocean UI friendly. <strong>Recommended for all new pipelines.</strong></li>
+            <li><strong>Scripted pipeline:</strong> Full Groovy code inside a <code>node { }</code> block — maximum flexibility, any Groovy construct is valid. More powerful but harder to read, no structure enforcement, no built-in lint.</li>
+          </ul>
+          You can embed <code>script { }</code> blocks inside a declarative pipeline for the rare cases where you need scripted power within a structured framework.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C17</span><span class="qa-qtext">How do you implement parallel stages in Jenkins and GitHub Actions?</span></div>
+        <div class="qa-a">
+          <strong>Jenkins (declarative):</strong>
+          <pre><span class="k">stage</span>(<span class="s">'Test'</span>) {
+  <span class="k">parallel</span> {
+    <span class="k">stage</span>(<span class="s">'Unit Tests'</span>)        { <span class="k">steps</span> { <span class="k">sh</span> <span class="s">'npm run test:unit'</span> } }
+    <span class="k">stage</span>(<span class="s">'Integration Tests'</span>)  { <span class="k">steps</span> { <span class="k">sh</span> <span class="s">'npm run test:int'</span> } }
+  }
+}</pre>
+          <strong>GitHub Actions</strong> — jobs run in parallel by default; use <code>needs:</code> only to serialize:
+          <pre><span class="k">jobs</span>:
+  <span class="n">unit-tests</span>:
+    <span class="k">runs-on</span>: ubuntu-latest
+    <span class="k">steps</span>: [...]
+
+  <span class="n">integration-tests</span>:
+    <span class="k">runs-on</span>: ubuntu-latest
+    <span class="k">steps</span>: [...]
+
+  <span class="n">deploy</span>:
+    <span class="k">needs</span>: [unit-tests, integration-tests]  <span class="c"># waits for both</span>
+    <span class="k">steps</span>: [...]</pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C18</span><span class="qa-qtext">How do you handle flaky tests in CI/CD?</span></div>
+        <div class="qa-a">
+          Flaky tests (pass/fail non-deterministically) erode team trust in the pipeline and cause false failures.<br><br>
+          <strong>Detection:</strong>
+          <ul>
+            <li>Track test failure rates over time (GitHub Actions: test reporting; Jenkins: JUnit trend); flag tests with &gt;2% failure rate on passing builds.</li>
+          </ul>
+          <strong>Mitigation strategies:</strong>
+          <ul>
+            <li><strong>Quarantine:</strong> Move flaky tests to a separate suite that doesn't block the pipeline — still run for visibility.</li>
+            <li><strong>Retry with limits:</strong> Retry a failing test 1–2 times before marking as failed (pytest-rerunfailures, Jest <code>--retries</code>). Never retry more than 3× — masks real failures.</li>
+            <li><strong>Root cause:</strong> Most flakiness comes from: shared state between tests, time-dependent assertions, uncontrolled network calls, race conditions in async code. Fix the root cause — don't just retry.</li>
+            <li><strong>Test isolation:</strong> Each test gets a fresh database (test containers), no shared global state.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C19</span><span class="qa-qtext">How do you implement environment promotion in a CI/CD pipeline?</span></div>
+        <div class="qa-a">
+          Environment promotion means moving the <em>same</em> versioned artifact through a series of environments, with automated tests and manual gates at each stage.<br><br>
+          <strong>Typical promotion chain:</strong> dev → integration → staging → production<br><br>
+          <strong>Implementation patterns:</strong>
+          <ul>
+            <li><strong>GitOps promotion:</strong> PR-based — a bot auto-updates the image tag in the staging Helm values file; a human approves a PR to update production values.</li>
+            <li><strong>Pipeline environments (GitHub Actions):</strong> Define <code>environment: production</code> on a job; configure required reviewers in GitHub settings — pipeline pauses for approval.</li>
+            <li><strong>Jenkins:</strong> Use <code>input</code> step for manual approval gates between stages.</li>
+            <li><strong>Feature flags:</strong> Deploy to 100% of instances but enable for 5% of users — decouple deployment from release.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C20</span><span class="qa-qtext">What is a merge queue and why does it matter at scale?</span></div>
+        <div class="qa-a">
+          A merge queue (GitHub Merge Queue, GitLab merge trains) serializes PRs for merging, running CI on each PR combined with the current state of the target branch — preventing the "works on my PR but breaks main" problem.<br><br>
+          <strong>The problem without it:</strong> PR A and PR B both pass CI independently. Both merge concurrently. Their interaction breaks main. This is the "semantic merge conflict" — no textual conflict but a logical one.<br><br>
+          <strong>With merge queue:</strong> PRs are queued and tested as A+main, then B+A+main. If A+B breaks, only the conflicting PR is dropped. Essential for teams merging &gt;10 PRs/day.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Pipeline speed targets:</strong> Fast feedback is critical — aim for CI to complete in &lt;10 minutes. If tests take longer, parallelize, use test splitting (pytest-split, Jest <code>--shard</code>), or move slow E2E tests to a nightly schedule rather than every PR.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       DEPLOYMENT STRATEGIES
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-cicd-deploy">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🚀 Deployment Strategies</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">C21 – C28</span>
+          <span class="tdpill tdpill-tag">Blue/Green · Canary · Rolling · Feature Flags</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Choosing the right deployment strategy balances risk, rollback speed, infrastructure cost, and the ability to validate changes with real traffic before full release.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C21</span><span class="qa-qtext">Compare rolling, blue/green, and canary deployments.</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Strategy</th><th>How It Works</th><th>Rollback</th><th>Cost</th><th>Best For</th></tr>
+            <tr><td>Rolling</td><td>Replace instances one-by-one (or in batches); both versions run briefly during transition</td><td>Slow — must roll forward or wait</td><td>Low — no extra infra</td><td>Stateless apps; acceptable brief mixed-version state</td></tr>
+            <tr><td>Blue/Green</td><td>Full duplicate environment (green) deployed; traffic switched atomically via LB</td><td>Instant — switch LB back to blue</td><td>High — 2× infra during deploy</td><td>Zero-downtime; instant rollback required; DB schema changes</td></tr>
+            <tr class="hl"><td>Canary</td><td>Route small % of traffic (1–5%) to new version; gradually increase if metrics are healthy</td><td>Fast — shift traffic back</td><td>Low — small canary fleet</td><td>Validating with real users; risk-averse releases</td></tr>
+            <tr><td>Shadow</td><td>Mirror real traffic to new version; responses discarded; compare behavior offline</td><td>N/A — users never see new version</td><td>Medium</td><td>Validating correctness without user impact</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C22</span><span class="qa-qtext">How does a blue/green deployment work in practice on AWS?</span></div>
+        <div class="qa-a">
+          <ol>
+            <li>Run the current version (blue) behind an Application Load Balancer (ALB) target group.</li>
+            <li>Deploy the new version (green) to a separate set of EC2 instances / ECS tasks / Lambda aliases.</li>
+            <li>Run smoke tests and acceptance tests against the green environment directly (via a test listener rule or internal DNS).</li>
+            <li>Switch the ALB listener rule to point to the green target group — traffic shifts atomically.</li>
+            <li>Monitor error rates, latency, and business metrics for 15–30 minutes.</li>
+            <li>If healthy: terminate the blue environment. If unhealthy: update the listener rule back to blue — rollback in &lt;60 seconds.</li>
+          </ol>
+          AWS CodeDeploy, ECS deployment controller, and Lambda traffic shifting all support blue/green natively. Route 53 weighted routing can also implement blue/green at the DNS level.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C23</span><span class="qa-qtext">What is a canary deployment and how do you automate the traffic shift?</span></div>
+        <div class="qa-a">
+          A canary deployment routes a small percentage of production traffic to the new version while the rest stays on the stable version — acting as the "canary in the coal mine" for issues.<br><br>
+          <strong>Automated progressive delivery (Argo Rollouts / Flagger):</strong>
+          <ol>
+            <li>Deploy canary at 5% traffic.</li>
+            <li>Query Prometheus metrics (error rate, latency p99, success rate) every 1 minute.</li>
+            <li>If metrics are within SLO thresholds: increase to 20%, 50%, 100% automatically.</li>
+            <li>If any metric breaches threshold: automatically roll back to 0% canary and alert.</li>
+          </ol>
+          AWS CodeDeploy Linear and Canary Lambda/ECS deployment configurations provide the same automation without Kubernetes.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C24</span><span class="qa-qtext">What are feature flags and how do they decouple deployment from release?</span></div>
+        <div class="qa-a">
+          Feature flags (feature toggles) are conditional code paths controlled by a runtime configuration value — not a code deployment.
+          <ul>
+            <li><strong>Deploy:</strong> The new code ships to 100% of servers, but behind a flag that is <code>OFF</code>.</li>
+            <li><strong>Release:</strong> The flag is turned <code>ON</code> for 1% of users → 10% → 100% — controlled independently of deployment.</li>
+          </ul>
+          <strong>Benefits:</strong>
+          <ul>
+            <li>Instant kill switch — turn off a broken feature without a deployment.</li>
+            <li>A/B testing — compare behavior between flag variants.</li>
+            <li>Trunk-based development — merge WIP code daily without exposing it.</li>
+          </ul>
+          <strong>Tools:</strong> LaunchDarkly, Unleash, AWS AppConfig, Flagsmith, GrowthBook.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C25</span><span class="qa-qtext">How do you handle database schema migrations in CI/CD?</span></div>
+        <div class="qa-a">
+          Database migrations are the hardest part of zero-downtime deployments because they must be compatible with both the old and new application version during the transition window.<br><br>
+          <strong>Expand-contract (parallel change) pattern:</strong>
+          <ol>
+            <li><strong>Expand:</strong> Add a new column/table alongside the old one. Both app versions work. Deploy app v2 (writes to both old and new).</li>
+            <li><strong>Migrate:</strong> Backfill data into the new column.</li>
+            <li><strong>Contract:</strong> Once all instances run v2, drop the old column in a separate migration.</li>
+          </ol>
+          <strong>Tools:</strong> Flyway, Liquibase, Alembic, Django migrations. Run migrations as an init container or a pre-deployment step. Always wrap in transactions. Always have a tested rollback script.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C26</span><span class="qa-qtext">What is an automated rollback and how do you implement one?</span></div>
+        <div class="qa-a">
+          An automated rollback triggers the previous-version deployment when post-deploy monitoring detects an SLO breach — without human intervention.<br><br>
+          <strong>Implementation layers:</strong>
+          <ul>
+            <li><strong>Kubernetes / Argo Rollouts:</strong> Define analysis metrics (Prometheus); rollout automatically aborts and reverts if thresholds are breached.</li>
+            <li><strong>AWS CodeDeploy:</strong> Configure <code>autoRollbackConfiguration</code> — triggers on deployment failure or CloudWatch alarm breach.</li>
+            <li><strong>Lambda:</strong> Traffic shifting with a pre-traffic hook that runs tests; CodeDeploy rolls back if the hook fails.</li>
+            <li><strong>Helm:</strong> <code>helm rollback &lt;release&gt; &lt;revision&gt;</code> as a post-deploy step triggered by a CloudWatch/Datadog alert webhook.</li>
+          </ul>
+          <strong>Key requirement:</strong> Automated rollback is only safe if the deployment is truly stateless or schema migrations are backward-compatible.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C27</span><span class="qa-qtext">What is immutable infrastructure and how does CI/CD enable it?</span></div>
+        <div class="qa-a">
+          Immutable infrastructure means servers are <em>never modified after deployment</em> — instead, a new version is built from scratch and the old one is replaced.<br><br>
+          <strong>In practice (baked AMI / container pattern):</strong>
+          <ol>
+            <li>CI pipeline builds and tests a Docker image (or bakes an AMI with Packer).</li>
+            <li>The artifact is versioned and pushed to a registry.</li>
+            <li>Deployment replaces running instances with new ones running the new image — no SSH, no in-place patching.</li>
+          </ol>
+          <strong>Benefits:</strong> Eliminates configuration drift; deployments are predictable; rollback = launch previous image; security patching = rebuild the image, not patch running servers.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C28</span><span class="qa-qtext">How do you implement a CI/CD pipeline for a multi-service (microservices) application?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Independent pipelines per service:</strong> Each service has its own pipeline, triggered only when its code changes. Deploy independently — no "big bang" releases.</li>
+            <li><strong>Contract testing:</strong> Use Pact or Spring Cloud Contract to verify producer/consumer API compatibility without running full integration tests across all services.</li>
+            <li><strong>Shared library pipelines:</strong> Extract common pipeline steps (security scan, image build, deploy) into reusable GitHub Actions actions or Jenkins shared libraries.</li>
+            <li><strong>Service catalog / dependency tracking:</strong> When a shared library changes, automatically trigger downstream service pipelines.</li>
+            <li><strong>Coordinated releases (rare):</strong> When multiple services must deploy together, use Argo CD App of Apps or Helm umbrella charts to orchestrate.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Rollback vs roll forward:</strong> For simple bugs, roll forward (fix + deploy) is often faster than a full rollback — especially if the deployment included database migrations. Design your pipelines so a fix can be deployed in &lt;10 minutes.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CI/CD SECURITY & ADVANCED
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-cicd-adv">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔐 CI/CD Security, SLSA &amp; Supply Chain</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">C29 – C34</span>
+          <span class="tdpill tdpill-tag">SLSA · SBOM · OIDC · Secrets</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Software supply chain attacks (SolarWinds, Log4Shell, XZ Utils) have made CI/CD security a top-tier interview topic. Understanding provenance, signing, and least-privilege pipelines is essential.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C29</span><span class="qa-qtext">What is SLSA (Supply-chain Levels for Software Artifacts) and what does each level mean?</span></div>
+        <div class="qa-a">
+          SLSA is a security framework (pronounced "salsa") that defines progressive levels of supply chain integrity guarantees:
+          <ul>
+            <li><strong>SLSA 1:</strong> Build process is scripted/automated (not manual). Provenance document generated (what was built, from what source, by what process).</li>
+            <li><strong>SLSA 2:</strong> Provenance is signed by the build service. Source is version controlled. Build uses a hosted CI platform.</li>
+            <li><strong>SLSA 3:</strong> Build is isolated (no persistent credentials, ephemeral runners). Provenance is non-forgeable. Source is protected from tampering (branch protection, code review required).</li>
+            <li><strong>SLSA 4:</strong> Two-person review for all changes. Hermetic and reproducible builds. Highest assurance — required for critical infrastructure software.</li>
+          </ul>
+          GitHub Actions + Sigstore/cosign achieves SLSA 3 relatively easily.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C30</span><span class="qa-qtext">What is OIDC-based authentication in CI/CD and why is it superior to stored credentials?</span></div>
+        <div class="qa-a">
+          Traditional CI/CD stores long-lived credentials (AWS access keys, GCP service account JSON) as secrets — these are static, long-lived, and a major breach vector.<br><br>
+          <strong>OIDC flow (GitHub Actions → AWS):</strong>
+          <ol>
+            <li>GitHub's OIDC provider issues a short-lived JWT signed by GitHub for the specific workflow run.</li>
+            <li>The workflow sends this JWT to AWS STS <code>AssumeRoleWithWebIdentity</code>.</li>
+            <li>AWS verifies the JWT's signature and claims (repo, branch, environment); issues temporary STS credentials (15-minute expiry).</li>
+            <li>No AWS credentials are ever stored in GitHub secrets.</li>
+          </ol>
+          <strong>Benefits:</strong> Zero stored credentials; credentials expire with the job; compromise of one run's credentials is useless after 15 minutes; each job gets least-privilege temporary credentials.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C31</span><span class="qa-qtext">What is a software supply chain attack and how do you defend against it in CI/CD?</span></div>
+        <div class="qa-a">
+          Supply chain attacks compromise a dependency, build tool, or CI system to inject malicious code into legitimate software artifacts (SolarWinds, XZ Utils, event-stream npm package).<br><br>
+          <strong>CI/CD defenses:</strong>
+          <ul>
+            <li><strong>Pin dependency versions</strong> (lockfiles: <code>package-lock.json</code>, <code>poetry.lock</code>). Pin GitHub Actions to a commit SHA, not a tag: <code>uses: actions/checkout@abc1234</code>.</li>
+            <li><strong>SBOM generation:</strong> Know every component in every artifact.</li>
+            <li><strong>Dependency review:</strong> GitHub Dependency Review Action blocks PRs that introduce high-severity CVEs.</li>
+            <li><strong>Signed artifacts:</strong> Sign images/packages with Sigstore Cosign. Verify signature before deploy.</li>
+            <li><strong>Minimal permissions:</strong> GITHUB_TOKEN should use least-privilege (<code>permissions: contents: read</code> only).</li>
+            <li><strong>Ephemeral runners:</strong> Fresh runner per job — compromised runner can't persist malware.</li>
+            <li><strong>Private dependency mirror:</strong> Proxy npm/PyPI through Artifactory/Nexus — scan before caching.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C32</span><span class="qa-qtext">How do you implement least-privilege for CI/CD pipeline permissions?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>GitHub Actions — GITHUB_TOKEN permissions:</strong> Set <code>permissions: {}</code> at the workflow level (deny all), then grant only what each job needs:
+              <code>contents: read</code>, <code>packages: write</code>, <code>id-token: write</code> (for OIDC).</li>
+            <li><strong>AWS IAM — pipeline roles:</strong> One IAM role per pipeline stage. The build role can read S3 and ECR; the deploy role can update ECS services. Neither role has admin or iam:* permissions.</li>
+            <li><strong>Separate credentials per environment:</strong> The staging deploy role cannot assume the production deploy role — enforced by IAM trust policies.</li>
+            <li><strong>Secrets scoping:</strong> GitHub environment secrets are only accessible to jobs targeting that environment — production secrets are never available to a PR build.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C33</span><span class="qa-qtext">What is a release train vs continuous deployment and when do you choose each?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Release train:</strong> Scheduled release cadence (weekly, bi-weekly, monthly). Features are batched — if a feature isn't ready for the next train, it waits. Common in enterprise, regulated industries, mobile apps (AppStore review cycle), or when customers run their own installations (self-hosted software).</li>
+            <li><strong>Continuous deployment:</strong> Every merged PR deploys to production automatically. Requires: feature flags for WIP, very high test coverage, automated rollback, strong monitoring, and a culture that tolerates small frequent changes over big infrequent ones.</li>
+          </ul>
+          <strong>Key question:</strong> What is your customer's deployment model? SaaS = continuous deployment is natural. On-prem software with customer-managed updates = release train is required.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C34</span><span class="qa-qtext">How do you test infrastructure changes in a CI/CD pipeline (IaC testing)?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Static analysis:</strong> <code>terraform validate</code>, <code>terraform fmt --check</code>, <code>tflint</code> — syntax and lint checks before any cloud API calls.</li>
+            <li><strong>Policy as code:</strong> Checkov, Terrascan, tfsec — scan for security misconfigurations (public S3 bucket, unencrypted RDS, open security groups) and block on violations.</li>
+            <li><strong>Speculative plan:</strong> <code>terraform plan</code> on every PR — show reviewers exactly what will change. Never <code>apply</code> on a PR build.</li>
+            <li><strong>Module testing:</strong> Terratest (Go) — spin up real infrastructure in a sandbox AWS account, run assertions, destroy. Slow and costly but provides real validation.</li>
+            <li><strong>Drift detection:</strong> Scheduled pipeline runs <code>terraform plan</code>; alerts if drift is detected between desired and actual state.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Pipeline permissions audit:</strong> Run <code>gh api /repos/:owner/:repo/actions/permissions</code> and review every workflow's <code>permissions:</code> block. Most security incidents in CI/CD come from over-privileged pipeline tokens, not from external attackers — harden from within.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       ANSIBLE CORE
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-ansible-core">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">📋 Ansible Architecture &amp; Core Concepts</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">A1 – A10</span>
+          <span class="tdpill tdpill-tag">Inventory · Modules · Ad-hoc</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Ansible's agentless, push-based architecture and idempotent module system make it a dominant configuration management tool. Understanding how it connects, what it runs, and how it handles state is foundational.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A1</span><span class="qa-qtext">How does Ansible work architecturally? What makes it agentless?</span></div>
+        <div class="qa-a">
+          Ansible is a <strong>push-based, agentless</strong> configuration management tool. The control node (your laptop or CI server) connects to managed nodes over <strong>SSH (Linux)</strong> or <strong>WinRM (Windows)</strong> — no persistent daemon is required on the target.<br><br>
+          <strong>Execution flow:</strong>
+          <ol>
+            <li>Ansible reads inventory (list of target hosts) and the playbook.</li>
+            <li>For each task, Ansible generates a Python module script.</li>
+            <li>The script is pushed to the managed node via SCP/SFTP, executed by the node's Python interpreter, and the results are returned over SSH.</li>
+            <li>The temporary script is deleted after execution.</li>
+          </ol>
+          <strong>Agentless benefit:</strong> No agent to install, update, or secure on thousands of nodes. The only requirement is SSH access and Python (≥2.7 or 3.5+) on the target.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A2</span><span class="qa-qtext">What is idempotency in Ansible and why is it critical?</span></div>
+        <div class="qa-a">
+          An idempotent operation produces the same result regardless of how many times it is run. If the desired state already exists, Ansible does nothing and reports <code>ok</code> instead of <code>changed</code>.<br><br>
+          <strong>Why it matters:</strong>
+          <ul>
+            <li>Safe to re-run playbooks at any time — even after partial failures — without side effects.</li>
+            <li>Enables convergence: run the same playbook against 1,000 servers; already-compliant servers are untouched; non-compliant servers are corrected.</li>
+            <li>Drift remediation: scheduled cron runs of playbooks continuously enforce desired state.</li>
+          </ul>
+          <strong>Common non-idempotent trap:</strong> <code>command: echo "hello" &gt;&gt; /etc/file</code> — appends every run. Fix: use the <code>lineinfile</code> module with <code>create: yes</code> instead.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A3</span><span class="qa-qtext">What is an Ansible inventory and what are the different inventory types?</span></div>
+        <div class="qa-a">
+          The inventory defines what hosts Ansible manages and how to group them.
+          <ul>
+            <li><strong>Static inventory (INI / YAML):</strong> A file listing hosts and groups. Simple for small, stable environments.</li>
+            <li><strong>Dynamic inventory:</strong> A script or plugin that queries an external source (AWS EC2, GCP, Azure, Kubernetes, Vault) at runtime and returns hosts as JSON. Essential for auto-scaled cloud environments where instance IPs change.</li>
+            <li><strong>Inventory plugins (recommended):</strong> <code>amazon.aws.aws_ec2</code>, <code>google.cloud.gcp_compute</code> — configured in <code>inventory.yml</code>, queried automatically by <code>ansible-inventory</code>.</li>
+          </ul>
+          Hosts can belong to multiple groups. Use <code>group_vars/</code> and <code>host_vars/</code> directories to assign variables to groups and individual hosts.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A4</span><span class="qa-qtext">What is the difference between a module, a task, a play, and a playbook?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Module:</strong> A reusable unit of work — <code>ansible.builtin.apt</code>, <code>ansible.builtin.copy</code>, <code>amazon.aws.s3_object</code>. Modules are idempotent Python programs.</li>
+            <li><strong>Task:</strong> A single invocation of a module with specific arguments and a name: <code>- name: Install nginx</code> / <code>ansible.builtin.apt: name=nginx state=present</code>.</li>
+            <li><strong>Play:</strong> A mapping of a group of hosts to a list of tasks. Defines remote user, become (sudo), and variables for that group.</li>
+            <li><strong>Playbook:</strong> A YAML file containing one or more plays. The top-level unit you run with <code>ansible-playbook</code>.</li>
+          </ul>
+          Hierarchy: Playbook → Plays → Tasks → Modules.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A5</span><span class="qa-qtext">What is <code>gather_facts</code> and what information does it collect?</span></div>
+        <div class="qa-a">
+          <code>gather_facts: yes</code> (default) runs the <code>setup</code> module at the start of each play, collecting system facts from each target host:
+          <ul>
+            <li>OS family, distribution, version (<code>ansible_os_family</code>, <code>ansible_distribution</code>)</li>
+            <li>Architecture, kernel, hostname</li>
+            <li>Network interfaces, IP addresses (<code>ansible_default_ipv4</code>)</li>
+            <li>Memory, CPU count, disk partitions</li>
+            <li>Python interpreter path</li>
+          </ul>
+          Facts are available as variables in all tasks: <code>{{ ansible_distribution }}</code>.<br><br>
+          <strong>Performance tip:</strong> Set <code>gather_facts: no</code> for large inventories where you don't need facts — saves ~0.5s per host. Use <code>gather_subset: ['network']</code> to collect only what you need.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A6</span><span class="qa-qtext">What is the difference between <code>become</code> and <code>become_user</code>?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong><code>become: yes</code>:</strong> Enables privilege escalation for a play or task. By default, escalates to root using <code>sudo</code>.</li>
+            <li><strong><code>become_user: postgres</code>:</strong> Specifies which user to become (instead of root). Useful for running tasks as a service account (e.g., run <code>psql</code> as the <code>postgres</code> user).</li>
+            <li><strong><code>become_method</code>:</strong> How to escalate — <code>sudo</code> (default), <code>su</code>, <code>pbrun</code>, <code>doas</code>.</li>
+          </ul>
+          Always scope <code>become</code> to only the tasks that need it — don't set it at play level if only 2 of 20 tasks need root.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A7</span><span class="qa-qtext">What are Ansible ad-hoc commands and when should you use them?</span></div>
+        <div class="qa-a">
+          Ad-hoc commands run a single module against an inventory group without writing a playbook:
+          <pre><span class="c"># Ping all web servers</span>
+ansible webservers -m ping
+
+<span class="c"># Check disk usage on all hosts</span>
+ansible all -m shell -a <span class="s">"df -h"</span>
+
+<span class="c"># Restart nginx on app servers</span>
+ansible appservers -m service -a <span class="s">"name=nginx state=restarted"</span> --become</pre>
+          <strong>When to use:</strong> One-off operational tasks, quick fact gathering, emergency remediation, or testing module behavior before writing a playbook.<br><br>
+          <strong>When NOT to use:</strong> Any action that needs to be repeatable, audited, or version-controlled — write a playbook instead.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A8</span><span class="qa-qtext">How does Ansible handle task execution across multiple hosts — serial vs parallel?</span></div>
+        <div class="qa-a">
+          By default, Ansible runs each task on all hosts in <strong>parallel</strong> (up to <code>forks</code> at a time, default 5) before moving to the next task — this is the "task-centric" model.<br><br>
+          <strong><code>serial</code> keyword:</strong> Controls rolling deployment behavior:
+          <ul>
+            <li><code>serial: 1</code> — run all tasks on 1 host, then the next host. Slowest but safest (never more than 1 host down).</li>
+            <li><code>serial: "30%"</code> — run against 30% of hosts at a time.</li>
+            <li><code>serial: [1, 5, 20%]</code> — progressive batches: 1 host, then 5, then 20% at a time.</li>
+          </ul>
+          <strong>max_fail_percentage:</strong> Abort the play if more than N% of hosts fail — prevents a bad change from cascading to all servers.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A9</span><span class="qa-qtext">What is the Ansible forks setting and how do you tune it?</span></div>
+        <div class="qa-a">
+          <code>forks</code> (default: 5) controls how many hosts are managed <em>simultaneously</em> by the control node. Each fork is a separate process.<br><br>
+          <strong>Tuning:</strong>
+          <ul>
+            <li>Set in <code>ansible.cfg</code>: <code>[defaults] forks = 50</code> or override with <code>-f 50</code>.</li>
+            <li>Higher forks = faster execution on large inventories, but more RAM and CPU on the control node.</li>
+            <li>Network bandwidth to target hosts and SSH connection limits on targets are the practical ceiling.</li>
+            <li><strong>ControlPersist SSH multiplexing:</strong> Enable in <code>ansible.cfg</code> — reuses a single SSH connection for all tasks to a host, drastically reducing connection overhead for large playbooks.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A10</span><span class="qa-qtext">Compare Ansible with Chef, Puppet, and Terraform.</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Tool</th><th>Model</th><th>Language</th><th>Agent</th><th>Best For</th></tr>
+            <tr><td>Ansible</td><td>Push; procedural + declarative</td><td>YAML</td><td>Agentless (SSH)</td><td>App deployment, ad-hoc tasks, orchestration, OS config</td></tr>
+            <tr><td>Chef</td><td>Pull; declarative (converge)</td><td>Ruby DSL</td><td>chef-client agent</td><td>Complex config management; large enterprises; cookbook ecosystem</td></tr>
+            <tr><td>Puppet</td><td>Pull; declarative</td><td>Puppet DSL</td><td>puppet agent</td><td>Large-scale OS and app config; strong compliance reporting</td></tr>
+            <tr class="hl"><td>Terraform</td><td>Declarative; plan/apply</td><td>HCL</td><td>Agentless (APIs)</td><td>Cloud infrastructure provisioning (IaaS); not for OS-level config</td></tr>
+          </table>
+          <strong>Ansible + Terraform together:</strong> Terraform provisions the infrastructure (VPCs, EC2, RDS); Ansible configures the OS and deploys the application onto the infrastructure.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Ansible's sweet spot:</strong> Application deployment, OS hardening, user management, service configuration — tasks that require SSH access to the OS. For provisioning cloud resources, use Terraform. For Kubernetes resources, use Helm or Argo CD. The right tool for the right layer.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       ANSIBLE PLAYBOOKS & ROLES
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-ansible-playbooks">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">📝 Playbooks, Roles &amp; Variables</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">A11 – A20</span>
+          <span class="tdpill tdpill-tag">Roles · Templates · Handlers · Loops</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Writing well-structured, reusable Ansible code requires mastery of roles, variable precedence, Jinja2 templating, handlers, and conditionals.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A11</span><span class="qa-qtext">What is an Ansible role and what is its directory structure?</span></div>
+        <div class="qa-a">
+          A role is a reusable, self-contained unit of Ansible automation with a standardized directory layout:
+          <pre>roles/
+  nginx/
+    tasks/
+      main.yml        <span class="c"># task list (required)</span>
+    handlers/
+      main.yml        <span class="c"># handlers triggered by notify</span>
+    templates/
+      nginx.conf.j2   <span class="c"># Jinja2 templates</span>
+    files/
+      index.html      <span class="c"># static files for copy module</span>
+    vars/
+      main.yml        <span class="c"># role-scoped variables (high precedence)</span>
+    defaults/
+      main.yml        <span class="c"># default variables (lowest precedence)</span>
+    meta/
+      main.yml        <span class="c"># role dependencies, galaxy metadata</span>
+    README.md</pre>
+          Apply a role in a playbook: <code>roles: [nginx, firewall, monitoring]</code>. Roles promote code reuse across playbooks and projects — share them via Ansible Galaxy or a private automation hub.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A12</span><span class="qa-qtext">What is Ansible variable precedence and why does it matter?</span></div>
+        <div class="qa-a">
+          Ansible has 22 levels of variable precedence (lowest to highest — higher wins):
+          <ul>
+            <li><strong>Lowest:</strong> Role defaults (<code>roles/x/defaults/main.yml</code>) — intended to be easily overridden.</li>
+            <li><strong>Mid:</strong> Inventory variables → <code>group_vars/</code> → <code>host_vars/</code> → play vars → task vars.</li>
+            <li><strong>High:</strong> Role vars (<code>roles/x/vars/main.yml</code>) — not easily overridden (use for internal role constants).</li>
+            <li><strong>Highest:</strong> Extra vars (<code>-e "key=value"</code> on command line) — override everything.</li>
+          </ul>
+          <strong>Best practice:</strong> Use <code>defaults/main.yml</code> for variables you expect users to override. Use <code>vars/main.yml</code> for internal role constants. Document all expected variables with defaults.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A13</span><span class="qa-qtext">What are Ansible handlers and when do they run?</span></div>
+        <div class="qa-a">
+          Handlers are tasks that run only when <em>notified</em> by another task — and only if the notifying task made a change (reported <code>changed</code>, not <code>ok</code>).<br><br>
+          <strong>Example:</strong>
+          <pre><span class="k">tasks</span>:
+  - <span class="k">name</span>: Deploy nginx config
+    <span class="k">template</span>: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+    <span class="k">notify</span>: Restart nginx
+
+<span class="k">handlers</span>:
+  - <span class="k">name</span>: Restart nginx
+    <span class="k">service</span>: name=nginx state=restarted</pre>
+          <strong>Key behaviors:</strong>
+          <ul>
+            <li>Handlers run <em>once</em> at the end of the play, regardless of how many tasks notified them — prevents multiple restarts.</li>
+            <li>Force immediate execution mid-play with <code>meta: flush_handlers</code>.</li>
+            <li>Multiple tasks can notify the same handler; it still only runs once.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A14</span><span class="qa-qtext">How does Jinja2 templating work in Ansible?</span></div>
+        <div class="qa-a">
+          Ansible uses Jinja2 for dynamic content in templates (<code>.j2</code> files) and in task arguments.<br><br>
+          <strong>Common patterns:</strong>
+          <ul>
+            <li><strong>Variable substitution:</strong> <code>{{ variable_name }}</code></li>
+            <li><strong>Conditionals:</strong> <code>{% if ansible_os_family == "Debian" %}...{% endif %}</code></li>
+            <li><strong>Loops:</strong> <code>{% for server in groups['webservers'] %}{{ server }}{% endfor %}</code></li>
+            <li><strong>Filters:</strong> <code>{{ my_list | join(', ') }}</code>, <code>{{ path | basename }}</code>, <code>{{ 'hello' | upper }}</code></li>
+            <li><strong>Tests:</strong> <code>{% if var is defined %}...{% endif %}</code></li>
+          </ul>
+          Templates are rendered on the control node and the rendered file is pushed to the target. Use the <code>template</code> module (not <code>copy</code>) for <code>.j2</code> files.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A15</span><span class="qa-qtext">How do you use loops in Ansible?</span></div>
+        <div class="qa-a">
+          <strong>Modern syntax (<code>loop:</code>, Ansible 2.5+):</strong>
+          <pre><span class="k">- name</span>: Install packages
+  <span class="k">ansible.builtin.apt</span>:
+    <span class="k">name</span>: <span class="s">"{{ item }}"</span>
+    <span class="k">state</span>: present
+  <span class="k">loop</span>:
+    - nginx
+    - python3
+    - git</pre>
+          <strong>Loop over dictionaries:</strong>
+          <pre><span class="k">- name</span>: Create users
+  <span class="k">ansible.builtin.user</span>:
+    <span class="k">name</span>: <span class="s">"{{ item.name }}"</span>
+    <span class="k">groups</span>: <span class="s">"{{ item.groups }}"</span>
+  <span class="k">loop</span>:
+    - { <span class="k">name</span>: alice, <span class="k">groups</span>: sudo }
+    - { <span class="k">name</span>: bob,   <span class="k">groups</span>: docker }</pre>
+          <strong>Avoid:</strong> <code>with_items</code> (legacy), <code>with_dict</code>, etc. — replaced by <code>loop</code> + filters. Use <code>loop_control.label</code> to customize what item is shown in output (avoid logging secrets).
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A16</span><span class="qa-qtext">How do conditionals (<code>when</code>) work in Ansible?</span></div>
+        <div class="qa-a">
+          The <code>when</code> clause skips a task if the condition is false. It evaluates a Jinja2 expression (without <code>{{ }}</code> braces):
+          <pre><span class="k">- name</span>: Install Apache (Debian only)
+  <span class="k">ansible.builtin.apt</span>:
+    <span class="k">name</span>: apache2
+    <span class="k">state</span>: present
+  <span class="k">when</span>: ansible_os_family == <span class="s">"Debian"</span>
+
+<span class="k">- name</span>: Install Apache (RedHat only)
+  <span class="k">ansible.builtin.yum</span>:
+    <span class="k">name</span>: httpd
+    <span class="k">state</span>: present
+  <span class="k">when</span>: ansible_os_family == <span class="s">"RedHat"</span></pre>
+          <strong>Multiple conditions:</strong>
+          <ul>
+            <li>AND: list form — each item ANDed: <code>when: [condition1, condition2]</code></li>
+            <li>OR: explicit: <code>when: condition1 or condition2</code></li>
+          </ul>
+          <code>when</code> combined with <code>loop</code>: condition evaluated per item.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A17</span><span class="qa-qtext">What is <code>block</code>, <code>rescue</code>, and <code>always</code> in Ansible?</span></div>
+        <div class="qa-a">
+          Ansible's error handling structure, similar to try/catch/finally:
+          <pre><span class="k">- block</span>:
+    - <span class="k">name</span>: Deploy application
+      <span class="k">command</span>: ./deploy.sh
+    - <span class="k">name</span>: Run smoke test
+      <span class="k">uri</span>: url=http://localhost/health
+  <span class="k">rescue</span>:
+    - <span class="k">name</span>: Rollback on failure
+      <span class="k">command</span>: ./rollback.sh
+    - <span class="k">name</span>: Notify team
+      <span class="k">slack</span>: msg=<span class="s">"Deploy failed, rolled back"</span>
+  <span class="k">always</span>:
+    - <span class="k">name</span>: Clean up temp files
+      <span class="k">file</span>: path=/tmp/deploy state=absent</pre>
+          <code>rescue</code> runs only if a task in <code>block</code> fails. <code>always</code> runs regardless. Blocks also support <code>when</code>, <code>become</code>, and <code>tags</code> applied to all tasks within.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A18</span><span class="qa-qtext">What is <code>register</code> and how do you use it to capture task output?</span></div>
+        <div class="qa-a">
+          <code>register</code> captures the return value of a task into a variable for use in subsequent tasks:
+          <pre><span class="k">- name</span>: Check if config exists
+  <span class="k">stat</span>: path=/etc/myapp/config.yml
+  <span class="k">register</span>: config_stat
+
+- <span class="k">name</span>: Deploy default config
+  <span class="k">template</span>: src=config.yml.j2 dest=/etc/myapp/config.yml
+  <span class="k">when</span>: not config_stat.stat.exists</pre>
+          The registered variable is a dictionary with keys like <code>rc</code> (return code), <code>stdout</code>, <code>stderr</code>, <code>changed</code>, <code>failed</code>.<br><br>
+          <strong>Common use:</strong> Check command output, conditionally run follow-up tasks, pass data between tasks (e.g., grab an instance ID from AWS CLI output).
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A19</span><span class="qa-qtext">What are Ansible tags and how do you use them for partial playbook runs?</span></div>
+        <div class="qa-a">
+          Tags allow selective execution of tasks or roles within a playbook:
+          <pre><span class="k">tasks</span>:
+  - <span class="k">name</span>: Install nginx
+    <span class="k">apt</span>: name=nginx state=present
+    <span class="k">tags</span>: [nginx, install]
+
+  - <span class="k">name</span>: Configure nginx
+    <span class="k">template</span>: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+    <span class="k">tags</span>: [nginx, configure]</pre>
+          <ul>
+            <li><code>ansible-playbook site.yml --tags nginx</code> — run only nginx tasks.</li>
+            <li><code>ansible-playbook site.yml --skip-tags install</code> — skip install tasks.</li>
+            <li><code>ansible-playbook site.yml --tags all</code> — run everything.</li>
+            <li><code>--list-tags</code> — preview all available tags without running.</li>
+          </ul>
+          <strong>Use case:</strong> Re-run only configuration tasks after a config change without re-running the full install sequence.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A20</span><span class="qa-qtext">What is <code>include_tasks</code> vs <code>import_tasks</code> and why does it matter?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong><code>import_tasks</code> (static):</strong> Pre-processed at playbook parse time. All tasks are included before any task runs. Supports <code>tags</code> on the imported tasks (tags on the import statement apply to all tasks within). Cannot use variables in the filename.</li>
+            <li><strong><code>include_tasks</code> (dynamic):</strong> Processed at runtime when the task is reached. Can use variables in the filename: <code>include_tasks: "{{ ansible_os_family }}_setup.yml"</code>. Tags on the <code>include_tasks</code> statement do NOT propagate to inner tasks.</li>
+          </ul>
+          <strong>Rule of thumb:</strong> Use <code>import_tasks</code> for static includes you want taggable from the command line. Use <code>include_tasks</code> when you need dynamic file selection or loops.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Role development workflow:</strong> Use <code>ansible-galaxy role init my_role</code> to scaffold the directory structure. Test roles with <strong>Molecule</strong> — it spins up Docker or Vagrant instances, applies the role, and runs testinfra/pytest assertions to verify the final state.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       ADVANCED ANSIBLE
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="spane" id="sp-ansible-adv">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">⚡ Advanced Ansible — Vault, Collections, AWX &amp; Performance</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">A21 – A30</span>
+          <span class="tdpill tdpill-tag">Vault · Collections · AWX · Delegation</span>
+        </div>
+      </div>
+      <div class="topic-def-body">
+        <p>Production Ansible usage involves securing secrets with Vault, distributing automation via Collections, managing execution at scale with AWX/Automation Controller, and debugging complex failures.</p>
+      </div>
+    </div>
+
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A21</span><span class="qa-qtext">What is Ansible Vault and how do you use it?</span></div>
+        <div class="qa-a">
+          Ansible Vault encrypts sensitive data (passwords, API keys, certificates) using AES-256 so secrets can be safely stored in version control alongside playbooks.<br><br>
+          <strong>Common operations:</strong>
+          <pre><span class="c"># Encrypt an entire file</span>
+ansible-vault encrypt group_vars/all/vault.yml
+
+<span class="c"># Encrypt a single string (embed in YAML)</span>
+ansible-vault encrypt_string <span class="s">'mysecret'</span> --name db_password
+
+<span class="c"># Edit an encrypted file</span>
+ansible-vault edit group_vars/all/vault.yml
+
+<span class="c"># Run playbook with vault password</span>
+ansible-playbook site.yml --vault-password-file ~/.vault_pass
+ansible-playbook site.yml --ask-vault-pass</pre>
+          <strong>Best practice:</strong> Store only the vault password file path in a password manager or CI secret; never commit the vault password. Use multiple vault IDs (<code>--vault-id dev@prompt --vault-id prod@~/.prod_vault_pass</code>) to manage per-environment secrets.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A22</span><span class="qa-qtext">How do you integrate Ansible Vault with external secrets managers (HashiCorp Vault, AWS Secrets Manager)?</span></div>
+        <div class="qa-a">
+          For enterprise environments, using Ansible Vault (file-based) has key/rotation limitations. External secrets managers provide dynamic, audited secrets:<br><br>
+          <strong>HashiCorp Vault:</strong> Use the <code>community.hashi_vault</code> collection:
+          <pre><span class="k">- name</span>: Get DB password from Vault
+  <span class="k">set_fact</span>:
+    db_password: <span class="s">"{{ lookup('hashi_vault', 'secret=secret/data/db token=...' ) }}"</span></pre>
+          <strong>AWS Secrets Manager:</strong> Use the <code>amazon.aws.aws_secret</code> lookup plugin:
+          <pre><span class="k">db_password</span>: <span class="s">"{{ lookup('amazon.aws.aws_secret', '/prod/db/password') }}"</span></pre>
+          <strong>Benefits:</strong> Secrets are fetched at runtime, never stored on disk, automatically rotated, and every access is audited.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A23</span><span class="qa-qtext">What are Ansible Collections and how do they improve code distribution?</span></div>
+        <div class="qa-a">
+          Collections (introduced in Ansible 2.9) are distribution packages that bundle modules, plugins, roles, and playbooks together under a namespace:
+          <ul>
+            <li><code>amazon.aws</code> — official AWS collection (EC2, S3, RDS modules).</li>
+            <li><code>community.docker</code> — Docker management modules.</li>
+            <li><code>kubernetes.core</code> — kubectl and Helm modules.</li>
+          </ul>
+          <strong>Install:</strong> <code>ansible-galaxy collection install amazon.aws</code> or pin in <code>requirements.yml</code>:
+          <pre><span class="k">collections</span>:
+  - <span class="k">name</span>: amazon.aws
+    <span class="k">version</span>: <span class="s">">=6.0.0"</span></pre>
+          Collections decouple module releases from Ansible core releases — AWS collection can ship new EC2 features without waiting for an Ansible core release.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A24</span><span class="qa-qtext">What is AWX / Ansible Automation Controller and what problems does it solve?</span></div>
+        <div class="qa-a">
+          AWX (open-source) / Red Hat Ansible Automation Controller (commercial) is a web-based UI and API on top of Ansible that solves enterprise automation governance:
+          <ul>
+            <li><strong>Role-based access control (RBAC):</strong> Different teams can run their playbooks without seeing each other's inventories or credentials.</li>
+            <li><strong>Credential management:</strong> SSH keys and vault passwords stored encrypted in the database — operators never see raw credentials.</li>
+            <li><strong>Job scheduling:</strong> Cron-like scheduled playbook runs without cron access to a control node.</li>
+            <li><strong>Audit trail:</strong> Every playbook run, who triggered it, output, and result — stored and searchable.</li>
+            <li><strong>Workflows:</strong> Visual DAG of multiple playbook runs with conditional branching.</li>
+            <li><strong>Scalable execution:</strong> Execution nodes and hop nodes for running automation in remote or air-gapped environments.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A25</span><span class="qa-qtext">What is <code>delegate_to</code> and when do you use it?</span></div>
+        <div class="qa-a">
+          <code>delegate_to</code> runs a specific task on a different host than the one currently being configured — while still using the current host's variables:
+          <pre><span class="k">- name</span>: Deregister from load balancer before deploy
+  <span class="k">command</span>: aws elbv2 deregister-targets --target-group-arn {{ tg_arn }} ...
+  <span class="k">delegate_to</span>: localhost
+  
+- <span class="k">name</span>: Deploy application
+  <span class="k">git</span>: repo=... dest=/app version=main
+
+- <span class="k">name</span>: Re-register with load balancer
+  <span class="k">command</span>: aws elbv2 register-targets ...
+  <span class="k">delegate_to</span>: localhost</pre>
+          <strong>Common patterns:</strong>
+          <ul>
+            <li>Run AWS CLI / API calls from localhost while iterating over EC2 instances.</li>
+            <li>Update a DNS record or load balancer from a central node while rolling out app servers.</li>
+            <li><code>delegate_to: localhost</code> + <code>run_once: true</code> — execute a task exactly once from the control node regardless of how many hosts are in the play.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A26</span><span class="qa-qtext">How do you write custom Ansible modules?</span></div>
+        <div class="qa-a">
+          Custom modules let you extend Ansible when no existing module covers your need. They are Python scripts that accept JSON input and return JSON output:
+          <pre><span class="k">from</span> ansible.module_utils.basic <span class="k">import</span> AnsibleModule
+
+<span class="k">def</span> <span class="n">main</span>():
+    module = AnsibleModule(
+        argument_spec=<span class="k">dict</span>(
+            name=<span class="k">dict</span>(type=<span class="s">'str'</span>, required=<span class="k">True</span>),
+            state=<span class="k">dict</span>(type=<span class="s">'str'</span>, default=<span class="s">'present'</span>)
+        ),
+        supports_check_mode=<span class="k">True</span>
+    )
+    <span class="c"># ... implement logic ...</span>
+    module.exit_json(changed=<span class="k">True</span>, result=<span class="s">"done"</span>)
+
+<span class="k">if</span> __name__ == <span class="s">'__main__'</span>:
+    main()</pre>
+          Place in <code>library/</code> next to your playbook or package in a Collection. Always implement <code>supports_check_mode</code> (dry-run). Return <code>changed: false</code> when the desired state already exists (idempotency).
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A27</span><span class="qa-qtext">How do you test Ansible roles with Molecule?</span></div>
+        <div class="qa-a">
+          <strong>Molecule</strong> is the standard testing framework for Ansible roles — it provisions test instances, applies the role, verifies the result, and destroys the instances.
+          <ul>
+            <li><code>molecule init scenario</code> — scaffold test infrastructure in <code>molecule/default/</code>.</li>
+            <li><strong>molecule.yml:</strong> Configure the driver (Docker, Vagrant, EC2), platforms (Ubuntu 22.04, RHEL 9), and verifier.</li>
+            <li><strong>converge.yml:</strong> The playbook that applies your role under test.</li>
+            <li><strong>verify.yml / tests/:</strong> testinfra (pytest) or <code>ansible.builtin.assert</code> tasks that validate the final system state.</li>
+          </ul>
+          <strong>Full test cycle:</strong> <code>molecule test</code> — creates → converge → idempotency check (run again, assert 0 changed) → verify → destroy.
+          The <strong>idempotency check</strong> is the most valuable automated test — catches tasks with non-idempotent side effects.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A28</span><span class="qa-qtext">How do you optimize Ansible performance for large inventories?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>SSH multiplexing / ControlPersist:</strong> Reuse a single SSH connection per host across all tasks — the biggest single improvement:
+              <code>[ssh_connection] ssh_args = -o ControlMaster=auto -o ControlPersist=60s</code></li>
+            <li><strong>Pipelining:</strong> <code>pipelining = True</code> in <code>ansible.cfg</code> — execute module code over stdin without an SCP upload. Reduces SSH round trips per task from 3 to 1. Requires <code>requiretty</code> disabled in sudoers.</li>
+            <li><strong>Fact caching:</strong> Cache gathered facts to Redis or JSON files — skip re-collection on subsequent runs:
+              <code>fact_caching = redis</code>, <code>fact_caching_timeout = 86400</code></li>
+            <li><strong>Increase forks:</strong> <code>forks = 50+</code> for large inventories.</li>
+            <li><strong>Mitogen strategy plugin:</strong> Replaces the default execution strategy — 2–7× faster for complex playbooks by using Python-level process reuse.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A29</span><span class="qa-qtext">How do you use Ansible for CI/CD application deployment alongside Docker?</span></div>
+        <div class="qa-a">
+          Ansible complements Docker in deployment scenarios where you need to orchestrate beyond <code>docker run</code>:
+          <pre><span class="k">- name</span>: Deploy application container
+  <span class="k">community.docker.docker_container</span>:
+    <span class="k">name</span>: myapp
+    <span class="k">image</span>: <span class="s">"myrepo/myapp:{{ version }}"</span>
+    <span class="k">state</span>: started
+    <span class="k">restart_policy</span>: always
+    <span class="k">ports</span>: [<span class="s">"80:8080"</span>]
+    <span class="k">env</span>:
+      DB_HOST: <span class="s">"{{ db_host }}"</span>
+      DB_PASS: <span class="s">"{{ vault_db_password }}"</span>
+    <span class="k">volumes</span>: [<span class="s">"/data/myapp:/app/data"</span>]</pre>
+          <strong>Full deployment play pattern:</strong>
+          <ol>
+            <li>Drain host from load balancer (<code>delegate_to: localhost</code>).</li>
+            <li>Pull new image (<code>community.docker.docker_image</code>).</li>
+            <li>Stop and remove old container.</li>
+            <li>Start new container with updated image tag.</li>
+            <li>Wait for health check: <code>uri</code> module polling <code>/health</code>.</li>
+            <li>Re-register host with load balancer.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A30</span><span class="qa-qtext">What are Ansible callback plugins and how do you use them for notifications?</span></div>
+        <div class="qa-a">
+          Callback plugins hook into Ansible's execution events (task start, task result, playbook complete, failure) to customize output or trigger external actions.<br><br>
+          <strong>Built-in callbacks:</strong>
+          <ul>
+            <li><code>yaml</code> / <code>json</code> — change output format.</li>
+            <li><code>profile_tasks</code> — show task execution times (identify bottlenecks).</li>
+            <li><code>timer</code> — total playbook elapsed time.</li>
+            <li><code>mail</code> — email on failure.</li>
+          </ul>
+          Enable in <code>ansible.cfg</code>: <code>stdout_callback = yaml</code>, <code>callback_whitelist = profile_tasks,timer</code>.<br><br>
+          <strong>Custom callback for Slack/PagerDuty:</strong> Write a Python class extending <code>CallbackBase</code> and override <code>v2_playbook_on_stats()</code> to post a summary to Slack with pass/fail counts — useful for scheduled compliance-run notifications.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rule" style="margin-top:20px">
+      <div class="rule-title">Ansible Production Checklist</div>
+      <div class="rule-body">
+        ✓ All secrets in Ansible Vault or external secrets manager — none in plaintext &nbsp;·&nbsp;
+        ✓ Roles tested with Molecule (idempotency check passes) &nbsp;·&nbsp;
+        ✓ SSH pipelining + ControlPersist enabled &nbsp;·&nbsp;
+        ✓ Dynamic inventory for cloud environments &nbsp;·&nbsp;
+        ✓ <code>--check</code> + <code>--diff</code> dry-run before production runs &nbsp;·&nbsp;
+        ✓ <code>max_fail_percentage</code> set for rolling deployments &nbsp;·&nbsp;
+        ✓ Playbooks version-controlled with peer review &nbsp;·&nbsp;
+        ✓ AWX/Automation Controller for team access and audit trail &nbsp;·&nbsp;
+        ✓ FQCN module names (e.g. <code>ansible.builtin.apt</code> not <code>apt</code>)
+      </div>
+    </div>
+
+    <div class="tip" style="margin-top:16px"><strong>Debugging tips:</strong> <code>-v</code> (verbose) through <code>-vvvv</code> (connection debug). Use <code>ansible-playbook --check --diff</code> to preview changes without applying them. The <code>debug</code> module with <code>var: hostvars[inventory_hostname]</code> dumps all variables for a host — invaluable for troubleshooting variable precedence issues.</div>
+  </div>
+
+</div><!-- /page-guide -->
+
+<script>
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nt').forEach(b => b.classList.remove('on'));
+  document.getElementById('page-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+function switchSection(id, btn) {
+  document.querySelectorAll('.spane').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.snt').forEach(b => b.classList.remove('on'));
+  document.getElementById('sp-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+</script>
+</body>
+</html>
