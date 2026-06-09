@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terraform — Advanced Interview Questions</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#ffffff;--bg:#f4f6f9;--border:#e2e8f0;--border-md:#cbd5e1;
+  --text:#0f172a;--text-2:#334155;--text-3:#64748b;
+  --accent:#4f46e5;--accent-lt:#ede9fe;--accent-dk:#3730a3;
+  --amber:#d97706;
+  --sans:"DM Sans",system-ui,sans-serif;
+  --mono:"DM Mono",monospace;
+  --serif:"Playfair Display",Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.nb{font-family:var(--sans);font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.01em}
+.nav-slash{width:1px;height:16px;background:var(--border-md);display:inline-block;margin:0 8px;vertical-align:middle}
+.ntabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.ntabs::-webkit-scrollbar{display:none}
+.nt{padding:6px 14px;border:none;background:transparent;font-family:var(--sans);font-size:12px;font-weight:500;color:var(--text-3);cursor:pointer;border-radius:6px;white-space:nowrap;transition:all .15s}
+.nt:hover{color:var(--text);background:var(--bg)}
+.nt.on{color:var(--accent);background:var(--accent-lt);font-weight:600}
+.badge{font-family:var(--mono);font-size:10px;color:var(--accent);background:var(--accent-lt);border:1px solid rgba(79,70,229,.25);padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;font-weight:600}
+.page{display:none;max-width:1020px;margin:0 auto;padding:40px 24px 80px}
+.page.on{display:block}
+.hero{margin-bottom:40px;padding:32px 36px;background:var(--white);border-radius:16px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.hlabel{font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;font-weight:600}
+.hero h1{font-family:var(--serif);font-size:clamp(24px,3.5vw,38px);font-weight:400;line-height:1.15;letter-spacing:-.02em;margin-bottom:10px;color:var(--text)}
+.hero h1 u{text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:5px;text-decoration-thickness:2px;font-style:normal}
+.hero p{font-size:14px;color:var(--text-2);max-width:580px;line-height:1.7}
+.snav{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
+.snt{padding:7px 14px;border:1px solid var(--border);border-radius:20px;background:var(--white);font-family:var(--sans);font-size:11px;font-weight:500;cursor:pointer;color:var(--text-3);transition:all .15s;white-space:nowrap}
+.snt:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-lt)}
+.snt.on{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+.spane{display:none}.spane.on{display:block}
+.topic-def{margin-bottom:24px;border-radius:12px;overflow:hidden;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.topic-def-hd{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dk) 100%);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.topic-def-title{font-family:var(--serif);font-size:17px;font-weight:400;color:#fff;letter-spacing:-.01em}
+.topic-def-pills{display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0}
+.tdpill{font-family:var(--mono);font-size:9px;padding:3px 9px;border:1px solid;border-radius:20px;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+.tdpill-weight{color:#fff;border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.15)}
+.tdpill-tag{color:#c7d2fe;border-color:rgba(199,210,254,.4);background:rgba(199,210,254,.1)}
+.topic-def-body{padding:16px 20px;background:var(--white)}
+.topic-def-body p{color:var(--text-2);font-size:13px}
+.qa-list{display:flex;flex-direction:column;gap:10px}
+.qa{border-radius:10px;border:1px solid var(--border);overflow:hidden;background:var(--white);box-shadow:0 1px 3px rgba(0,0,0,.04);transition:box-shadow .15s}
+.qa:hover{box-shadow:0 3px 10px rgba(79,70,229,.1)}
+.qa-q{padding:12px 16px;background:#fafbff;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start}
+.qa-num{font-family:var(--mono);font-size:10px;color:var(--accent);background:var(--accent-lt);border:1px solid rgba(79,70,229,.2);padding:2px 7px;border-radius:4px;flex-shrink:0;margin-top:2px;font-weight:700;white-space:nowrap}
+.qa-qtext{font-size:13px;font-weight:600;color:var(--text);line-height:1.55}
+.qa-a{padding:14px 16px;font-size:13px;color:var(--text-2);line-height:1.75}
+.qa-a strong{color:var(--text);font-weight:700}
+.qa-a em{color:var(--text-3);font-style:italic}
+.qa-a ul{margin:6px 0 4px 20px}
+.qa-a ol{margin:6px 0 4px 20px}
+.qa-a li{font-size:13px;color:var(--text-2);line-height:1.65;margin-bottom:5px}
+.qa-a li strong{color:var(--text)}
+.qa-a code{font-family:var(--mono);font-size:12px;background:#f1f5f9;border:1px solid var(--border);padding:1px 6px;border-radius:4px;color:var(--accent-dk)}
+pre{background:#1e1e2e;border-radius:8px;padding:14px 16px;margin:10px 0;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.7;color:#cdd6f4;border:1px solid #313244}
+pre .k{color:#cba6f7}pre .s{color:#a6e3a1}pre .c{color:#6c7086;font-style:italic}pre .v{color:#89dceb}pre .n{color:#89b4fa}pre .o{color:#f38ba8}
+.rule{margin-bottom:12px;padding:14px 18px;border-left:3px solid var(--accent);background:var(--accent-lt);border-radius:0 8px 8px 0}
+.rule-title{font-size:11px;font-weight:700;color:var(--accent-dk);margin-bottom:5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.rule-body{font-size:13px;color:var(--text-2);line-height:1.65}
+.rule-body code{font-family:var(--mono);font-size:12px;background:rgba(79,70,229,.08);padding:1px 5px;border-radius:3px;color:var(--accent-dk)}
+.dtable{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.dtable th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;padding:9px 12px;text-align:left;background:#f8fafc;color:var(--text-3);border-bottom:1px solid var(--border-md);font-weight:700}
+.dtable td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55;color:var(--text-2)}
+.dtable tr:last-child td{border-bottom:none}
+.dtable td:first-child{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text)}
+.dtable tr.hl td{background:#f0fdf4}
+.dtable tr:hover td{background:#fafbff}
+.tip{margin-top:12px;padding:12px 16px;background:#fffbeb;border:1px solid #fde68a;border-left:3px solid var(--amber);border-radius:0 8px 8px 0;font-size:12px;color:#78350f;line-height:1.65}
+.tip strong{color:#92400e;font-weight:700}
+.tip code{font-family:var(--mono);font-size:11px;background:#fef3c7;padding:1px 5px;border-radius:3px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);margin:14px 0;border-radius:8px;overflow:hidden}
+@media(max-width:600px){.compare{grid-template-columns:1fr}}
+.cmp{padding:14px 16px;font-size:12px;line-height:1.65;border-right:1px solid var(--border);background:var(--white)}
+.cmp:last-child{border-right:none}
+.cmp-lbl{font-family:var(--mono);font-size:10px;font-weight:700;margin-bottom:6px;color:var(--accent);text-transform:uppercase;letter-spacing:.07em}
+.lbl{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;margin:16px 0 10px;display:flex;align-items:center;gap:10px;font-weight:600}
+.lbl::after{content:"";flex:1;height:1px;background:var(--border)}
+p{font-size:13px;color:var(--text-2);line-height:1.65;margin-bottom:8px}
+strong{font-weight:700;color:var(--text)}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nb">Cloud Guide <span class="nav-slash"></span> Terraform Interview</span>
+  <div class="ntabs" role="tablist">
+    <button class="nt on" onclick="showPage('p1',this)" role="tab">🏗️ Core</button>
+    <button class="nt" onclick="showPage('p2',this)" role="tab">🗄️ State</button>
+    <button class="nt" onclick="showPage('p3',this)" role="tab">📦 Modules</button>
+    <button class="nt" onclick="showPage('p4',this)" role="tab">⚙️ Variables</button>
+    <button class="nt" onclick="showPage('p5',this)" role="tab">🔁 Workspaces</button>
+    <button class="nt" onclick="showPage('p6',this)" role="tab">⚡ Advanced</button>
+    <button class="nt" onclick="showPage('p7',this)" role="tab">🔒 Cloud &amp; Security</button>
+  </div>
+  <span class="badge">62 Q&amp;A</span>
+</nav>
+
+<!-- PAGE 1: CORE -->
+<div class="page on" id="p1">
+  <div class="hero">
+    <div class="hlabel">Terraform Interview Questions</div>
+    <h1>Infrastructure as Code — <u>Terraform</u></h1>
+    <p>62 advanced questions covering Terraform core concepts, state management, modules, variables, workspaces, advanced HCL patterns, and Terraform Cloud security — with real-world answers and code examples.</p>
+  </div>
+
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s1a',this,'p1')">🏗️ Terraform Basics (T1–T10)</button>
+    <button class="snt" onclick="showSec('s1b',this,'p1')">🔌 Providers &amp; Resources (T11–T18)</button>
+  </div>
+
+  <!-- T1–T10 -->
+  <div class="spane on" id="s1a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🏗️ Terraform Basics</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">T1 – T10</span>
+          <span class="tdpill tdpill-tag">Core Concepts</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Foundational Terraform — workflow, configuration language, lifecycle, and how Terraform compares to other IaC tools.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T1</span><span class="qa-qtext">What is Terraform and how does it differ from configuration management tools like Ansible or Chef?</span></div>
+        <div class="qa-a">
+          <p>Terraform is a declarative <strong>Infrastructure as Code (IaC)</strong> tool that provisions and manages cloud resources. It differs from configuration management tools in scope and purpose.</p>
+          <div class="compare">
+            <div class="cmp"><div class="cmp-lbl">Terraform (IaC)</div>Provisions infrastructure (VMs, networks, databases). Declarative — describe desired state. Idempotent via state file. Best for cloud resource lifecycle.</div>
+            <div class="cmp"><div class="cmp-lbl">Ansible / Chef (CM)</div>Configures software on existing machines. Procedural or declarative. No persistent state. Best for OS config, package installs, app setup.</div>
+          </div>
+          <p>They are complementary — Terraform creates a VM, Ansible configures it.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T2</span><span class="qa-qtext">Explain the Terraform core workflow: init → plan → apply → destroy.</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>terraform init</strong> — downloads providers, sets up backend, initialises modules.</li>
+            <li><strong>terraform plan</strong> — computes the diff between current state and desired config; shows additions, changes, deletions. No changes made.</li>
+            <li><strong>terraform apply</strong> — executes the plan. Creates/updates/destroys real resources and updates the state file.</li>
+            <li><strong>terraform destroy</strong> — equivalent to <code>apply -destroy</code>; removes all managed resources.</li>
+          </ul>
+          <div class="tip"><strong>Tip:</strong> Always review <code>terraform plan</code> output carefully before applying, especially in production. Use <code>-out=plan.tfplan</code> to save and apply the exact plan.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T3</span><span class="qa-qtext">What is a Terraform provider and why is provider versioning important?</span></div>
+        <div class="qa-a">
+          <p>A <strong>provider</strong> is a plugin that maps Terraform resource types to API calls for a target platform (AWS, GCP, Azure, Kubernetes, etc.). Each provider is maintained separately and downloaded during <code>terraform init</code>.</p>
+          <p>Provider versioning is critical because:</p>
+          <ul>
+            <li>Breaking changes between major versions can destroy or recreate resources unexpectedly.</li>
+            <li>The <code>.terraform.lock.hcl</code> file pins exact provider checksums for reproducible runs.</li>
+          </ul>
+          <pre><span class="k">terraform</span> {
+  required_providers {
+    aws = {
+      source  = <span class="s">"hashicorp/aws"</span>
+      version = <span class="s">"~> 5.0"</span>  <span class="c"># allows 5.x but not 6.x</span>
+    }
+  }
+}</pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T4</span><span class="qa-qtext">What is the difference between <code>terraform.tfvars</code> and <code>*.auto.tfvars</code>?</span></div>
+        <div class="qa-a">
+          <p>Both files provide variable values, but loading is automatic for <code>*.auto.tfvars</code>:</p>
+          <table class="dtable">
+            <tr><th>File</th><th>Auto-loaded?</th><th>Use case</th></tr>
+            <tr><td>terraform.tfvars</td><td>Yes (always)</td><td>Default values for the root module</td></tr>
+            <tr><td>*.auto.tfvars</td><td>Yes (alphabetical order)</td><td>Environment-specific overrides checked in to VCS</td></tr>
+            <tr><td>-var-file=foo.tfvars</td><td>No — explicit flag needed</td><td>CI/CD pipelines, secrets</td></tr>
+          </table>
+          <p>Precedence (lowest → highest): defaults → terraform.tfvars → *.auto.tfvars → -var-file → -var → TF_VAR_* env vars.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T5</span><span class="qa-qtext">What is <code>terraform refresh</code> and when should you avoid it?</span></div>
+        <div class="qa-a">
+          <p><code>terraform refresh</code> reconciles Terraform's state file with the real-world infrastructure without making any changes. It updates the state to reflect out-of-band modifications.</p>
+          <p><strong>Avoid it when:</strong></p>
+          <ul>
+            <li>You suspect drift and want a plan to fix it — <code>refresh</code> accepts the drift, losing the diff.</li>
+            <li>In Terraform v1.x, <code>terraform plan -refresh-only</code> is preferred — it shows what would change and lets you review before accepting.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T6</span><span class="qa-qtext">Explain the concept of idempotency in Terraform.</span></div>
+        <div class="qa-a">
+          <p>Idempotency means running the same Terraform config multiple times produces the same result. Terraform achieves this through its <strong>state-based model</strong>:</p>
+          <ul>
+            <li>On each apply, Terraform reads state, refreshes real-world status, computes a diff, and applies only what has changed.</li>
+            <li>If nothing changed, the plan is empty and no API calls are made.</li>
+          </ul>
+          <p>This is unlike procedural scripts where re-running may create duplicate resources. However, idempotency can break if resources are modified outside Terraform (drift).</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T7</span><span class="qa-qtext">What is the <code>depends_on</code> meta-argument and when is it needed?</span></div>
+        <div class="qa-a">
+          <p>Terraform automatically infers resource dependencies from attribute references. <code>depends_on</code> adds an <strong>explicit dependency</strong> when Terraform cannot detect it implicitly.</p>
+          <pre><span class="k">resource</span> <span class="s">"aws_iam_role_policy_attachment"</span> <span class="s">"attach"</span> {
+  role       = aws_iam_role.lambda.name
+  policy_arn = aws_iam_policy.custom.arn
+
+  depends_on = [aws_iam_role.lambda]  <span class="c"># explicit, usually not needed here</span>
+}</pre>
+          <p><strong>When needed:</strong> when a resource depends on a <em>side-effect</em> of another resource (e.g., IAM policy propagation) rather than an output attribute.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T8</span><span class="qa-qtext">What is the <code>lifecycle</code> block and describe its key arguments.</span></div>
+        <div class="qa-a">
+          <p>The <code>lifecycle</code> meta-block controls resource replacement and deletion behaviour:</p>
+          <table class="dtable">
+            <tr><th>Argument</th><th>Effect</th></tr>
+            <tr><td>create_before_destroy</td><td>Create replacement first, then destroy old resource. Prevents downtime for resources that cannot be updated in-place.</td></tr>
+            <tr><td>prevent_destroy</td><td>Causes <code>terraform plan</code> to error if the resource would be destroyed. Protects production databases.</td></tr>
+            <tr><td>ignore_changes</td><td>Terraform ignores specified attribute drifts. Useful for auto-scaling groups or user-managed tags.</td></tr>
+            <tr><td>replace_triggered_by</td><td>Forces replacement when a referenced resource or value changes.</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T9</span><span class="qa-qtext">How does Terraform handle sensitive values in configuration and state?</span></div>
+        <div class="qa-a">
+          <p>Marking a variable or output as <code>sensitive = true</code> prevents its value from appearing in plan/apply output. However, <strong>sensitive values are still stored in plain text in the state file</strong>.</p>
+          <ul>
+            <li>Always use encrypted remote backends (S3 + SSE, Terraform Cloud) for state storage.</li>
+            <li>Never commit <code>terraform.tfstate</code> to VCS.</li>
+            <li>Use Vault or AWS Secrets Manager to inject secrets at runtime rather than storing them in variables.</li>
+          </ul>
+          <div class="tip"><strong>Pitfall:</strong> <code>sensitive = true</code> is a display mask only — it does not encrypt the value in state.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T10</span><span class="qa-qtext">What is the <code>.terraform.lock.hcl</code> file and should it be committed to version control?</span></div>
+        <div class="qa-a">
+          <p>The lock file records the exact versions and checksums of providers selected during <code>terraform init</code>. It ensures every team member and CI run uses identical providers.</p>
+          <p><strong>Yes, commit it to VCS.</strong> Reasons:</p>
+          <ul>
+            <li>Guarantees reproducible builds across environments.</li>
+            <li>Prevents silent provider upgrades that could introduce breaking changes.</li>
+            <li>Run <code>terraform init -upgrade</code> explicitly to update providers and regenerate the lock file.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- T11–T18: Providers & Resources -->
+  <div class="spane" id="s1b">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔌 Providers &amp; Resources</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">T11 – T18</span>
+          <span class="tdpill tdpill-tag">Providers · Data Sources · Aliases</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Provider configuration, multiple provider aliases, data sources vs. resources, and managing provider-level authentication.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T11</span><span class="qa-qtext">What is a data source in Terraform and how does it differ from a resource?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th></th><th>resource</th><th>data source</th></tr>
+            <tr><td>Managed?</td><td>Yes — Terraform creates, updates, destroys</td><td>No — read-only, exists externally</td></tr>
+            <tr><td>State entry?</td><td>Yes</td><td>Yes (cached value)</td></tr>
+            <tr><td>Lifecycle?</td><td>Full CRUD</td><td>Read only on plan/apply</td></tr>
+            <tr><td>Example</td><td><code>resource "aws_instance" "web"</code></td><td><code>data "aws_ami" "ubuntu"</code></td></tr>
+          </table>
+          <p>Data sources let you reference existing infrastructure (latest AMI, existing VPC, ACM certificate) without managing it through Terraform.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T12</span><span class="qa-qtext">How do you configure multiple provider instances for different AWS regions or accounts?</span></div>
+        <div class="qa-a">
+          <p>Use <strong>provider aliases</strong> to configure multiple instances of the same provider:</p>
+          <pre><span class="k">provider</span> <span class="s">"aws"</span> {
+  region = <span class="s">"us-east-1"</span>  <span class="c"># default</span>
+}
+
+<span class="k">provider</span> <span class="s">"aws"</span> {
+  alias  = <span class="s">"eu"</span>
+  region = <span class="s">"eu-west-1"</span>
+}
+
+<span class="k">resource</span> <span class="s">"aws_s3_bucket"</span> <span class="s">"eu_bucket"</span> {
+  provider = <span class="n">aws.eu</span>
+  bucket   = <span class="s">"my-eu-bucket"</span>
+}</pre>
+          <p>For multi-account setups, use <code>assume_role</code> blocks within each provider configuration.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T13</span><span class="qa-qtext">What is the <code>terraform_remote_state</code> data source and what are its drawbacks?</span></div>
+        <div class="qa-a">
+          <p><code>terraform_remote_state</code> reads outputs from another Terraform state file, enabling cross-stack data sharing (e.g., networking stack exports VPC ID consumed by app stack).</p>
+          <p><strong>Drawbacks:</strong></p>
+          <ul>
+            <li><strong>Tight coupling</strong> — consumer stack breaks if producer output is renamed or removed.</li>
+            <li><strong>Read access to full state</strong> — the consumer needs access to the entire state file which may contain sensitive data.</li>
+            <li><strong>Prefer alternatives:</strong> AWS SSM Parameter Store, Consul, or explicit outputs passed via CI/CD variables for looser coupling.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T14</span><span class="qa-qtext">How does the <code>required_providers</code> block differ from the <code>provider</code> configuration block?</span></div>
+        <div class="qa-a">
+          <p><code>required_providers</code> (inside the <code>terraform</code> block) declares <em>which</em> providers are needed and their version constraints — it is a dependency specification. The <code>provider</code> block configures <em>how</em> the provider authenticates and connects.</p>
+          <pre><span class="k">terraform</span> {
+  required_providers {
+    aws = { source = <span class="s">"hashicorp/aws"</span>, version = <span class="s">"~> 5.0"</span> }
+  }
+}
+
+<span class="k">provider</span> <span class="s">"aws"</span> {
+  region  = <span class="s">"us-east-1"</span>
+  profile = <span class="s">"prod"</span>
+}</pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T15</span><span class="qa-qtext">What is the difference between <code>count</code> and <code>for_each</code> for resource creation?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th></th><th>count</th><th>for_each</th></tr>
+            <tr><td>Index type</td><td>Integer (0, 1, 2…)</td><td>String key from map/set</td></tr>
+            <tr><td>State address</td><td><code>aws_instance.web[0]</code></td><td><code>aws_instance.web["prod"]</code></td></tr>
+            <tr><td>Deletion risk</td><td>High — removing middle element shifts all indexes</td><td>Low — removes only the keyed entry</td></tr>
+            <tr><td>Best for</td><td>Identical resources (replicas)</td><td>Named/distinct resources</td></tr>
+          </table>
+          <div class="tip"><strong>Prefer <code>for_each</code></strong> in almost all production cases to avoid index-shift surprises when elements are removed mid-list.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T16</span><span class="qa-qtext">Explain <code>dynamic</code> blocks in Terraform with an example.</span></div>
+        <div class="qa-a">
+          <p><code>dynamic</code> blocks generate repeated nested configuration blocks programmatically, avoiding copy-paste for variable-length nested blocks like security group rules:</p>
+          <pre><span class="k">resource</span> <span class="s">"aws_security_group"</span> <span class="s">"web"</span> {
+  name = <span class="s">"web-sg"</span>
+
+  <span class="k">dynamic</span> <span class="s">"ingress"</span> {
+    for_each = <span class="k">var</span>.ingress_rules
+    content {
+      from_port   = ingress.value.port
+      to_port     = ingress.value.port
+      protocol    = <span class="s">"tcp"</span>
+      cidr_blocks = ingress.value.cidrs
+    }
+  }
+}</pre>
+          <p>The iterator label (<code>ingress</code>) defaults to the block name but can be customised with <code>iterator = rule</code>.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T17</span><span class="qa-qtext">What is a <code>null_resource</code> and when is it useful?</span></div>
+        <div class="qa-a">
+          <p><code>null_resource</code> (from the <code>hashicorp/null</code> provider) is a resource with no real infrastructure backing. It's used to run <strong>provisioners</strong> or trigger re-runs based on arbitrary conditions:</p>
+          <pre><span class="k">resource</span> <span class="s">"null_resource"</span> <span class="s">"run_script"</span> {
+  triggers = {
+    config_hash = <span class="n">filemd5</span>(<span class="s">"${path.module}/config.sh"</span>)
+  }
+  provisioner <span class="s">"local-exec"</span> {
+    command = <span class="s">"bash config.sh"</span>
+  }
+}</pre>
+          <p>The <code>triggers</code> map forces recreation when values change. In modern Terraform, prefer <code>terraform_data</code> (built-in equivalent added in v1.4) over <code>null_resource</code>.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">T18</span><span class="qa-qtext">How do you import existing infrastructure into Terraform management?</span></div>
+        <div class="qa-a">
+          <p>Two approaches — CLI import and the newer config-driven import block:</p>
+          <p><strong>CLI (classic):</strong> <code>terraform import aws_s3_bucket.my_bucket my-existing-bucket-name</code> — updates state but does not write HCL config.</p>
+          <p><strong>Import block (Terraform v1.5+):</strong></p>
+          <pre><span class="k">import</span> {
+  to = <span class="n">aws_s3_bucket.my_bucket</span>
+  id = <span class="s">"my-existing-bucket-name"</span>
+}
+
+<span class="k">resource</span> <span class="s">"aws_s3_bucket"</span> <span class="s">"my_bucket"</span> {
+  bucket = <span class="s">"my-existing-bucket-name"</span>
+}</pre>
+          <p>Combine with <code>terraform plan -generate-config-out=generated.tf</code> to auto-generate the resource config.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: STATE -->
+<div class="page" id="p2">
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s2a',this,'p2')">🗄️ State Basics (S1–S9)</button>
+    <button class="snt" onclick="showSec('s2b',this,'p2')">🔧 State Operations (S10–S17)</button>
+  </div>
+
+  <!-- S1–S9 -->
+  <div class="spane on" id="s2a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🗄️ State Management Basics</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">S1 – S9</span>
+          <span class="tdpill tdpill-tag">Remote State · Locking · Backends</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Terraform state file structure, remote backends, state locking, and team collaboration patterns.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">S1</span><span class="qa-qtext">What is the Terraform state file and what does it contain?</span></div>
+        <div class="qa-a">
+          <p>The state file (<code>terraform.tfstate</code>) is a JSON document that maps Terraform resource addresses to real-world resource IDs and their current attribute values. It is the source of truth for Terraform's view of deployed infrastructure.</p>
+          <p>It contains: resource type, name, provider config, all attributes (including sensitive ones), resource metadata, dependencies, and output values.</p>
+          <div class="tip"><strong>Never edit it manually.</strong> Use <code>terraform state</code> sub-commands for any state manipulation.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">S2</span><span class="qa-qtext">Why should Terraform state be stored in a remote backend for team environments?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Shared access</strong> — all team members and CI pipelines read the same state.</li>
+            <li><strong>State locking</strong> — prevents concurrent applies that could corrupt state.</li>
+            <li><strong>Encryption at rest</strong> — S3 with SSE, Terraform Cloud encrypt sensitive state data.</li>
+            <li><strong>Versioning / history</strong> — S3 bucket versioning allows rollback to a previous state.</li>
+            <li><strong>Avoid VCS commits</strong> — state contains secrets; it must not be in git.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">S3</span><span class="qa-qtext">How does Terraform implement state locking with S3 and DynamoDB?</span></div>
+        <div class="qa-a">
+          <p>The S3 backend uses a DynamoDB table for distributed locking:</p>
+          <pre><span class="k">terraform</span> {
+  backend <span class="s">"s3"</span> {
+    bucket         = <span class="s">"my-tf-state"</span>
+    key            = <span class="s">"prod/terraform.tfstate"</span>
+    region         = <span class="s">"us-east-1"</span>
+    dynamodb_table = <span class="s">"terraform-locks"</span>  <span class="c"># LockID as partition key</span>
+    encrypt        = <span class="k">true</span>
+  }
+}</pre>
+          <p>When <code>terraform apply</code> starts, it writes a lock item to DynamoDB. If another process holds the lock, Terraform waits or errors. The lock is released when apply finishes or crashes.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">S4</span><span class="qa-qtext">What happens if a Terraform apply crashes mid-run and leaves a stale lock?</span></div>
+        <div class="qa-a">
+          <p>Terraform detects the lock and prevents other runs. The lock record in DynamoDB contains the lock ID, operation, and timestamp.</p>
+          <p>Resolve with: <code>terraform force-unlock &lt;LOCK_ID&gt;</code></p>
+          <p>Always verify the crashed apply didn't partially create resources before force-unlocking — check the state file and real infrastructure to understand the blast radius.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">S5</span><span class="qa-qtext">How do you migrate the Terraform backend from local to remote (e.g., S3)?</span></div>
+        <div class="qa-a">
+          <ol>
+            <li>Add the backend block to your Terraform config.</li>
+            <li>Run <code>terraform init</code> — Terraform detects the new backend and asks: <em>"Would you like to copy existing state to the new backend?"</em></li>
+            <li>Answer yes — state is uploaded to S3.</li>
+            <li>Delete the local <code>terraform.tfstate</code> and <code>.terraform.tfstate.backup</code> files.</li>
+            <li>Commit the updated config (without the state file).</li>
+          </ol>
+          <div class="tip"><strong>Take a backup</strong> of local state before migrating, in case something goes wrong.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">S6</span><span class="qa-qtext">What is state drift and how do you detect and remediate it?</span></div>
+        <div class="qa-a">
+          <p><strong>Drift</strong> occurs when the real-world infrastructure differs from what's recorded in the Terraform state (e.g., someone manually changed a security group rule in the console).</p>
+          <p><strong>Detect:</strong> <code>terraform plan -refresh-only</code> shows the diff between actual infrastructure and state without proposing config changes.</p>
+          <p><strong>Remediate:</strong></p>
+          <ul>
+            <li><strong>Accept drift</strong> — run <code>terraform apply -refresh-only</code> to update state to match reality.</li>
+            <li><strong>Revert drift</strong> — run <code>terraform apply</code> normally to enforce the desired configuration.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">S7</span><span class="qa-qtext">Explain partial state and how Terraform handles resource creation failures.</span></div>
+        <div class="qa-a">
+          <p>If a <code>terraform apply</code> fails partway through, Terraform writes the state of successfully created resources to the state file before exiting. This is called <strong>partial state</strong>.</p>
+          <p>On the next <code>terraform apply</code>, Terraform resumes from partial state — it knows which resources exist and only attempts to create what's missing or fix what failed. This avoids duplicate resource creation.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">S8</span><span class="qa-qtext">What is the difference between a Terraform backend and a remote backend?</span></div>
+        <div class="qa-a">
+          <p>In Terraform terminology, <strong>backend</strong> refers to where state is stored and how operations run. There are two categories:</p>
+          <table class="dtable">
+            <tr><th>Type</th><th>State stored</th><th>Operations run</th></tr>
+            <tr><td>local (default)</td><td>Local disk</td><td>Locally (your machine)</td></tr>
+            <tr><td>remote (e.g. S3, GCS)</td><td>Remote storage</td><td>Locally</td></tr>
+            <tr><td>Terraform Cloud / Enterprise</td><td>Terraform Cloud</td><td>Remotely (in TFC runners)</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">S9</span><span class="qa-qtext">What is the purpose of the <code>-target</code> flag in Terraform plan/apply and when should you avoid it?</span></div>
+        <div class="qa-a">
+          <p><code>-target=aws_instance.web</code> restricts the operation to a specific resource and its dependencies. Useful for:</p>
+          <ul>
+            <li>Debugging a single resource during development.</li>
+            <li>Emergency hotfixes where a full apply would take too long.</li>
+          </ul>
+          <p><strong>Avoid in normal workflows:</strong> targeting bypasses dependency resolution and can leave the configuration in an inconsistent state where untargeted resources are out of sync with the config.</p>
+          <div class="tip"><strong>Rule:</strong> if you use <code>-target</code> in an emergency, follow up immediately with a clean full apply.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- S10–S17 -->
+  <div class="spane" id="s2b">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔧 State Operations</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">S10 – S17</span>
+          <span class="tdpill tdpill-tag">mv · rm · taint · untaint</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Hands-on state manipulation commands — moving resources, removing from state, marking for replacement, and splitting state files.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">S10</span><span class="qa-qtext">When and how do you use <code>terraform state mv</code>?</span></div>
+        <div class="qa-a">
+          <p><code>terraform state mv</code> renames a resource in state without destroying and recreating it. Common use cases:</p>
+          <ul>
+            <li>Renaming a resource in your HCL config.</li>
+            <li>Moving a resource into a module.</li>
+            <li>Migrating from <code>count</code> to <code>for_each</code>.</li>
+          </ul>
+          <pre>terraform state mv aws_instance.old aws_instance.new
+terraform state mv aws_instance.web module.app.aws_instance.web</pre>
+          <div class="tip">Always take a <strong>state backup</strong> first: <code>terraform state pull &gt; backup.tfstate</code></div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">S11</span><span class="qa-qtext">What does <code>terraform state rm</code> do and when is it appropriate?</span></div>
+        <div class="qa-a">
+          <p><code>terraform state rm</code> removes a resource from Terraform state without destroying the real infrastructure. Use when:</p>
+          <ul>
+            <li>A resource should no longer be managed by Terraform (transferring to manual management).</li>
+            <li>A resource was deleted manually and you want to clean up state.</li>
+            <li>You're splitting a monolith state into smaller states (combined with import in the new config).</li>
+          </ul>
+          <p>After removal, the resource becomes unmanaged — Terraform won't touch it.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">S12</span><span class="qa-qtext">What replaced <code>terraform taint</code> in modern Terraform versions?</span></div>
+        <div class="qa-a">
+          <p>In Terraform v0.15.2+, <code>terraform taint</code> was deprecated. The modern equivalent is <code>terraform apply -replace=&lt;address&gt;</code>:</p>
+          <pre>terraform apply -replace="aws_instance.web"</pre>
+          <p>This plans and immediately applies the resource replacement in one step, showing the plan before applying, unlike the old two-step taint → apply workflow.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">S13</span><span class="qa-qtext">How do you split a large Terraform state file into smaller ones?</span></div>
+        <div class="qa-a">
+          <ol>
+            <li>Create new Terraform root module for the extracted resources.</li>
+            <li>Use <code>terraform state pull &gt; full.tfstate</code> to get the current state.</li>
+            <li>Use <code>terraform state mv</code> to move resources from the old state to the new workspace/state, or use <code>state rm</code> + <code>import</code> in the new module.</li>
+            <li>Remove the migrated resource configs from the original module.</li>
+            <li>Run <code>terraform plan</code> on both modules to verify no unintended changes.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">S14</span><span class="qa-qtext">What is the <code>moved</code> block introduced in Terraform v1.1?</span></div>
+        <div class="qa-a">
+          <p>The <code>moved</code> block allows you to refactor resource addresses in config and have Terraform automatically update state — without running <code>terraform state mv</code> manually:</p>
+          <pre><span class="k">moved</span> {
+  from = aws_instance.web
+  to   = module.app.aws_instance.web
+}</pre>
+          <p>This is safe to commit to VCS and enables team-wide refactoring. Once all team members have applied, the <code>moved</code> block can be removed.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: MODULES -->
+<div class="page" id="p3">
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s3a',this,'p3')">📦 Module Design (M1–M9)</button>
+  </div>
+  <div class="spane on" id="s3a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">📦 Modules &amp; Reuse</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">M1 – M9</span>
+          <span class="tdpill tdpill-tag">Module Design · Registry · Versioning</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Creating reusable, well-designed Terraform modules — structure, inputs/outputs, versioning, and module registry patterns.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">M1</span><span class="qa-qtext">What is a Terraform module and what are the components of a well-structured module?</span></div>
+        <div class="qa-a">
+          <p>A module is a directory of <code>.tf</code> files that encapsulates related infrastructure. Every Terraform configuration is a module (the root module). The key files in a reusable module:</p>
+          <table class="dtable">
+            <tr><th>File</th><th>Purpose</th></tr>
+            <tr><td>main.tf</td><td>Primary resource definitions</td></tr>
+            <tr><td>variables.tf</td><td>Input variable declarations with types, defaults, descriptions, validations</td></tr>
+            <tr><td>outputs.tf</td><td>Exported values for callers to consume</td></tr>
+            <tr><td>versions.tf</td><td>required_providers and required_version constraints</td></tr>
+            <tr><td>README.md</td><td>Usage docs, input/output table</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">M2</span><span class="qa-qtext">What are the different module source types in Terraform?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Source</th><th>Example</th></tr>
+            <tr><td>Local path</td><td><code>source = "./modules/vpc"</code></td></tr>
+            <tr><td>Terraform Registry</td><td><code>source = "terraform-aws-modules/vpc/aws"</code></td></tr>
+            <tr><td>GitHub</td><td><code>source = "github.com/org/repo//modules/vpc"</code></td></tr>
+            <tr><td>Git (generic)</td><td><code>source = "git::https://example.com/vpc.git?ref=v1.2"</code></td></tr>
+            <tr><td>S3 bucket</td><td><code>source = "s3::https://bucket.s3.amazonaws.com/module.zip"</code></td></tr>
+          </table>
+          <p>The <code>//</code> double-slash separates the repo root from the subdirectory within it.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">M3</span><span class="qa-qtext">How do you pass provider configurations to child modules?</span></div>
+        <div class="qa-a">
+          <p>By default, child modules inherit the default providers from the parent. For aliased providers, pass them explicitly using the <code>providers</code> argument:</p>
+          <pre><span class="k">module</span> <span class="s">"eu_app"</span> {
+  source = <span class="s">"./modules/app"</span>
+  providers = {
+    aws = aws.eu
+  }
+}</pre>
+          <p>Inside the module, declare <code>required_providers</code> with a <code>configuration_aliases</code> if it needs to be explicit about which aliases it accepts.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">M4</span><span class="qa-qtext">What are module output values and how do you access them?</span></div>
+        <div class="qa-a">
+          <p>Outputs expose internal values of a module to the calling configuration. Defined in <code>outputs.tf</code>:</p>
+          <pre><span class="c"># Inside module</span>
+<span class="k">output</span> <span class="s">"vpc_id"</span> {
+  value       = aws_vpc.main.id
+  description = <span class="s">"The VPC ID"</span>
+}
+
+<span class="c"># In root module</span>
+subnet_vpc_id = <span class="n">module.vpc.vpc_id</span></pre>
+          <p>Outputs can be marked <code>sensitive = true</code> to suppress display. Module outputs are only visible after <code>terraform apply</code>.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">M5</span><span class="qa-qtext">How do you version-pin a module from the Terraform Registry?</span></div>
+        <div class="qa-a">
+          <pre><span class="k">module</span> <span class="s">"vpc"</span> {
+  source  = <span class="s">"terraform-aws-modules/vpc/aws"</span>
+  version = <span class="s">"~> 5.1"</span>  <span class="c"># allows 5.1.x but not 5.2</span>
+}</pre>
+          <p>Version constraints follow SemVer operators: <code>=</code>, <code>!=</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>~&gt;</code> (pessimistic constraint). Always pin modules in production to avoid unexpected upgrades. Run <code>terraform init -upgrade</code> to explicitly bump.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">M6</span><span class="qa-qtext">How do you validate module inputs using variable validation blocks?</span></div>
+        <div class="qa-a">
+          <pre><span class="k">variable</span> <span class="s">"environment"</span> {
+  type        = string
+  description = <span class="s">"Deployment environment"</span>
+  validation {
+    condition     = contains([<span class="s">"dev"</span>, <span class="s">"staging"</span>, <span class="s">"prod"</span>], <span class="k">var</span>.environment)
+    error_message = <span class="s">"Must be dev, staging, or prod."</span>
+  }
+}
+
+variable <span class="s">"instance_count"</span> {
+  type = number
+  validation {
+    condition     = <span class="k">var</span>.instance_count &gt;= 1 &amp;&amp; <span class="k">var</span>.instance_count &lt;= 20
+    error_message = <span class="s">"Instance count must be between 1 and 20."</span>
+  }
+}</pre>
+          <p>Validation errors fail at plan time, preventing invalid configurations from reaching the API.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">M7</span><span class="qa-qtext">What is the difference between root module and child module in Terraform execution context?</span></div>
+        <div class="qa-a">
+          <p>The <strong>root module</strong> is the directory where you run Terraform commands — it owns the state file and backend configuration. <strong>Child modules</strong> are called by the root (or other modules) and share the root's state file, with their resources addressed as <code>module.name.resource_type.resource_name</code>.</p>
+          <p>Child modules cannot have their own backend or state — they always operate within the caller's state context.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">M8</span><span class="qa-qtext">How do you call a module multiple times with different configurations?</span></div>
+        <div class="qa-a">
+          <p>Use multiple <code>module</code> blocks with different names, or use <code>for_each</code> on the module block:</p>
+          <pre><span class="c"># for_each on a module (Terraform 0.13+)</span>
+<span class="k">module</span> <span class="s">"app"</span> {
+  source   = <span class="s">"./modules/app"</span>
+  for_each = toset([<span class="s">"us-east-1"</span>, <span class="s">"eu-west-1"</span>])
+  region   = each.key
+  env      = <span class="s">"prod"</span>
+}</pre>
+          <p>Resources are addressed as <code>module.app["us-east-1"].aws_instance.web</code>.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">M9</span><span class="qa-qtext">What is a monorepo vs. polyrepo pattern for Terraform modules?</span></div>
+        <div class="qa-a">
+          <div class="compare">
+            <div class="cmp"><div class="cmp-lbl">Monorepo</div>All modules and root configs in one repo. Easy cross-module changes, single CI pipeline, good for small/medium teams. Risk: blast radius — a bad change affects everything.</div>
+            <div class="cmp"><div class="cmp-lbl">Polyrepo</div>Each module in its own repo with independent versioning and CI. Better isolation and release cadence. Overhead: more repos to manage, version bumps require PRs.</div>
+          </div>
+          <p>Many large teams use a hybrid — shared modules in a dedicated registry repo, root configs per environment in separate repos.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: VARIABLES -->
+<div class="page" id="p4">
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s4a',this,'p4')">⚙️ Variables &amp; Outputs (V1–V8)</button>
+  </div>
+  <div class="spane on" id="s4a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">⚙️ Variables, Locals &amp; Outputs</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">V1 – V8</span>
+          <span class="tdpill tdpill-tag">Types · Locals · Expressions</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Variable types, locals, complex expressions, type constraints, and output design patterns.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V1</span><span class="qa-qtext">What are Terraform's primitive and complex variable types?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Category</th><th>Type</th><th>Example</th></tr>
+            <tr><td>Primitive</td><td>string</td><td><code>"us-east-1"</code></td></tr>
+            <tr><td>Primitive</td><td>number</td><td><code>3</code></td></tr>
+            <tr><td>Primitive</td><td>bool</td><td><code>true</code></td></tr>
+            <tr><td>Collection</td><td>list(string)</td><td><code>["a","b"]</code></td></tr>
+            <tr><td>Collection</td><td>map(string)</td><td><code>{env="prod"}</code></td></tr>
+            <tr><td>Collection</td><td>set(string)</td><td>unique unordered strings</td></tr>
+            <tr><td>Structural</td><td>object({…})</td><td>named attribute types</td></tr>
+            <tr><td>Structural</td><td>tuple([…])</td><td>fixed-length, mixed types</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V2</span><span class="qa-qtext">What is the difference between <code>variable</code>, <code>local</code>, and <code>output</code>?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Construct</th><th>Direction</th><th>Purpose</th></tr>
+            <tr><td>variable</td><td>Input (from caller)</td><td>Parameterise a module; values provided externally</td></tr>
+            <tr><td>local</td><td>Internal only</td><td>Intermediate computed values; avoid repeating expressions</td></tr>
+            <tr><td>output</td><td>Output (to caller)</td><td>Expose values from a module to the parent or CLI</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V3</span><span class="qa-qtext">When should you use <code>locals</code> over variables?</span></div>
+        <div class="qa-a">
+          <p>Use <code>locals</code> when:</p>
+          <ul>
+            <li>The value is derived from other values (computed): <code>locals { name = "${var.env}-${var.app}" }</code></li>
+            <li>You want to DRY up a repeated expression used in multiple places.</li>
+            <li>The value should not be overridden by callers — locals are private to the module.</li>
+          </ul>
+          <p>Use <code>variables</code> for anything that needs to be configurable by the module caller.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V4</span><span class="qa-qtext">How do environment variables map to Terraform variables?</span></div>
+        <div class="qa-a">
+          <p>Prefix the variable name with <code>TF_VAR_</code>:</p>
+          <pre>export TF_VAR_region="us-west-2"
+export TF_VAR_instance_count=5</pre>
+          <p>This is useful in CI/CD pipelines to inject secrets (DB passwords, API keys) without storing them in <code>.tfvars</code> files. Environment variables have the second-highest precedence, overridden only by explicit <code>-var</code> flags.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V5</span><span class="qa-qtext">Explain the <code>for</code> expression and <code>for_each</code> with a practical example.</span></div>
+        <div class="qa-a">
+          <p>The <code>for</code> expression transforms collections inline:</p>
+          <pre><span class="c"># Transform a list to a map</span>
+locals {
+  sg_ids_map = { <span class="k">for</span> sg <span class="k">in</span> aws_security_group.web : sg.name => sg.id }
+}
+
+<span class="c"># Filter: only prod instances</span>
+locals {
+  prod_instances = [<span class="k">for</span> i <span class="k">in</span> <span class="k">var</span>.instances : i <span class="k">if</span> i.env == <span class="s">"prod"</span>]
+}</pre>
+          <p><code>for_each</code> on a resource iterates a map or set to create multiple resource instances, each independently addressable in state.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V6</span><span class="qa-qtext">What is the <code>templatefile</code> function and when is it preferred over <code>heredoc</code>?</span></div>
+        <div class="qa-a">
+          <p><code>templatefile(path, vars)</code> reads a file and renders it as a template with variable substitution. Preferred over heredoc when:</p>
+          <ul>
+            <li>The template is large (user-data scripts, policy documents).</li>
+            <li>The template is reused across multiple resources.</li>
+            <li>You want to keep HCL files clean and the template in a separate <code>.tpl</code> file.</li>
+          </ul>
+          <pre>user_data = <span class="n">templatefile</span>(<span class="s">"${path.module}/userdata.sh.tpl"</span>, {
+  db_host = aws_db_instance.main.endpoint
+  env     = <span class="k">var</span>.environment
+})</pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V7</span><span class="qa-qtext">What is the <code>coalesce</code> and <code>coalescelist</code> function used for?</span></div>
+        <div class="qa-a">
+          <p><code>coalesce(val1, val2, ...)</code> returns the first non-null, non-empty string argument. Useful for fallback logic:</p>
+          <pre>name = <span class="n">coalesce</span>(<span class="k">var</span>.custom_name, <span class="s">"${var.env}-app"</span>)</pre>
+          <p><code>coalescelist</code> does the same for lists. The <code>one()</code> function (v1.0+) extracts a single value from a list of zero or one elements — handy when a data source may return 0 or 1 results.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V8</span><span class="qa-qtext">How do you handle optional object attributes in Terraform variables?</span></div>
+        <div class="qa-a">
+          <p>Use the <code>optional()</code> modifier (Terraform v1.3+) inside <code>object</code> type constraints to mark attributes as optional with defaults:</p>
+          <pre><span class="k">variable</span> <span class="s">"config"</span> {
+  type = object({
+    name        = string
+    port        = optional(number, 8080)
+    enable_logs = optional(bool, false)
+  })
+}</pre>
+          <p>Callers don't need to specify optional attributes; Terraform injects the default automatically.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5: WORKSPACES -->
+<div class="page" id="p5">
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s5a',this,'p5')">🔁 Workspaces (W1–W6)</button>
+  </div>
+  <div class="spane on" id="s5a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔁 Workspaces &amp; Environments</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">W1 – W6</span>
+          <span class="tdpill tdpill-tag">Workspaces · Multi-env · Patterns</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Terraform workspaces for environment isolation, their limitations, and recommended multi-environment patterns.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">W1</span><span class="qa-qtext">What are Terraform workspaces and what problem do they solve?</span></div>
+        <div class="qa-a">
+          <p>Workspaces allow multiple state files to exist within the same backend configuration. Each workspace has an isolated state. The default workspace is named <code>default</code>.</p>
+          <pre>terraform workspace new staging
+terraform workspace select prod
+terraform workspace list</pre>
+          <p>They solve the problem of needing to manage multiple environments (dev/staging/prod) from the same configuration without separate backend configs.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">W2</span><span class="qa-qtext">What are the limitations of Terraform workspaces for environment management?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Same config/code</strong> — all workspaces use identical infrastructure code; you can't have meaningfully different architectures per environment without complex conditionals.</li>
+            <li><strong>No access control</strong> — workspaces share the same backend; you can't restrict who runs production applies at the workspace level.</li>
+            <li><strong>Hard to review</strong> — it's easy to accidentally apply to the wrong workspace.</li>
+          </ul>
+          <div class="tip"><strong>Recommendation:</strong> Use separate directories or repos per environment for production-grade isolation. Workspaces are good for ephemeral per-PR environments.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">W3</span><span class="qa-qtext">How do you reference the current workspace name in a Terraform config?</span></div>
+        <div class="qa-a">
+          <pre><span class="k">resource</span> <span class="s">"aws_s3_bucket"</span> <span class="s">"data"</span> {
+  bucket = <span class="s">"myapp-${terraform.workspace}-data"</span>
+}
+
+<span class="k">locals</span> {
+  is_prod    = terraform.workspace == <span class="s">"prod"</span>
+  min_size   = local.is_prod ? 3 : 1
+}</pre>
+          <p><code>terraform.workspace</code> is a built-in value. Use it to vary resource sizes, tags, or feature flags per environment.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">W4</span><span class="qa-qtext">Describe a multi-environment Terraform directory structure without using workspaces.</span></div>
+        <div class="qa-a">
+          <pre>infra/
+├── modules/
+│   ├── vpc/
+│   └── app/
+├── environments/
+│   ├── dev/
+│   │   ├── main.tf      # calls modules
+│   │   ├── terraform.tfvars
+│   │   └── backend.tf   # dev-specific backend
+│   ├── staging/
+│   └── prod/</pre>
+          <p>Each environment directory has its own state file, backend, and variable values. Clear separation, independent CI pipelines, and IAM role isolation per environment.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">W5</span><span class="qa-qtext">What is Terragrunt and when would you use it over vanilla Terraform?</span></div>
+        <div class="qa-a">
+          <p>Terragrunt is a thin wrapper around Terraform that adds:</p>
+          <ul>
+            <li><strong>DRY backend configs</strong> — generate backend config from a root <code>terragrunt.hcl</code> instead of repeating it in every module.</li>
+            <li><strong>Dependency management</strong> — <code>dependency</code> blocks that pass outputs between stacks without <code>terraform_remote_state</code>.</li>
+            <li><strong>Run-all</strong> commands — apply multiple modules in dependency order.</li>
+            <li><strong>Environment composition</strong> — layered variable files per environment/region/account.</li>
+          </ul>
+          <p>Use Terragrunt when managing many environments and modules where Terraform's native DRY capabilities feel limiting.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">W6</span><span class="qa-qtext">How do you create ephemeral per-PR environments with Terraform?</span></div>
+        <div class="qa-a">
+          <p>Pattern using Terraform workspaces + CI/CD:</p>
+          <ol>
+            <li>On PR open: <code>terraform workspace new pr-${PR_NUMBER}</code> → <code>terraform apply</code> → post environment URL as PR comment.</li>
+            <li>On PR update: <code>terraform workspace select pr-${PR_NUMBER}</code> → <code>terraform plan</code> → <code>terraform apply</code>.</li>
+            <li>On PR merge/close: <code>terraform workspace select pr-${PR_NUMBER}</code> → <code>terraform destroy</code> → <code>terraform workspace delete pr-${PR_NUMBER}</code>.</li>
+          </ol>
+          <p>Use consistent naming, resource tagging with the workspace name, and cost budgets to prevent runaway environments.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6: ADVANCED -->
+<div class="page" id="p6">
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s6a',this,'p6')">⚡ Advanced HCL (A1–A9)</button>
+  </div>
+  <div class="spane on" id="s6a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">⚡ Advanced Terraform Patterns</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">A1 – A9</span>
+          <span class="tdpill tdpill-tag">Meta-args · Functions · Expressions</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Advanced HCL features, functions, provisioners, testing, and performance patterns for large-scale Terraform deployments.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A1</span><span class="qa-qtext">What is the difference between <code>toset</code>, <code>tomap</code>, and <code>tolist</code> and when do you need them?</span></div>
+        <div class="qa-a">
+          <p>These are type conversion functions to ensure <code>for_each</code> receives the correct type:</p>
+          <ul>
+            <li><code>toset(list)</code> — deduplicates and converts a list to a set; required for <code>for_each</code> with a list of strings.</li>
+            <li><code>tomap({…})</code> — explicitly converts to a map type with consistent value types.</li>
+            <li><code>tolist(set)</code> — converts a set to a list for indexing (sets are unordered).</li>
+          </ul>
+          <pre>for_each = <span class="n">toset</span>([<span class="s">"web"</span>, <span class="s">"api"</span>, <span class="s">"db"</span>])
+<span class="c"># each.key == "web", "api", "db"</span></pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A2</span><span class="qa-qtext">How do you use <code>precondition</code> and <code>postcondition</code> checks in Terraform?</span></div>
+        <div class="qa-a">
+          <p>Introduced in Terraform v1.2, these custom conditions validate assumptions about inputs and outputs:</p>
+          <pre><span class="k">resource</span> <span class="s">"aws_instance"</span> <span class="s">"web"</span> {
+  instance_type = <span class="k">var</span>.instance_type
+
+  lifecycle {
+    precondition {
+      condition     = contains([<span class="s">"t3.micro"</span>, <span class="s">"t3.small"</span>], <span class="k">var</span>.instance_type)
+      error_message = <span class="s">"Only t3.micro or t3.small are allowed."</span>
+    }
+    postcondition {
+      condition     = self.public_ip != <span class="s">""</span>
+      error_message = <span class="s">"Instance must have a public IP."</span>
+    }
+  }
+}</pre>
+          <p>Preconditions run during plan; postconditions run after apply to verify the real outcome.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A3</span><span class="qa-qtext">How does Terraform build and execute its dependency graph?</span></div>
+        <div class="qa-a">
+          <p>Terraform parses all <code>.tf</code> files and builds a <strong>directed acyclic graph (DAG)</strong> of resources based on attribute references. Independent resources are applied in <strong>parallel</strong> (default 10 concurrent operations); dependent resources are sequenced.</p>
+          <p><code>terraform graph | dot -Tsvg &gt; graph.svg</code> visualises the dependency graph.</p>
+          <p>Explicit ordering is added via <code>depends_on</code>. Circular dependencies cause a plan-time error.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A4</span><span class="qa-qtext">What are Terraform provisioners and why should they be a last resort?</span></div>
+        <div class="qa-a">
+          <p>Provisioners (<code>local-exec</code>, <code>remote-exec</code>, <code>file</code>) run scripts as part of resource creation/destruction. They are a last resort because:</p>
+          <ul>
+            <li><strong>Non-idempotent</strong> — failure leaves resources in an unknown state.</li>
+            <li><strong>No plan visibility</strong> — provisioner commands don't appear in <code>terraform plan</code>.</li>
+            <li><strong>Network dependency</strong> — <code>remote-exec</code> requires SSH/WinRM access at apply time.</li>
+          </ul>
+          <p><strong>Prefer:</strong> user-data scripts, cloud-init, Packer images, or configuration management tools post-provisioning.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A5</span><span class="qa-qtext">How do you test Terraform code? Describe available testing approaches.</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Approach</th><th>Tool</th><th>What it tests</th></tr>
+            <tr><td>Static analysis</td><td>tflint, tfsec, checkov</td><td>Syntax, best practices, security policies without deploying</td></tr>
+            <tr><td>Unit testing</td><td>terraform test (v1.6+)</td><td>Module logic with mock providers — no real infra</td></tr>
+            <tr><td>Integration testing</td><td>Terratest (Go)</td><td>Deploys real infra, runs assertions, destroys</td></tr>
+            <tr><td>Policy as code</td><td>OPA / Sentinel</td><td>Enforces org policies on plans before apply</td></tr>
+          </table>
+          <p>The <code>terraform test</code> command (v1.6+) natively runs <code>.tftest.hcl</code> files that can mock providers for fast unit-style tests.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A6</span><span class="qa-qtext">How do you structure a large Terraform codebase to avoid a single massive state file?</span></div>
+        <div class="qa-a">
+          <p>Split by lifecycle and blast radius — resources that change together should be in the same state; resources that change independently should be separated:</p>
+          <ul>
+            <li><strong>Foundation layer</strong> — VPCs, DNS zones, IAM roles (rarely changes, high risk).</li>
+            <li><strong>Platform layer</strong> — EKS/RDS clusters, shared services (changes occasionally).</li>
+            <li><strong>Application layer</strong> — app-specific resources (changes frequently).</li>
+          </ul>
+          <p>Use outputs + SSM/remote_state for cross-layer data passing. Each layer has its own state file and CI pipeline with appropriate approval gates.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A7</span><span class="qa-qtext">What is the <code>check</code> block in Terraform v1.5+ and how does it differ from lifecycle conditions?</span></div>
+        <div class="qa-a">
+          <p>The <code>check</code> block performs assertions that emit <strong>warnings</strong> rather than failures, allowing apply to succeed while flagging drift or configuration issues:</p>
+          <pre><span class="k">check</span> <span class="s">"health_check"</span> {
+  data <span class="s">"http"</span> <span class="s">"probe"</span> {
+    url = <span class="s">"https://${aws_lb.web.dns_name}/health"</span>
+  }
+  assert {
+    condition     = data.http.probe.status_code == 200
+    error_message = <span class="s">"Health endpoint returned ${data.http.probe.status_code}"</span>
+  }
+}</pre>
+          <p>Unlike lifecycle <code>postcondition</code> (which blocks apply on failure), <code>check</code> blocks are non-blocking observability checks run after every apply.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A8</span><span class="qa-qtext">How do you use <code>jsonencode</code> and <code>yamlencode</code> for IAM policies and Kubernetes manifests?</span></div>
+        <div class="qa-a">
+          <p>These functions convert HCL data structures to JSON/YAML strings, enabling type-safe policy authoring:</p>
+          <pre>data <span class="s">"aws_iam_policy_document"</span> is preferred, but inline:
+
+policy = <span class="n">jsonencode</span>({
+  Version = <span class="s">"2012-10-17"</span>
+  Statement = [{
+    Effect   = <span class="s">"Allow"</span>
+    Action   = [<span class="s">"s3:GetObject"</span>]
+    Resource = <span class="s">"${aws_s3_bucket.data.arn}/*"</span>
+  }]
+})</pre>
+          <p>Benefits over heredoc: HCL syntax checking, interpolation support, no JSON escaping issues.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A9</span><span class="qa-qtext">What performance improvements can you apply to a slow <code>terraform plan</code>?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>-parallelism=N</strong> — increase concurrent API calls (default 10). Use with caution — rate limits can trigger errors.</li>
+            <li><strong>-refresh=false</strong> — skip state refresh if you know infra hasn't changed out-of-band.</li>
+            <li><strong>Smaller state files</strong> — split monolith states into focused modules.</li>
+            <li><strong>provider_meta caching</strong> — use provider-level assume_role caching where available.</li>
+            <li><strong>Targeted plans</strong> — <code>-target</code> for development iteration (not production).</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 7: CLOUD & SECURITY -->
+<div class="page" id="p7">
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s7a',this,'p7')">🔒 Cloud &amp; Security (C1–C8)</button>
+  </div>
+  <div class="spane on" id="s7a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔒 Terraform Cloud, Enterprise &amp; Security</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">C1 – C8</span>
+          <span class="tdpill tdpill-tag">TFC · Sentinel · OPA · OIDC</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Terraform Cloud features, policy-as-code with Sentinel/OPA, OIDC-based authentication, supply chain security, and GitOps workflows.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C1</span><span class="qa-qtext">What are the key features of Terraform Cloud vs. open-source Terraform?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Feature</th><th>Open Source</th><th>Terraform Cloud</th></tr>
+            <tr><td>Remote execution</td><td>Local only</td><td>Managed runners with audit logs</td></tr>
+            <tr><td>State management</td><td>Manual backend setup</td><td>Built-in encrypted, versioned state</td></tr>
+            <tr><td>Policy enforcement</td><td>Manual</td><td>Sentinel / OPA policies</td></tr>
+            <tr><td>SSO / RBAC</td><td>No</td><td>Team-based access control</td></tr>
+            <tr><td>VCS integration</td><td>Manual CI</td><td>Native GitHub/GitLab triggers</td></tr>
+            <tr><td>Cost estimation</td><td>No</td><td>Built-in pre-apply cost estimates</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C2</span><span class="qa-qtext">How do you avoid storing AWS credentials in Terraform CI pipelines using OIDC?</span></div>
+        <div class="qa-a">
+          <p>Use <strong>OpenID Connect (OIDC)</strong> to let GitHub Actions (or similar CI) assume an AWS IAM role without static credentials:</p>
+          <ol>
+            <li>Create an IAM OIDC identity provider for <code>token.actions.githubusercontent.com</code>.</li>
+            <li>Create an IAM role with a trust policy allowing the GitHub OIDC provider to assume it, scoped to your repo/branch.</li>
+            <li>In the workflow, use <code>aws-actions/configure-aws-credentials</code> with <code>role-to-assume</code>.</li>
+          </ol>
+          <p>No long-lived access keys are stored in secrets. Tokens are short-lived (15 min) and automatically rotated.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C3</span><span class="qa-qtext">What is Sentinel policy-as-code in Terraform Cloud?</span></div>
+        <div class="qa-a">
+          <p>Sentinel is HashiCorp's embedded policy-as-code framework that runs after <code>terraform plan</code> and before <code>terraform apply</code>. Policies inspect the plan JSON to enforce governance rules:</p>
+          <pre><span class="c"># Sentinel: require all S3 buckets to be private</span>
+import <span class="s">"tfplan/v2"</span> as tfplan
+
+all_s3_buckets = filter tfplan.resource_changes as _, rc {
+  rc.type == <span class="s">"aws_s3_bucket"</span>
+}
+
+main = rule {
+  all all_s3_buckets as _, bucket {
+    bucket.change.after.acl == <span class="s">"private"</span>
+  }
+}</pre>
+          <p>Policy sets can be advisory (warn), soft-mandatory (overridable), or hard-mandatory (block apply).</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C4</span><span class="qa-qtext">How do you handle secrets in Terraform — specifically database passwords and API keys?</span></div>
+        <div class="qa-a">
+          <p>Recommended patterns:</p>
+          <ul>
+            <li><strong>AWS Secrets Manager / SSM Parameter Store</strong> — store secrets externally and read via data source at apply time. The secret value passes through state but is never in VCS.</li>
+            <li><strong>Vault provider</strong> — generate dynamic credentials (e.g., short-lived DB passwords) that expire automatically.</li>
+            <li><strong>SOPS-encrypted tfvars</strong> — encrypt <code>.tfvars</code> with AWS KMS or PGP using Mozilla SOPS; decrypt in CI.</li>
+            <li><strong>Environment variables (TF_VAR_)</strong> — inject from CI secret store at runtime.</li>
+          </ul>
+          <div class="tip"><strong>Never</strong> put secrets as default variable values in <code>variables.tf</code> or hard-coded in <code>.tf</code> files.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C5</span><span class="qa-qtext">What is the Terraform provider development workflow and how do you use a local provider?</span></div>
+        <div class="qa-a">
+          <p>For using a local/custom provider during development:</p>
+          <pre><span class="c"># ~/.terraformrc</span>
+provider_installation {
+  dev_overrides {
+    <span class="s">"example.com/myorg/myprovider"</span> = <span class="s">"/path/to/provider/binary"</span>
+  }
+  direct {}
+}</pre>
+          <p>This tells Terraform to use the local binary instead of downloading from the registry. Remove dev overrides before publishing to production.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C6</span><span class="qa-qtext">How do you implement a GitOps workflow with Terraform and pull requests?</span></div>
+        <div class="qa-a">
+          <ol>
+            <li><strong>PR opened</strong> — CI runs <code>terraform fmt -check</code>, <code>tflint</code>, <code>tfsec</code>, <code>terraform plan</code>. Plan output posted as PR comment.</li>
+            <li><strong>Review</strong> — team reviews plan diff; policy checks run automatically (Sentinel/OPA).</li>
+            <li><strong>PR merged to main</strong> — CI runs <code>terraform apply</code> with the saved plan file from the plan step.</li>
+            <li><strong>No direct CLI applies</strong> — all changes go through PRs; apply is gated on approval and passing checks.</li>
+          </ol>
+          <p>Tools: Atlantis (self-hosted), Terraform Cloud VCS workflow, GitHub Actions + tfcmt for plan comments.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C7</span><span class="qa-qtext">What is the <code>terraform providers lock</code> command and when should you run it?</span></div>
+        <div class="qa-a">
+          <p><code>terraform providers lock</code> updates the <code>.terraform.lock.hcl</code> file with checksums for specific platforms without running a full <code>init</code>:</p>
+          <pre>terraform providers lock \
+  -platform=linux_amd64 \
+  -platform=darwin_arm64 \
+  -platform=windows_amd64</pre>
+          <p>Run it when: developers use macOS (arm64) but CI runs on Linux (amd64) — the default lock only includes the platform that ran <code>init</code>. Pre-populating all platform checksums ensures all team members and CI can use the same lock file.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">C8</span><span class="qa-qtext">How do you enforce resource tagging policies across all Terraform resources?</span></div>
+        <div class="qa-a">
+          <p>Three approaches:</p>
+          <ul>
+            <li><strong>Provider default_tags (AWS)</strong> — automatically applies tags to all taggable resources without repeating them:
+              <pre><span class="k">provider</span> <span class="s">"aws"</span> {
+  default_tags {
+    tags = {
+      Team        = <span class="s">"platform"</span>
+      Environment = <span class="k">var</span>.env
+      ManagedBy   = <span class="s">"terraform"</span>
+    }
+  }
+}</pre>
+            </li>
+            <li><strong>Sentinel/OPA policy</strong> — reject plans where required tags are missing.</li>
+            <li><strong>Module wrapper</strong> — require callers to pass a <code>tags</code> variable; merge with module-level required tags using <code>merge(local.required_tags, var.tags)</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nt').forEach(b => b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+
+function showSec(id, btn, pageId) {
+  const page = document.getElementById(pageId);
+  page.querySelectorAll('.spane').forEach(p => p.classList.remove('on'));
+  page.querySelectorAll('.snt').forEach(b => b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+</script>
+</body>
+</html>
