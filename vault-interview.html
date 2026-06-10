@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HashiCorp Vault — Advanced Interview Questions</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#ffffff;--bg:#f4f6f9;--border:#e2e8f0;--border-md:#cbd5e1;
+  --text:#0f172a;--text-2:#334155;--text-3:#64748b;
+  --accent:#4f46e5;--accent-lt:#ede9fe;--accent-dk:#3730a3;
+  --amber:#d97706;
+  --sans:"DM Sans",system-ui,sans-serif;
+  --mono:"DM Mono",monospace;
+  --serif:"Playfair Display",Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.nb{font-family:var(--sans);font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.01em}
+.nav-slash{width:1px;height:16px;background:var(--border-md);display:inline-block;margin:0 8px;vertical-align:middle}
+.ntabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.ntabs::-webkit-scrollbar{display:none}
+.nt{padding:6px 14px;border:none;background:transparent;font-family:var(--sans);font-size:12px;font-weight:500;color:var(--text-3);cursor:pointer;border-radius:6px;white-space:nowrap;transition:all .15s}
+.nt:hover{color:var(--text);background:var(--bg)}
+.nt.on{color:var(--accent);background:var(--accent-lt);font-weight:600}
+.badge{font-family:var(--mono);font-size:10px;color:var(--accent);background:var(--accent-lt);border:1px solid rgba(79,70,229,.25);padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;font-weight:600}
+.page{display:none;max-width:1020px;margin:0 auto;padding:40px 24px 80px}
+.page.on{display:block}
+.hero{margin-bottom:40px;padding:32px 36px;background:var(--white);border-radius:16px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.hlabel{font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;font-weight:600}
+.hero h1{font-family:var(--serif);font-size:clamp(24px,3.5vw,38px);font-weight:400;line-height:1.15;letter-spacing:-.02em;margin-bottom:10px;color:var(--text)}
+.hero h1 u{text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:5px;text-decoration-thickness:2px;font-style:normal}
+.hero p{font-size:14px;color:var(--text-2);max-width:640px;line-height:1.7}
+.snav{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
+.snt{padding:7px 14px;border:1px solid var(--border);border-radius:20px;background:var(--white);font-family:var(--sans);font-size:11px;font-weight:500;cursor:pointer;color:var(--text-3);transition:all .15s;white-space:nowrap}
+.snt:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-lt)}
+.snt.on{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+.spane{display:none}.spane.on{display:block}
+.topic-def{margin-bottom:24px;border-radius:12px;overflow:hidden;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.topic-def-hd{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dk) 100%);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.topic-def-title{font-family:var(--serif);font-size:17px;font-weight:400;color:#fff;letter-spacing:-.01em}
+.topic-def-pills{display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0}
+.tdpill{font-family:var(--mono);font-size:9px;padding:3px 9px;border:1px solid;border-radius:20px;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+.tdpill-weight{color:#fff;border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.15)}
+.tdpill-tag{color:#c7d2fe;border-color:rgba(199,210,254,.4);background:rgba(199,210,254,.1)}
+.topic-def-body{padding:16px 20px;background:var(--white)}
+.topic-def-body p{color:var(--text-2);font-size:13px}
+.qa-list{display:flex;flex-direction:column;gap:10px}
+.qa{border-radius:10px;border:1px solid var(--border);overflow:hidden;background:var(--white);box-shadow:0 1px 3px rgba(0,0,0,.04);transition:box-shadow .15s}
+.qa:hover{box-shadow:0 3px 10px rgba(79,70,229,.1)}
+.qa-q{padding:12px 16px;background:#fafbff;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start}
+.qa-num{font-family:var(--mono);font-size:10px;color:var(--accent);background:var(--accent-lt);border:1px solid rgba(79,70,229,.2);padding:2px 7px;border-radius:4px;flex-shrink:0;margin-top:2px;font-weight:700;white-space:nowrap}
+.qa-qtext{font-size:13px;font-weight:600;color:var(--text);line-height:1.55}
+.qa-a{padding:14px 16px;font-size:13px;color:var(--text-2);line-height:1.75}
+.qa-a strong{color:var(--text);font-weight:700}
+.qa-a em{color:var(--text-3);font-style:italic}
+.qa-a ul{margin:6px 0 4px 20px}
+.qa-a ol{margin:6px 0 4px 20px}
+.qa-a li{font-size:13px;color:var(--text-2);line-height:1.65;margin-bottom:5px}
+.qa-a li strong{color:var(--text)}
+.qa-a code{font-family:var(--mono);font-size:12px;background:#f1f5f9;border:1px solid var(--border);padding:1px 6px;border-radius:4px;color:var(--accent-dk)}
+pre{background:#1e1e2e;border-radius:8px;padding:14px 16px;margin:10px 0;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.7;color:#cdd6f4;border:1px solid #313244}
+pre .k{color:#cba6f7}
+pre .s{color:#a6e3a1}
+pre .c{color:#6c7086;font-style:italic}
+pre .v{color:#89dceb}
+pre .n{color:#89b4fa}
+pre .o{color:#f38ba8}
+pre .y{color:#f9e2af}
+.rule{margin-bottom:12px;padding:14px 18px;border-left:3px solid var(--accent);background:var(--accent-lt);border-radius:0 8px 8px 0}
+.rule-title{font-size:11px;font-weight:700;color:var(--accent-dk);margin-bottom:5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.rule-body{font-size:13px;color:var(--text-2);line-height:1.65}
+.rule-body code{font-family:var(--mono);font-size:12px;background:rgba(79,70,229,.08);padding:1px 5px;border-radius:3px;color:var(--accent-dk)}
+.dtable{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.dtable th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;padding:9px 12px;text-align:left;background:#f8fafc;color:var(--text-3);border-bottom:1px solid var(--border-md);font-weight:700}
+.dtable td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55;color:var(--text-2)}
+.dtable tr:last-child td{border-bottom:none}
+.dtable td:first-child{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text)}
+.dtable tr.hl td{background:#f0fdf4}
+.dtable tr:hover td{background:#fafbff}
+.tip{margin-top:12px;padding:12px 16px;background:#fffbeb;border:1px solid #fde68a;border-left:3px solid var(--amber);border-radius:0 8px 8px 0;font-size:12px;color:#78350f;line-height:1.65}
+.tip strong{color:#92400e;font-weight:700}
+.tip code{font-family:var(--mono);font-size:11px;background:#fef3c7;padding:1px 5px;border-radius:3px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);margin:14px 0;border-radius:8px;overflow:hidden}
+@media(max-width:600px){.compare{grid-template-columns:1fr}}
+.cmp{padding:14px 16px;font-size:12px;line-height:1.65;border-right:1px solid var(--border);background:var(--white)}
+.cmp:last-child{border-right:none}
+.cmp-lbl{font-family:var(--mono);font-size:10px;font-weight:700;margin-bottom:6px;color:var(--accent);text-transform:uppercase;letter-spacing:.07em}
+.integ-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--accent-lt);border:1px solid rgba(79,70,229,.2);border-radius:8px;margin-bottom:16px}
+.integ-banner span{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--accent-dk);text-transform:uppercase;letter-spacing:.1em}
+.lbl{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;margin:16px 0 10px;display:flex;align-items:center;gap:10px;font-weight:600}
+.lbl::after{content:"";flex:1;height:1px;background:var(--border)}
+p{font-size:13px;color:var(--text-2);line-height:1.65;margin-bottom:8px}
+strong{font-weight:700;color:var(--text)}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nb">Cloud Guide <span class="nav-slash"></span> Vault Interview</span>
+  <div class="ntabs" role="tablist">
+    <button class="nt on" onclick="showPage('p1',this)" role="tab">🔐 Core</button>
+    <button class="nt" onclick="showPage('p2',this)" role="tab">🗝️ Auth Methods</button>
+    <button class="nt" onclick="showPage('p3',this)" role="tab">📦 Secrets Engines</button>
+    <button class="nt" onclick="showPage('p4',this)" role="tab">🔒 Policies &amp; Tokens</button>
+    <button class="nt" onclick="showPage('p5',this)" role="tab">⚙️ Operations</button>
+    <button class="nt" onclick="showPage('p6',this)" role="tab">🔗 Integrations</button>
+  </div>
+  <span class="badge">60 Q&amp;A</span>
+</nav>
+
+<!-- PAGE 1: CORE -->
+<div class="page on" id="p1">
+  <div class="hero">
+    <div class="hlabel">HashiCorp Vault Interview Questions</div>
+    <h1>Secrets Management — <u>HashiCorp Vault</u></h1>
+    <p>60 advanced questions covering Vault architecture, auth methods, secrets engines, policies, tokens, HA operations, and real-world integrations with <strong>Ansible</strong>, <strong>Terraform</strong>, and <strong>GitHub Actions</strong> — with working code examples.</p>
+  </div>
+
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s1a',this,'p1')">🔐 Architecture (V1–V10)</button>
+    <button class="snt" onclick="showSec('s1b',this,'p1')">🏗️ Vault Init &amp; Unseal (V11–V16)</button>
+  </div>
+
+  <!-- V1–V10 -->
+  <div class="spane on" id="s1a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔐 Vault Architecture</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">V1 – V10</span>
+          <span class="tdpill tdpill-tag">Core Concepts</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Vault's storage model, request flow, barrier, audit devices, and high-availability deployment patterns.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V1</span><span class="qa-qtext">What is HashiCorp Vault and what problems does it solve?</span></div>
+        <div class="qa-a">
+          <p>Vault is a secrets management platform that centralises the storage, access, and lifecycle of sensitive data — API keys, passwords, certificates, encryption keys, and cloud credentials.</p>
+          <p>Problems it solves:</p>
+          <ul>
+            <li><strong>Secret sprawl</strong> — secrets scattered across config files, env vars, and codebases.</li>
+            <li><strong>Static credentials</strong> — long-lived keys that are never rotated.</li>
+            <li><strong>No audit trail</strong> — who accessed what secret and when.</li>
+            <li><strong>Manual rotation</strong> — Vault automates credential rotation and generates dynamic, short-lived secrets.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V2</span><span class="qa-qtext">Explain Vault's core architecture: storage backend, barrier, and the request flow.</span></div>
+        <div class="qa-a">
+          <p>Vault has a layered architecture:</p>
+          <ul>
+            <li><strong>Storage backend</strong> — persists encrypted data (Raft integrated, Consul, S3, etc.). The backend only stores ciphertext — it never sees plaintext.</li>
+            <li><strong>Barrier</strong> — AES-256-GCM encryption layer between Vault core and storage. All data crossing the barrier is encrypted with the master key. The barrier is sealed at startup.</li>
+            <li><strong>Core</strong> — request router, token store, policy engine, expiry manager.</li>
+          </ul>
+          <p><strong>Request flow:</strong> Client → TLS → API → Auth → Token validation → Policy check → Secret engine → Storage (encrypted).</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V3</span><span class="qa-qtext">What is the difference between the Vault seal and the master key?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Concept</th><th>Description</th></tr>
+            <tr><td>Master key</td><td>Encrypts the encryption key used by the barrier. Never stored on disk in plain form. Split via Shamir's Secret Sharing (default) or held by an HSM/Cloud KMS (auto-unseal).</td></tr>
+            <tr><td>Encryption key</td><td>Actual key used to encrypt/decrypt data in storage. Encrypted by the master key and stored with the data.</td></tr>
+            <tr><td>Seal</td><td>State where Vault holds neither the master key nor the encryption key in memory. Vault cannot serve requests when sealed.</td></tr>
+            <tr><td>Unseal</td><td>Process of reconstructing the master key (by providing unseal key shares) to decrypt the encryption key and load it into memory.</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V4</span><span class="qa-qtext">What is Shamir's Secret Sharing and how does Vault use it?</span></div>
+        <div class="qa-a">
+          <p>Shamir's Secret Sharing splits a secret (the master key) into <em>N</em> shares such that any <em>K</em> shares can reconstruct it, but <em>K-1</em> shares reveal nothing. The default Vault configuration uses <strong>5 shares, threshold 3</strong>.</p>
+          <p>At init, Vault generates the master key, splits it, and distributes the shares to operators. To unseal, at least 3 operators must provide their share — no single person has full key access, enforcing separation of duties.</p>
+          <div class="tip"><strong>Auto-unseal</strong> (using AWS KMS, Azure Key Vault, GCP KMS) delegates master key protection to a cloud HSM, enabling automated restarts without manual operator intervention.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V5</span><span class="qa-qtext">What storage backends does Vault support and which is recommended for production HA?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Backend</th><th>HA?</th><th>Notes</th></tr>
+            <tr class="hl"><td>Integrated Raft</td><td>Yes ✓</td><td>Recommended. Built-in, no external dependency, Raft consensus, supports auto-pilot.</td></tr>
+            <tr><td>Consul</td><td>Yes</td><td>Legacy HA option. Requires a separate Consul cluster.</td></tr>
+            <tr><td>PostgreSQL</td><td>Yes (manual HA)</td><td>Active-standby with DB locking.</td></tr>
+            <tr><td>S3 / GCS / Azure</td><td>No (single node)</td><td>Only for dev/test — no leader election.</td></tr>
+            <tr><td>File</td><td>No</td><td>Dev only.</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V6</span><span class="qa-qtext">How does Vault HA work with the Integrated Raft storage backend?</span></div>
+        <div class="qa-a">
+          <p>In Raft HA, all Vault nodes form a Raft cluster. One node is elected <strong>leader</strong> and handles all reads and writes. Other nodes are <strong>followers/voters</strong> that replicate the log.</p>
+          <ul>
+            <li>Clients should use a load balancer or Vault agent to redirect to the active node.</li>
+            <li>Vault Enterprise supports <strong>performance standbys</strong> (followers that serve read requests).</li>
+            <li><strong>Auto-pilot</strong> manages automatic dead server cleanup and version upgrades.</li>
+            <li>Minimum recommended cluster size: <strong>3 or 5 nodes</strong> (odd number for quorum).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V7</span><span class="qa-qtext">What are audit devices and why are they critical in production?</span></div>
+        <div class="qa-a">
+          <p>Audit devices log every request and response to Vault in HMAC-hashed form. Types:</p>
+          <ul>
+            <li><strong>File</strong> — writes to a local file path.</li>
+            <li><strong>Syslog</strong> — sends to syslog/journald.</li>
+            <li><strong>Socket</strong> — sends to a TCP/UDP/Unix socket.</li>
+          </ul>
+          <p><strong>Critical for production:</strong> If <em>all enabled audit devices</em> fail to write a log entry, Vault blocks the request. This guarantees an unbroken audit trail — Vault will not process a request it cannot audit. Enable at least two audit devices for redundancy.</p>
+          <pre><span class="n">vault</span> audit enable file file_path=/var/log/vault/audit.log
+<span class="n">vault</span> audit enable syslog tag=vault facility=AUTH</pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V8</span><span class="qa-qtext">What is the Vault Agent and what problems does it solve?</span></div>
+        <div class="qa-a">
+          <p>Vault Agent is a client-side daemon that runs alongside applications, eliminating the need for apps to directly interact with Vault:</p>
+          <ul>
+            <li><strong>Auto-auth</strong> — authenticates to Vault automatically using the host's identity (AWS IAM, Kubernetes SA, Azure MSI).</li>
+            <li><strong>Secret caching</strong> — caches tokens and secrets locally; apps request from the local agent (Unix socket or TCP) rather than Vault server.</li>
+            <li><strong>Template rendering</strong> — renders secrets into config files using Consul Template syntax, triggering app restarts on rotation.</li>
+            <li><strong>Resilience</strong> — if Vault is temporarily unreachable, agent serves from cache.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V9</span><span class="qa-qtext">What is the difference between Vault OSS, Vault Enterprise, and HCP Vault?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Edition</th><th>Key extras</th></tr>
+            <tr><td>OSS</td><td>Full secrets management, all auth methods, all secret engines, Raft HA.</td></tr>
+            <tr><td>Enterprise</td><td>Namespaces, performance replication, DR replication, performance standbys, MFA, HSM seal, Sentinel policies, control groups.</td></tr>
+            <tr><td>HCP Vault</td><td>Fully managed Vault cluster on HashiCorp Cloud Platform. Auto-scaled, patched, backed up. Reduces operational overhead.</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V10</span><span class="qa-qtext">What are Vault namespaces (Enterprise) and how do they support multi-tenancy?</span></div>
+        <div class="qa-a">
+          <p>Namespaces create isolated Vault environments within a single cluster — each namespace has its own auth methods, secret engines, policies, and tokens. Teams interact only with their namespace and cannot see other namespaces.</p>
+          <pre><span class="n">vault</span> namespace create team-a
+<span class="n">vault</span> secrets enable -namespace=team-a kv-v2
+VAULT_NAMESPACE=team-a <span class="n">vault</span> kv put secret/app key=value</pre>
+          <p>Parent namespaces can manage child namespaces, enabling hierarchical multi-tenancy (org → team → service).</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- V11–V16: Init & Unseal -->
+  <div class="spane" id="s1b">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🏗️ Vault Init, Unseal &amp; Lifecycle</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">V11 – V16</span>
+          <span class="tdpill tdpill-tag">Init · Unseal · Auto-unseal · Rekey</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Vault initialisation, unseal process, auto-unseal with cloud KMS, rekeying, and disaster recovery procedures.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V11</span><span class="qa-qtext">Walk through the <code>vault operator init</code> command and its outputs.</span></div>
+        <div class="qa-a">
+          <pre><span class="n">vault</span> operator init \
+  -key-shares=5 \
+  -key-threshold=3 \
+  -pgp-keys=<span class="s">"op1.asc,op2.asc,op3.asc,op4.asc,op5.asc"</span></pre>
+          <p>Outputs:</p>
+          <ul>
+            <li><strong>5 unseal key shares</strong> — encrypted with each operator's PGP key.</li>
+            <li><strong>Initial root token</strong> — has full Vault privileges. Use to set up policies/auth then revoke.</li>
+          </ul>
+          <div class="tip"><strong>Never store</strong> unseal key shares together or in Vault itself. Distribute to separate operators and store in a secure offline location (HSM, password manager).</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V12</span><span class="qa-qtext">How does Auto-unseal with AWS KMS work?</span></div>
+        <div class="qa-a">
+          <pre><span class="c"># vault.hcl</span>
+seal <span class="s">"awskms"</span> {
+  region     = <span class="s">"us-east-1"</span>
+  kms_key_id = <span class="s">"arn:aws:kms:us-east-1:123456789:key/abc-123"</span>
+}</pre>
+          <p>On startup, Vault calls AWS KMS to decrypt the master key using the KMS key. The KMS key never leaves AWS — only the encrypted master key is stored in Vault's storage. If the KMS key is disabled, Vault cannot unseal, providing an emergency break-glass control.</p>
+          <p>The EC2/ECS/Lambda IAM role running Vault needs <code>kms:Decrypt</code> and <code>kms:DescribeKey</code> permissions.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V13</span><span class="qa-qtext">What is <code>vault operator rekey</code> and when should you perform it?</span></div>
+        <div class="qa-a">
+          <p>Rekey generates a new master key and re-encrypts the existing encryption key, distributing new unseal key shares. Perform when:</p>
+          <ul>
+            <li>An unseal key holder leaves the organisation.</li>
+            <li>You want to change the key-shares/threshold values.</li>
+            <li>An unseal key share is suspected to be compromised.</li>
+          </ul>
+          <pre><span class="n">vault</span> operator rekey -init -key-shares=5 -key-threshold=3
+<span class="n">vault</span> operator rekey <span class="s">&lt;unseal-key-1&gt;</span>
+<span class="n">vault</span> operator rekey <span class="s">&lt;unseal-key-2&gt;</span>
+<span class="n">vault</span> operator rekey <span class="s">&lt;unseal-key-3&gt;</span> <span class="c"># completes rekey</span></pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V14</span><span class="qa-qtext">What is the difference between <code>vault operator seal</code> and <code>vault operator step-down</code>?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Command</th><th>Effect</th><th>When to use</th></tr>
+            <tr><td>operator seal</td><td>Drops the master key from memory; Vault stops serving requests until manually unsealed</td><td>Security emergency — suspected compromise</td></tr>
+            <tr><td>operator step-down</td><td>Active node yields leadership; a follower is elected; node remains unsealed and rejoins as standby</td><td>Maintenance, graceful leader migration</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V15</span><span class="qa-qtext">How do you rotate Vault's encryption key (not the master key)?</span></div>
+        <div class="qa-a">
+          <pre><span class="n">vault</span> operator rotate</pre>
+          <p>This generates a new encryption key, adds it to the keyring, and uses it for all future writes. Existing data is not re-encrypted immediately. Vault maintains a keyring of all keys and decrypts old data with the appropriate key version. Old key versions can be explicitly removed once all data is re-encrypted.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">V16</span><span class="qa-qtext">How do you take a Vault snapshot and restore from it?</span></div>
+        <div class="qa-a">
+          <pre><span class="c"># Snapshot (Raft backend)</span>
+<span class="n">vault</span> operator raft snapshot save vault-backup.snap
+
+<span class="c"># Restore (will unseal automatically if auto-unseal configured)</span>
+<span class="n">vault</span> operator raft snapshot restore vault-backup.snap</pre>
+          <p>Raft snapshots capture the full cluster state. Automate daily snapshots to S3 with lifecycle policies. Test restoration periodically in a separate environment — an untested backup is not a backup.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: AUTH METHODS -->
+<div class="page" id="p2">
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s2a',this,'p2')">🗝️ Auth Methods (A1–A10)</button>
+  </div>
+  <div class="spane on" id="s2a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🗝️ Authentication Methods</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">A1 – A10</span>
+          <span class="tdpill tdpill-tag">Token · AppRole · K8s · AWS · OIDC</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>How Vault authenticates clients — token, AppRole, Kubernetes, AWS IAM, LDAP, OIDC, and JWT auth methods with configuration examples.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A1</span><span class="qa-qtext">What are auth methods in Vault and how do they differ from secret engines?</span></div>
+        <div class="qa-a">
+          <p><strong>Auth methods</strong> verify the identity of a client and issue a Vault token with attached policies. <strong>Secret engines</strong> store, generate, or encrypt data for already-authenticated clients. Auth methods are mounted at paths like <code>auth/aws</code>, <code>auth/kubernetes</code>. Secret engines are mounted at paths like <code>secret/</code>, <code>database/</code>.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A2</span><span class="qa-qtext">Explain the AppRole auth method and its typical use case.</span></div>
+        <div class="qa-a">
+          <p>AppRole is designed for machine-to-machine authentication. It uses two credentials:</p>
+          <ul>
+            <li><strong>RoleID</strong> — non-secret identifier embedded in app config or AMI (equivalent to username).</li>
+            <li><strong>SecretID</strong> — short-lived, single-use secret delivered to the app at runtime via a trusted channel (equivalent to password).</li>
+          </ul>
+          <pre><span class="c"># Enable AppRole</span>
+<span class="n">vault</span> auth enable approle
+<span class="n">vault</span> write auth/approle/role/my-app \
+  token_policies=<span class="s">"my-app-policy"</span> \
+  token_ttl=<span class="s">"1h"</span> \
+  secret_id_ttl=<span class="s">"10m"</span> \
+  secret_id_num_uses=<span class="s">"1"</span>
+
+<span class="c"># Get RoleID (embed in app)</span>
+<span class="n">vault</span> read auth/approle/role/my-app/role-id
+
+<span class="c"># Get SecretID (deliver via CI/CD at runtime)</span>
+<span class="n">vault</span> write -f auth/approle/role/my-app/secret-id</pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A3</span><span class="qa-qtext">How does Kubernetes auth method work and why is it preferred over static tokens in clusters?</span></div>
+        <div class="qa-a">
+          <p>The Kubernetes auth method validates a pod's ServiceAccount JWT token against the Kubernetes API server. Vault calls the k8s TokenReview API to verify the token's authenticity and bind it to a namespace/SA combination.</p>
+          <pre><span class="n">vault</span> auth enable kubernetes
+<span class="n">vault</span> write auth/kubernetes/config \
+  kubernetes_host=<span class="s">"https://k8s.example.com"</span> \
+  kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+
+<span class="n">vault</span> write auth/kubernetes/role/my-app \
+  bound_service_account_names=<span class="s">"my-app-sa"</span> \
+  bound_service_account_namespaces=<span class="s">"production"</span> \
+  policies=<span class="s">"my-app-policy"</span> \
+  ttl=<span class="s">"1h"</span></pre>
+          <p><strong>Why preferred:</strong> No static credentials to manage or rotate. The pod uses its projected ServiceAccount token (short-lived, rotated by k8s) to authenticate.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A4</span><span class="qa-qtext">How does the AWS auth method work for EC2 instances and IAM roles?</span></div>
+        <div class="qa-a">
+          <p>Two sub-methods:</p>
+          <ul>
+            <li><strong>iam</strong> — the client signs an <code>sts:GetCallerIdentity</code> request with its IAM credentials; Vault calls STS to verify the identity. Works for EC2, Lambda, ECS, and any IAM principal.</li>
+            <li><strong>ec2</strong> — uses the EC2 instance identity document (signed by AWS) and optionally the PKCS7 signature. Tied to a specific instance or AMI.</li>
+          </ul>
+          <p><strong>IAM method is recommended</strong> — more flexible and works beyond just EC2.</p>
+          <pre><span class="n">vault</span> auth enable aws
+<span class="n">vault</span> write auth/aws/role/my-role \
+  auth_type=<span class="s">"iam"</span> \
+  bound_iam_principal_arn=<span class="s">"arn:aws:iam::123456789:role/my-ec2-role"</span> \
+  policies=<span class="s">"my-policy"</span> \
+  ttl=<span class="s">"1h"</span></pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A5</span><span class="qa-qtext">What is the OIDC auth method and how does it enable SSO for human operators?</span></div>
+        <div class="qa-a">
+          <p>The OIDC auth method integrates Vault with any OIDC provider (Okta, Azure AD, Google, GitHub) for browser-based SSO. Operators log in via their IdP — Vault maps OIDC claims (groups, email) to Vault policies.</p>
+          <pre><span class="n">vault</span> auth enable oidc
+<span class="n">vault</span> write auth/oidc/config \
+  oidc_discovery_url=<span class="s">"https://accounts.google.com"</span> \
+  oidc_client_id=<span class="s">"my-client-id"</span> \
+  oidc_client_secret=<span class="s">"my-client-secret"</span> \
+  default_role=<span class="s">"default"</span>
+
+<span class="n">vault</span> login -method=oidc  <span class="c"># Opens browser for SSO</span></pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A6</span><span class="qa-qtext">What is token renewal and how do you prevent token expiry in long-running services?</span></div>
+        <div class="qa-a">
+          <p>Vault tokens have a TTL. Services must renew before expiry using <code>vault token renew</code> or the <code>/auth/token/renew-self</code> API endpoint. Renewal extends by the increment (up to max TTL).</p>
+          <p>Best practices for long-running services:</p>
+          <ul>
+            <li>Use <strong>Vault Agent</strong> — it handles token renewal automatically.</li>
+            <li>Set <code>token_max_ttl</code> to a reasonable ceiling (e.g., 24h) and re-authenticate when the token expires.</li>
+            <li>Use <strong>periodic tokens</strong> (no max TTL, renewable indefinitely) for infrastructure daemons — enable via <code>period</code> in the auth role.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A7</span><span class="qa-qtext">What is token accessor and why is it useful?</span></div>
+        <div class="qa-a">
+          <p>Every Vault token has an <strong>accessor</strong> — a public reference to the token that can be used to look up token properties, renew it, or revoke it, without exposing the actual token value.</p>
+          <ul>
+            <li>Audit logs record accessors rather than token values.</li>
+            <li>Operators can revoke a token via its accessor when a token is compromised but the value is unknown.</li>
+            <li>Useful for building token management UIs or approving workflows.</li>
+          </ul>
+          <pre><span class="n">vault</span> token lookup -accessor <span class="s">&lt;accessor&gt;</span>
+<span class="n">vault</span> token revoke -accessor <span class="s">&lt;accessor&gt;</span></pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A8</span><span class="qa-qtext">What is the difference between batch tokens and service tokens?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th></th><th>Service Token</th><th>Batch Token</th></tr>
+            <tr><td>Storage</td><td>Stored in Vault (heavy)</td><td>Encrypted blob, not stored (lightweight)</td></tr>
+            <tr><td>Renewal</td><td>Yes</td><td>No</td></tr>
+            <tr><td>Revocation</td><td>Yes (individual or tree)</td><td>Only by expiry</td></tr>
+            <tr><td>Use case</td><td>Long-lived services, human operators</td><td>High-throughput short-lived ops, Lambda, batch jobs</td></tr>
+            <tr><td>Prefix</td><td><code>hvs.</code></td><td><code>hvb.</code></td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A9</span><span class="qa-qtext">How do you create a token hierarchy and why does it matter for revocation?</span></div>
+        <div class="qa-a">
+          <p>When a parent token creates a child token, a <strong>parent-child relationship</strong> is established. Revoking a parent also revokes all child tokens recursively — this prevents orphaned tokens with active access after a parent's privilege is removed.</p>
+          <pre><span class="c"># Create a child token scoped to a specific policy</span>
+<span class="n">vault</span> token create -policy=app-read -ttl=2h
+
+<span class="c"># Revoke parent token → child is also revoked</span>
+<span class="n">vault</span> token revoke <span class="s">&lt;parent-token&gt;</span></pre>
+          <p>Use <strong>orphan tokens</strong> only when you explicitly want a token that survives parent revocation (e.g., long-running daemon tokens created by a bootstrap script).</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">A10</span><span class="qa-qtext">What is the JWT/OIDC auth method and how does it differ from the OIDC login flow?</span></div>
+        <div class="qa-a">
+          <p>The JWT auth method allows Vault to authenticate using a pre-existing signed JWT (e.g., a Kubernetes SA token, GitHub Actions OIDC token, or GitLab CI JWT) without a browser redirect flow. The JWT is verified against a JWKS endpoint or a static public key.</p>
+          <pre><span class="n">vault</span> write auth/jwt/config \
+  jwks_url=<span class="s">"https://token.actions.githubusercontent.com/.well-known/jwks"</span> \
+  bound_issuer=<span class="s">"https://token.actions.githubusercontent.com"</span>
+
+<span class="c"># In CI, authenticate with the OIDC token</span>
+<span class="n">vault</span> write auth/jwt/login role=github-actions jwt=<span class="s">"$ACTIONS_ID_TOKEN_REQUEST_TOKEN"</span></pre>
+          <p>This is the basis for GitHub Actions ↔ Vault integration without static credentials.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: SECRET ENGINES -->
+<div class="page" id="p3">
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s3a',this,'p3')">📦 Secret Engines (SE1–SE10)</button>
+  </div>
+  <div class="spane on" id="s3a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">📦 Secrets Engines</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">SE1 – SE10</span>
+          <span class="tdpill tdpill-tag">KV · Dynamic · PKI · Transit · DB</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>KV v1 vs v2, dynamic secrets for AWS/databases, PKI certificate management, Transit encryption-as-a-service, SSH signing, and Transform engine.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SE1</span><span class="qa-qtext">What is the difference between KV v1 and KV v2 secret engines?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Feature</th><th>KV v1</th><th>KV v2</th></tr>
+            <tr><td>Versioning</td><td>No</td><td>Yes — up to configurable max versions</td></tr>
+            <tr><td>Soft delete</td><td>No</td><td>Yes — delete marks as deleted, destroy removes</td></tr>
+            <tr><td>Metadata</td><td>No</td><td>Yes — custom metadata per secret</td></tr>
+            <tr><td>Check-and-Set</td><td>No</td><td>Yes — optimistic concurrency (cas)</td></tr>
+            <tr><td>Path</td><td><code>secret/myapp/db</code></td><td><code>secret/data/myapp/db</code> (API)</td></tr>
+          </table>
+          <p><strong>Use KV v2 in production</strong> for the version history and soft-delete safety net.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SE2</span><span class="qa-qtext">What are dynamic secrets and how do they improve security over static credentials?</span></div>
+        <div class="qa-a">
+          <p>Dynamic secrets are generated on-demand for each request — they are unique, time-limited, and automatically revoked on expiry. Static credentials are shared, long-lived, and must be manually rotated.</p>
+          <div class="compare">
+            <div class="cmp"><div class="cmp-lbl">Static Secret</div>One DB password shared by all apps. Lives months/years. Compromise affects all consumers. Manual rotation causes downtime.</div>
+            <div class="cmp"><div class="cmp-lbl">Dynamic Secret</div>Unique DB creds per app instance. TTL 1h. Compromise affects only one token. Expiry is automatic revocation.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SE3</span><span class="qa-qtext">How does the Database secrets engine generate dynamic credentials?</span></div>
+        <div class="qa-a">
+          <pre><span class="c"># Enable and configure PostgreSQL</span>
+<span class="n">vault</span> secrets enable database
+<span class="n">vault</span> write database/config/my-postgres \
+  plugin_name=postgresql-database-plugin \
+  allowed_roles=<span class="s">"readonly"</span> \
+  connection_url=<span class="s">"postgresql://{{username}}:{{password}}@db:5432/mydb"</span> \
+  username=<span class="s">"vault-admin"</span> \
+  password=<span class="s">"admin-password"</span>
+
+<span class="n">vault</span> write database/roles/readonly \
+  db_name=<span class="s">"my-postgres"</span> \
+  creation_statements=<span class="s">"CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'; GRANT SELECT ON ALL TABLES IN SCHEMA public TO \"{{name}}\";"</span> \
+  default_ttl=<span class="s">"1h"</span> \
+  max_ttl=<span class="s">"24h"</span>
+
+<span class="c"># App requests credentials</span>
+<span class="n">vault</span> read database/creds/readonly</pre>
+          <p>Vault creates a real DB user, returns the credentials, and drops the user on TTL expiry or revocation.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SE4</span><span class="qa-qtext">How does the AWS secrets engine generate dynamic IAM credentials?</span></div>
+        <div class="qa-a">
+          <pre><span class="n">vault</span> secrets enable aws
+<span class="n">vault</span> write aws/config/root \
+  access_key=<span class="s">"AKIAIOSFODNN7EXAMPLE"</span> \
+  secret_key=<span class="s">"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"</span> \
+  region=<span class="s">"us-east-1"</span>
+
+<span class="n">vault</span> write aws/roles/s3-read \
+  credential_type=<span class="s">"iam_user"</span> \
+  policy_document=<span class="s">'{
+    "Version": "2012-10-17",
+    "Statement": [{"Effect": "Allow","Action": "s3:GetObject","Resource": "*"}]
+  }'</span>
+
+<span class="c"># Request dynamic IAM keys</span>
+<span class="n">vault</span> read aws/creds/s3-read</pre>
+          <p>Vault creates a real IAM user or generates STS AssumeRole tokens. IAM users are deleted on TTL expiry.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SE5</span><span class="qa-qtext">What is the PKI secrets engine and how does it automate certificate lifecycle?</span></div>
+        <div class="qa-a">
+          <p>The PKI engine turns Vault into an internal CA — it issues X.509 certificates on demand with short TTLs, eliminating long-lived certs and manual renewals.</p>
+          <pre><span class="n">vault</span> secrets enable pki
+<span class="n">vault</span> secrets tune -max-lease-ttl=8760h pki  <span class="c"># 1 year root</span>
+<span class="n">vault</span> write pki/root/generate/internal \
+  common_name=<span class="s">"example.com"</span> ttl=<span class="s">"8760h"</span>
+
+<span class="c"># Issue a certificate</span>
+<span class="n">vault</span> write pki/issue/web-server \
+  common_name=<span class="s">"app.example.com"</span> ttl=<span class="s">"24h"</span></pre>
+          <p>Pair with <strong>Vault Agent</strong> or <strong>cert-manager</strong> (k8s) to auto-renew before expiry. Short-lived certs (hours/days) are more secure than annual certs.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SE6</span><span class="qa-qtext">What is the Transit secrets engine and how is it used for encryption-as-a-service?</span></div>
+        <div class="qa-a">
+          <p>Transit provides cryptographic operations (encrypt, decrypt, sign, verify, HMAC) without exposing the key to the application. The key never leaves Vault.</p>
+          <pre><span class="n">vault</span> secrets enable transit
+<span class="n">vault</span> write -f transit/keys/my-app-key
+
+<span class="c"># Encrypt</span>
+<span class="n">vault</span> write transit/encrypt/my-app-key \
+  plaintext=$(echo -n <span class="s">"my secret data"</span> | base64)
+<span class="c"># Returns: vault:v1:&lt;ciphertext&gt;</span>
+
+<span class="c"># Decrypt</span>
+<span class="n">vault</span> write transit/decrypt/my-app-key \
+  ciphertext=<span class="s">"vault:v1:&lt;ciphertext&gt;"</span></pre>
+          <p>The ciphertext includes the key version prefix — key rotation just changes which version encrypts new data; old data is still decryptable with older key versions.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SE7</span><span class="qa-qtext">How does the SSH secrets engine enable certificate-based SSH access?</span></div>
+        <div class="qa-a">
+          <p>Instead of distributing static SSH keys, Vault signs short-lived SSH certificates. Only the Vault CA public key needs to be trusted on servers.</p>
+          <pre><span class="n">vault</span> secrets enable ssh
+<span class="n">vault</span> write ssh/config/ca generate_signing_key=<span class="k">true</span>
+
+<span class="c"># Sign a public key (1h TTL)</span>
+<span class="n">vault</span> write ssh/sign/operator \
+  public_key=@~/.ssh/id_rsa.pub \
+  valid_principals=<span class="s">"ubuntu"</span> \
+  ttl=<span class="s">"1h"</span>
+
+<span class="c"># Use signed cert</span>
+ssh -i ~/.ssh/id_rsa-cert.pub -i ~/.ssh/id_rsa ubuntu@server</pre>
+          <p>Certificates expire automatically — no key revocation needed. All access is audited through Vault.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SE8</span><span class="qa-qtext">What is secret engine lease and how does it relate to revocation?</span></div>
+        <div class="qa-a">
+          <p>Every dynamic secret issued by Vault has a <strong>lease</strong> — a TTL after which Vault automatically revokes it (calls the engine's revoke function, e.g., drops a DB user). Leases can be:</p>
+          <ul>
+            <li><strong>Renewed</strong> — extended before expiry (up to max TTL).</li>
+            <li><strong>Revoked</strong> — immediately invalidated via <code>vault lease revoke &lt;lease-id&gt;</code>.</li>
+            <li><strong>Force-revoked</strong> — <code>vault lease revoke -force -prefix aws/creds/</code> — revokes all leases under a prefix even if the engine cleanup fails.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SE9</span><span class="qa-qtext">What is the Vault Transform secrets engine and how does it differ from Transit?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th></th><th>Transit</th><th>Transform (Enterprise)</th></tr>
+            <tr><td>Output format</td><td>Opaque ciphertext (base64)</td><td>Format-preserving — same length/type as input</td></tr>
+            <tr><td>Use case</td><td>General encryption, signing</td><td>PCI compliance — encrypt CC numbers preserving format for legacy systems</td></tr>
+            <tr><td>Tokenisation</td><td>No</td><td>Yes — replaces data with a random token, stores mapping in Vault</td></tr>
+          </table>
+          <p>Example: encrypting <code>4111-1111-1111-1111</code> and storing <code>9876-5432-1234-5678</code> in the database (same format, no processing changes needed).</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">SE10</span><span class="qa-qtext">How do you configure secret engine leases and what happens when a lease expires?</span></div>
+        <div class="qa-a">
+          <pre><span class="c"># Tune the lease TTL for a secret engine mount</span>
+<span class="n">vault</span> secrets tune -default-lease-ttl=1h -max-lease-ttl=24h database/</pre>
+          <p>When a lease expires:</p>
+          <ol>
+            <li>Vault's expiry manager detects the expired lease.</li>
+            <li>Vault calls the secret engine's revoke function (e.g., <code>DROP USER</code> for database engine).</li>
+            <li>The lease is removed from Vault storage.</li>
+          </ol>
+          <p>If the revoke call fails (DB unreachable), Vault retries with exponential backoff. The credential may still exist in the DB until the retry succeeds — design systems to handle this.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: POLICIES & TOKENS -->
+<div class="page" id="p4">
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s4a',this,'p4')">🔒 Policies (P1–P8)</button>
+  </div>
+  <div class="spane on" id="s4a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔒 Policies &amp; Access Control</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">P1 – P8</span>
+          <span class="tdpill tdpill-tag">HCL Policies · Capabilities · Path Glob</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Writing fine-grained HCL policies, capability model, wildcard paths, policy templating, and the least-privilege principle in Vault.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">P1</span><span class="qa-qtext">What is a Vault policy and what capabilities can it grant?</span></div>
+        <div class="qa-a">
+          <p>A Vault policy is an HCL document that grants capabilities on API paths. Vault is <strong>deny-by-default</strong> — everything is denied unless explicitly permitted.</p>
+          <table class="dtable">
+            <tr><th>Capability</th><th>HTTP verb</th><th>Effect</th></tr>
+            <tr><td>create</td><td>POST/PUT</td><td>Create new data at path</td></tr>
+            <tr><td>read</td><td>GET</td><td>Read data at path</td></tr>
+            <tr><td>update</td><td>POST/PUT</td><td>Update existing data</td></tr>
+            <tr><td>delete</td><td>DELETE</td><td>Delete data</td></tr>
+            <tr><td>list</td><td>LIST</td><td>List keys at path</td></tr>
+            <tr><td>sudo</td><td>any</td><td>Allows access to root-protected paths</td></tr>
+            <tr><td>deny</td><td>any</td><td>Overrides all other grants — explicit deny</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">P2</span><span class="qa-qtext">Write a least-privilege policy for an app that reads only its own secrets from KV v2.</span></div>
+        <div class="qa-a">
+          <pre><span class="c"># policy: my-app.hcl</span>
+<span class="c"># KV v2 requires /data/ for read, /metadata/ for list</span>
+
+path <span class="s">"secret/data/my-app/*"</span> {
+  capabilities = [<span class="s">"read"</span>]
+}
+
+path <span class="s">"secret/metadata/my-app/*"</span> {
+  capabilities = [<span class="s">"list"</span>]
+}
+
+<span class="c"># Allow token to renew itself</span>
+path <span class="s">"auth/token/renew-self"</span> {
+  capabilities = [<span class="s">"update"</span>]
+}
+
+path <span class="s">"auth/token/lookup-self"</span> {
+  capabilities = [<span class="s">"read"</span>]
+}</pre>
+          <pre><span class="n">vault</span> policy write my-app my-app.hcl</pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">P3</span><span class="qa-qtext">How do path wildcards and globs work in Vault policies?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Pattern</th><th>Meaning</th></tr>
+            <tr><td><code>secret/data/app/*</code></td><td>Any path under <code>app/</code> (one level and below)</td></tr>
+            <tr><td><code>secret/data/+/config</code></td><td><code>+</code> matches exactly one path segment</td></tr>
+            <tr><td><code>secret/data/app/{{identity.entity.name}}/*</code></td><td>Template — resolves to the authenticated entity's name</td></tr>
+          </table>
+          <p>More specific paths take precedence. The <code>deny</code> capability always wins regardless of path specificity.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">P4</span><span class="qa-qtext">What is policy templating and how does it enable self-service secrets?</span></div>
+        <div class="qa-a">
+          <p>Policy templates use <code>{{identity.entity.name}}</code> or <code>{{identity.groups.names}}</code> to dynamically scope access based on the authenticated identity — one policy serves all users:</p>
+          <pre>path <span class="s">"secret/data/users/{{identity.entity.name}}/*"</span> {
+  capabilities = [<span class="s">"create"</span>, <span class="s">"read"</span>, <span class="s">"update"</span>, <span class="s">"delete"</span>]
+}
+<span class="c"># Alice can only access secret/data/users/alice/*</span>
+<span class="c"># Bob  can only access secret/data/users/bob/*</span></pre>
+          <p>This eliminates the need to create per-user policies.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">P5</span><span class="qa-qtext">What are the built-in <code>root</code> and <code>default</code> policies?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>root</strong> — attached to root tokens only. Grants all capabilities on all paths including sudo paths. Cannot be modified or deleted.</li>
+            <li><strong>default</strong> — automatically attached to every token. Grants basic self-service capabilities: renew-self, lookup-self, revoke-self, cubbyhole access. Can be modified but not deleted.</li>
+          </ul>
+          <div class="tip"><strong>Best practice:</strong> After initial setup, revoke the root token. Use OIDC/AppRole for ongoing admin access. Generate a new root token only for emergency operations via <code>vault operator generate-root</code>.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">P6</span><span class="qa-qtext">What is the cubbyhole secrets engine and how is it used for response wrapping?</span></div>
+        <div class="qa-a">
+          <p>The cubbyhole engine is private to each token — data stored in <code>cubbyhole/</code> is accessible only to the token that created it and is deleted when the token expires.</p>
+          <p><strong>Response wrapping</strong> uses cubbyhole to securely deliver secrets (e.g., SecretIDs in AppRole) — the secret is wrapped in a single-use token:</p>
+          <pre><span class="c"># Wrap the secret-id in a 5-minute token</span>
+<span class="n">vault</span> write -wrap-ttl=5m -f auth/approle/role/my-app/secret-id
+<span class="c"># Returns a wrapping_token, not the actual secret-id</span>
+
+<span class="c"># Recipient unwraps — only works once</span>
+<span class="n">vault</span> unwrap <span class="s">&lt;wrapping-token&gt;</span></pre>
+          <p>If an attacker intercepts the wrapping token and unwraps it first, the legitimate recipient's unwrap attempt fails — alerting that the token was compromised.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">P7</span><span class="qa-qtext">What is Vault's Identity system and how do entities and aliases work?</span></div>
+        <div class="qa-a">
+          <p>The Identity system creates a canonical <strong>entity</strong> for each unique person or machine, mapping multiple auth method logins (GitHub, LDAP, AppRole) to a single entity. This enables consistent policies across auth methods.</p>
+          <ul>
+            <li><strong>Entity</strong> — represents a single identity (person or service). Has a stable ID and metadata.</li>
+            <li><strong>Alias</strong> — binds a specific auth method login (e.g., GitHub username) to an entity.</li>
+            <li><strong>Group</strong> — collections of entities; policies attached to a group apply to all members. Can be internal (managed in Vault) or external (mapped to LDAP groups).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">P8</span><span class="qa-qtext">How do Sentinel policies (Vault Enterprise) differ from ACL policies?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th></th><th>ACL Policy</th><th>Sentinel EGP/RGP</th></tr>
+            <tr><td>Logic</td><td>Path + capability (static)</td><td>Full Sentinel language (conditionals, time checks, MFA)</td></tr>
+            <tr><td>Context</td><td>Path only</td><td>Request details: IP, time, MFA, identity attributes</td></tr>
+            <tr><td>Example</td><td>Allow read on secret/data/app</td><td>Block prod writes outside business hours; require MFA for high-risk paths</td></tr>
+            <tr><td>Scope</td><td>Per token/role</td><td>EGP: per path; RGP: per role (override)</td></tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5: OPERATIONS -->
+<div class="page" id="p5">
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s5a',this,'p5')">⚙️ Operations &amp; Best Practices (O1–O6)</button>
+  </div>
+  <div class="spane on" id="s5a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">⚙️ Vault Operations &amp; Best Practices</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">O1 – O6</span>
+          <span class="tdpill tdpill-tag">Performance · DR Replication · Monitoring</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Production operations — monitoring, performance replication, DR, upgrades, and troubleshooting patterns.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">O1</span><span class="qa-qtext">What metrics and health checks should you monitor for a production Vault cluster?</span></div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>Seal status</strong> — <code>/v1/sys/health</code> returns HTTP 429 if standby, 503 if sealed. Alert on non-200.</li>
+            <li><strong>Leader status</strong> — <code>/v1/sys/leader</code> — monitor ha_enabled and is_self.</li>
+            <li><strong>Token count</strong> — <code>vault.token.count</code> — high counts indicate token sprawl.</li>
+            <li><strong>Lease count</strong> — high counts can slow down the expiry manager.</li>
+            <li><strong>Request latency</strong> — <code>vault.core.handle_request</code> histogram.</li>
+            <li><strong>Audit log errors</strong> — monitor for write failures that block requests.</li>
+          </ul>
+          <p>Vault exports Prometheus metrics at <code>/v1/sys/metrics?format=prometheus</code> when telemetry is configured.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">O2</span><span class="qa-qtext">What is the difference between Performance Replication and DR Replication (Enterprise)?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th></th><th>Performance Replication</th><th>DR Replication</th></tr>
+            <tr><td>Purpose</td><td>Scale reads geographically</td><td>Disaster recovery failover</td></tr>
+            <tr><td>Secondary can serve?</td><td>Yes — read requests</td><td>No — cannot serve requests (cold standby)</td></tr>
+            <tr><td>Tokens shared?</td><td>No — secondary issues its own tokens</td><td>Yes — DR tokens accepted at secondary</td></tr>
+            <tr><td>Failover</td><td>N/A (secondary is active)</td><td>Manual promotion required</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">O3</span><span class="qa-qtext">How do you upgrade a Vault cluster with zero downtime?</span></div>
+        <div class="qa-a">
+          <ol>
+            <li>Read the Vault upgrade guide for your version — check for upgrade-blocking issues.</li>
+            <li>Take a Raft snapshot: <code>vault operator raft snapshot save pre-upgrade.snap</code></li>
+            <li>Upgrade standby nodes first (one at a time) — they rejoin the cluster after restart.</li>
+            <li>Step down the leader: <code>vault operator step-down</code> — a follower becomes leader.</li>
+            <li>Upgrade the old leader node (now a follower).</li>
+            <li>Verify cluster health: <code>vault operator raft list-peers</code></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">O4</span><span class="qa-qtext">How do you troubleshoot a "permission denied" error in Vault?</span></div>
+        <div class="qa-a">
+          <ol>
+            <li>Check the token's policies: <code>vault token lookup &lt;token&gt;</code></li>
+            <li>Check what capabilities the token has on a specific path: <code>vault token capabilities &lt;token&gt; secret/data/myapp</code></li>
+            <li>Verify the policy HCL for the exact path being requested (KV v2 uses <code>/data/</code> and <code>/metadata/</code> prefixes).</li>
+            <li>Check audit logs for the exact request path and the denied policy.</li>
+            <li>Remember: Vault is deny-by-default — a missing policy is a deny.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">O5</span><span class="qa-qtext">How do you handle Vault token lease explosion (too many leases)?</span></div>
+        <div class="qa-a">
+          <p>Lease explosion degrades performance because the expiry manager scans all leases. Causes: apps requesting too many short-lived tokens without renewing or revoking them.</p>
+          <p>Remediation:</p>
+          <ul>
+            <li>Use Vault Agent — it manages token renewal automatically, preventing token churn.</li>
+            <li>Use <strong>batch tokens</strong> for high-throughput, stateless operations (not stored in Vault).</li>
+            <li>Revoke unused leases: <code>vault lease revoke -force -prefix auth/approle/login/</code></li>
+            <li>Set conservative <code>token_max_ttl</code> on auth roles so tokens expire faster.</li>
+            <li>Monitor <code>vault.expire.num_leases</code> metric and alert above threshold.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">O6</span><span class="qa-qtext">What is the Vault CSI provider and Vault Secrets Operator for Kubernetes?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Method</th><th>How it works</th><th>Best for</th></tr>
+            <tr><td>Vault Agent Injector</td><td>Mutating webhook injects a sidecar container that writes secrets to a shared volume</td><td>Existing apps needing file-based secrets</td></tr>
+            <tr><td>CSI Provider</td><td>Mounts Vault secrets as ephemeral volumes via the Secrets Store CSI driver</td><td>Apps expecting mounted files, no sidecar overhead</td></tr>
+            <tr><td>Vault Secrets Operator (VSO)</td><td>Kubernetes operator syncs Vault secrets to native k8s Secrets; refreshes on rotation</td><td>Apps already consuming k8s Secrets env vars</td></tr>
+          </table>
+          <p>VSO is the modern recommended approach for most Kubernetes workloads.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6: INTEGRATIONS -->
+<div class="page" id="p6">
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s6a',this,'p6')">🤖 Ansible Integration (I1–I4)</button>
+    <button class="snt" onclick="showSec('s6b',this,'p6')">🏗️ Terraform Integration (I5–I8)</button>
+    <button class="snt" onclick="showSec('s6c',this,'p6')">⚡ GitHub Actions Integration (I9–I12)</button>
+  </div>
+
+  <!-- Ansible -->
+  <div class="spane on" id="s6a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🤖 Vault + Ansible Integration</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">I1 – I4</span>
+          <span class="tdpill tdpill-tag">hashi_vault · Dynamic Inventory · AppRole</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Reading Vault secrets in Ansible playbooks using the community.hashi_vault collection — authentication, lookup plugins, and dynamic credential patterns.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">I1</span><span class="qa-qtext">How do you authenticate Ansible to Vault and read a KV secret?</span></div>
+        <div class="qa-a">
+          <div class="integ-banner"><span>Ansible ↔ Vault</span></div>
+          <p>Install the collection: <code>ansible-galaxy collection install community.hashi_vault</code></p>
+          <p>Install the Python dependency: <code>pip install hvac</code></p>
+          <pre><span class="c"># playbook.yml — using AppRole auth</span>
+<span class="k">---</span>
+- hosts: all
+  vars:
+    <span class="v">vault_addr</span>: <span class="s">"https://vault.example.com:8200"</span>
+    <span class="v">db_creds</span>: <span class="s">"{{ lookup('community.hashi_vault.hashi_vault',</span>
+        <span class="s">'secret=secret/data/myapp/db</span>
+         <span class="s">auth_method=approle</span>
+         <span class="s">role_id={{ lookup(\"env\", \"VAULT_ROLE_ID\") }}</span>
+         <span class="s">secret_id={{ lookup(\"env\", \"VAULT_SECRET_ID\") }}</span>
+         <span class="s">url={{ vault_addr }}') }}"</span>
+
+  tasks:
+    - name: Configure database connection
+      ansible.builtin.template:
+        src: db.conf.j2
+        dest: /etc/myapp/db.conf
+      vars:
+        db_user: <span class="s">"{{ db_creds.data.data.username }}"</span>
+        db_pass: <span class="s">"{{ db_creds.data.data.password }}"</span></pre>
+          <div class="tip"><strong>Never log</strong> secrets — use <code>no_log: true</code> on any task that handles Vault credentials.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">I2</span><span class="qa-qtext">How do you use Vault's dynamic database credentials in an Ansible deployment playbook?</span></div>
+        <div class="qa-a">
+          <pre><span class="c"># Request dynamic DB credentials from Vault at deploy time</span>
+<span class="k">---</span>
+- hosts: app_servers
+  tasks:
+    - name: Get dynamic DB credentials from Vault
+      community.hashi_vault.hashi_vault:
+        url: <span class="s">"https://vault.example.com:8200"</span>
+        path: <span class="s">"database/creds/readonly"</span>
+        auth_method: <span class="s">"aws_iam"</span>
+        region: <span class="s">"us-east-1"</span>
+      register: <span class="v">vault_db</span>
+      no_log: <span class="k">true</span>
+
+    - name: Write DB config with dynamic credentials
+      ansible.builtin.template:
+        src: templates/db.conf.j2
+        dest: /etc/app/db.conf
+        mode: <span class="s">'0600'</span>
+      vars:
+        db_username: <span class="s">"{{ vault_db.secret.username }}"</span>
+        db_password: <span class="s">"{{ vault_db.secret.password }}"</span>
+      no_log: <span class="k">true</span>
+
+    - name: Restart application
+      ansible.builtin.service:
+        name: myapp
+        state: restarted</pre>
+          <p>The DB credentials are unique to this playbook run and expire automatically (TTL 1h). No long-lived credentials are stored on the host.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">I3</span><span class="qa-qtext">How do you store Ansible Vault passwords in HashiCorp Vault and retrieve them in CI?</span></div>
+        <div class="qa-a">
+          <p>Ansible Vault (the file encryption tool) can use a custom script as a password source. Store the Ansible Vault password in HashiCorp Vault and retrieve it at runtime:</p>
+          <pre><span class="c">#!/bin/bash
+# vault-password-script.sh</span>
+export VAULT_ADDR=<span class="s">"https://vault.example.com:8200"</span>
+export VAULT_TOKEN=<span class="s">"$(vault write -field=token auth/approle/login \
+  role_id=$VAULT_ROLE_ID secret_id=$VAULT_SECRET_ID)"</span>
+<span class="n">vault</span> kv get -field=password secret/ansible/vault-password</pre>
+          <pre><span class="c"># Run playbook using the script as password provider</span>
+ansible-playbook site.yml \
+  --vault-password-file=./vault-password-script.sh \
+  -i inventory/prod</pre>
+          <p>This eliminates storing the Ansible Vault password in CI environment variables or on disk.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">I4</span><span class="qa-qtext">How do you configure the Vault lookup plugin using environment variables for cleaner playbooks?</span></div>
+        <div class="qa-a">
+          <p>Set connection parameters via environment variables to avoid repeating them in every lookup:</p>
+          <pre><span class="c"># Set in CI or shell before running ansible-playbook</span>
+export VAULT_ADDR=<span class="s">"https://vault.example.com:8200"</span>
+export VAULT_AUTH_METHOD=<span class="s">"approle"</span>
+export VAULT_ROLE_ID=<span class="s">"$(cat /run/secrets/role-id)"</span>
+export VAULT_SECRET_ID=<span class="s">"$(cat /run/secrets/secret-id)"</span></pre>
+          <pre><span class="c"># playbook — clean lookup without inline auth params</span>
+<span class="k">vars:</span>
+  db_pass: <span class="s">"{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/app/db:password') }}"</span>
+  api_key: <span class="s">"{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/app/api:key') }}"</span></pre>
+          <p>Alternatively, configure defaults in <code>ansible.cfg</code> under <code>[hashi_vault_collection]</code> for organisation-wide settings.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Terraform -->
+  <div class="spane" id="s6b">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🏗️ Vault + Terraform Integration</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">I5 – I8</span>
+          <span class="tdpill tdpill-tag">Vault Provider · Dynamic Creds · AppRole · TFC</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Using the Vault Terraform provider to read secrets, generate dynamic AWS credentials, and configure Vault resources — all as code.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">I5</span><span class="qa-qtext">How do you configure the HashiCorp Vault Terraform provider and read a KV secret?</span></div>
+        <div class="qa-a">
+          <div class="integ-banner"><span>Terraform ↔ Vault</span></div>
+          <pre><span class="k">terraform</span> {
+  required_providers {
+    vault = {
+      source  = <span class="s">"hashicorp/vault"</span>
+      version = <span class="s">"~> 4.0"</span>
+    }
+  }
+}
+
+<span class="k">provider</span> <span class="s">"vault"</span> {
+  address = <span class="s">"https://vault.example.com:8200"</span>
+  <span class="c"># Auth via VAULT_TOKEN env var, or configure auth_login block</span>
+}
+
+<span class="c"># Read a KV v2 secret</span>
+<span class="k">data</span> <span class="s">"vault_kv_secret_v2"</span> <span class="s">"db"</span> {
+  mount = <span class="s">"secret"</span>
+  name  = <span class="s">"myapp/db"</span>
+}
+
+<span class="k">resource</span> <span class="s">"aws_db_instance"</span> <span class="s">"main"</span> {
+  username = data.vault_kv_secret_v2.db.data[<span class="s">"username"</span>]
+  password = data.vault_kv_secret_v2.db.data[<span class="s">"password"</span>]
+  <span class="c"># ...</span>
+}</pre>
+          <div class="tip"><strong>Warning:</strong> Secret values read by Terraform are stored in the state file. Ensure state is encrypted and access-controlled.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">I6</span><span class="qa-qtext">How do you use Vault's AWS secrets engine to provide dynamic credentials to Terraform?</span></div>
+        <div class="qa-a">
+          <p>Instead of using static IAM keys in CI, Terraform authenticates to Vault via AppRole and requests dynamic AWS credentials:</p>
+          <pre><span class="k">provider</span> <span class="s">"vault"</span> {
+  address = <span class="s">"https://vault.example.com:8200"</span>
+  auth_login {
+    path = <span class="s">"auth/approle/login"</span>
+    parameters = {
+      role_id   = <span class="n">var</span>.vault_role_id
+      secret_id = <span class="n">var</span>.vault_secret_id
+    }
+  }
+}
+
+<span class="c"># Get dynamic AWS IAM STS credentials</span>
+<span class="k">data</span> <span class="s">"vault_aws_access_credentials"</span> <span class="s">"deploy"</span> {
+  backend = <span class="s">"aws"</span>
+  role    = <span class="s">"terraform-deployer"</span>
+  type    = <span class="s">"sts"</span>  <span class="c"># STS AssumeRole — no IAM user created</span>
+}
+
+<span class="k">provider</span> <span class="s">"aws"</span> {
+  access_key = data.vault_aws_access_credentials.deploy.access_key
+  secret_key = data.vault_aws_access_credentials.deploy.secret_key
+  token      = data.vault_aws_access_credentials.deploy.security_token
+  region     = <span class="s">"us-east-1"</span>
+}</pre>
+          <p>The AWS credentials are short-lived STS tokens — no long-lived IAM access keys in CI pipelines.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">I7</span><span class="qa-qtext">How do you manage Vault configuration itself with Terraform (Vault-as-code)?</span></div>
+        <div class="qa-a">
+          <p>The Vault provider can also create Vault resources — policies, auth method roles, secret engines — treating Vault config as code:</p>
+          <pre><span class="c"># Create a KV v2 mount</span>
+<span class="k">resource</span> <span class="s">"vault_mount"</span> <span class="s">"kv"</span> {
+  path = <span class="s">"secret"</span>
+  type = <span class="s">"kv-v2"</span>
+}
+
+<span class="c"># Create a policy</span>
+<span class="k">resource</span> <span class="s">"vault_policy"</span> <span class="s">"app"</span> {
+  name   = <span class="s">"my-app"</span>
+  policy = file(<span class="s">"${path.module}/policies/my-app.hcl"</span>)
+}
+
+<span class="c"># Create an AppRole and bind the policy</span>
+<span class="k">resource</span> <span class="s">"vault_approle_auth_backend_role"</span> <span class="s">"app"</span> {
+  backend        = <span class="s">"approle"</span>
+  role_name      = <span class="s">"my-app"</span>
+  token_policies = [vault_policy.app.name]
+  token_ttl      = <span class="s">"3600"</span>
+  secret_id_ttl  = <span class="s">"600"</span>
+  secret_id_num_uses = <span class="s">"1"</span>
+}</pre>
+          <p>This gives you version history, PR reviews, and automated testing of Vault configuration changes.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">I8</span><span class="qa-qtext">How do you use Vault with Terraform Cloud (TFC) workspace variables securely?</span></div>
+        <div class="qa-a">
+          <p>Terraform Cloud can authenticate to Vault using its built-in OIDC token (TFC JWT auth):</p>
+          <pre><span class="c"># In Vault — configure JWT auth for TFC</span>
+<span class="n">vault</span> auth enable jwt
+<span class="n">vault</span> write auth/jwt/config \
+  jwks_url=<span class="s">"https://app.terraform.io/.well-known/jwks"</span> \
+  bound_issuer=<span class="s">"https://app.terraform.io"</span>
+
+<span class="n">vault</span> write auth/jwt/role/tfc-workspace \
+  role_type=<span class="s">"jwt"</span> \
+  bound_audiences=<span class="s">"vault.workload.identity"</span> \
+  bound_claims_type=<span class="s">"glob"</span> \
+  bound_claims='{"sub":"organization:my-org:project:*:workspace:prod-*:run_phase:*"}' \
+  policies=<span class="s">"tfc-deploy"</span> \
+  ttl=<span class="s">"20m"</span></pre>
+          <pre><span class="c"># In TFC workspace — set env variables</span>
+TFC_VAULT_PROVIDER_AUTH = true
+TFC_VAULT_ADDR          = https://vault.example.com:8200
+TFC_VAULT_RUN_ROLE      = tfc-workspace</pre>
+          <p>No static VAULT_TOKEN stored in TFC — the workspace authenticates via its short-lived JWT identity.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- GitHub Actions -->
+  <div class="spane" id="s6c">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">⚡ Vault + GitHub Actions Integration</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">I9 – I12</span>
+          <span class="tdpill tdpill-tag">OIDC · JWT · hashicorp/vault-action</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Authenticating GitHub Actions workflows to Vault using OIDC (no static secrets), reading KV secrets, dynamic AWS credentials, and PKI certificates in CI pipelines.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">I9</span><span class="qa-qtext">How does GitHub Actions authenticate to Vault without storing any static credentials?</span></div>
+        <div class="qa-a">
+          <div class="integ-banner"><span>GitHub Actions ↔ Vault</span></div>
+          <p>GitHub Actions generates a short-lived OIDC JWT for each workflow run. Vault validates it against GitHub's JWKS endpoint — no VAULT_TOKEN stored in GitHub Secrets.</p>
+          <p><strong>Step 1 — Configure Vault JWT auth (one-time):</strong></p>
+          <pre><span class="n">vault</span> auth enable jwt
+
+<span class="n">vault</span> write auth/jwt/config \
+  jwks_url=<span class="s">"https://token.actions.githubusercontent.com/.well-known/jwks"</span> \
+  bound_issuer=<span class="s">"https://token.actions.githubusercontent.com"</span>
+
+<span class="n">vault</span> write auth/jwt/role/github-actions \
+  role_type=<span class="s">"jwt"</span> \
+  bound_audiences=<span class="s">"https://github.com/my-org"</span> \
+  bound_subject=<span class="s">"repo:my-org/my-repo:ref:refs/heads/main"</span> \
+  bound_claims='{"repository":"my-org/my-repo"}' \
+  user_claim=<span class="s">"actor"</span> \
+  policies=<span class="s">"github-ci-policy"</span> \
+  ttl=<span class="s">"20m"</span></pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">I10</span><span class="qa-qtext">Show a complete GitHub Actions workflow using <code>hashicorp/vault-action</code> to read KV secrets.</span></div>
+        <div class="qa-a">
+          <pre><span class="c"># .github/workflows/deploy.yml</span>
+<span class="k">name:</span> Deploy
+<span class="k">on:</span>
+  <span class="k">push:</span>
+    <span class="k">branches:</span> [main]
+
+<span class="k">permissions:</span>
+  id-token: write   <span class="c"># Required for OIDC token generation</span>
+  contents: read
+
+<span class="k">jobs:</span>
+  <span class="k">deploy:</span>
+    <span class="k">runs-on:</span> ubuntu-latest
+    <span class="k">steps:</span>
+      - <span class="k">uses:</span> actions/checkout@v4
+
+      - <span class="k">name:</span> Get secrets from Vault
+        <span class="k">uses:</span> hashicorp/vault-action@v3
+        <span class="k">with:</span>
+          url: https://vault.example.com:8200
+          method: jwt
+          role: github-actions
+          jwtGithubAudience: <span class="s">"https://github.com/my-org"</span>
+          <span class="k">secrets:</span> |
+            secret/data/myapp/db    username | DB_USER ;
+            secret/data/myapp/db    password | DB_PASS ;
+            secret/data/myapp/api   key      | API_KEY
+
+      - <span class="k">name:</span> Deploy application
+        <span class="k">run:</span> <span class="s">|
+          echo "Deploying with DB_USER=$DB_USER"
+          ./scripts/deploy.sh</span>
+        <span class="k">env:</span>
+          <span class="k">DB_USER:</span> ${{ env.DB_USER }}
+          <span class="k">DB_PASS:</span> ${{ env.DB_PASS }}
+          <span class="k">API_KEY:</span> ${{ env.API_KEY }}</pre>
+          <div class="tip"><strong>Note:</strong> <code>vault-action</code> masks all secret values in workflow logs automatically.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">I11</span><span class="qa-qtext">How do you use Vault's AWS secrets engine in GitHub Actions to get dynamic IAM credentials?</span></div>
+        <div class="qa-a">
+          <pre><span class="c"># .github/workflows/terraform.yml</span>
+<span class="k">name:</span> Terraform Apply
+<span class="k">on:</span>
+  <span class="k">push:</span>
+    <span class="k">branches:</span> [main]
+
+<span class="k">permissions:</span>
+  id-token: write
+  contents: read
+
+<span class="k">jobs:</span>
+  <span class="k">apply:</span>
+    <span class="k">runs-on:</span> ubuntu-latest
+    <span class="k">steps:</span>
+      - <span class="k">uses:</span> actions/checkout@v4
+
+      - <span class="k">name:</span> Authenticate to Vault and get AWS creds
+        <span class="k">uses:</span> hashicorp/vault-action@v3
+        <span class="k">with:</span>
+          url: https://vault.example.com:8200
+          method: jwt
+          role: github-actions
+          <span class="k">secrets:</span> |
+            aws/creds/terraform-deployer access_key     | AWS_ACCESS_KEY_ID ;
+            aws/creds/terraform-deployer secret_key     | AWS_SECRET_ACCESS_KEY ;
+            aws/creds/terraform-deployer security_token | AWS_SESSION_TOKEN
+
+      - <span class="k">name:</span> Terraform Init and Apply
+        <span class="k">run:</span> <span class="s">|
+          terraform init
+          terraform apply -auto-approve</span>
+        <span class="k">env:</span>
+          <span class="k">AWS_ACCESS_KEY_ID:</span>     ${{ env.AWS_ACCESS_KEY_ID }}
+          <span class="k">AWS_SECRET_ACCESS_KEY:</span> ${{ env.AWS_SECRET_ACCESS_KEY }}
+          <span class="k">AWS_SESSION_TOKEN:</span>     ${{ env.AWS_SESSION_TOKEN }}</pre>
+          <p>AWS credentials are generated fresh for each run (TTL 15–60 min) and auto-revoked by Vault after the run.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">I12</span><span class="qa-qtext">How do you request a short-lived TLS certificate from Vault PKI in a GitHub Actions deployment?</span></div>
+        <div class="qa-a">
+          <pre><span class="c"># .github/workflows/deploy-cert.yml</span>
+<span class="k">permissions:</span>
+  id-token: write
+  contents: read
+
+<span class="k">jobs:</span>
+  <span class="k">deploy:</span>
+    <span class="k">runs-on:</span> ubuntu-latest
+    <span class="k">steps:</span>
+      - <span class="k">name:</span> Auth to Vault
+        <span class="k">id:</span> vault-auth
+        <span class="k">run:</span> <span class="s">|
+          VAULT_TOKEN=$(vault write -field=token auth/jwt/login \
+            role=github-actions \
+            jwt="$ACTIONS_ID_TOKEN_REQUEST_VALUE")
+          echo "VAULT_TOKEN=$VAULT_TOKEN" >> $GITHUB_ENV</span>
+        <span class="k">env:</span>
+          <span class="k">VAULT_ADDR:</span> https://vault.example.com:8200
+
+      - <span class="k">name:</span> Issue TLS certificate
+        <span class="k">run:</span> <span class="s">|
+          vault write -format=json pki/issue/web-server \
+            common_name="deploy-${{ github.run_id }}.internal.example.com" \
+            ttl="2h" > cert.json
+
+          cat cert.json | jq -r '.data.certificate' > /tmp/server.crt
+          cat cert.json | jq -r '.data.private_key' > /tmp/server.key
+          echo "Certificate issued for deployment ${{ github.run_id }}"</span>
+        <span class="k">env:</span>
+          <span class="k">VAULT_ADDR:</span> https://vault.example.com:8200
+
+      - <span class="k">name:</span> Deploy with certificate
+        <span class="k">run:</span> ./scripts/deploy.sh --cert /tmp/server.crt --key /tmp/server.key
+
+      - <span class="k">name:</span> Revoke Vault token
+        <span class="k">if:</span> always()
+        <span class="k">run:</span> vault token revoke -self
+        <span class="k">env:</span>
+          <span class="k">VAULT_ADDR:</span> https://vault.example.com:8200</pre>
+          <p>The certificate has a 2-hour TTL aligned to the deployment window. Always revoke the Vault token in a final <code>if: always()</code> step to clean up immediately rather than waiting for TTL expiry.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nt').forEach(b => b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+function showSec(id, btn, pageId) {
+  const page = document.getElementById(pageId);
+  page.querySelectorAll('.spane').forEach(p => p.classList.remove('on'));
+  page.querySelectorAll('.snt').forEach(b => b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+</script>
+</body>
+</html>
