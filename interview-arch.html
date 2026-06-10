@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI/Cloud Architect — Interview Field Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:#F2F4F1; --card:#FBFCFA; --ink:#1C2B33; --ink2:#48595F; --line:#D7DDD6;
+  --teal:#0F6E5D; --blue:#2456A6;
+  --f:#2F7D4F; --i:#B07514; --e:#A8432F;
+  --shadow:0 1px 3px rgba(28,43,51,.08);
+}
+[data-theme="dark"] {
+  --paper:#121A1E; --card:#1A242A; --ink:#E5EAE7; --ink2:#9BAAA6; --line:#2C3A40;
+  --teal:#3FA98F; --blue:#7FA4E0; --f:#5DBA82; --i:#D9A23F; --e:#D97559;
+  --shadow:0 1px 3px rgba(0,0,0,.4);
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } * { transition:none!important; } }
+body { margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Source Serif 4",Georgia,serif; font-size:16.5px; line-height:1.62; }
+h1,h2,h3,h4,summary,.navlink,.eyebrow,button { font-family:"Schibsted Grotesk",system-ui,sans-serif; }
+.qno,.badge,.count,.gauge-label,.cheatcol li::marker { font-family:"IBM Plex Mono",monospace; }
+
+.layout { display:grid; grid-template-columns:264px 1fr; max-width:1180px; margin:0 auto; gap:0 40px; padding:0 20px; }
+header.hero { grid-column:1/-1; padding:48px 0 28px; border-bottom:2px solid var(--ink); }
+.hero .eyebrow { letter-spacing:.14em; text-transform:uppercase; font-size:12px; color:var(--teal); font-weight:700; }
+.hero h1 { font-size:clamp(30px,5vw,52px); font-weight:900; line-height:1.02; margin:.25em 0 .2em; letter-spacing:-.015em; }
+.hero p.sub { color:var(--ink2); max-width:62ch; margin:.4em 0 1em; }
+.hero .meta { font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--ink2); }
+
+nav.rail { position:sticky; top:16px; align-self:start; padding:18px 0; }
+.gauge { height:8px; background:var(--line); border-radius:4px; overflow:hidden; margin:6px 0 4px; }
+.gauge i { display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--teal),var(--blue)); transition:width .35s; }
+.gauge-label { font-size:11.5px; color:var(--ink2); }
+.navlink { display:flex; justify-content:space-between; gap:8px; padding:9px 10px; margin:2px 0; border-radius:8px;
+  text-decoration:none; color:var(--ink); font-weight:700; font-size:13.5px; }
+.navlink:hover { background:var(--card); }
+.navlink .count { color:var(--ink2); font-size:11.5px; font-weight:400; }
+nav.rail a.small { display:block; padding:6px 10px; font-size:12.5px; color:var(--ink2); text-decoration:none; font-family:"Schibsted Grotesk",sans-serif; }
+nav.rail a.small:hover { color:var(--teal); }
+.tools { margin-top:14px; display:flex; flex-direction:column; gap:8px; }
+input.search { width:100%; padding:9px 11px; border:1.5px solid var(--line); border-radius:8px; background:var(--card);
+  color:var(--ink); font:14px "Schibsted Grotesk",sans-serif; }
+input.search:focus { outline:2px solid var(--teal); outline-offset:1px; }
+select.diff, button.theme { padding:8px 10px; border:1.5px solid var(--line); border-radius:8px; background:var(--card);
+  color:var(--ink); font:600 13px "Schibsted Grotesk",sans-serif; cursor:pointer; }
+
+main { padding:8px 0 80px; min-width:0; }
+section.domain h2 { font-size:26px; font-weight:900; margin:44px 0 14px; padding-top:8px; letter-spacing:-.01em; }
+section.domain h2 .eyebrow { display:block; font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--teal); margin-bottom:2px; }
+
+.qcard { background:var(--card); border:1px solid var(--line); border-radius:12px; margin:10px 0; box-shadow:var(--shadow); }
+.qcard[open] { border-color:var(--teal); }
+summary { display:flex; align-items:baseline; gap:10px; padding:14px 16px; cursor:pointer; list-style:none; font-weight:700; font-size:15.5px; line-height:1.4; }
+summary::-webkit-details-marker { display:none; }
+summary:focus-visible { outline:2px solid var(--blue); border-radius:12px; }
+.done input { width:16px; height:16px; accent-color:var(--teal); cursor:pointer; }
+.qno { font-size:11px; color:var(--ink2); white-space:nowrap; }
+.qtext { flex:1; }
+.badge { font-size:10.5px; font-weight:600; padding:3px 8px; border-radius:99px; white-space:nowrap; color:#fff; align-self:center; }
+.badge.f { background:var(--f); } .badge.i { background:var(--i); } .badge.e { background:var(--e); }
+.body { padding:2px 18px 18px 18px; border-top:1px dashed var(--line); }
+.body h4 { margin:16px 0 6px; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--teal); }
+.why { color:var(--ink2); font-style:italic; margin:12px 0 0; }
+ul.keys li, ul.fups li { margin:5px 0; }
+.fq { font-weight:600; font-family:"Schibsted Grotesk",sans-serif; font-size:14.5px; }
+
+.cheats { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; }
+.cheatcol { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 18px; }
+.cheatcol h3 { margin:2px 0 8px; font-size:15px; color:var(--teal); }
+.cheatcol ul { margin:0; padding-left:18px; font-size:14px; }
+.cheatcol li { margin:6px 0; }
+.appx { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:12px 0; }
+.appx h3 { margin:0 0 8px; }
+.pitch { border-left:4px solid var(--teal); padding-left:16px; font-size:17px; }
+.hidden { display:none!important; }
+
+@media (max-width:860px) {
+  .layout { grid-template-columns:1fr; gap:0; }
+  nav.rail { position:static; padding:12px 0 0; }
+  .navrow { display:flex; flex-wrap:wrap; gap:4px; }
+  .navlink { font-size:12.5px; padding:7px 9px; background:var(--card); border:1px solid var(--line); }
+  summary { flex-wrap:wrap; }
+}
+@media print {
+  nav.rail,.tools,.done,.theme { display:none!important; }
+  .layout { display:block; }
+  details { break-inside:avoid; }
+  details:not([open]) .body { display:block; }
+  body { font-size:11.5px; background:#fff; color:#000; }
+  .qcard { box-shadow:none; }
+}
+</style></head>
+<body data-theme="light">
+<div class="layout">
+<header class="hero">
+  <span class="eyebrow">Interview Field Manual · Generated June 2026</span>
+  <h1>AI / Cloud Architect<br>Interview Prep</h1>
+  <p class="sub">51 architect-level questions across five domains, with masterstroke answers, follow-ups, and scenario walkthroughs — weighted for AI platform and cloud architecture roles. Work through them; check each one off as it becomes yours.</p>
+  <p class="meta">AWS · AI/LLMOps · EKS · Terraform/CI-CD · Behavioral &nbsp;|&nbsp; Prepared for Sathish K (SKCloudOps)</p>
+</header>
+
+<nav class="rail" aria-label="Sections">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--teal);background:rgba(15,110,93,.1);border:1px solid rgba(15,110,93,.3);padding:4px 12px;border-radius:20px;margin-bottom:12px">&#8592; Home</a>
+  <div class="gauge" aria-hidden="true"><i id="gaugebar"></i></div>
+  <div class="gauge-label"><span id="gtot">0</span>/51 reviewed</div>
+  <div class="navrow"><a href='#sec-aws' class='navlink'><span>AWS / Cloud Architecture</span><span class='count' id='cnt-aws'>00/12</span></a><a href='#sec-ai' class='navlink'><span>AI / GenAI / LLMOps</span><span class='count' id='cnt-ai'>00/10</span></a><a href='#sec-k8s' class='navlink'><span>Kubernetes / EKS</span><span class='count' id='cnt-k8s'>00/11</span></a><a href='#sec-tf' class='navlink'><span>Terraform / IaC / CI-CD</span><span class='count' id='cnt-tf'>00/10</span></a><a href='#sec-beh' class='navlink'><span>Behavioral / Leadership</span><span class='count' id='cnt-beh'>00/08</span></a></div>
+  <a class="small" href="#sec-cheat">Quick-reference cheat sheet</a>
+  <a class="small" href="#sec-scen">Scenario walkthroughs</a>
+  <a class="small" href="#sec-appx">Pitch · Negotiation · Questions to ask</a>
+  <div class="tools">
+    <input class="search" id="q" type="search" placeholder="Search questions… ( / )" aria-label="Search questions">
+    <select class="diff" id="diff" aria-label="Filter by difficulty">
+      <option value="">All difficulties</option><option>Foundation</option><option>Intermediate</option><option>Expert</option>
+    </select>
+    <button class="theme" id="theme" type="button">Dark mode</button>
+  </div>
+</nav>
+
+<main>
+<section id="sec-cheat" class="domain">
+  <h2><span class="eyebrow">One screen per domain</span>Quick-Reference Cheat Sheet</h2>
+  <div class="cheats"><div class='cheatcol'><h3>AWS / Cloud</h3><ul><li>DR patterns by RPO/RTO: backup-restore → pilot light → warm standby → multi-active (cost rises with each)</li><li>Peering = point-to-point; TGW = transitive hub (per-GB cost); PrivateLink = service-level exposure</li><li>Accounts are the only hard isolation boundary — use them generously, SCPs as guardrails</li><li>Cost order: visibility (tags/CUR) → right-size → Savings Plans → architecture (NAT/egress/Graviton)</li><li>NAT Gateway processing $0.045/GB — VPC endpoints for ECR/S3 are the classic quick win</li></ul></div><div class='cheatcol'><h3>AI / LLMOps</h3><ul><li>RAG quality levers: chunking strategy &gt; embedding model; hybrid retrieval + rerank beats pure vector</li><li>Prompt → RAG → fine-tune escalation; fine-tuning = behavior/style, never fact injection</li><li>Cost lever #1: model routing by task complexity (60–80% savings typical); then caching, context discipline, batch APIs</li><li>Guardrails are layered: input screening, output grounding checks, human gates, immutable audit — prompts are not a security boundary</li><li>Prompts are deployable artifacts: versioned, eval-gated in CI, canaried, revertible</li></ul></div><div class='cheatcol'><h3>Kubernetes / EKS</h3><ul><li>Exit codes: 137=OOMKilled, 143=SIGTERM, 1=app error; logs --previous for crashed containers</li><li>Zero-downtime: maxUnavailable=0 + real readiness probes + preStop sleep + SIGTERM handling + PDBs</li><li>VPC CNI: real pod IPs, ENI-based pod limits — prefix delegation ≈ 4x density</li><li>IRSA = per-pod IAM via OIDC; never the shared node role</li><li>Upgrades: Pluto for deprecations → add-on matrix → non-prod soak → control plane → add-ons → nodes</li></ul></div><div class='cheatcol'><h3>Terraform / CI-CD</h3><ul><li>State: remote backend + locking always; encrypt, version, never in Git</li><li>Directories &gt; workspaces for prod; separate state per env; modules version-pinned (never main)</li><li>Pipeline: plan in PR as comment → policy check (OPA/Checkov) → apply the saved plan after approval</li><li>GitOps: pull-based reconciliation; rollback = git revert; CI never holds cluster credentials</li><li>IaC test pyramid: static → plan assertions (no unexpected destroys!) → Terratest on ephemeral accounts</li></ul></div><div class='cheatcol'><h3>Behavioral</h3><ul><li>STAR with Action ≈ 60% of the answer; under 3 minutes spoken; end with a measured Result</li><li>Your numbers: 2d→15min releases, 2wk→2hr onboarding, 25% AWS cost cut, 99.9% EKS success, NPS +45</li><li>Influence pattern: problem-first → credible pilot → their metrics sell it → scale in waves</li><li>Disagreement pattern: understand their goal → data privately → shared-goal framing → disagree &amp; commit</li><li>Failure stories need structural lessons (process you changed), not &#x27;I&#x27;ll try harder&#x27;</li></ul></div></div>
+</section>
+
+<section id="sec-aws" class="domain">
+<h2><span class="eyebrow">12 questions</span>AWS / Cloud Architecture</h2>
+
+<details class="qcard" data-dom="aws" data-diff="Foundation" id="aws-1">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="aws"></label>
+    <span class="qno">AWS·01</span>
+    <span class="qtext">Walk me through how you&#x27;d design a multi-tier VPC for a production workload.</span>
+    <span class="badge f">Foundation</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests whether you understand subnet segmentation, routing, and defense-in-depth.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">I start with CIDR planning and leave room to grow — a /16 for the VPC, /24s for subnets, and I document the allocation plan so future VPCs don&#x27;t overlap when we peer or attach to a Transit Gateway. Three tiers across three AZs: public subnets hold only the ALB and NAT Gateways, private app subnets run EKS or ECS, and private data subnets hold RDS and ElastiCache with no route to the internet at all. Route tables follow the tiers — IGW route for public, NAT for app-tier egress, none for data. Security groups are the primary control, referencing other SGs instead of CIDRs, with NACLs as a coarse second layer. I enable VPC Flow Logs on day one; the first time you debug a connectivity issue or face an audit, they pay for themselves.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>CIDR planning with growth headroom</li><li>3-AZ spread, public/app/data tier separation</li><li>NAT Gateway for egress only</li><li>SG-references-SG over CIDR rules</li><li>Flow Logs from day one</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Why three AZs and not two?</span><br>Two AZs survive one failure but quorum-based systems and capacity math work better with three; the marginal cost is small relative to the resilience.</li><li><span class='fq'>Where do VPC endpoints fit?</span><br>Interface/gateway endpoints for S3, ECR, DynamoDB keep traffic off NAT — both a security and a cost win.</li><li><span class='fq'>How do you size subnets for EKS?</span><br>Generously — the VPC CNI gives every pod a real IP, so I budget pod density per node, or enable prefix delegation.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="aws" data-diff="Intermediate" id="aws-2">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="aws"></label>
+    <span class="qno">AWS·02</span>
+    <span class="qtext">When would you use VPC Peering vs Transit Gateway vs PrivateLink?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests architectural judgment around connectivity patterns at scale.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Peering is point-to-point and non-transitive with no bandwidth bottleneck — right for two or three VPCs that need a full mesh and nothing more. Transit Gateway is the hub-and-spoke answer once you&#x27;re past roughly ten VPCs or you need on-prem connectivity via Direct Connect or VPN; it&#x27;s transitive and centrally managed, but you pay a per-GB processing charge, so I keep chatty east-west traffic off it where I can. PrivateLink is different in kind: it exposes a single service endpoint across accounts without opening any network routing — ideal for internal SaaS-style services or vendor integrations where I explicitly don&#x27;t want broad connectivity. At Takeda I used PrivateLink for exactly that reason: service-level exposure with zero blast radius into the network.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Peering = simple, non-transitive</li><li>TGW = hub-and-spoke, transitive, per-GB cost</li><li>PrivateLink = service-level, no network access</li><li>Choose by scale and trust boundary</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Can you peer through a TGW to avoid peering limits?</span><br>Yes — TGW makes connectivity transitive, which is the point; but model the data processing cost first.</li><li><span class='fq'>PrivateLink bandwidth limits?</span><br>It rides on NLB, so it scales well, but each endpoint is AZ-scoped — deploy endpoints in every AZ you consume from.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="aws" data-diff="Expert" id="aws-3">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="aws"></label>
+    <span class="qno">AWS·03</span>
+    <span class="qtext">How does cross-region disaster recovery architecture work on AWS?</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests understanding of RPO/RTO tradeoffs and multi-region patterns.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">I never start with the pattern — I start with RPO and RTO targets, because they set the budget. Backup-and-restore is the floor: S3 cross-region replication, snapshot copies, AMIs — RPO and RTO in hours, nearly free. Pilot light pre-provisions core infrastructure scaled to zero with live database replication — RPO in minutes, RTO in tens of minutes. Warm standby runs a scaled-down full copy with Route 53 health-check failover — RPO seconds, RTO minutes. Multi-active uses DynamoDB Global Tables or Aurora Global Database with latency-based routing — near-zero both ways, but you pay for two full regions and you inherit the hard problems of write conflicts and data residency. Most workloads I&#x27;ve assessed honestly need pilot light; the business often asks for multi-active until they see the invoice.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Lead with RPO/RTO, not patterns</li><li>Four patterns on a cost gradient</li><li>Route 53 health checks for failover</li><li>Aurora Global / DynamoDB Global Tables for active-active</li><li>Test the failover, not just the architecture</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How do you test DR?</span><br>Scheduled game days with real failover to the DR region — an untested DR plan is a diagram, not a capability.</li><li><span class='fq'>What about DNS TTLs?</span><br>Keep them low (60s) on failover records, and remember some clients ignore TTLs — design retry behavior accordingly.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="aws" data-diff="Intermediate" id="aws-4">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="aws"></label>
+    <span class="qno">AWS·04</span>
+    <span class="qtext">What&#x27;s your approach to managing multiple AWS accounts?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests organizational maturity and understanding of blast-radius isolation.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">AWS Organizations with a deliberate OU structure: a management account that does billing and org policy only, a security account holding GuardDuty delegated admin, Security Hub, and the org CloudTrail, shared-services for CI/CD and artifacts, a networking account owning Transit Gateway and Direct Connect, then workload OUs — dev, staging, prod — with an account per workload or team. SCPs at the OU level give me guardrails that no one can opt out of: deny unused regions, prevent disabling CloudTrail, require encryption. Control Tower automates account vending with those baselines pre-applied, and IAM Identity Center centralizes human access. The principle underneath all of it is blast radius: an account is the only hard isolation boundary AWS gives you, so I use accounts generously.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>OU hierarchy with purpose-built accounts</li><li>SCPs as non-negotiable guardrails</li><li>Control Tower for account vending</li><li>IAM Identity Center for SSO</li><li>Accounts as the real isolation boundary</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How granular should accounts be?</span><br>Per workload per environment is my default; per team works for smaller orgs — the test is whether a compromise in one account can hurt another.</li><li><span class='fq'>How do workload accounts reach shared services?</span><br>TGW or PrivateLink from the networking/shared-services accounts, with Resource Access Manager for sharing subnets where it makes sense.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="aws" data-diff="Intermediate" id="aws-5">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="aws"></label>
+    <span class="qno">AWS·05</span>
+    <span class="qtext">How do you decide between ECS Fargate, ECS on EC2, and EKS?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests ability to make pragmatic compute decisions, not just default to Kubernetes.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Fargate when I want zero infrastructure management and the workloads are stateless with predictable resource shapes — no DaemonSets, no host access, and that&#x27;s fine. ECS on EC2 when I need GPUs, specific instance types, or want to sweat the cost with Savings Plans and the team can own the cluster layer. EKS when the Kubernetes ecosystem is the point — Helm, operators, CRDs, portability, or a team that already has deep K8s muscle. I&#x27;ll say the unfashionable thing: if you don&#x27;t have a concrete reason to run Kubernetes, ECS is simpler and cheaper to operate. I run EKS at Takeda because we needed the operator ecosystem and multi-team platform patterns — that&#x27;s a reason; &#x27;everyone uses K8s&#x27; is not.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Fargate = serverless simplicity</li><li>ECS/EC2 = cost control + host access</li><li>EKS = ecosystem and platform patterns</li><li>Don&#x27;t over-engineer — justify Kubernetes</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Fargate on EKS — when?</span><br>For burst or isolation-sensitive namespaces; but per-vCPU cost is higher, so not for steady baseline load.</li><li><span class='fq'>What did EKS cost you operationally?</span><br>Upgrades, add-on compatibility, and IP management — real overhead that needs a platform team to absorb.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="aws" data-diff="Intermediate" id="aws-6">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="aws"></label>
+    <span class="qno">AWS·06</span>
+    <span class="qtext">Describe Lambda cold start optimization strategies.</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests whether you&#x27;ve actually run Lambda in production, not just demos.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">First I measure whether cold starts actually matter — P99 latency on real traffic — because optimizing a non-problem is how you burn a sprint. If they matter: shrink the package (trim deps, layers for shared libs), pick a fast runtime (Python and Node start far quicker than JVM), lazy-load SDK clients outside the handler, and move to ARM64 — Graviton is both faster to start and cheaper. SnapStart takes Java cold starts from seconds to under one by snapshotting the initialized state. Provisioned Concurrency is the deliberate, paid answer for genuinely latency-critical paths. The scheduled-ping &#x27;warmer&#x27; trick exists, but it&#x27;s fragile and only keeps one instance warm — I treat it as a smell, not a solution. In my social-media pipeline on Lambda + EventBridge, cold starts were irrelevant; knowing when they don&#x27;t matter is part of the answer.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Measure P99 before optimizing</li><li>Package size, runtime choice, lazy init</li><li>ARM64/Graviton wins twice</li><li>SnapStart for Java</li><li>Provisioned Concurrency as the deliberate option</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Provisioned Concurrency vs reserved?</span><br>Reserved caps concurrency for protection; provisioned pre-warms instances for latency — different problems.</li><li><span class='fq'>VPC-attached Lambda cold starts?</span><br>Largely solved since Hyperplane ENIs, but the first invocation in a new subnet config still pays a setup cost.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="aws" data-diff="Intermediate" id="aws-7">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="aws"></label>
+    <span class="qno">AWS·07</span>
+    <span class="qtext">How would you architect a serverless event-driven application?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests understanding of decoupled, asynchronous patterns.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">I separate ingress, routing, buffering, and compute. API Gateway handles synchronous ingress; EventBridge is the routing fabric — rules and event buses keep producers and consumers decoupled; SQS buffers anything bursty or retry-prone; SNS fans out. Lambda functions each do one thing. Step Functions orchestrates multi-step workflows — far better than chaining Lambdas because retries, error handling, and execution visibility come for free. Dead-letter queues sit on every queue and every async Lambda invocation; events that can&#x27;t be processed must land somewhere inspectable, not vanish. EventBridge Pipes covers point-to-point flows without glue code. The discipline I enforce: every component independently deployable and independently scalable, and every event schema versioned, because the contract is the architecture in an event-driven system.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>EventBridge for routing, SQS for buffering</li><li>Step Functions over Lambda chaining</li><li>DLQs everywhere</li><li>Versioned event schemas</li><li>Independent deploy and scale per component</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Exactly-once processing?</span><br>You don&#x27;t get it — design idempotent consumers and use SQS FIFO with dedup IDs where ordering matters.</li><li><span class='fq'>How do you trace a request across all this?</span><br>Correlation IDs propagated in event payloads plus X-Ray or OpenTelemetry — observability is non-optional here.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="aws" data-diff="Expert" id="aws-8">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="aws"></label>
+    <span class="qno">AWS·08</span>
+    <span class="qtext">How do you implement zero-trust networking in AWS?</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests modern security architecture thinking.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Zero trust means the network location proves nothing — identity proves everything. Practically: IAM authenticates and authorizes every API call, so &#x27;it&#x27;s in the private subnet&#x27; is never a security argument. VPC endpoints keep AWS-service traffic off the public internet. Security groups become identity-aware by referencing other SGs rather than CIDR blocks. Service-to-service auth runs on IAM roles — IRSA for EKS pods so each workload has exactly its own permissions, no shared node role. Secrets rotate via Secrets Manager. mTLS or AWS Verified Access covers the application layer where needed. GuardDuty and Security Hub watch continuously. Network segmentation stays — but demoted to defense-in-depth, not the boundary. The mental shift I push teams through is from &#x27;protect the perimeter&#x27; to &#x27;verify every request,&#x27; and pharma compliance contexts like mine make that shift easier to sell, not harder.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>IAM as the primary control plane</li><li>VPC endpoints, SG-to-SG references</li><li>IRSA — per-pod identity</li><li>Verified Access / mTLS at app layer</li><li>Perimeter ≠ security; it&#x27;s just one layer</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Where do teams struggle most?</span><br>Legacy services with shared credentials — I inventory those first and put rotation plus scoped roles around them.</li><li><span class='fq'>Does zero trust mean no private subnets?</span><br>No — keep them; just stop treating placement as authorization.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="aws" data-diff="Intermediate" id="aws-9">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="aws"></label>
+    <span class="qno">AWS·09</span>
+    <span class="qtext">How do you handle secrets management across environments?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests practical operational security knowledge.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Secrets Manager for anything that rotates — DB credentials, API keys — with Lambda rotation functions where supported. Parameter Store SecureString for slower-moving config; cheaper and simpler. For Kubernetes, External Secrets Operator syncs from Secrets Manager into K8s Secrets so the cluster never holds a second source of truth. CI/CD authenticates with OIDC federation — GitHub Actions assumes an IAM role scoped to repo and branch, and there are zero long-lived keys stored anywhere. Terraform reads secrets through data sources at plan time and marks variables sensitive; they never live in tfvars or get hardcoded. KMS customer-managed keys encrypt everything, with key policies controlling who can decrypt. The rule I hold the line on: a secret in a Git history is compromised, full stop — rotate it, don&#x27;t debate it.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Secrets Manager for rotation, Parameter Store for config</li><li>External Secrets Operator on EKS</li><li>OIDC federation in CI/CD — no static keys</li><li>sensitive=true and data sources in Terraform</li><li>Git exposure = immediate rotation</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How do you find leaked secrets?</span><br>Pre-commit hooks plus continuous scanning (gitleaks/trufflehog) in CI and across history.</li><li><span class='fq'>Secrets in container images?</span><br>Never — BuildKit secret mounts at build time, runtime injection at deploy time.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="aws" data-diff="Foundation" id="aws-10">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="aws"></label>
+    <span class="qno">AWS·10</span>
+    <span class="qtext">When do you choose S3 vs EBS vs EFS vs FSx?</span>
+    <span class="badge f">Foundation</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests understanding of storage tradeoffs — a common real-world decision.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">S3 for anything accessed by key over HTTP: backups, data lakes, static assets, model artifacts — unlimited scale, eleven nines durability, and the cheapest per GB. EBS is block storage for a single instance: databases, boot volumes, anything needing a filesystem with IOPS guarantees; multi-attach exists but I treat it as niche. EFS is managed NFS — multiple instances or pods sharing one filesystem, auto-scaling, but higher latency and cost than EBS, so I use it only when shared access is the actual requirement: shared config, CMS content, ML training data feeding many workers. FSx for Lustre when an HPC or ML workload needs serious throughput; FSx for NetApp ONTAP when lifting enterprise NAS workloads. The most common mistake I correct is EFS chosen for convenience where S3 plus a small redesign would be cheaper and more durable.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>S3 = objects/unlimited/cheapest</li><li>EBS = block, single-attach, IOPS</li><li>EFS = shared NFS, real shared-access need only</li><li>FSx = specialized HPC/NAS</li><li>Question &#x27;shared filesystem&#x27; requirements</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>EBS volume types?</span><br>gp3 as default with independent IOPS/throughput tuning; io2 only for genuine high-IOPS databases.</li><li><span class='fq'>S3 storage classes strategy?</span><br>Lifecycle policies to Intelligent-Tiering or Glacier tiers — set them at bucket creation, not after the bill arrives.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="aws" data-diff="Intermediate" id="aws-11">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="aws"></label>
+    <span class="qno">AWS·11</span>
+    <span class="qtext">Walk me through your approach to AWS cost optimization.</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests whether you treat cost as a first-class architectural concern.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Visibility first: Cost and Usage Reports into S3, queried with Athena, and tagging enforced by policy — team, environment, project — because you can&#x27;t optimize what you can&#x27;t allocate. Then a strict order of operations: right-size from CloudWatch utilization data before any commitment, then purchasing — Compute Savings Plans for steady state, Spot for fault-tolerant workloads — then architectural moves: VPC endpoints to kill NAT processing charges, CloudFront in front of S3 for egress, Graviton for ~20% price-performance. Budgets with alerts, and a monthly review cadence so it stays a habit, not a project. At Takeda I drove a 25% AWS cost reduction this way, and the order mattered: the most common failure I see is teams buying Reserved Instances against oversized infrastructure — committing for years to waste.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Tagging + CUR/Athena for visibility</li><li>Right-size BEFORE committing</li><li>Savings Plans over RIs for flexibility</li><li>NAT/egress architectural wins</li><li>Monthly cadence, owned by someone</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How did you get to 25%?</span><br>Roughly: right-sizing and schedule-based shutdown of non-prod, Graviton migration, VPC endpoints for ECR/S3, and Savings Plans on the cleaned-up baseline.</li><li><span class='fq'>Spot for production?</span><br>Yes for stateless, interruption-tolerant workloads — with capacity-optimized allocation and graceful drain handling.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="aws" data-diff="Expert" id="aws-12">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="aws"></label>
+    <span class="qno">AWS·12</span>
+    <span class="qtext">Your production database is at 95% CPU during business hours. What do you do?</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Scenario — tests diagnosis discipline versus reflexive scaling.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">I don&#x27;t scale first; I diagnose. Performance Insights to see top SQL and wait events — is this one bad query or genuine aggregate load? A handful of queries: fix them — missing indexes, full scans, N+1 patterns from the ORM; that&#x27;s usually an order-of-magnitude win for free. Read-heavy load: add read replicas and route reads there, plus ElastiCache for the hot set. Connection churn: RDS Proxy for pooling. Only after optimization, if it&#x27;s genuinely at capacity, do I scale vertically — and at that same moment I start the architectural plan (caching layer, CQRS, or sharding) because the ceiling will return. Scaling up without a root cause is renting time, not solving the problem, and I say that to stakeholders in exactly those words.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Performance Insights before action</li><li>Query optimization first — biggest free win</li><li>Read replicas + cache for read load</li><li>RDS Proxy for connection storms</li><li>Vertical scale buys time; plan the real fix simultaneously</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>What if it&#x27;s a lock contention issue?</span><br>Wait events show it — then it&#x27;s transaction design and isolation levels, not capacity at all.</li><li><span class='fq'>How do you prevent recurrence?</span><br>Query performance budgets in CI and alerting on plan regressions, not just CPU.</li></ul>
+  </div>
+</details>
+</section><section id="sec-ai" class="domain">
+<h2><span class="eyebrow">10 questions</span>AI / GenAI / LLMOps</h2>
+
+<details class="qcard" data-dom="ai" data-diff="Expert" id="ai-1">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="ai"></label>
+    <span class="qno">AI·01</span>
+    <span class="qtext">Design a production RAG pipeline on AWS. Walk me through the architecture and key decisions.</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> The defining GenAI architecture question — tests end-to-end thinking beyond a demo notebook.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Four stages: ingestion, indexing, retrieval, generation. Ingestion: documents land in S3, an event-driven pipeline (EventBridge → Lambda or Step Functions) extracts, cleans, and chunks them. Chunking is the most underrated decision — I start around 500–1,000 tokens with overlap, but structure-aware chunking that respects headings and tables beats fixed-size almost every time. Indexing: an embedding model (Bedrock Titan or Cohere) writes vectors into OpenSearch Serverless or pgvector on Aurora — I pick by what the team can operate, not benchmark charts. Retrieval: hybrid search — vector similarity plus BM25 keyword — with a reranker on top; pure vector search quietly misses exact terms like part numbers and drug names. Generation: the LLM gets retrieved context with strict prompt structure and citation requirements. I built exactly this locally with LangChain, ChromaDB, and Ollama before mapping it to managed services — and the offline evaluation harness (retrieval hit-rate, groundedness) mattered more than any single component choice.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Chunking strategy drives quality</li><li>Hybrid retrieval (vector + keyword) + rerank</li><li>Pick vector store by operability</li><li>Citations and grounding in the prompt contract</li><li>Evaluation harness from day one</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How do you keep the index fresh?</span><br>Event-driven re-indexing on document change, with chunk-level upserts and tombstones for deletions.</li><li><span class='fq'>When is RAG the wrong tool?</span><br>When the knowledge is stable and compact — fine-tuning or even a long system prompt can be simpler and cheaper.</li><li><span class='fq'>How do you measure RAG quality?</span><br>Retrieval metrics (recall@k) separately from generation metrics (faithfulness, answer relevance) — conflating them hides which stage failed.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="ai" data-diff="Expert" id="ai-2">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="ai"></label>
+    <span class="qno">AI·02</span>
+    <span class="qtext">Explain the Model Context Protocol (MCP) and when you&#x27;d build an MCP server versus a traditional API integration.</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests current agentic-AI architecture knowledge — increasingly a differentiator question.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">MCP standardizes how LLM applications discover and invoke external capabilities — tools, resources, and prompts — over a defined protocol, instead of every team hand-wiring bespoke function-calling glue. The server exposes typed tools with schemas; any MCP-compatible client can discover and call them. I&#x27;d build an MCP server when the capability should be reusable across multiple AI clients and when I want the tool contract — including auth and read/write scope — defined once, centrally. I deployed one in production on AWS for a Patient Connect Ops use case at Takeda: read-only log-tailing tools over SSH to EC2, deliberately scoped so the agent could observe but never mutate. A traditional API integration still wins when there&#x27;s exactly one consumer and no agentic client in the loop — MCP earns its keep at the point of reuse and standardization, like any protocol.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Standardized tool/resource discovery for LLM clients</li><li>Typed tool contracts defined once</li><li>Reuse across agents is the trigger to adopt</li><li>Scope tools deliberately — read-only by default</li><li>Real production example beats theory</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How did you secure your MCP server?</span><br>Read-only tool design, least-privilege IAM and SSH credentials, network isolation, and audit logging of every tool invocation.</li><li><span class='fq'>MCP vs OpenAPI function calling?</span><br>Function calling is per-model glue; MCP is a client-agnostic protocol with lifecycle, discovery, and resource semantics.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="ai" data-diff="Expert" id="ai-3">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="ai"></label>
+    <span class="qno">AI·03</span>
+    <span class="qtext">How do you architect an AI agent system that&#x27;s safe to run against production infrastructure?</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests whether you&#x27;ve thought about blast radius for autonomous systems — rare and valuable.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">The same way I&#x27;d onboard a new junior engineer with superhuman speed and zero fear: scoped credentials, supervised actions, and an audit trail. Concretely: agents get their own IAM identities with least privilege — read-only as the default posture, and write capabilities individually justified and gated. Destructive or stateful actions go behind human-in-the-loop approval; the agent proposes, a person disposes. Every tool invocation is logged with inputs and outputs for audit and replay. I sandbox execution — separate accounts or projects so a confused agent can&#x27;t reach production state. Rate limits and budget caps bound the damage of loops. And I design the tool surface itself defensively: my production MCP deployment exposed log-tailing but structurally could not restart a service, because the safest permission is the one that doesn&#x27;t exist.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Agent = identity with least privilege</li><li>Read-only default; writes individually gated</li><li>Human-in-the-loop for destructive actions</li><li>Full audit log of tool calls</li><li>Capability absence beats permission checks</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Prompt injection against agents?</span><br>Treat all retrieved/external content as untrusted input — never let it elevate tool scope; validate tool arguments server-side.</li><li><span class='fq'>How do you test agent behavior?</span><br>Scenario suites with adversarial inputs in a sandbox, plus replay of logged production traces.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="ai" data-diff="Intermediate" id="ai-4">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="ai"></label>
+    <span class="qno">AI·04</span>
+    <span class="qtext">Compare Amazon Bedrock against self-hosting open models on EKS. How do you decide?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests pragmatic build-vs-buy judgment applied to GenAI infrastructure.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Bedrock gives me managed inference, model choice across providers, no GPU capacity management, per-token pricing, and the compliance posture — data not used for training, PrivateLink access, regional control — that enterprise and pharma contexts demand. Self-hosting on EKS (vLLM or TGI on GPU node groups) wins when there&#x27;s sustained high-volume inference where per-token economics flip, hard data-residency constraints, a fine-tuned model Bedrock can&#x27;t serve, or latency requirements needing full control. The honest math: self-hosting means GPU capacity planning, model updates, inference optimization, and on-call — a platform team&#x27;s worth of work. My default is Bedrock until the token bill or a hard constraint argues otherwise, and I treat it like any commodity-vs-differentiator call: serving infrastructure is rarely where an enterprise&#x27;s competitive advantage lives.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Bedrock = managed, compliant, per-token</li><li>Self-host = control, residency, volume economics</li><li>GPU ops burden is a real cost line</li><li>Commodity vs differentiator framing</li><li>Default managed; justify the exception</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Where&#x27;s the volume crossover?</span><br>It varies by model and utilization — model it explicitly; a 70B on underutilized GPUs is the worst of both worlds.</li><li><span class='fq'>Fine-tuning options on Bedrock?</span><br>Customization exists for some models; if your tuning needs exceed it, that&#x27;s a legitimate self-host trigger.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="ai" data-diff="Intermediate" id="ai-5">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="ai"></label>
+    <span class="qno">AI·05</span>
+    <span class="qtext">What does LLMOps mean in practice, and how does it differ from traditional MLOps?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests whether you can map operational discipline onto GenAI — the core of an AI platform role.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Traditional MLOps centers on the training loop: feature pipelines, experiment tracking, model registries, retraining triggers. LLMOps mostly operates models you didn&#x27;t train, so the center of gravity shifts to everything around inference: prompt management with versioning and rollback — prompts are deployable artifacts and deserve the same rigor as code; evaluation pipelines, because there&#x27;s no single accuracy number — you build eval suites with LLM-as-judge plus human review and run them like regression tests on every prompt or model change; cost and latency observability per request, since tokens are the new compute bill; guardrails for input and output — PII, injection, topic boundaries; and version pinning of models, because providers update behavior under stable names. Coming from DevOps, I map it directly: prompts are code, evals are tests, guardrails are policy-as-code, token spend is FinOps. The disciplines transfer; the artifacts changed.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Prompts as versioned, deployable artifacts</li><li>Eval suites as regression tests</li><li>Token-level cost/latency observability</li><li>Guardrails on input and output</li><li>Model version pinning</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>What breaks first without LLMOps?</span><br>Silent quality drift — a provider model update or an &#x27;innocent&#x27; prompt tweak degrades output and nobody notices until users do.</li><li><span class='fq'>Tooling you&#x27;d reach for?</span><br>Langfuse or Phoenix for tracing/evals, Bedrock Guardrails or custom filters, and plain CI for prompt regression suites.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="ai" data-diff="Intermediate" id="ai-6">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="ai"></label>
+    <span class="qno">AI·06</span>
+    <span class="qtext">How do you control and optimize LLM inference costs at scale?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> GenAI bills surprise organizations the way data transfer once did — tests FinOps maturity for AI.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Same discipline as cloud FinOps: visibility, then optimization, then commitment. Visibility: per-request token logging tagged by feature, team, and tenant — you can&#x27;t allocate a token bill you don&#x27;t itemize. Optimization, in order of leverage: route by task complexity — a classifier or extraction task doesn&#x27;t need a frontier model, and model routing (Haiku-class for simple, Opus-class for hard) routinely cuts 60–80% of spend; prompt caching for repeated system-prompt prefixes; trim context aggressively — RAG retrieving ten chunks when three suffice is paying for noise; batch APIs for anything async, typically half price; cap max output tokens. Commitment: provisioned throughput once baseline volume is proven. The cultural piece matters too — engineers see latency but not cost, so I put token spend on the same dashboards as error rates.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Per-request token attribution</li><li>Model routing by task complexity — biggest lever</li><li>Prompt caching and context discipline</li><li>Batch APIs for async work</li><li>Cost on the same dashboard as latency</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How do you route without hurting quality?</span><br>Eval suites per task tier — route down until the eval says stop, with fallback escalation on low confidence.</li><li><span class='fq'>Who owns the token budget?</span><br>Same as cloud cost: the feature team owns it, the platform team makes it visible and provides cheaper paths.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="ai" data-diff="Expert" id="ai-7">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="ai"></label>
+    <span class="qno">AI·07</span>
+    <span class="qtext">How would you design guardrails for an enterprise LLM application in a regulated industry?</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Pharma/finance interviewers ask this constantly — tests compliance-aware AI architecture.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Defense in depth across four layers. Input: PII detection and redaction before anything reaches the model, prompt-injection screening, and topic filters for clearly out-of-scope requests. Model: system prompts that define scope and refusal behavior — necessary but never sufficient alone, because prompts are circumventable. Output: grounding checks against retrieved sources for factual claims, PII re-scanning, toxicity and policy classifiers, and for regulated content — medical or dosage information in pharma — human review gates before anything reaches an end user. Audit: every prompt, retrieval set, and response logged immutably with retention policies, because in a GxP-adjacent environment the question is never if an auditor asks, but when. Bedrock Guardrails covers a useful baseline; regulated industries need custom layers on top. The framing I use with compliance teams: the model is an untrusted component, and the architecture is what makes the system trustworthy.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Layered: input, model, output, audit</li><li>System prompts are not a security boundary</li><li>Grounding checks + human gates for regulated content</li><li>Immutable audit logs with retention</li><li>Model untrusted; architecture trusted</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How do you handle hallucinated citations?</span><br>Verify citations structurally against the retrieval set — if the model cites a document that wasn&#x27;t retrieved, block or flag the response.</li><li><span class='fq'>Latency cost of guardrails?</span><br>Run independent checks in parallel and tier them — cheap regex/classifiers inline, heavier checks async where the use case allows.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="ai" data-diff="Intermediate" id="ai-8">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="ai"></label>
+    <span class="qno">AI·08</span>
+    <span class="qtext">When do you fine-tune versus use RAG versus prompt engineering?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Classic decision question — tests cost/benefit judgment over hype.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">In order of cost and commitment: prompt engineering first — instructions, few-shot examples, output schemas; it solves more than people expect and ships in hours. RAG when the model needs knowledge it doesn&#x27;t have, especially knowledge that changes: documents, policies, tickets — retrieval keeps the knowledge current without touching the model and gives you citations for free. Fine-tuning when the requirement is behavior, not knowledge: a consistent specialized style, a domain dialect, reliable structured output where prompting plateaus, or distilling a large model&#x27;s capability into a smaller, cheaper one. The mistakes I see: fine-tuning to inject facts — it&#x27;s poor at that and the facts go stale immediately; and reaching for fine-tuning before exhausting prompts plus RAG, which is paying for a custom solution to a configuration problem. My sequence is prompt → RAG → fine-tune, with eval gates deciding each escalation.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Prompting: cheapest, try first</li><li>RAG: knowledge, freshness, citations</li><li>Fine-tuning: behavior and style, not facts</li><li>Distillation as the cost play</li><li>Escalate only on eval evidence</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Can you combine them?</span><br>Routinely — a fine-tuned model for tone plus RAG for facts is a strong production pattern.</li><li><span class='fq'>What does fine-tuning actually cost?</span><br>The data curation dominates — high-quality examples are the expensive part, not the GPU hours.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="ai" data-diff="Expert" id="ai-9">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="ai"></label>
+    <span class="qno">AI·09</span>
+    <span class="qtext">How do you evaluate and monitor LLM application quality in production?</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Separates teams that demo GenAI from teams that operate it.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Three loops. Pre-deployment: a versioned eval suite — golden questions with expected properties, scored by a mix of exact checks, LLM-as-judge with a stronger model, and human review on a sample. It runs in CI on every prompt, model, or retrieval change, exactly like a regression suite; no green, no deploy. Online: production tracing of prompt, context, response, latency, and tokens, with sampled automated scoring for groundedness and policy compliance, plus user signals — thumbs, edits, abandonment — which are noisy individually but truthful in aggregate. Feedback: failures get triaged into the eval suite so the same regression can&#x27;t ship twice — that flywheel is the whole game. The trap I warn teams about is a single &#x27;quality score&#x27;: decompose by failure mode — retrieval miss, hallucination, formatting, refusal — because each has a different owner and a different fix.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Eval suite in CI — gate deploys</li><li>LLM-as-judge + human sampling</li><li>Production tracing with sampled scoring</li><li>Failures feed back into evals</li><li>Decompose quality by failure mode</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Is LLM-as-judge reliable?</span><br>Calibrate it against human labels periodically; it&#x27;s consistent enough for regression detection even when imperfect in absolute terms.</li><li><span class='fq'>What&#x27;s a reasonable eval suite size?</span><br>Start with 50–100 curated cases per use case and grow from production failures — coverage beats volume.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="ai" data-diff="Expert" id="ai-10">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="ai"></label>
+    <span class="qno">AI·10</span>
+    <span class="qtext">An executive asks: &#x27;Should we build an internal AI platform or let every team pick their own tools?&#x27; What&#x27;s your answer?</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests platform-engineering instincts applied to AI — exactly the AI/Cloud Architect mandate.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">The same answer platform engineering gave for cloud: paved roads, not gates. Letting every team wire its own LLM integrations produces N copies of auth, guardrails, cost tracking, and eval tooling — and N security reviews. Mandating one central team build everything makes that team the bottleneck and kills experimentation. The paved road: a platform layer offering a model gateway (one auth point, routing, caching, per-team cost attribution), shared guardrails and audit logging baked in so compliance is inherited rather than reimplemented, an eval framework teams plug cases into, and golden-path templates for RAG and agent patterns. Teams keep freedom at the application layer; the platform owns the cross-cutting concerns where mistakes are expensive. It&#x27;s the same playbook I ran for developer platforms at Takeda — onboarding from two weeks to two hours happened because the road was paved, and AI adoption follows the identical curve.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Paved road, not gate or free-for-all</li><li>Model gateway: auth, routing, cost attribution</li><li>Guardrails and audit inherited by default</li><li>Eval framework as shared service</li><li>Platform thinking transfers directly to AI</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>First thing you&#x27;d build?</span><br>The gateway with cost attribution — it gives immediate visibility and a natural control point for everything else.</li><li><span class='fq'>How do you avoid the platform becoming a bottleneck?</span><br>Self-service onboarding, templates over tickets, and measuring platform NPS — treat internal teams as customers.</li></ul>
+  </div>
+</details>
+</section><section id="sec-k8s" class="domain">
+<h2><span class="eyebrow">11 questions</span>Kubernetes / EKS</h2>
+
+<details class="qcard" data-dom="k8s" data-diff="Foundation" id="k8s-1">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="k8s"></label>
+    <span class="qno">K8S·01</span>
+    <span class="qtext">Explain the Kubernetes control plane components and what each does.</span>
+    <span class="badge f">Foundation</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Foundation question — reveals whether you understand K8s at an architectural level.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">The API server is the front door — every kubectl command, controller, and kubelet talks to it, and it&#x27;s the only component that touches etcd. etcd is the distributed key-value store holding all cluster state; lose etcd, lose the cluster. The scheduler watches for unscheduled pods and places them based on resource requests, affinity, taints and tolerations, and topology constraints. The controller manager runs the reconciliation loops — ReplicaSet controller maintaining replica counts, node controller handling health, endpoint controllers wiring Services to pods. The pattern underneath everything is reconciliation: declared state in etcd, controllers converging actual state toward it. On EKS, AWS runs all of this and you never see the components — but when troubleshooting, knowing that a pod stuck in Pending is a scheduler conversation and a Service with no endpoints is a controller conversation is what makes you fast.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>API server = single entry, sole etcd client</li><li>etcd = source of truth</li><li>Scheduler = placement decisions</li><li>Controller manager = reconciliation loops</li><li>Reconciliation is the core pattern</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>What happens if the control plane goes down?</span><br>Running pods keep running — kubelets are autonomous; you lose scheduling, scaling, and self-healing until it returns.</li><li><span class='fq'>Why can only the API server talk to etcd?</span><br>Single choke point for authn/z, validation, and admission — and it keeps etcd&#x27;s surface minimal.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="k8s" data-diff="Intermediate" id="k8s-2">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="k8s"></label>
+    <span class="qno">K8S·02</span>
+    <span class="qtext">How does EKS differ from self-managed Kubernetes?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests practical EKS experience vs textbook K8s knowledge.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">EKS manages the control plane — API server, etcd, scheduler, controller manager — multi-AZ and patched by AWS; I own the data plane. The EKS-specific pieces that change daily life: Managed Node Groups handle AMI rollouts and draining; Fargate profiles run pods with no nodes at all; IRSA gives each pod its own IAM role; the AWS Load Balancer Controller wires Ingress to ALBs natively; and the VPC CNI assigns real VPC IPs to pods — no overlay, pods are first-class VPC citizens, which is great for security groups and Flow Logs and painful for IP planning. The tradeoff is giving up control-plane customization — no API server flags, no etcd access — for operational simplicity, and for almost every team that&#x27;s the right trade. I&#x27;ve run production EKS at Takeda for years with 99.9% deployment success, and the control plane has never been the thing that paged me.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Managed control plane, you own data plane</li><li>Managed Node Groups, Fargate, IRSA</li><li>VPC CNI = native pod IPs (blessing and curse)</li><li>ALB Controller for Ingress</li><li>Trade customization for operability</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>EKS version lifecycle?</span><br>Standard support ~14 months per minor version, then extended support at extra cost — upgrade cadence has to be a planned habit.</li><li><span class='fq'>Access entries vs aws-auth?</span><br>Access entries are the newer API-driven IAM mapping — cleaner than editing the aws-auth ConfigMap and what I use now.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="k8s" data-diff="Intermediate" id="k8s-3">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="k8s"></label>
+    <span class="qno">K8S·03</span>
+    <span class="qtext">How do you plan capacity for an EKS cluster?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests operational maturity — many teams get this wrong.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Start from workload profiles — CPU-bound, memory-bound, GPU — and pick instance families to match: c-series, r-series, m-series for general. Size nodes so the largest pod fits with headroom for DaemonSets; the agents — CNI, kube-proxy, Fluent Bit, monitoring — quietly eat half a gig to a gig per node. Requests and limits on every pod, no exceptions: requests drive scheduling and limits stop noisy neighbors; the single biggest capacity failure I see is missing requests, which means the scheduler is packing blind and you find out via OOM kills. For node scaling, Karpenter over Cluster Autoscaler on EKS — faster provisioning, diverse instance selection, automatic consolidation, and it removed a whole class of &#x27;wrong node group size&#x27; problems for us. HPA handles pod-level scaling on CPU or custom metrics. Then verify with utilization data monthly — capacity planning is a loop, not a launch task.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Instance family per workload profile</li><li>Account for DaemonSet overhead</li><li>Requests/limits mandatory everywhere</li><li>Karpenter &gt; Cluster Autoscaler on EKS</li><li>Review utilization on a cadence</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Karpenter consolidation risks?</span><br>It moves pods to bin-pack — PDBs and graceful termination must be correct or consolidation becomes self-inflicted disruption.</li><li><span class='fq'>How do you handle GPU capacity?</span><br>Dedicated node pools with taints, and Karpenter NodePools restricted to GPU families; GPU bin-packing is its own discipline.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="k8s" data-diff="Foundation" id="k8s-4">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="k8s"></label>
+    <span class="qno">K8S·04</span>
+    <span class="qtext">When would you use a Deployment vs StatefulSet vs DaemonSet vs Job?</span>
+    <span class="badge f">Foundation</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests whether you choose the right abstraction for the workload.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Deployment for stateless services — APIs, web tier, workers where pods are interchangeable; you get rolling updates and easy scaling. StatefulSet when identity matters — databases, brokers, anything where pod-0 differs from pod-1: stable hostnames, ordered startup, and PVCs that survive pod deletion. DaemonSet for one-per-node workloads — log shippers, monitoring agents, CNI and storage drivers — automatically present on every new node. Job for run-to-completion work, CronJob for the scheduled version. My decision tree: does it run continuously? If it needs stable identity or storage, StatefulSet; if it must be on every node, DaemonSet; otherwise Deployment. Does it finish? Job. The follow-on judgment call: just because StatefulSets exist doesn&#x27;t mean databases belong on your cluster — for most teams RDS is the better operational answer, and I&#x27;ll say so.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Deployment = stateless default</li><li>StatefulSet = identity + persistent storage</li><li>DaemonSet = per-node agents</li><li>Job/CronJob = run-to-completion</li><li>Question whether state belongs in-cluster at all</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>StatefulSet update gotchas?</span><br>Updates are ordered and can wedge on a failing pod — know partition-based rollouts for careful upgrades.</li><li><span class='fq'>Why not a Deployment with a PVC?</span><br>ReadWriteOnce volumes plus multiple interchangeable replicas don&#x27;t mix — identity-to-volume binding is the StatefulSet contract.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="k8s" data-diff="Intermediate" id="k8s-5">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="k8s"></label>
+    <span class="qno">K8S·05</span>
+    <span class="qtext">Explain how to achieve zero-downtime deployments in Kubernetes.</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests production deployment knowledge.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Rolling update with the parameters actually set: maxUnavailable 0 so full capacity is always serving, maxSurge 1 or more for the overlap. Readiness probes that test real readiness — dependencies reachable, caches warm — because traffic shifts the instant the probe passes. The piece most teams miss: a preStop hook with a short sleep, five to ten seconds, so the pod keeps serving while endpoint removal propagates through kube-proxy and the load balancer — that&#x27;s the source of the mysterious errors-during-deploy that otherwise get blamed on the app. terminationGracePeriodSeconds long enough for in-flight requests to drain, and the app must handle SIGTERM properly. PodDisruptionBudgets protect during node operations. When rolling isn&#x27;t enough — schema changes, risk-sensitive services — I step up to blue-green via Service selector swap or canary via Argo Rollouts with automated metric analysis. At Takeda this set of defaults is baked into our platform templates, which is why teams get zero-downtime without knowing these details.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>maxUnavailable=0, real readiness probes</li><li>preStop sleep for endpoint propagation</li><li>SIGTERM handling + grace period</li><li>PDBs for voluntary disruption</li><li>Bake it into platform templates</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Why does the preStop sleep work?</span><br>Endpoint removal and pod termination race each other; the sleep lets deregistration win.</li><li><span class='fq'>Canary analysis metrics?</span><br>Error rate and latency deltas against baseline, automated by Argo Rollouts/Flagger — promotion on data, not vibes.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="k8s" data-diff="Intermediate" id="k8s-6">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="k8s"></label>
+    <span class="qno">K8S·06</span>
+    <span class="qtext">How do you handle configuration and secrets in Kubernetes?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests operational hygiene and security awareness.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">ConfigMaps for non-sensitive configuration, mounted as files or env vars. Secrets for sensitive data — with the caveat I always state out loud: K8s Secrets are base64-encoded, not encrypted, so on EKS I enable envelope encryption with a KMS key for etcd. The better pattern is External Secrets Operator syncing from AWS Secrets Manager — one source of truth, rotation, and audit live in AWS where they belong; the cluster holds a synced copy, not the master. For GitOps repos, sealed-secrets or SOPS so nothing sensitive sits in plaintext Git. Hard rules: no secrets in images, no secrets in Helm values committed to Git, no secrets in manifests in source control. And RBAC on Secret objects themselves — get-secrets in a namespace is effectively credential access, and most clusters hand it out far too broadly.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>ConfigMaps for config, Secrets + KMS envelope encryption</li><li>External Secrets Operator — AWS as source of truth</li><li>SOPS/sealed-secrets for GitOps</li><li>Never in images, values files, or Git</li><li>RBAC the Secret objects themselves</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Env var vs mounted secret?</span><br>Mounted files can be rotated without pod restart and don&#x27;t leak via process inspection or crash dumps as easily.</li><li><span class='fq'>How does rotation propagate?</span><br>ESO refresh interval updates the K8s Secret; the app must re-read, or you trigger a rollout — design for it explicitly.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="k8s" data-diff="Expert" id="k8s-7">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="k8s"></label>
+    <span class="qno">K8S·07</span>
+    <span class="qtext">Explain the VPC CNI plugin in EKS and its implications.</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> EKS-specific — tests whether you understand the networking tradeoffs.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">The VPC CNI gives every pod a real VPC IP from the subnet — ENI secondary IPs — so pods are first-class VPC citizens: security groups for pods, NACLs, Flow Logs, and Direct Connect all just work with pod traffic, no overlay translation. The cost is IP consumption, twice over: instance types cap pods per node by ENI and IP limits — a t3.medium tops out around 17 pods, an m5.large around 29 — and the subnets themselves drain fast in a busy cluster. Mitigations, in the order I apply them: prefix delegation, which assigns /28 prefixes per ENI and roughly quadruples pod density; a dedicated secondary CIDR (100.64/10 space) just for pods so the routable subnets stay clean; and Fargate for workloads where node IP math shouldn&#x27;t be anyone&#x27;s problem. Cilium in overlay mode is the escape hatch if you truly need density over native integration — but you give up the thing that made the VPC CNI valuable.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Real VPC IPs — native SG/Flow Log integration</li><li>Per-instance pod limits via ENI math</li><li>Subnet exhaustion is the silent failure</li><li>Prefix delegation first, secondary CIDR second</li><li>Overlay CNI trades away the native benefits</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How do you spot IP exhaustion early?</span><br>Alert on subnet free-IP counts and pods stuck in ContainerCreating with ENI attach errors.</li><li><span class='fq'>Security groups for pods — when?</span><br>When specific workloads need tighter network policy than the node SG — e.g., only the payments pods may reach the payments DB.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="k8s" data-diff="Expert" id="k8s-8">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="k8s"></label>
+    <span class="qno">K8S·08</span>
+    <span class="qtext">How do you secure an EKS cluster?</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests comprehensive security thinking.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">In layers, starting from the control plane: private API endpoint or CIDR-restricted public, audit logging to CloudWatch. Nodes: latest EKS-optimized AMIs via Managed Node Groups, no SSH — SSM Session Manager only — and IMDSv2 enforced so pods can&#x27;t steal node credentials. Pods: IRSA for AWS permissions so nothing shares the node role; Pod Security Standards at restricted for production namespaces — non-root, no privileged, read-only root filesystem. Network: NetworkPolicies (Calico or the newer native VPC CNI support) with default-deny per namespace, plus security groups for pods on sensitive paths. Supply chain: ECR scanning, and an admission controller — Kyverno in my case — blocking unscanned images and untrusted registries. Runtime: GuardDuty for EKS for threat detection. Secrets: KMS envelope encryption plus External Secrets. In a pharma environment I also treat the audit log pipeline as a first-class deliverable, because the auditors certainly do.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Private endpoint + audit logs</li><li>IMDSv2, no SSH, SSM only</li><li>IRSA + Pod Security Standards (restricted)</li><li>Default-deny NetworkPolicies</li><li>Admission control on images; runtime detection</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Kyverno vs OPA Gatekeeper?</span><br>Kyverno is K8s-native YAML policies — lower learning curve; Gatekeeper/Rego is more expressive — I default to Kyverno unless policy logic demands Rego.</li><li><span class='fq'>Biggest real-world gap you find?</span><br>Workloads still using the node IAM role — it&#x27;s the first thing I audit on any inherited cluster.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="k8s" data-diff="Foundation" id="k8s-9">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="k8s"></label>
+    <span class="qno">K8S·09</span>
+    <span class="qtext">A pod is in CrashLoopBackOff. Walk through your troubleshooting process.</span>
+    <span class="badge f">Foundation</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Practical troubleshooting — reveals real operational experience.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">kubectl describe pod first — the Events section and Last State tell most of the story. Exit codes are the shortcut: 137 is OOMKilled, 143 is SIGTERM, 1 is the app itself failing. Then kubectl logs --previous — the previous flag matters because the current container just restarted and has nothing useful yet. From there it branches: OOMKilled means raise the limit or fix the leak — check whether the limit was ever based on real usage. Startup crashes are usually environment: missing env vars, config not mounted, a dependency unreachable — I check mounts and try the dependency from a debug container. Liveness probe failures are often the probe&#x27;s fault — too aggressive an initialDelay or timeout — and the app was healthy all along. Image pull errors: tag exists? imagePullSecrets right? Built this exact triage into my Action Log Analyser patterns, because the same ten causes account for nearly every CrashLoop I&#x27;ve ever seen.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>describe → Events + exit codes</li><li>logs --previous is the key flag</li><li>137=OOM, 1=app, probe failures often misconfigured probes</li><li>Debug container for dependency checks</li><li>Same ten causes, every time</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Pod is Running but not Ready?</span><br>Different problem — readiness probe failing: check the probe target and the app&#x27;s dependency health, not crash logs.</li><li><span class='fq'>CrashLoop only on some nodes?</span><br>Node-specific issue — taints, local resources, kernel or AMI drift; compare a good node against a bad one.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="k8s" data-diff="Expert" id="k8s-10">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="k8s"></label>
+    <span class="qno">K8S·10</span>
+    <span class="qtext">How do you perform a zero-downtime EKS cluster upgrade?</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests operational maturity — upgrades are where things break.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Control plane and data plane separately, in a rehearsed sequence. Before anything: scan for deprecated APIs with Pluto, check every add-on&#x27;s compatibility matrix against the target version, and read the changelog — EKS upgrades go one minor version at a time, no skipping. Run the entire upgrade in non-prod first and let it soak for a week; the bugs that matter show up under real workload patterns, not in the first hour. Prod: control plane upgrade (AWS-managed, non-disruptive), then add-ons — VPC CNI, CoreDNS, kube-proxy, EBS CSI — to compatible versions, then the data plane in waves: Managed Node Groups roll new AMIs, cordon, drain respecting PDBs, terminate; with Karpenter it&#x27;s a NodePool AMI update and drift handles the rollout. PDBs and graceful termination are what make &#x27;drain&#x27; non-disruptive — which is why I treat them as platform requirements year-round, not upgrade-week patches. At Takeda this is a runbook with owners and rollback criteria, executed quarterly, boring by design.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Pluto for API deprecations first</li><li>Add-on compatibility matrix</li><li>Non-prod soak before prod</li><li>Control plane → add-ons → nodes in waves</li><li>PDBs make draining safe; boring = success</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Rollback story?</span><br>Control plane can&#x27;t roll back — which is exactly why non-prod soak and add-on checks happen first; data plane rolls back by reverting AMI.</li><li><span class='fq'>How do you handle the 14-month support window?</span><br>Quarterly upgrade cadence as a standing platform commitment — falling two versions behind turns routine into risk.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="k8s" data-diff="Expert" id="k8s-11">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="k8s"></label>
+    <span class="qno">K8S·11</span>
+    <span class="qtext">Your team runs 50 microservices on EKS. How do you manage service-to-service communication?</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Scenario — tests judgment about service mesh adoption.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">At 50 services the question is what problems we actually have, because a mesh is an operational tax. If the pain is security and visibility — mTLS everywhere, per-request metrics, who-calls-whom — Linkerd delivers that with a fraction of Istio&#x27;s operational weight, and it&#x27;s where I&#x27;d start. If we genuinely need traffic management — canary splitting, fault injection, sophisticated retry and circuit-breaking policy at the infrastructure layer — that&#x27;s Istio territory, accepted with eyes open about the upgrade and debugging burden. Without a mesh, the baseline still has to exist: K8s Services for discovery, retries and circuit breakers in a shared application library, timeouts everywhere, and distributed tracing via OpenTelemetry, because at 50 services request-path archaeology by grep is over. My honest sequence: OTel tracing first — it changes every debugging conversation — then Linkerd for mTLS when security asks, then Istio only when a concrete traffic-management requirement says so.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Mesh is a tax — name the problem first</li><li>Linkerd for mTLS + observability, lighter ops</li><li>Istio for advanced traffic management</li><li>Tracing first regardless of mesh</li><li>Shared resilience library as the no-mesh baseline</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Sidecar overhead?</span><br>Real — latency and resource cost per pod; sidecar-less options (Istio ambient, Cilium mesh) are changing that math.</li><li><span class='fq'>How do you roll a mesh out safely?</span><br>Namespace by namespace, permissive mTLS first, strict mode only after compatibility is proven.</li></ul>
+  </div>
+</details>
+</section><section id="sec-tf" class="domain">
+<h2><span class="eyebrow">10 questions</span>Terraform / IaC / CI-CD</h2>
+
+<details class="qcard" data-dom="tf" data-diff="Foundation" id="tf-1">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="tf"></label>
+    <span class="qno">TF·01</span>
+    <span class="qtext">How does Terraform state work and why is it important?</span>
+    <span class="badge f">Foundation</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Foundation question — every Terraform interview starts here.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">State is the mapping between HCL and reality — resource IDs, attributes, dependencies. Without it Terraform has no idea what exists and would try to create the world from scratch. For any team, remote backend is non-negotiable: S3 with locking — DynamoDB classically, or S3 native locking on recent Terraform versions — so concurrent runs can&#x27;t corrupt each other. I treat the state file as production infrastructure in its own right: encrypted with KMS, S3 versioning on for rollback, IAM-restricted access — because state contains sensitive values in plaintext, which is also exactly why it never, ever goes in Git. The subtle point that signals real experience: state is Terraform&#x27;s belief about the world, and beliefs drift from reality — which is why drift detection and disciplined imports are part of operating Terraform, not exotic edge cases.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>State = config-to-reality mapping</li><li>Remote backend + locking, always</li><li>Encrypt, version, IAM-restrict the state</li><li>Never in Git — contains secrets</li><li>State is belief; reality drifts</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How do you split state?</span><br>Per environment and per logical stack — small blast radius, faster plans, independent applies.</li><li><span class='fq'>Someone deleted the state file. Now what?</span><br>S3 versioning restore first; failing that, import blocks with generate-config to rebuild — and a postmortem on bucket permissions.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="tf" data-diff="Intermediate" id="tf-2">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="tf"></label>
+    <span class="qno">TF·02</span>
+    <span class="qtext">How do you handle Terraform state drift?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests real-world operational maturity.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Drift is someone changing infrastructure outside Terraform — console, CLI, another tool — and it&#x27;s inevitable, so the design question is detection speed and response policy. Detection: scheduled terraform plan in CI, nightly, alerting on any non-empty plan; Spacelift and Terraform Cloud have this built in, but a cron job and a Slack webhook gets you 90% of it. Response is a decision, not a reflex: if the manual change was right — an emergency fix at 2am — update the config to match and apply so config, state, and reality reconverge; if it was wrong, apply reverts it. Prevention is mostly organizational: restrict console write access in prod, SCPs denying the dangerous manual actions, and a culture where the pipeline is the easiest path — which is a platform engineering problem, and the part I&#x27;ve actually built. The teams that struggle aren&#x27;t missing tools; they&#x27;re missing the agreement on what happens when drift is found.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Scheduled plan = drift detection</li><li>Keep-or-revert is a policy decision</li><li>Reconverge config, state, and reality</li><li>Restrict console writes; SCP guardrails</li><li>Make the pipeline the easy path</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Drift on attributes Terraform doesn&#x27;t track?</span><br>lifecycle ignore_changes for deliberately unmanaged attributes — documented, so it&#x27;s a choice, not an accident.</li><li><span class='fq'>Emergency change process?</span><br>Break-glass role with logging, and a standing rule: the follow-up PR codifying the change lands within 24 hours.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="tf" data-diff="Intermediate" id="tf-3">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="tf"></label>
+    <span class="qno">TF·03</span>
+    <span class="qtext">How do you structure Terraform for a multi-environment, multi-account setup?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests architectural judgment — this is where most teams struggle.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Separate state per environment, full stop — sharing state across dev and prod is how a dev experiment plans a prod destroy. Between the two main patterns I choose directories over workspaces for production setups: envs/dev, envs/staging, envs/prod, each with its own backend config and tfvars, all consuming the same versioned modules. It&#x27;s explicit, environments can diverge when reality demands it, and promotion is a module version bump — reviewable in a PR diff. Workspaces look DRY but hide which environment you&#x27;re touching behind CLI state, and that ambiguity has caused real incidents. Multi-account: each environment&#x27;s backend lives in its own account, and the pipeline assumes cross-account roles to provision — the IAM trust topology is the actual security boundary. Modules live in a registry or Git tags, always version-pinned; a module sourced from main branch is an unreviewed prod change waiting to happen.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Separate state per environment, always</li><li>Directories over workspaces for prod</li><li>Promotion = module version bump in a PR</li><li>Cross-account roles; backend per account</li><li>Version-pinned modules, never main</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Where does Terragrunt fit?</span><br>It DRYs up the directory pattern&#x27;s backend/provider boilerplate — useful at scale, another tool to learn; I adopt it when repetition genuinely hurts.</li><li><span class='fq'>How granular are your stacks?</span><br>Network, shared services, and per-app stacks separately — a full-environment monolithic state means hour-long plans and total blast radius.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="tf" data-diff="Intermediate" id="tf-4">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="tf"></label>
+    <span class="qno">TF·04</span>
+    <span class="qtext">How do you write reusable Terraform modules?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests software engineering discipline applied to IaC.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">A good module is a good function: one responsibility, clear interface, hidden implementation. Typed inputs with descriptions and sane defaults; validation blocks so bad inputs fail at plan, not apply; outputs for everything downstream consumers legitimately need. Scope discipline is the hard part — an &#x27;EKS module&#x27; that also builds VPCs, IAM, and installs Helm charts is three modules in a trench coat; compose small modules instead. Versioning via Git tags with pinned refs in every source. Documentation generated by terraform-docs so it can&#x27;t rot separately from the code, plus a working example in the repo. Testing in CI: validate and plan against the examples at minimum, Terratest for modules where a regression is expensive. The cultural piece from my platform work: modules are products with internal customers — the moment two teams use one, breaking changes need versioned releases and a changelog, exactly like any library.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Single responsibility; compose small modules</li><li>Typed, validated inputs; useful outputs</li><li>Git-tag versioning, pinned everywhere</li><li>terraform-docs + working examples</li><li>Modules are products with customers</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How do you roll out a breaking module change?</span><br>Semver major bump, migration notes, both versions live during transition — consumers upgrade on their schedule, not yours.</li><li><span class='fq'>Optional features in modules?</span><br>Feature flags via variables with counts/for_each — but if the flag count grows past a handful, the module wants to be split.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="tf" data-diff="Intermediate" id="tf-5">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="tf"></label>
+    <span class="qno">TF·05</span>
+    <span class="qtext">What is the role of policy-as-code in Terraform workflows?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests governance and compliance awareness.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Policy-as-code moves compliance from audit findings to failed pipeline checks — violations caught before apply, not weeks later in a security review. Mechanically: terraform plan exports JSON, OPA with Conftest (or Sentinel on TFC/TFE) evaluates rules against it, and the pipeline fails on violations. The rules encode the organization&#x27;s non-negotiables: encryption on every bucket and volume, no 0.0.0.0/0 on SSH, mandatory cost-allocation tags, approved AMIs only, no public RDS. Checkov and tfsec complement this with static HCL scanning — faster, runs pre-plan, catches the well-known misconfigurations. In a pharma context this is more than hygiene: policy-as-code is how you demonstrate to auditors that controls are enforced systematically rather than by hope. My rule of thumb on rollout: start in warn mode, publish the violations, fix the existing estate, then flip to enforce — turning on strict enforcement against a non-compliant baseline just teaches teams to route around the pipeline.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Evaluate the plan JSON before apply</li><li>OPA/Conftest or Sentinel; Checkov for static</li><li>Encode non-negotiables as rules</li><li>Auditable, systematic enforcement</li><li>Warn → fix estate → enforce</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Policy exceptions?</span><br>Explicit, time-boxed waivers in code with an owner and expiry — invisible exceptions are how policy regimes die.</li><li><span class='fq'>Who writes the policies?</span><br>Security defines intent, platform implements and maintains — shared ownership, single pipeline.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="tf" data-diff="Intermediate" id="tf-6">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="tf"></label>
+    <span class="qno">TF·06</span>
+    <span class="qtext">Design a CI/CD pipeline for a containerized application deploying to EKS.</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests end-to-end pipeline thinking.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Two pipelines with different jobs. PR pipeline answers &#x27;is this safe to merge&#x27;: lint — hadolint, language linters — unit tests, image build, Trivy scan, and terraform plan posted as a PR comment if infra changed; everything a reviewer needs, in the PR, under ten minutes. Main pipeline answers &#x27;ship it&#x27;: rebuild, push to ECR tagged with the commit SHA — never latest, because latest is a lie about what&#x27;s running — then update the image tag in the deployment repo, and ArgoCD reconciles the cluster from there. Promotion: dev auto-deploys, staging and prod gate on GitHub environment protection rules with required approvals and a soak period. Auth via OIDC federation — the pipeline assumes a scoped IAM role, zero stored credentials. Caching on Docker layers and dependencies, because pipeline speed is developer experience: this exact shape is how we took release cycles at Takeda from 2 days to 15 minutes, and the speed was a feature teams noticed before anything else.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>PR pipeline = merge safety; main = delivery</li><li>SHA tags, never :latest</li><li>GitOps handoff to ArgoCD</li><li>OIDC — no stored cloud credentials</li><li>Speed is DX: cache aggressively, 10-min budget</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Where do integration tests run?</span><br>Ephemeral preview environments per PR for the services that warrant it — namespace-per-PR with TTL cleanup.</li><li><span class='fq'>How do you roll back?</span><br>Git revert on the deployment repo; ArgoCD converges back — rollback is a commit, auditable like everything else.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="tf" data-diff="Intermediate" id="tf-7">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="tf"></label>
+    <span class="qno">TF·07</span>
+    <span class="qtext">What is GitOps and how does it differ from traditional CI/CD?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests understanding of modern deployment philosophy.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">GitOps makes Git the single source of truth and inverts the deployment direction: instead of CI pushing changes into the cluster with kubectl credentials, an in-cluster agent — ArgoCD or Flux — pulls from Git and continuously reconciles actual state to declared state. Four things fall out of that inversion. Audit: the commit history is the deployment history — who, what, when, why. Rollback: a git revert, no special tooling. Drift correction: the agent notices when cluster state diverges from Git and fixes it automatically — manual kubectl edits literally don&#x27;t survive. Security: the CI system no longer holds cluster credentials at all; it only writes to Git, which collapses the attack surface dramatically. The operational shift that surprises teams: the cluster becomes disposable in principle — Git plus the agent can rebuild it — which changes how you think about DR and environment provisioning. ArgoCD runs our Takeda platform delivery, and the UI alone cut incident-time deployment questions to &#x27;look at the screen.&#x27;</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Pull-based reconciliation vs push</li><li>Git history = audit trail</li><li>Rollback = git revert</li><li>Drift auto-corrected</li><li>CI never touches the cluster</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>ArgoCD vs Flux?</span><br>ArgoCD&#x27;s UI and ecosystem win for multi-team enterprises; Flux is leaner and CLI-native — I default ArgoCD for orgs, Flux for small platform-savvy teams.</li><li><span class='fq'>Secrets in GitOps?</span><br>External Secrets referencing AWS, or SOPS-encrypted in repo — declared in Git, materialized in cluster, plaintext nowhere.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="tf" data-diff="Expert" id="tf-8">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="tf"></label>
+    <span class="qno">TF·08</span>
+    <span class="qtext">What&#x27;s your approach to testing infrastructure code?</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests maturity — most teams skip IaC testing.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">A pyramid, same as application code. Base: static analysis — fmt, validate, tflint, Checkov — on every commit; fast, catches syntax, deprecations, and known misconfigurations. Middle: plan validation — terraform plan as JSON, asserted programmatically with OPA: expected resources present, and critically, no unexpected destroys; an assertion that the plan never deletes a database has paid for itself everywhere I&#x27;ve installed it. Top: integration tests with Terratest — actually apply into an ephemeral account, verify behavior (endpoint reachable, encryption on, ports right), destroy. Expensive, so they run on module releases, not every commit. And one layer no tool replaces: a human reading the plan. &#x27;Why is this recreating the RDS instance?&#x27; is a question only a person asks, which is exactly why my pipelines post plans into PRs — the review is the test the automation can&#x27;t write.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Static (fast) → plan assertions (medium) → Terratest (slow)</li><li>Assert no-unexpected-destroys</li><li>Ephemeral accounts for integration tests</li><li>Human plan review is a test layer</li><li>Cost-tier the test frequency</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How do you test modules across provider versions?</span><br>Matrix builds in CI against the pinned and next provider versions — upgrade surprises caught in the module repo, not in prod.</li><li><span class='fq'>Is Terratest worth the Go investment?</span><br>For modules where a regression destroys data or networks, yes; for a tagging module, plan assertions suffice — match rigor to blast radius.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="tf" data-diff="Expert" id="tf-9">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="tf"></label>
+    <span class="qno">TF·09</span>
+    <span class="qtext">Your Terraform apply is stuck and you can&#x27;t release the state lock. What do you do?</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Scenario — tests calm operational judgment under a classic failure.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">First, verify it&#x27;s actually stuck and not a legitimate run — check CI history and ask the team, because force-unlocking under a live apply is how you corrupt state for real. If it&#x27;s a crashed process: take the Lock ID from the error and terraform force-unlock it. Then, before any other operation, terraform plan to assess state consistency — a crash mid-apply can leave partially recorded resources, and the plan output tells me whether state and reality still agree. If state is damaged: S3 versioning, restore the last good object — this is the moment that bucket versioning policy justifies itself. Worst case, state pull, inspect, and surgically repair or re-import. Prevention is the real answer: pipeline timeouts so runs can&#x27;t hang forever, -lock-timeout so queued runs wait politely instead of failing, and alerts on runs exceeding expected duration. I&#x27;ve run this exact playbook; the discipline is the pause before force-unlock, not the command itself.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Confirm crashed vs live before anything</li><li>force-unlock with the Lock ID</li><li>Plan immediately to assess consistency</li><li>S3 versioning restore for corruption</li><li>Timeouts + lock-timeout as prevention</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Partially created resources after the crash?</span><br>Plan shows the divergence — import what exists but isn&#x27;t in state, or remove state entries for what doesn&#x27;t exist.</li><li><span class='fq'>Two CI runs racing?</span><br>That&#x27;s what locking prevented — fix the pipeline concurrency settings so per-stack runs serialize.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="tf" data-diff="Expert" id="tf-10">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="tf"></label>
+    <span class="qno">TF·10</span>
+    <span class="qtext">How do you migrate a team from manually-managed infrastructure to Terraform?</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Scenario — tests change management plus technical execution.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Incrementally, with confidence-building sequenced ahead of coverage. Phase one: inventory — AWS Config and Resource Explorer to see what exists, categorized by criticality. Phase two: import low-risk first — dev and test environments — using import blocks with generate-config to bootstrap the HCL, iterating until plan is clean; the team learns the workflow where mistakes are cheap. Phase three: build the pipeline before touching prod — PR-based plans, approval gates, policy checks — because the pipeline is what makes the team trust that prod changes are reviewed, and trust is the actual migration deliverable. Phase four: prod, one service at a time, prevent_destroy on databases and anything stateful. Phase five: ratchet down console write access as coverage grows. The failure mode is importing everything in a heroic month and leaving the team with state they fear; this is platform adoption work, the same motion as my IDP rollouts — meet teams where they are, make the new path easier than the old one, let wins compound.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Inventory and risk-rank first</li><li>Dev/test imports build confidence cheaply</li><li>Pipeline before prod — trust is the deliverable</li><li>prevent_destroy on stateful resources</li><li>Ratchet console access down gradually</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Resources nobody understands?</span><br>Tag as legacy, import with ignore_changes, schedule investigation — don&#x27;t block the migration on archaeology.</li><li><span class='fq'>Timeline expectations?</span><br>A few weeks for dev/test plus pipeline; prod over a quarter, service by service — promising faster is promising an incident.</li></ul>
+  </div>
+</details>
+</section><section id="sec-beh" class="domain">
+<h2><span class="eyebrow">8 questions</span>Behavioral / Leadership</h2>
+
+<details class="qcard" data-dom="beh" data-diff="Intermediate" id="beh-1">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="beh"></label>
+    <span class="qno">BEH·01</span>
+    <span class="qtext">Tell me about a time you led a technical initiative without having direct authority over the team.</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Platform/AI architects rarely have direct reports — this tests influence skills.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">At Takeda I drove adoption of our internal developer platform across application teams that didn&#x27;t report to me and had every right to ignore me. I didn&#x27;t mandate — I made adoption the path of least resistance. I started by sitting with the most frustrated team and mapping their deployment pain in their words, built a golden-path template that solved their specific onboarding problem, and ran a pilot with them as the early adopter. Their onboarding dropped from two weeks to two hours, and I made sure that number — and their tech lead saying it — traveled further than I did. From there it was documentation, office hours, and onboarding teams in waves, incorporating each team&#x27;s feedback so the platform visibly belonged to its users. The result across the program: release cycles from 2 days to 15 minutes and a Developer NPS of +45 — which I track precisely because adoption without satisfaction is just compliance.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Problem-first, with the most frustrated team</li><li>Pilot with a credible early adopter</li><li>Let their metrics and voices do the selling</li><li>Feedback loops made it theirs</li><li>NPS +45 — satisfaction, not compliance</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How did you handle resistant teams?</span><br>Last, not first — by then the proof existed, and I addressed their specific objections rather than re-pitching the vision.</li><li><span class='fq'>What would you do differently?</span><br>Instrument adoption metrics from day one — I added measurement mid-flight and wished I had the baseline.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="beh" data-diff="Intermediate" id="beh-2">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="beh"></label>
+    <span class="qno">BEH·02</span>
+    <span class="qtext">Describe a time you had to make a technical decision with incomplete information.</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests decision-making under uncertainty — core to architecture roles.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Designing our MCP server deployment for the Patient Connect Ops use case, the protocol itself was young — limited production precedent, evolving spec, no established security patterns for agentic access to infrastructure. I couldn&#x27;t wait for best practices to exist; the operational need was now. My framework: I defined the decision criteria up front — security posture, reversibility, and team operability — then deliberately chose the most reversible architecture: read-only tools, scoped SSH credentials, standalone deployment that could be removed without unwinding anything else. A two-way door, in Amazon&#x27;s language. I wrote an ADR documenting what we knew, what we assumed, and a 60-day review trigger to revisit with real usage data. The system shipped, the assumptions held where it mattered, and two we&#x27;d flagged as uncertain were wrong in ways the review caught cheaply. The principle: when information is incomplete, buy reversibility instead of waiting for certainty.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Explicit criteria before evaluating options</li><li>Chose reversibility deliberately</li><li>ADR with assumptions named</li><li>Scheduled review with real data</li><li>Two-way doors over analysis paralysis</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>What signals would have changed your mind?</span><br>Any write-capability requirement — that would have flipped the risk profile and demanded a different review bar.</li><li><span class='fq'>Was the decision right?</span><br>Directionally yes; the review caught two wrong assumptions early, which is the framework working, not luck.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="beh" data-diff="Expert" id="beh-3">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="beh"></label>
+    <span class="qno">BEH·03</span>
+    <span class="qtext">Tell me about a time you influenced leadership to invest in platform or infrastructure work.</span>
+    <span class="badge e">Expert</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Platform teams constantly justify their value — tests business communication.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Deployment friction at Takeda was slowing feature delivery, but &#x27;we need to modernize CI/CD&#x27; is not a sentence leadership funds. So I gathered DORA metrics: deployment frequency, lead time, change failure rate, and put dollar figures on the waste — engineer hours per release cycle multiplied across teams. The pitch was three slides: here&#x27;s what releases cost today, here&#x27;s the 3-month investment, here&#x27;s the projected return in velocity and incident reduction. I anchored on a business outcome they already cared about — time-to-market for a program with a hard date — rather than technical elegance. They funded it. Delivery: release cycles from 2 days to 15 minutes, and I reported against the same metrics I&#x27;d pitched with, in the same units, which built the credibility that made the next platform ask dramatically easier. The lesson I reuse everywhere: leadership doesn&#x27;t buy infrastructure; they buy outcomes with infrastructure inside.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>DORA metrics + dollar framing</li><li>Anchor on outcomes leadership already wants</li><li>Specific ask, specific timeline</li><li>Report against the pitch metrics</li><li>Credibility compounds for the next ask</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How did you prioritize this against feature pressure?</span><br>I quantified the compounding tax of not doing it — every sprint of delay had a number attached.</li><li><span class='fq'>How did you measure success?</span><br>Same DORA dashboard, before and after, visible to leadership continuously — no victory-lap slide deck required.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="beh" data-diff="Intermediate" id="beh-4">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="beh"></label>
+    <span class="qno">BEH·04</span>
+    <span class="qtext">Tell me about a production incident you were responsible for resolving.</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests incident response maturity and accountability.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">A platform pipeline change I&#x27;d approved rolled out a misconfigured deployment template — services deploying through it began failing health checks, and within minutes multiple teams were blocked mid-release. Detection came from our pipeline failure-rate alarm before the first human report, which mattered. I declared the incident, posted a status channel update with impact and ETA cadence, and made the triage call: rollback over forward-fix — the template change was the obvious delta, reverting was a two-minute known-good path, and debugging in production while teams were blocked was the wrong trade. Service restored in under twenty minutes. Then the part I care most about: a blameless retro that asked why the pipeline let a bad template through, not who approved it. The fix was structural — template validation as a pipeline gate plus a canary deployment stage for platform changes themselves, which became part of my AI CI/CD Guardian patterns. Owning the approval publicly cost me nothing and bought the team&#x27;s trust in the retro.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Alarm-first detection</li><li>Clear comms cadence during incident</li><li>Rollback over forward-fix — reversibility wins</li><li>Blameless retro, structural fix</li><li>Own it publicly; trust compounds</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How do you decide rollback vs forward-fix?</span><br>Blast radius if wrong, and reversibility — rollback is almost always the faster known-good path unless data migration blocks it.</li><li><span class='fq'>Preventive measures?</span><br>Validation gates and canarying the platform&#x27;s own changes — the platform deserves the same deployment rigor it gives app teams.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="beh" data-diff="Intermediate" id="beh-5">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="beh"></label>
+    <span class="qno">BEH·05</span>
+    <span class="qtext">Describe a project that failed. What happened and what did you learn?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests self-awareness, accountability, and learning ability.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Early in my platform work I built an internal tool I was sure teams needed — a self-service environment dashboard — and built it well, over several weeks, before validating demand. Adoption was near zero. The teams&#x27; actual pain was elsewhere: not visibility into environments, but the time to create them. I had pattern-matched from my own vantage point instead of theirs, and I&#x27;d treated &#x27;nobody asked me to stop&#x27; as validation. The structural lessons changed how I work: I now run a problem-validation conversation with at least three intended users before building anything internal — the same discipline as external product work; I ship a thin slice in week two and let usage data argue with my assumptions; and I write the success metric down before starting, because &#x27;they&#x27;ll love it&#x27; is not a metric. Every successful adoption motion since — the IDP, the open-source tools under SKCloudOps — runs on that scar tissue. The dashboard failed; the lesson has compounded for years.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Built before validating demand</li><li>User pain ≠ my assumption of it</li><li>Three-user validation rule since</li><li>Thin slice early; usage data decides</li><li>Success metric written before starting</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How did you recover credibility?</span><br>I named the failure in retro myself and applied the new process visibly on the next project — the IDP pilot was its first beneficiary.</li><li><span class='fq'>How would you approach it today?</span><br>One-week spike, three user interviews, a metric, and a kill criterion — before any real build.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="beh" data-diff="Intermediate" id="beh-6">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="beh"></label>
+    <span class="qno">BEH·06</span>
+    <span class="qtext">How do you prioritize competing requests from multiple teams?</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Platform teams are always over-subscribed — tests prioritization framework.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Framework plus radical visibility. The framework: impact first — how many teams, how much time saved, is it blocking something revenue-critical; then urgency — broken now versus improvement; then effort, so quick wins surface. But the framework matters less than the transparency: everything lives on a shared board where any team can see the queue, where their request sits, and the reasoning. When I have to sequence one team behind another I say it explicitly with the tradeoff attached: &#x27;X this sprint means Y moves two weeks; here&#x27;s why, and here&#x27;s the date.&#x27; What I learned running platform intake at Takeda: teams tolerate waiting remarkably well when they understand why and trust the date — what destroys trust is silence and surprise. And when leadership overrides the ordering, I don&#x27;t relitigate; I make the displaced cost visible in writing and execute. Making tradeoffs visible is the job; making the decision alone is not.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Impact / urgency / effort, in that order</li><li>Public queue with reasoning</li><li>Explicit tradeoffs with dates</li><li>Silence destroys trust, not waiting</li><li>Surface costs of overrides, then commit</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>A VP jumps the queue constantly?</span><br>A capacity conversation with data — here&#x27;s what the jumps displaced this quarter — escalated as a resourcing question, not a complaint.</li><li><span class='fq'>How do you protect platform roadmap work?</span><br>Reserved capacity, defended like an SLA — intake can have the rest, but the roadmap lane is how the queue eventually shrinks.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="beh" data-diff="Foundation" id="beh-7">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="beh"></label>
+    <span class="qno">BEH·07</span>
+    <span class="qtext">Tell me about a time you mentored an engineer.</span>
+    <span class="badge f">Foundation</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests leadership through others — table stakes for senior/lead roles.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">A mid-level engineer on an application team kept escalating Kubernetes issues to platform — capable, but treating the cluster as a black box. Instead of answering ticket by ticket forever, I invested deliberately. We paired on his actual production issues, not exercises, and I changed my behavior: leading questions instead of answers — &#x27;what does describe show? what&#x27;s the exit code telling you?&#x27; — so the diagnostic muscle was his. I shared my own triage runbook, then had him extend it with the cases he hit. Over a few months I raised the autonomy bar: first he diagnosed and I fixed, then he proposed fixes I reviewed, then he handled his team&#x27;s K8s issues end to end. He became his team&#x27;s Kubernetes point person, their platform escalations dropped to near zero, and he later told me the questions annoyed him for exactly two weeks before they changed how he debugged everything. That&#x27;s the platform leverage model in miniature: an hour invested in capability beats an hour spent on tickets, every time.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Real production issues, not exercises</li><li>Questions over answers — build the muscle</li><li>Progressive autonomy with a visible bar</li><li>Measurable result: escalations near zero</li><li>Capability beats ticket-closing</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>Different mentoring styles for different people?</span><br>Some need scaffolding, some need stretch — I calibrate by watching how they handle being stuck, not by seniority.</li><li><span class='fq'>Scaling mentoring beyond one person?</span><br>Turn the artifacts into platform assets — the runbook became team documentation, the questions became a troubleshooting guide.</li></ul>
+  </div>
+</details>
+<details class="qcard" data-dom="beh" data-diff="Intermediate" id="beh-8">
+  <summary>
+    <label class="done" onclick="event.stopPropagation()"><input type="checkbox" onchange="tally()" data-dom="beh"></label>
+    <span class="qno">BEH·08</span>
+    <span class="qtext">Describe a time you improved developer experience in your organization.</span>
+    <span class="badge i">Intermediate</span>
+  </summary>
+  <div class="body">
+    <p class="why"><strong>Why they ask:</strong> Tests whether you treat engineering as a product — the heart of platform work.</p>
+    <h4>Masterstroke answer</h4>
+    <p class="ans">Service onboarding at Takeda took two weeks of tickets, tribal knowledge, and waiting — and I treated it as a product problem with developers as the customers. First, measurement: I traced where the two weeks actually went — access requests, pipeline setup, environment config, security review — and interviewed teams about which steps hurt most; the data surprised us, the worst pain wasn&#x27;t where platform assumed. Then the build: a golden-path template that provisioned pipeline, infrastructure scaffolding, and observability defaults in one motion, with security controls inherited rather than individually requested. Then iteration on real feedback — the second version mattered more than the first. Onboarding went from 2 weeks to 2 hours, and the Developer NPS of +45 is the number I watch, because cycle time without satisfaction means you&#x27;ve optimized a process people still resent. The product mindset is the transferable part: developers are users, friction is churn, and the platform earns adoption or it doesn&#x27;t deserve it.</p>
+    <h4>Key points to hit</h4>
+    <ul class="keys"><li>Measured where time actually went</li><li>Interviewed users — pain wasn&#x27;t where assumed</li><li>Golden path with inherited compliance</li><li>2 weeks → 2 hours, NPS +45</li><li>DX is a product; adoption is earned</li></ul>
+    <h4>Likely follow-ups</h4>
+    <ul class="fups"><li><span class='fq'>How did you pick which friction to attack first?</span><br>Frequency × pain from interview data, weighted toward steps blocking every team rather than annoying a few.</li><li><span class='fq'>How do you keep golden paths from becoming golden cages?</span><br>Escape hatches with documented ownership transfer — paved road by default, off-road allowed with eyes open.</li></ul>
+  </div>
+</details>
+</section>
+
+<section id="sec-scen" class="domain">
+  <h2><span class="eyebrow">Open-ended design</span>Scenario Walkthroughs</h2>
+  <details class="qcard scen" data-dom="scen">
+  <summary><span class="qno">SC·01</span><span class="qtext">Design an enterprise GenAI assistant over internal documents (pharma/regulated context)</span><span class="badge e">Scenario</span></summary>
+  <div class="body"><p class="ans">Frame the constraint first: regulated data, so architecture decisions start from compliance, not capability. Ingestion: documents from SharePoint/Confluence/S3 into an event-driven pipeline — extraction, PII handling, structure-aware chunking, metadata (department, classification, effective date) preserved for filtered retrieval. Indexing: Bedrock embeddings into OpenSearch with metadata filters so retrieval respects document-level access control — the user&#x27;s permissions filter the search, not just the UI. Generation: Bedrock via PrivateLink, system prompt enforcing citation of retrieved sources, refusal outside scope. Guardrails layered: input PII/injection screening, output grounding verification against the retrieval set, human review gates for regulated content classes. Audit: every prompt, retrieval set, and response immutably logged. Evaluation: golden-question suite in CI gating every prompt or model change. The differentiating sentence in an interview: &#x27;access control belongs in retrieval, not in the prompt — a model can be talked out of an instruction, but it can&#x27;t cite a document that was never retrieved.&#x27;</p></div></details><details class="qcard scen" data-dom="scen">
+  <summary><span class="qno">SC·02</span><span class="qtext">Migrate a monolith to microservices on AWS</span><span class="badge e">Scenario</span></summary>
+  <div class="body"><p class="ans">Open by pushing back gently: not everything should be a microservice — name the actual problems being solved (independent deploys, team autonomy, divergent scaling). Strangler fig: API Gateway or ALB in front of the monolith, carve services out one at a time, starting with the component that changes most often or scales most differently. Each extracted service owns its data store — shared databases recreate the coupling you just paid to remove. Inter-service communication via EventBridge/SQS, avoiding synchronous call chains. Define the domain boundaries with the teams (event storming or similar) before cutting code. The trap to name out loud: extracting too fast produces a distributed monolith — all the coupling, plus network failures and debugging across service boundaries. Success metric: deployment independence — can team A ship without coordinating with team B.</p></div></details><details class="qcard scen" data-dom="scen">
+  <summary><span class="qno">SC·03</span><span class="qtext">Your EKS-based platform must onboard 30 new services in a quarter</span><span class="badge e">Scenario</span></summary>
+  <div class="body"><p class="ans">This is a templates-and-self-service problem, not a heroics problem. Golden-path repository template: Dockerfile, Helm chart or Kustomize base, CI/CD workflow, observability defaults, security baselines — one `create-service` action provisions all of it. Namespace-per-team with ResourceQuotas, LimitRanges, NetworkPolicies applied by default. ArgoCD ApplicationSets so new services appear in the GitOps flow automatically from a directory convention. Capacity: Karpenter absorbs the node math. The platform team&#x27;s job during the quarter is office hours and template iteration, not per-service work — if onboarding requires a platform engineer per service, the platform has failed. Track time-to-first-deploy per service and iterate on the worst step. This maps directly to a 2-weeks-to-2-hours onboarding story if you have one — use your real numbers.</p></div></details><details class="qcard scen" data-dom="scen">
+  <summary><span class="qno">SC·04</span><span class="qtext">Design the CI/CD and rollout strategy for prompts and models in a production LLM application</span><span class="badge e">Scenario</span></summary>
+  <div class="body"><p class="ans">Treat prompts as deployable artifacts with the full software lifecycle. Prompts live in version control with schema-validated structure; every change runs the eval suite in CI — golden questions scored for groundedness, format compliance, and task success; regression means no merge. Model version pins are explicit configuration — provider model updates are rollouts, not surprises. Deployment: canary the prompt/model change to a traffic slice, compare online metrics (user feedback, fallback rates, latency, token cost) against baseline, promote on data. Rollback is a config revert. Observability: full tracing of prompt version, model version, retrieval set, and response per request — when quality drifts, you need to know which artifact moved. The closing line that lands: &#x27;a prompt change can break production exactly like a code change — it deserves the same pipeline.&#x27;</p></div></details><details class="qcard scen" data-dom="scen">
+  <summary><span class="qno">SC·05</span><span class="qtext">Leadership asks for an AI adoption roadmap for the engineering organization</span><span class="badge e">Scenario</span></summary>
+  <div class="body"><p class="ans">Resist the tool-list answer; structure it as crawl-walk-run with governance built in from day one, not retrofitted. Crawl: approved AI coding assistants with usage guidelines, a model gateway giving visibility into what teams already do (they&#x27;re already doing it), and quick wins — internal RAG over docs/runbooks. Walk: the paved-road platform — shared gateway with cost attribution, guardrails inherited by default, eval framework, golden-path templates for RAG and agent patterns; 2-3 lighthouse use cases with measured ROI. Run: agentic workflows with human-in-the-loop gates, expanding autonomy as trust and audit maturity grow. Throughout: cost attribution per team, an AI usage policy security signs off on, and success metrics defined per phase. The credibility move: anchor each phase in something you&#x27;ve personally shipped — assistant usage, a production RAG pipeline, an MCP deployment — so the roadmap reads as experience, not analyst slideware.</p></div></details>
+</section>
+
+<section id="sec-appx" class="domain">
+  <h2><span class="eyebrow">Appendix</span>Pitch, Negotiation &amp; Your Questions</h2>
+  <div class="appx"><h3>30-second elevator pitch</h3><p class="pitch">I&#x27;m a Platform, Cloud and AI Architect with 15+ years across pharma and financial services — currently at Takeda, where I lead platform engineering on AWS and EKS. My headline results: release cycles from 2 days to 15 minutes, service onboarding from 2 weeks to 2 hours, 25% AWS cost reduction, and a Developer NPS of +45 — I measure platform work like a product. Over the last two years I&#x27;ve extended that platform discipline into AI: a production MCP server deployment on AWS, RAG pipelines, and open-source CI/CD tooling under SKCloudOps, plus Claude Certified Architect credentials. What I&#x27;m looking for is a role where platform engineering rigor meets enterprise AI adoption — building the paved roads that let teams ship AI safely and fast.</p></div>
+  <div class="appx"><h3>Salary negotiation notes</h3><ul><li>Anchor on total compensation, not base alone — base, bonus, equity/RSUs, sign-on; on W2 contract roles, clarify benefits, PTO, and conversion terms explicitly.</li><li>Never give the first number if avoidable: &#x27;I&#x27;m focused on fit; I&#x27;m confident we can align on a competitive package — what&#x27;s the budgeted range?&#x27; Most US states&#x27; pay-transparency norms make this a fair question.</li><li>Have your walk-away number and your target number decided before the call — decide in calm, not in the moment.</li><li>Competing processes are leverage stated respectfully: &#x27;I&#x27;m in late stages elsewhere, but this role is my preference&#x27; — true scarcity, no bluffing.</li><li>Get every verbal agreement into the written offer before resigning anything; for visa-dependent moves, confirm H-1B transfer filing timeline and who pays premium processing in writing.</li><li>Negotiate after the offer, never during screens; the moment of maximum leverage is between offer and acceptance.</li><li>If base is capped, negotiate the rest: sign-on bonus, review timeline (6-month instead of 12), title, remote terms, learning budget.</li></ul></div>
+  <div class="appx"><h3>Questions to ask the interviewer</h3><ul><li>What does success look like for this role at 6 and 12 months — and how is it measured?</li><li>What&#x27;s the current state of platform/AI adoption, and what&#x27;s the biggest source of friction for engineering teams today?</li><li>How are decisions made between platform/architecture teams and application teams — paved road, mandate, or free-for-all?</li><li>What happened to the last big platform or AI initiative here — what worked and what didn&#x27;t?</li><li>How does the organization handle production incidents culturally — what does the retro process actually look like?</li><li>What&#x27;s the AI governance posture — is there a model gateway, usage policy, or is it still emerging?</li><li>What would make you, personally, consider this hire a great decision a year from now?</li></ul></div>
+</section>
+</main>
+</div>
+
+<script>
+const cards=[...document.querySelectorAll('.qcard[data-diff]')];
+function tally(){
+  let tot=0; const per={};
+  document.querySelectorAll('.done input').forEach(c=>{ if(c.checked){tot++; per[c.dataset.dom]=(per[c.dataset.dom]||0)+1;} });
+  document.getElementById('gtot').textContent=tot;
+  document.getElementById('gaugebar').style.width=(tot/51*100)+'%';
+  document.getElementById('cnt-aws').textContent=String(per['aws']||0).padStart(2,'0')+'/12';document.getElementById('cnt-ai').textContent=String(per['ai']||0).padStart(2,'0')+'/10';document.getElementById('cnt-k8s').textContent=String(per['k8s']||0).padStart(2,'0')+'/11';document.getElementById('cnt-tf').textContent=String(per['tf']||0).padStart(2,'0')+'/10';document.getElementById('cnt-beh').textContent=String(per['beh']||0).padStart(2,'0')+'/08';
+}
+function applyFilters(){
+  const q=document.getElementById('q').value.toLowerCase().trim();
+  const d=document.getElementById('diff').value;
+  cards.forEach(c=>{
+    const hit=(!q||c.textContent.toLowerCase().includes(q))&&(!d||c.dataset.diff===d);
+    c.classList.toggle('hidden',!hit);
+  });
+}
+document.getElementById('q').addEventListener('input',applyFilters);
+document.getElementById('diff').addEventListener('change',applyFilters);
+document.addEventListener('keydown',e=>{ if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();document.getElementById('q').focus();} });
+document.getElementById('theme').addEventListener('click',()=>{
+  const b=document.body; const dark=b.dataset.theme!=='dark';
+  b.dataset.theme=dark?'dark':'light';
+  document.getElementById('theme').textContent=dark?'Light mode':'Dark mode';
+});
+tally();
+</script>
+</body></html>
