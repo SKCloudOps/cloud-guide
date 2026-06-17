@@ -270,6 +270,637 @@
                                     <li><strong>Nothing matches?</strong> → DENY (implicit deny)</li>
                                 </ol>
 
+                                <!-- ===== IAM FLOW ANIMATION ===== -->
+                                <div class="iam-anim-wrap">
+                                    <div class="iam-anim-header">
+                                        <h4 style="margin:0 0 4px">🎬 IAM Policy Evaluation — Live Animation</h4>
+                                        <p style="margin:0;font-size:.85rem;opacity:.75">Watch how AWS evaluates every API request step by step</p>
+                                    </div>
+
+                                    <div class="iam-anim-scenarios">
+                                        <span class="iam-scenario-label">Choose Scenario:</span>
+                                        <button class="iam-scenario-btn active" data-scenario="allow">✅ Request Allowed</button>
+                                        <button class="iam-scenario-btn" data-scenario="explicit-deny">⛔ Explicit Deny</button>
+                                        <button class="iam-scenario-btn" data-scenario="scp-deny">🏛 SCP Blocks</button>
+                                        <button class="iam-scenario-btn" data-scenario="boundary-deny">🛡 Boundary Blocks</button>
+                                    </div>
+
+                                    <div class="iam-anim-controls">
+                                        <button class="iam-ctrl-btn play-btn" id="iamPlayBtn">▶ Play</button>
+                                        <button class="iam-ctrl-btn reset-btn" id="iamResetBtn">↺ Reset</button>
+                                        <div class="iam-speed-wrap">
+                                            <span>Speed:</span>
+                                            <input type="range" id="iamSpeedSlider" min="300" max="2000" value="1000" step="100" style="width:80px;accent-color:#6366f1">
+                                        </div>
+                                    </div>
+
+                                    <div class="iam-anim-flow" id="iamAnimFlow">
+                                        <!-- START NODE -->
+                                        <div class="iam-flow-node iam-start" id="iamN0">
+                                            <div class="iam-node-icon">🔐</div>
+                                            <div class="iam-node-title">API Request Made</div>
+                                            <div class="iam-node-desc">Principal (User/Role/Service) calls an AWS API</div>
+                                        </div>
+                                        <div class="iam-connector" id="iamC0"><div class="iam-connector-line"></div><div class="iam-connector-arrow">▼</div></div>
+
+                                        <!-- CHECK 1: Explicit Deny -->
+                                        <div class="iam-flow-row">
+                                            <div class="iam-deny-branch" id="iamDeny1">
+                                                <div class="iam-branch-label">YES</div>
+                                                <div class="iam-deny-badge">❌ DENY<span>Explicit deny always wins. No override possible.</span></div>
+                                            </div>
+                                            <div class="iam-flow-node iam-check" id="iamN1">
+                                                <div class="iam-check-num">CHECK 1</div>
+                                                <div class="iam-node-icon">⛔</div>
+                                                <div class="iam-node-title">Explicit Deny?</div>
+                                                <div class="iam-node-desc">Any policy contains an explicit <code>Deny</code> statement?</div>
+                                                <div class="iam-node-outputs">
+                                                    <span class="out-yes">YES → DENY</span>
+                                                    <span class="out-no">NO → continue</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="iam-connector" id="iamC1"><div class="iam-connector-line"></div><div class="iam-connector-arrow">▼</div></div>
+
+                                        <!-- CHECK 2: SCP -->
+                                        <div class="iam-flow-row">
+                                            <div class="iam-deny-branch" id="iamDeny2">
+                                                <div class="iam-branch-label">NO</div>
+                                                <div class="iam-deny-badge">❌ DENY<span>SCP is a guardrail — overrides identity policies.</span></div>
+                                            </div>
+                                            <div class="iam-flow-node iam-check" id="iamN2">
+                                                <div class="iam-check-num">CHECK 2</div>
+                                                <div class="iam-node-icon">🏛</div>
+                                                <div class="iam-node-title">SCP Allows?</div>
+                                                <div class="iam-node-desc">AWS Organizations Service Control Policy permits this action?</div>
+                                                <div class="iam-node-outputs">
+                                                    <span class="out-yes">YES → continue</span>
+                                                    <span class="out-no">NO → DENY</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="iam-connector" id="iamC2"><div class="iam-connector-line"></div><div class="iam-connector-arrow">▼</div></div>
+
+                                        <!-- CHECK 3: Resource-Based Policy -->
+                                        <div class="iam-flow-row">
+                                            <div class="iam-allow-branch" id="iamAllow3">
+                                                <div class="iam-branch-label">YES</div>
+                                                <div class="iam-allow-badge">✅ ALLOW<span>Resource policy grants access (e.g. S3 bucket policy).</span></div>
+                                            </div>
+                                            <div class="iam-flow-node iam-check" id="iamN3">
+                                                <div class="iam-check-num">CHECK 3</div>
+                                                <div class="iam-node-icon">📦</div>
+                                                <div class="iam-node-title">Resource-Based Policy Allows?</div>
+                                                <div class="iam-node-desc">S3 bucket, SQS, KMS key policy grants permission?</div>
+                                                <div class="iam-node-outputs">
+                                                    <span class="out-yes">YES → ALLOW</span>
+                                                    <span class="out-no">NO → continue</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="iam-connector" id="iamC3"><div class="iam-connector-line"></div><div class="iam-connector-arrow">▼</div></div>
+
+                                        <!-- CHECK 4: Permission Boundary -->
+                                        <div class="iam-flow-row">
+                                            <div class="iam-deny-branch" id="iamDeny4">
+                                                <div class="iam-branch-label">NO</div>
+                                                <div class="iam-deny-badge">❌ DENY<span>Boundary caps permissions — even if identity policy allows.</span></div>
+                                            </div>
+                                            <div class="iam-flow-node iam-check" id="iamN4">
+                                                <div class="iam-check-num">CHECK 4</div>
+                                                <div class="iam-node-icon">🛡</div>
+                                                <div class="iam-node-title">Permission Boundary Allows?</div>
+                                                <div class="iam-node-desc">If a boundary is set, does it permit this action? (ceiling check)</div>
+                                                <div class="iam-node-outputs">
+                                                    <span class="out-yes">YES → continue</span>
+                                                    <span class="out-no">NO → DENY</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="iam-connector" id="iamC4"><div class="iam-connector-line"></div><div class="iam-connector-arrow">▼</div></div>
+
+                                        <!-- CHECK 5: Identity-Based Policy -->
+                                        <div class="iam-flow-row">
+                                            <div class="iam-deny-branch" id="iamDeny5">
+                                                <div class="iam-branch-label">NO</div>
+                                                <div class="iam-deny-badge">❌ DENY<span>Implicit deny — nothing grants this permission.</span></div>
+                                            </div>
+                                            <div class="iam-flow-node iam-check" id="iamN5">
+                                                <div class="iam-check-num">CHECK 5</div>
+                                                <div class="iam-node-icon">👤</div>
+                                                <div class="iam-node-title">Identity-Based Policy Allows?</div>
+                                                <div class="iam-node-desc">User, Role, or Group policy grants this action?</div>
+                                                <div class="iam-node-outputs">
+                                                    <span class="out-yes">YES → ALLOW</span>
+                                                    <span class="out-no">NO → DENY</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="iam-connector" id="iamC5"><div class="iam-connector-line"></div><div class="iam-connector-arrow">▼</div></div>
+
+                                        <!-- END: ALLOW -->
+                                        <div class="iam-flow-node iam-final-allow" id="iamFinalAllow">
+                                            <div class="iam-node-icon">✅</div>
+                                            <div class="iam-node-title">ACCESS GRANTED</div>
+                                            <div class="iam-node-desc">AWS executes the API action on the resource</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="iam-anim-status" id="iamAnimStatus">
+                                        <span class="iam-status-icon">💡</span>
+                                        <span id="iamStatusText">Select a scenario above, then press ▶ Play</span>
+                                    </div>
+                                </div>
+
+                                <style>
+                                .iam-anim-wrap {
+                                    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+                                    border: 1px solid #334155;
+                                    border-radius: 12px;
+                                    padding: 20px;
+                                    margin: 20px 0;
+                                    font-family: inherit;
+                                }
+                                .iam-anim-header { margin-bottom: 14px; }
+                                .iam-anim-header h4 { color: #e2e8f0; }
+                                .iam-anim-scenarios {
+                                    display: flex;
+                                    flex-wrap: wrap;
+                                    gap: 8px;
+                                    align-items: center;
+                                    margin-bottom: 12px;
+                                }
+                                .iam-scenario-label { color: #94a3b8; font-size: .82rem; white-space: nowrap; }
+                                .iam-scenario-btn {
+                                    padding: 5px 12px;
+                                    border-radius: 20px;
+                                    border: 1px solid #475569;
+                                    background: #1e293b;
+                                    color: #cbd5e1;
+                                    font-size: .8rem;
+                                    cursor: pointer;
+                                    transition: all .2s;
+                                }
+                                .iam-scenario-btn:hover { border-color: #6366f1; color: #a5b4fc; }
+                                .iam-scenario-btn.active { background: #312e81; border-color: #6366f1; color: #a5b4fc; }
+                                .iam-anim-controls {
+                                    display: flex;
+                                    gap: 10px;
+                                    align-items: center;
+                                    margin-bottom: 18px;
+                                    flex-wrap: wrap;
+                                }
+                                .iam-ctrl-btn {
+                                    padding: 7px 18px;
+                                    border-radius: 8px;
+                                    border: none;
+                                    font-size: .85rem;
+                                    cursor: pointer;
+                                    font-weight: 600;
+                                    transition: all .2s;
+                                }
+                                .play-btn { background: #4f46e5; color: #fff; }
+                                .play-btn:hover { background: #4338ca; }
+                                .play-btn:disabled { background: #374151; color: #6b7280; cursor: not-allowed; }
+                                .reset-btn { background: #374151; color: #d1d5db; }
+                                .reset-btn:hover { background: #4b5563; }
+                                .iam-speed-wrap { display: flex; align-items: center; gap: 6px; color: #94a3b8; font-size: .8rem; }
+                                .iam-anim-flow { display: flex; flex-direction: column; align-items: center; gap: 0; }
+                                .iam-flow-node {
+                                    width: 100%;
+                                    max-width: 480px;
+                                    background: #1e293b;
+                                    border: 2px solid #334155;
+                                    border-radius: 10px;
+                                    padding: 14px 16px;
+                                    text-align: center;
+                                    transition: all .35s ease;
+                                    position: relative;
+                                }
+                                .iam-flow-node.iam-start { border-color: #6366f1; background: #1e1b4b; }
+                                .iam-flow-node.iam-check .iam-check-num {
+                                    position: absolute;
+                                    top: -10px;
+                                    left: 50%;
+                                    transform: translateX(-50%);
+                                    background: #334155;
+                                    color: #94a3b8;
+                                    font-size: .65rem;
+                                    font-weight: 700;
+                                    letter-spacing: .08em;
+                                    padding: 2px 8px;
+                                    border-radius: 10px;
+                                    transition: all .35s;
+                                }
+                                .iam-node-icon { font-size: 1.4rem; margin-bottom: 4px; }
+                                .iam-node-title { color: #e2e8f0; font-weight: 600; font-size: .9rem; margin-bottom: 4px; }
+                                .iam-node-desc { color: #94a3b8; font-size: .78rem; margin-bottom: 6px; }
+                                .iam-node-desc code { background: #0f172a; padding: 1px 4px; border-radius: 3px; color: #f472b6; font-size: .75rem; }
+                                .iam-node-outputs { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+                                .out-yes, .out-no {
+                                    font-size: .73rem;
+                                    padding: 2px 8px;
+                                    border-radius: 4px;
+                                    font-weight: 600;
+                                }
+                                .out-yes { background: #14532d; color: #86efac; }
+                                .out-no { background: #450a0a; color: #fca5a5; }
+                                .iam-final-allow { border-color: #22c55e; background: #052e16; max-width: 480px; }
+                                .iam-final-allow .iam-node-title { color: #4ade80; font-size: 1rem; }
+
+                                /* Connector */
+                                .iam-connector {
+                                    display: flex;
+                                    flex-direction: column;
+                                    align-items: center;
+                                    gap: 0;
+                                    height: 28px;
+                                    position: relative;
+                                }
+                                .iam-connector-line {
+                                    width: 2px;
+                                    height: 18px;
+                                    background: #334155;
+                                    transition: background .35s;
+                                }
+                                .iam-connector-arrow {
+                                    color: #334155;
+                                    font-size: .7rem;
+                                    line-height: 1;
+                                    transition: color .35s;
+                                }
+                                .iam-connector.active .iam-connector-line { background: #6366f1; }
+                                .iam-connector.active .iam-connector-arrow { color: #6366f1; }
+                                .iam-connector.passed-allow .iam-connector-line { background: #22c55e; }
+                                .iam-connector.passed-allow .iam-connector-arrow { color: #22c55e; }
+
+                                /* Flow row with branch */
+                                .iam-flow-row {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 12px;
+                                    width: 100%;
+                                    max-width: 640px;
+                                    justify-content: center;
+                                }
+                                .iam-deny-branch, .iam-allow-branch {
+                                    display: flex;
+                                    flex-direction: column;
+                                    align-items: center;
+                                    gap: 4px;
+                                    opacity: 0;
+                                    transform: translateX(-20px);
+                                    transition: opacity .4s, transform .4s;
+                                    min-width: 90px;
+                                    flex-shrink: 0;
+                                }
+                                .iam-deny-branch.visible, .iam-allow-branch.visible {
+                                    opacity: 1;
+                                    transform: translateX(0);
+                                }
+                                .iam-branch-label {
+                                    font-size: .7rem;
+                                    font-weight: 700;
+                                    color: #64748b;
+                                    letter-spacing: .06em;
+                                }
+                                .iam-deny-badge, .iam-allow-badge {
+                                    padding: 6px 10px;
+                                    border-radius: 8px;
+                                    font-size: .75rem;
+                                    font-weight: 700;
+                                    text-align: center;
+                                    position: relative;
+                                    cursor: default;
+                                }
+                                .iam-deny-badge {
+                                    background: #450a0a;
+                                    color: #f87171;
+                                    border: 1px solid #7f1d1d;
+                                }
+                                .iam-allow-badge {
+                                    background: #052e16;
+                                    color: #4ade80;
+                                    border: 1px solid #14532d;
+                                }
+                                .iam-deny-badge span, .iam-allow-badge span {
+                                    display: block;
+                                    font-size: .65rem;
+                                    font-weight: 400;
+                                    color: #94a3b8;
+                                    margin-top: 3px;
+                                    white-space: normal;
+                                    line-height: 1.3;
+                                }
+
+                                /* Active / passed / denied states */
+                                .iam-flow-node.active {
+                                    border-color: #6366f1 !important;
+                                    background: #1e1b4b !important;
+                                    box-shadow: 0 0 0 3px rgba(99,102,241,.3), 0 0 20px rgba(99,102,241,.2);
+                                    transform: scale(1.02);
+                                }
+                                .iam-flow-node.active .iam-check-num {
+                                    background: #4f46e5;
+                                    color: #fff;
+                                }
+                                .iam-flow-node.passed {
+                                    border-color: #22c55e !important;
+                                    background: #052e16 !important;
+                                }
+                                .iam-flow-node.passed .iam-check-num {
+                                    background: #166534;
+                                    color: #86efac;
+                                }
+                                .iam-flow-node.denied {
+                                    border-color: #ef4444 !important;
+                                    background: #450a0a !important;
+                                    box-shadow: 0 0 0 3px rgba(239,68,68,.25);
+                                }
+                                .iam-flow-node.denied .iam-node-title { color: #fca5a5; }
+                                .iam-flow-node.dimmed {
+                                    opacity: .35;
+                                }
+                                .iam-final-allow.active, .iam-final-allow.passed {
+                                    border-color: #4ade80 !important;
+                                    background: #052e16 !important;
+                                    box-shadow: 0 0 0 3px rgba(74,222,128,.3), 0 0 24px rgba(74,222,128,.2);
+                                    transform: scale(1.04);
+                                }
+
+                                /* Status bar */
+                                .iam-anim-status {
+                                    margin-top: 16px;
+                                    display: flex;
+                                    align-items: flex-start;
+                                    gap: 8px;
+                                    background: #0f172a;
+                                    border: 1px solid #334155;
+                                    border-radius: 8px;
+                                    padding: 10px 14px;
+                                    min-height: 44px;
+                                }
+                                .iam-status-icon { font-size: 1.1rem; flex-shrink: 0; }
+                                #iamStatusText { color: #cbd5e1; font-size: .82rem; line-height: 1.5; }
+
+                                /* Pulse animation on active node */
+                                @keyframes iamPulse {
+                                    0%,100% { box-shadow: 0 0 0 3px rgba(99,102,241,.3), 0 0 20px rgba(99,102,241,.15); }
+                                    50% { box-shadow: 0 0 0 6px rgba(99,102,241,.2), 0 0 30px rgba(99,102,241,.3); }
+                                }
+                                .iam-flow-node.active { animation: iamPulse 1.2s ease-in-out infinite; }
+                                @keyframes iamAllowPulse {
+                                    0%,100% { box-shadow: 0 0 0 3px rgba(74,222,128,.3), 0 0 24px rgba(74,222,128,.15); }
+                                    50% { box-shadow: 0 0 0 8px rgba(74,222,128,.15), 0 0 36px rgba(74,222,128,.3); }
+                                }
+                                .iam-final-allow.active { animation: iamAllowPulse 1.2s ease-in-out infinite; }
+
+                                @media (max-width: 600px) {
+                                    .iam-flow-row { flex-direction: column-reverse; }
+                                    .iam-deny-branch, .iam-allow-branch { flex-direction: row; min-width: unset; }
+                                    .iam-flow-node { max-width: 100%; }
+                                }
+                                </style>
+
+                                <script>
+                                (function() {
+                                    var currentScenario = 'allow';
+                                    var animTimer = null;
+                                    var isPlaying = false;
+
+                                    var scenarios = {
+                                        'allow': {
+                                            label: 'Request Allowed — passes all checks',
+                                            steps: [
+                                                { node: 'iamN0', connector: null, branch: null, status: '🔐 An IAM principal (e.g. Lambda function role) makes an API call to S3:GetObject.' },
+                                                { node: 'iamN1', connector: 'iamC0', branch: null, status: '⛔ CHECK 1 — Scanning all attached policies for an explicit Deny… No explicit deny found.' },
+                                                { node: 'iamN2', connector: 'iamC1', branch: null, status: '🏛 CHECK 2 — Checking AWS Organizations SCP… The SCP allows S3 actions in this account.' },
+                                                { node: 'iamN3', connector: 'iamC2', branch: null, status: '📦 CHECK 3 — Looking for a resource-based policy (e.g. S3 bucket policy)… No bucket policy granting access.' },
+                                                { node: 'iamN4', connector: 'iamC3', branch: null, status: '🛡 CHECK 4 — Checking Permission Boundary… Boundary allows S3 read actions. Continuing.' },
+                                                { node: 'iamN5', connector: 'iamC4', branch: null, status: '👤 CHECK 5 — Checking identity-based policy (IAM role policy)… Role has s3:GetObject on this bucket. ✅' },
+                                                { node: 'iamFinalAllow', connector: 'iamC5', branch: null, status: '✅ ACCESS GRANTED — All checks passed. AWS executes the API call and returns the S3 object.' }
+                                            ],
+                                            deniedAt: null,
+                                            allowedAt: 6
+                                        },
+                                        'explicit-deny': {
+                                            label: 'Explicit Deny — stops immediately',
+                                            steps: [
+                                                { node: 'iamN0', connector: null, branch: null, status: '🔐 A developer tries to call s3:DeleteBucket. Their role has an identity policy that allows it.' },
+                                                { node: 'iamN1', connector: 'iamC0', branch: 'iamDeny1', status: '⛔ CHECK 1 — Found an explicit Deny! A permission boundary has Deny s3:DeleteBucket. STOP — explicit deny always wins. No other policy can override this.' }
+                                            ],
+                                            deniedAt: 1,
+                                            allowedAt: null
+                                        },
+                                        'scp-deny': {
+                                            label: 'SCP Blocks — org-level guardrail',
+                                            steps: [
+                                                { node: 'iamN0', connector: null, branch: null, status: '🔐 A developer in a sandbox account tries to launch an EC2 instance in eu-central-1 (Frankfurt).' },
+                                                { node: 'iamN1', connector: 'iamC0', branch: null, status: '⛔ CHECK 1 — No explicit Deny found in any policy. Proceeding to SCP check.' },
+                                                { node: 'iamN2', connector: 'iamC1', branch: 'iamDeny2', status: '🏛 CHECK 2 — SCP on this OU says: Deny all regions except us-east-1. eu-central-1 is blocked. DENY — SCP is an organization-level guardrail that overrides all identity policies.' }
+                                            ],
+                                            deniedAt: 2,
+                                            allowedAt: null
+                                        },
+                                        'boundary-deny': {
+                                            label: 'Permission Boundary Blocks',
+                                            steps: [
+                                                { node: 'iamN0', connector: null, branch: null, status: '🔐 A developer role (created by another developer) tries to call iam:CreateUser to escalate privileges.' },
+                                                { node: 'iamN1', connector: 'iamC0', branch: null, status: '⛔ CHECK 1 — No explicit Deny in any policy. Continuing.' },
+                                                { node: 'iamN2', connector: 'iamC1', branch: null, status: '🏛 CHECK 2 — SCP allows IAM actions in this account. Continuing.' },
+                                                { node: 'iamN3', connector: 'iamC2', branch: null, status: '📦 CHECK 3 — No resource-based policy on IAM (IAM has no resource policies). Continuing.' },
+                                                { node: 'iamN4', connector: 'iamC3', branch: 'iamDeny4', status: '🛡 CHECK 4 — Permission Boundary check! The boundary policy restricts this role to only s3:* and ec2:*. iam:CreateUser is NOT in the boundary. DENY — prevents privilege escalation.' }
+                                            ],
+                                            deniedAt: 4,
+                                            allowedAt: null
+                                        }
+                                    };
+
+                                    function getEl(id) { return document.getElementById(id); }
+
+                                    function resetAll() {
+                                        isPlaying = false;
+                                        if (animTimer) { clearTimeout(animTimer); animTimer = null; }
+                                        var btn = getEl('iamPlayBtn');
+                                        if (btn) { btn.textContent = '▶ Play'; btn.disabled = false; }
+
+                                        ['iamN0','iamN1','iamN2','iamN3','iamN4','iamN5','iamFinalAllow'].forEach(function(id) {
+                                            var el = getEl(id);
+                                            if (el) el.className = el.className.replace(/\s*(active|passed|denied|dimmed)\s*/g,' ').trim();
+                                        });
+                                        ['iamC0','iamC1','iamC2','iamC3','iamC4','iamC5'].forEach(function(id) {
+                                            var el = getEl(id);
+                                            if (el) el.className = el.className.replace(/\s*(active|passed-allow)\s*/g,' ').trim();
+                                        });
+                                        ['iamDeny1','iamDeny2','iamDeny4','iamAllow3'].forEach(function(id) {
+                                            var el = getEl(id);
+                                            if (el) el.classList.remove('visible');
+                                        });
+                                        var statusEl = getEl('iamStatusText');
+                                        if (statusEl) statusEl.textContent = 'Select a scenario above, then press ▶ Play';
+                                        var iconEl = document.querySelector('.iam-status-icon');
+                                        if (iconEl) iconEl.textContent = '💡';
+                                    }
+
+                                    function removeClass(el, cls) {
+                                        if (el) el.classList.remove(cls);
+                                    }
+                                    function addClass(el, cls) {
+                                        if (el) el.classList.add(cls);
+                                    }
+
+                                    function runStep(stepIdx, steps, deniedAt, allowedAt) {
+                                        if (stepIdx >= steps.length) {
+                                            isPlaying = false;
+                                            var btn = getEl('iamPlayBtn');
+                                            if (btn) { btn.textContent = '▶ Play'; btn.disabled = false; }
+                                            return;
+                                        }
+                                        var step = steps[stepIdx];
+                                        var speed = parseInt(getEl('iamSpeedSlider').value, 10) || 1000;
+
+                                        // Update connector
+                                        if (step.connector) {
+                                            var conn = getEl(step.connector);
+                                            if (conn) {
+                                                conn.classList.remove('passed-allow');
+                                                conn.classList.add('active');
+                                            }
+                                        }
+
+                                        // Deactivate previous node
+                                        if (stepIdx > 0) {
+                                            var prevNode = getEl(steps[stepIdx - 1].node);
+                                            if (prevNode) {
+                                                prevNode.classList.remove('active');
+                                                if (deniedAt !== null && stepIdx - 1 === deniedAt) {
+                                                    prevNode.classList.add('denied');
+                                                } else {
+                                                    prevNode.classList.add('passed');
+                                                }
+                                            }
+                                            // Update connector color after passing
+                                            if (step.connector && deniedAt === null || (deniedAt !== null && stepIdx <= deniedAt)) {
+                                                var c = getEl(step.connector);
+                                                if (c && stepIdx < steps.length - 1) {
+                                                    // will update after node activates
+                                                }
+                                            }
+                                        }
+
+                                        // Activate current node
+                                        var curNode = getEl(step.node);
+                                        if (curNode) {
+                                            curNode.classList.remove('dimmed','passed','denied');
+                                            curNode.classList.add('active');
+                                        }
+
+                                        // Show branch if denied at this step
+                                        if (step.branch) {
+                                            var branchEl = getEl(step.branch);
+                                            if (branchEl) branchEl.classList.add('visible');
+                                        }
+
+                                        // Update status
+                                        var statusEl = getEl('iamStatusText');
+                                        var iconEl = document.querySelector('.iam-status-icon');
+                                        if (statusEl) statusEl.textContent = step.status;
+                                        if (iconEl) {
+                                            if (step.node === 'iamFinalAllow') iconEl.textContent = '✅';
+                                            else if (deniedAt !== null && stepIdx === steps.length - 1) iconEl.textContent = '❌';
+                                            else iconEl.textContent = '▶';
+                                        }
+
+                                        // If this is the last step (denied or allowed)
+                                        var isLast = stepIdx === steps.length - 1;
+                                        if (isLast) {
+                                            if (deniedAt !== null) {
+                                                // Final denied node
+                                                if (curNode) {
+                                                    curNode.classList.remove('active');
+                                                    curNode.classList.add('denied');
+                                                }
+                                                if (iconEl) iconEl.textContent = '❌';
+                                            }
+                                            isPlaying = false;
+                                            var btn = getEl('iamPlayBtn');
+                                            if (btn) { btn.textContent = '▶ Play'; btn.disabled = false; }
+                                            // Also mark prior connector as passed-allow if allowed path
+                                            if (allowedAt !== null && step.connector) {
+                                                var fc = getEl(step.connector);
+                                                if (fc) { fc.classList.remove('active'); fc.classList.add('passed-allow'); }
+                                            }
+                                            return;
+                                        }
+
+                                        // Mark passed connector green after showing node
+                                        if (step.connector) {
+                                            var prevConn = getEl(step.connector);
+                                            if (prevConn) {
+                                                prevConn.classList.remove('active');
+                                                prevConn.classList.add('passed-allow');
+                                            }
+                                        }
+
+                                        animTimer = setTimeout(function() {
+                                            runStep(stepIdx + 1, steps, deniedAt, allowedAt);
+                                        }, speed);
+                                    }
+
+                                    function play() {
+                                        if (isPlaying) return;
+                                        resetAll();
+                                        isPlaying = true;
+                                        var btn = getEl('iamPlayBtn');
+                                        if (btn) { btn.textContent = '⏸ Pause'; btn.disabled = false; }
+
+                                        var sc = scenarios[currentScenario];
+                                        var speed = parseInt(getEl('iamSpeedSlider').value, 10) || 1000;
+
+                                        // Dim all nodes
+                                        ['iamN1','iamN2','iamN3','iamN4','iamN5','iamFinalAllow'].forEach(function(id) {
+                                            var el = getEl(id);
+                                            if (el) el.classList.add('dimmed');
+                                        });
+
+                                        animTimer = setTimeout(function() {
+                                            runStep(0, sc.steps, sc.deniedAt, sc.allowedAt);
+                                        }, 200);
+                                    }
+
+                                    // Bind play button
+                                    var playBtn = getEl('iamPlayBtn');
+                                    if (playBtn) {
+                                        playBtn.addEventListener('click', function() {
+                                            if (isPlaying) {
+                                                // Pause
+                                                if (animTimer) { clearTimeout(animTimer); animTimer = null; }
+                                                isPlaying = false;
+                                                playBtn.textContent = '▶ Resume';
+                                            } else {
+                                                play();
+                                            }
+                                        });
+                                    }
+
+                                    // Bind reset button
+                                    var resetBtn = getEl('iamResetBtn');
+                                    if (resetBtn) resetBtn.addEventListener('click', resetAll);
+
+                                    // Bind scenario buttons
+                                    var scenarioBtns = document.querySelectorAll('.iam-scenario-btn');
+                                    scenarioBtns.forEach(function(btn) {
+                                        btn.addEventListener('click', function() {
+                                            scenarioBtns.forEach(function(b) { b.classList.remove('active'); });
+                                            btn.classList.add('active');
+                                            currentScenario = btn.getAttribute('data-scenario');
+                                            resetAll();
+                                        });
+                                    });
+                                })();
+                                </script>
+                                <!-- ===== END IAM FLOW ANIMATION ===== -->
+
                                 <h4>Roles vs Users — The Rule</h4>
                                 <p><strong>Never use long-term credentials (access keys).</strong> Use IAM Roles
                                     everywhere: EC2 instance profiles, ECS task roles, Lambda execution roles,
