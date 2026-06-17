@@ -189,28 +189,107 @@
                         <figcaption>Networking &amp; VPC — Enterprise Architecture Overview</figcaption>
                     </figure>
 
-                    <section class="network-flow-demo" aria-label="Animated AWS network traffic flow">
-                        <div class="flow-node flow-users">Users</div>
-                        <div class="flow-line">
-                            <span class="flow-packet packet-one"></span>
-                            <span class="flow-packet packet-two"></span>
+                    <section class="vpc-flow-lab" aria-labelledby="vpcFlowTitle">
+                        <div class="vpc-flow-copy">
+                            <p class="flow-kicker">Animated VPC Flow</p>
+                            <h2 id="vpcFlowTitle">How traffic moves through a production VPC</h2>
+                            <p>Follow the main paths: user requests enter through DNS, the Internet Gateway, and the
+                                public load balancer; private workloads call out through NAT; hybrid networks connect
+                                through Transit Gateway.</p>
                         </div>
-                        <div class="flow-node flow-dns">Route 53</div>
-                        <div class="flow-line">
-                            <span class="flow-packet packet-one"></span>
-                            <span class="flow-packet packet-two"></span>
+                        <div class="vpc-flow-canvas" aria-label="Animated diagram of inbound, outbound, and hybrid VPC traffic paths">
+                            <svg class="vpc-flow-svg" viewBox="0 0 980 540" role="img" aria-labelledby="vpcFlowSvgTitle vpcFlowSvgDesc">
+                                <title id="vpcFlowSvgTitle">Animated VPC Traffic Flow</title>
+                                <desc id="vpcFlowSvgDesc">Traffic flows from users to Route 53, Internet Gateway, ALB, private app tier, and data tier. Private app traffic exits through NAT Gateway. On-premises traffic enters through Transit Gateway.</desc>
+                                <defs>
+                                    <filter id="packetGlow" x="-80%" y="-80%" width="260%" height="260%">
+                                        <feGaussianBlur stdDeviation="4" result="blur" />
+                                        <feMerge>
+                                            <feMergeNode in="blur" />
+                                            <feMergeNode in="SourceGraphic" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+
+                                <rect class="vpc-shell" x="170" y="130" width="770" height="365" rx="18" />
+                                <text class="vpc-title" x="195" y="158">VPC 10.0.0.0/16</text>
+
+                                <rect class="subnet public-subnet" x="320" y="172" width="190" height="275" rx="14" />
+                                <text class="subnet-label" x="340" y="198">Public Subnets</text>
+                                <rect class="subnet app-subnet" x="560" y="172" width="190" height="118" rx="14" />
+                                <text class="subnet-label" x="580" y="198">Private App Subnets</text>
+                                <rect class="subnet data-subnet" x="560" y="330" width="190" height="118" rx="14" />
+                                <text class="subnet-label" x="580" y="356">Private Data Subnets</text>
+                                <rect class="subnet transit-subnet" x="195" y="360" width="110" height="74" rx="14" />
+                                <text class="subnet-label compact" x="214" y="385">Transit</text>
+
+                                <path class="flow-route inbound-route" d="M140 76 L235 76 L248 206 L365 230 L560 230 L645 230 L645 330 L645 382" />
+                                <path class="flow-route outbound-route" d="M645 230 L560 230 L415 368 L248 206 L140 196" />
+                                <path class="flow-route hybrid-route" d="M140 420 L250 420 L250 397 L560 230 L645 230" />
+
+                                <g class="vpc-node node-users">
+                                    <rect x="30" y="51" width="110" height="50" rx="10" />
+                                    <text x="85" y="81">Users</text>
+                                </g>
+                                <g class="vpc-node node-dns">
+                                    <rect x="180" y="51" width="110" height="50" rx="10" />
+                                    <text x="235" y="81">Route 53</text>
+                                </g>
+                                <g class="vpc-node node-internet">
+                                    <rect x="30" y="171" width="110" height="50" rx="10" />
+                                    <text x="85" y="201">Internet</text>
+                                </g>
+                                <g class="vpc-node node-onprem">
+                                    <rect x="30" y="395" width="110" height="50" rx="10" />
+                                    <text x="85" y="425">On-prem</text>
+                                </g>
+                                <g class="vpc-node node-igw">
+                                    <rect x="195" y="181" width="105" height="50" rx="10" />
+                                    <text x="248" y="211">IGW</text>
+                                </g>
+                                <g class="vpc-node node-alb">
+                                    <rect x="365" y="205" width="100" height="50" rx="10" />
+                                    <text x="415" y="235">ALB</text>
+                                </g>
+                                <g class="vpc-node node-nat">
+                                    <rect x="365" y="343" width="100" height="50" rx="10" />
+                                    <text x="415" y="373">NAT GW</text>
+                                </g>
+                                <g class="vpc-node node-tgw">
+                                    <rect x="206" y="395" width="88" height="50" rx="10" />
+                                    <text x="250" y="425">TGW</text>
+                                </g>
+                                <g class="vpc-node node-app">
+                                    <rect x="595" y="205" width="100" height="50" rx="10" />
+                                    <text x="645" y="235">App</text>
+                                </g>
+                                <g class="vpc-node node-db">
+                                    <rect x="595" y="357" width="100" height="50" rx="10" />
+                                    <text x="645" y="387">RDS</text>
+                                </g>
+
+                                <circle class="flow-packet inbound-packet" r="7" filter="url(#packetGlow)">
+                                    <animateMotion dur="7s" repeatCount="indefinite" path="M140 76 L235 76 L248 206 L365 230 L560 230 L645 230 L645 330 L645 382" />
+                                </circle>
+                                <circle class="flow-packet inbound-packet second" r="7" filter="url(#packetGlow)">
+                                    <animateMotion dur="7s" begin="2.3s" repeatCount="indefinite" path="M140 76 L235 76 L248 206 L365 230 L560 230 L645 230 L645 330 L645 382" />
+                                </circle>
+                                <circle class="flow-packet outbound-packet" r="7" filter="url(#packetGlow)">
+                                    <animateMotion dur="6s" repeatCount="indefinite" path="M645 230 L560 230 L415 368 L248 206 L140 196" />
+                                </circle>
+                                <circle class="flow-packet hybrid-packet" r="7" filter="url(#packetGlow)">
+                                    <animateMotion dur="6.5s" repeatCount="indefinite" path="M140 420 L250 420 L250 397 L560 230 L645 230" />
+                                </circle>
+                            </svg>
                         </div>
-                        <div class="flow-node flow-edge">ALB</div>
-                        <div class="flow-line">
-                            <span class="flow-packet packet-one"></span>
-                            <span class="flow-packet packet-two"></span>
-                        </div>
-                        <div class="flow-node flow-app">Private App</div>
-                        <div class="flow-line">
-                            <span class="flow-packet packet-one"></span>
-                            <span class="flow-packet packet-two"></span>
-                        </div>
-                        <div class="flow-node flow-data">Data Tier</div>
+                        <ol class="vpc-flow-steps">
+                            <li><span>1</span> DNS resolves the application name in Route 53.</li>
+                            <li><span>2</span> Internet traffic enters through the IGW and reaches the public ALB.</li>
+                            <li><span>3</span> The ALB forwards only allowed traffic to private app subnets.</li>
+                            <li><span>4</span> App servers reach the database inside private data subnets.</li>
+                            <li><span>5</span> Private workloads use NAT Gateway for outbound internet access.</li>
+                            <li><span>6</span> On-premises networks use Transit Gateway for hybrid routing.</li>
+                        </ol>
                     </section>
 
                     <!-- Topic 1: VPC Design -->
