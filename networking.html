@@ -189,6 +189,30 @@
                         <figcaption>Networking &amp; VPC — Enterprise Architecture Overview</figcaption>
                     </figure>
 
+                    <section class="network-flow-demo" aria-label="Animated AWS network traffic flow">
+                        <div class="flow-node flow-users">Users</div>
+                        <div class="flow-line">
+                            <span class="flow-packet packet-one"></span>
+                            <span class="flow-packet packet-two"></span>
+                        </div>
+                        <div class="flow-node flow-dns">Route 53</div>
+                        <div class="flow-line">
+                            <span class="flow-packet packet-one"></span>
+                            <span class="flow-packet packet-two"></span>
+                        </div>
+                        <div class="flow-node flow-edge">ALB</div>
+                        <div class="flow-line">
+                            <span class="flow-packet packet-one"></span>
+                            <span class="flow-packet packet-two"></span>
+                        </div>
+                        <div class="flow-node flow-app">Private App</div>
+                        <div class="flow-line">
+                            <span class="flow-packet packet-one"></span>
+                            <span class="flow-packet packet-two"></span>
+                        </div>
+                        <div class="flow-node flow-data">Data Tier</div>
+                    </section>
+
                     <!-- Topic 1: VPC Design -->
                     <article id="vpc-design" class="topic-card" data-difficulty="intermediate">
                         <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
