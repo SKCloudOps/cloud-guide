@@ -39,6 +39,16 @@
       --c-backup:  var(--aws-storage);
       --c-devops:  var(--aws-devtools);
 
+      --aws-neutral: #687078;
+      --aws-surface: #fafafa;
+      --aws-border-light: #eaeded;
+      --aws-orange-soft: #fff7e6;
+      --aws-net-soft: #f5f0ff;
+      --aws-sec-soft: #fff1f3;
+      --aws-db-soft: #eef6ff;
+      --aws-storage-soft: #f2f8ef;
+      --aws-integ-soft: #eef9fa;
+      --aws-devtools-soft: #fff1f1;
       --radius: 8px;
       --shadow: 0 2px 8px rgba(0,0,0,0.08);
       --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
@@ -59,7 +69,7 @@
       background: var(--aws-ink);
       color: white;
       text-align: center;
-      padding: 28px 24px 24px;
+      padding: 14px 24px;
       border-bottom: 4px solid var(--aws-orange);
       position: relative;
     }
@@ -92,23 +102,41 @@
     }
     .header-diagram-btns {
       display: flex;
-      gap: 12px;
+      gap: 8px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-top: 18px;
+      margin-top: 0;
+      width: fit-content;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px;
+      box-shadow: var(--shadow-md);
     }
     .hd-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      background: transparent;
+      border: 1px solid transparent;
       border-radius: 6px;
-      padding: 9px 22px;
-      font-size: 13px;
-      font-weight: 700;
+      color: var(--aws-ink2);
+      padding: 9px 18px;
+      font-size: 12px;
+      font-weight: 800;
       cursor: pointer;
       font-family: inherit;
-      transition: all .15s;
+      transition: background .15s, border-color .15s, color .15s;
       text-decoration: none;
+    }
+    .hd-btn:hover { background: #FFF8EE; border-color: rgba(255,153,0,0.55); color: var(--aws-ink); }
+    .header-diagram-btns .hd-btn.active {
+      background: var(--aws-orange);
+      border-color: var(--aws-orange);
+      color: var(--aws-ink);
     }
     .hd-btn-primary {
       background: var(--aws-orange);
@@ -816,6 +844,8 @@
       border-color: #e68900;
     }
 
+    .arch-tab-panel[hidden] { display: none !important; }
+
     /* =====================================================
        AWS TOOLTIP SYSTEM
     ===================================================== */
@@ -924,20 +954,34 @@
      PAGE HEADER
 ════════════════════════════════════════════════════════════════ -->
 <header class="page-header">
-  <div class="aws-brand">Amazon Web Services</div>
-  <h1>Enterprise-Grade AWS Architecture</h1>
-  <p class="subtitle">Edge · EC2 · Aurora PostgreSQL Multi-AZ &nbsp;|&nbsp; Security · Observability · Disaster Recovery · Multi-Region</p>
-  <div class="header-diagram-btns">
-    <button class="hd-btn hd-btn-primary" onclick="openLightbox('lb1')">
-      🖼️ View Architecture v1 &mdash; Basic
+  <div class="header-diagram-btns" role="tablist" aria-label="Architecture diagram tabs">
+    <button class="hd-btn active" type="button" role="tab" aria-selected="true" data-arch-tab="basic" onclick="switchArchTab('basic')">
+      Architecture v1 &mdash; Basic
     </button>
-    <button class="hd-btn hd-btn-secondary" onclick="openLightbox('lb2')">
-      🗺️ View Architecture v2 &mdash; Enhanced
+    <button class="hd-btn" type="button" role="tab" aria-selected="false" data-arch-tab="enhanced" onclick="switchArchTab('enhanced')">
+      Architecture v2 &mdash; Enhanced
     </button>
   </div>
 </header>
 
 <div class="arch-wrapper">
+
+  <section class="arch-tab-panel active" data-arch-panel="basic">
+
+  <div style="margin-bottom:8px;">
+    <div style="background:#232F3E;border-radius:12px;padding:28px 24px 22px;text-align:center;color:#fff;border:2px solid #FF9900;">
+      <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.4px;margin-bottom:8px;">🏢 Enterprise-Grade AWS Architecture — Basic</h2>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px;">
+        <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🌐 Edge Traffic</span>
+        <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">☁️ Multi-AZ VPC</span>
+        <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🖥️ EC2 Auto Scaling</span>
+        <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🗄️ Aurora PostgreSQL</span>
+      </div>
+      <button class="view-diagram-btn" onclick="openLightbox('lb1')">
+        🖼️ View Full Architecture Diagram
+      </button>
+    </div>
+  </div>
 
   <!-- ═══════════════════════════════════════════════════════════
        ROW 1 — Edge Traffic Flow
@@ -1404,10 +1448,12 @@
     <span class="legend-item"><span class="legend-swatch" style="background:#E7157B;"></span>Governance</span>
   </div>
 
+  </section>
+
 <!-- ═══════════════════════════════════════════════════════════
      ENHANCED ARCHITECTURE SECTION DIVIDER
 ════════════════════════════════════════════════════════════ -->
-<div style="margin-top:32px;margin-bottom:8px;">
+<div class="arch-tab-panel" data-arch-panel="enhanced" hidden style="margin-top:0;margin-bottom:8px;">
   <div style="background:#232F3E;border-radius:12px;padding:28px 24px 22px;text-align:center;color:#fff;border:2px solid #FF9900;">
     <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.4px;margin-bottom:8px;">🏢 Enterprise-Grade AWS Architecture — Enhanced</h2>
     <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px;">
@@ -1480,6 +1526,21 @@
 </div>
 
 <script>
+  /* ── Architecture Tabs ── */
+  function switchArchTab(tabName) {
+    document.querySelectorAll('[data-arch-tab]').forEach(function(btn) {
+      var isActive = btn.getAttribute('data-arch-tab') === tabName;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    document.querySelectorAll('[data-arch-panel]').forEach(function(panel) {
+      var isActive = panel.getAttribute('data-arch-panel') === tabName;
+      panel.hidden = !isActive;
+      panel.classList.toggle('active', isActive);
+    });
+  }
+
   /* ── Lightbox ── */
   function openLightbox(id) {
     document.getElementById(id).classList.add('open');
@@ -1864,7 +1925,7 @@
 </script>
 
 <!-- Enhanced Architecture wrapper -->
-<div style="display:flex;flex-direction:column;gap:14px;">
+<div class="arch-tab-panel" data-arch-panel="enhanced" hidden style="display:flex;flex-direction:column;gap:14px;">
 
 <!-- ── ENHANCED ROW 1: Edge Flow ── -->
 <div style="background:white;border:1px solid #d1d9e0;border-radius:8px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
