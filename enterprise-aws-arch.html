@@ -13,7 +13,7 @@
   <style>
     /* ── AWS Standard Design Tokens ── */
     :root {
-      --bg: #f4f6f9;
+      --bg: #ffffff;
       --white: #ffffff;
       --border: #d5dbdb;
 
@@ -28,6 +28,10 @@
       --aws-mgmt:     #E7157B;  /* Management & Governance */
       --aws-devtools: #C7131F;  /* Developer Tools / CI-CD */
       --aws-integ:    #007B8E;  /* Application Integration */
+      --diagram-navy: #0b1b3f;
+      --diagram-blue: #123b7a;
+      --diagram-line: #b8c7dc;
+      --diagram-fill: #fbfdff;
 
       /* Aliases used throughout */
       --c-edge:    var(--aws-net);
@@ -59,18 +63,18 @@
     body {
       font-family: 'Inter', system-ui, sans-serif;
       background: var(--bg);
-      color: #1e293b;
+      color: var(--diagram-navy);
       font-size: 13px;
       line-height: 1.5;
     }
 
     /* ── Page Header ── */
     .page-header {
-      background: var(--aws-ink);
-      color: white;
+      background: #ffffff;
+      color: var(--diagram-navy);
       text-align: center;
       padding: 14px 24px;
-      border-bottom: 4px solid var(--aws-orange);
+      border-bottom: 2px solid var(--diagram-navy);
       position: relative;
     }
     .page-header::before {
@@ -119,11 +123,13 @@
     .hd-btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       background: transparent;
-      border: 1px solid transparent;
+      border: 1px solid var(--diagram-line);
       border-radius: 6px;
-      color: var(--aws-ink2);
+      color: var(--diagram-navy);
+      min-width: 220px;
       padding: 9px 18px;
       font-size: 12px;
       font-weight: 800;
@@ -134,9 +140,9 @@
     }
     .hd-btn:hover { background: #FFF8EE; border-color: rgba(255,153,0,0.55); color: var(--aws-ink); }
     .header-diagram-btns .hd-btn.active {
-      background: var(--aws-orange);
-      border-color: var(--aws-orange);
-      color: var(--aws-ink);
+      background: var(--diagram-navy);
+      border-color: var(--diagram-navy);
+      color: #fff;
     }
     .hd-btn-primary {
       background: var(--aws-orange);
@@ -164,7 +170,7 @@
     /* ── Generic card ── */
     .card {
       background: var(--white);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--diagram-blue);
       border-radius: var(--radius);
       padding: 12px 14px;
       box-shadow: var(--shadow);
@@ -177,7 +183,8 @@
       letter-spacing: 0.8px;
       margin-bottom: 8px;
       padding-bottom: 6px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--diagram-line);
+      color: var(--diagram-navy) !important;
     }
 
     /* ── Service pill ── */
@@ -257,12 +264,20 @@
     .service-box {
       width: 150px;
       border-radius: 10px;
-      border: 2px solid;
+      border: 1.5px solid var(--diagram-navy);
+      background: #fff !important;
       padding: 10px 10px 8px;
       text-align: center;
     }
     .service-box .svc-icon {
-      font-size: 22px;
+      width: 46px;
+      height: 46px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #fff;
       margin-bottom: 4px;
     }
     .service-box .svc-name {
@@ -276,17 +291,21 @@
       text-align: left;
       line-height: 1.7;
     }
-    .service-box.edge   { border-color: var(--aws-net);  background: #F4EFFF; }
-    .service-box.net    { border-color: var(--aws-orange); background: #FFF8EE; }
-    .service-box.sec    { border-color: var(--aws-sec);   background: #FFF0F2; }
-    .service-box.shield { border-color: #DD344C;          background: #FFF0F2; }
+    .service-box.edge   { border-color: var(--diagram-navy); }
+    .service-box.net    { border-color: var(--diagram-navy); }
+    .service-box.sec    { border-color: var(--diagram-navy); }
+    .service-box.shield { border-color: var(--diagram-navy); }
+    .service-box.edge .svc-icon,
+    .service-box.net .svc-icon { background: linear-gradient(135deg,#8C4FFF,#5b2dbd); }
+    .service-box.sec .svc-icon,
+    .service-box.shield .svc-icon { background: linear-gradient(135deg,#DD344C,#b91c1c); }
 
     /* Users node */
     .users-box {
       width: 80px;
       border-radius: 10px;
-      border: 2px solid #64748b;
-      background: #f8fafc;
+      border: 1.5px solid var(--diagram-navy);
+      background: #fff;
       padding: 10px 6px;
       text-align: center;
     }
@@ -329,13 +348,14 @@
 
     .panel {
       border-radius: var(--radius);
-      border: 1.5px solid;
+      border: 1.5px solid var(--diagram-blue);
+      background: #fff !important;
       padding: 10px 12px;
       box-shadow: var(--shadow);
     }
-    .panel.sec-gov  { border-color: var(--aws-sec);    background: #FFF0F2; }
-    .panel.obs      { border-color: var(--aws-integ);   background: #EBF7F8; }
-    .panel.ops      { border-color: var(--aws-storage); background: #F0F9EC; }
+    .panel.sec-gov  { border-color: var(--diagram-blue); background: #fff; }
+    .panel.obs      { border-color: var(--diagram-blue); background: #fff; }
+    .panel.ops      { border-color: var(--diagram-blue); background: #fff; }
 
     .panel-title {
       font-size: 10px;
@@ -364,9 +384,9 @@
 
     /* ── VPC Container ── */
     .vpc-container {
-      border: 2px solid #64748b;
+      border: 2px solid var(--diagram-blue);
       border-radius: 12px;
-      background: #f8fafc;
+      background: #fff;
       padding: 14px;
     }
     .vpc-label {
@@ -397,9 +417,9 @@
       text-align: center;
       font-size: 11px;
       font-weight: 700;
-      color: #1A4A80;
-      background: #D0E4F5;
-      border: 1px solid #7FB5E6;
+      color: var(--diagram-blue);
+      background: #fff;
+      border: 1px solid var(--diagram-line);
       border-radius: 6px;
       padding: 4px 8px;
     }
@@ -411,9 +431,9 @@
       padding: 10px;
       margin-bottom: 10px;
     }
-    .subnet-row.public  { border-color: #f59e0b; background: rgba(251,191,36,0.04); }
-    .subnet-row.app     { border-color: #FF9900; background: rgba(249,115,22,0.04); }
-    .subnet-row.db      { border-color: #286FBE; background: rgba(37,99,235,0.04); }
+    .subnet-row.public  { border-color: #2ca24d; background: #f8fff9; }
+    .subnet-row.app     { border-color: #2f80ed; background: #f8fbff; }
+    .subnet-row.db      { border-color: #8C4FFF; background: #fbf8ff; }
 
     .subnet-row-label {
       font-size: 10px;
@@ -422,9 +442,9 @@
       letter-spacing: 0.5px;
       margin-bottom: 8px;
     }
-    .subnet-row.public .subnet-row-label { color: #b45309; }
-    .subnet-row.app    .subnet-row-label { color: #CC7A00; }
-    .subnet-row.db     .subnet-row-label { color: #286FBE; }
+    .subnet-row.public .subnet-row-label { color: #007a3d; }
+    .subnet-row.app    .subnet-row-label { color: var(--diagram-blue); }
+    .subnet-row.db     .subnet-row-label { color: #5b2dbd; }
 
     .subnet-cols {
       display: grid;
@@ -439,9 +459,9 @@
       text-align: center;
       font-size: 10px;
     }
-    .subnet-cell.pub-cell { border-color: #fbbf24; background: #FFF8EE; }
-    .subnet-cell.app-cell { border-color: #FFCC80; background: #FFF8EE; }
-    .subnet-cell.db-cell  { border-color: #7FB5E6; background: #EBF1F6; }
+    .subnet-cell.pub-cell { border-color: var(--diagram-line); background: #fff; }
+    .subnet-cell.app-cell { border-color: var(--diagram-line); background: #fff; }
+    .subnet-cell.db-cell  { border-color: var(--diagram-line); background: #fff; }
 
     .cidr-badge {
       font-family: 'Courier New', monospace;
@@ -466,11 +486,11 @@
       justify-content: center;
       gap: 4px;
     }
-    .node-box.alb   { border-color: var(--aws-orange); background: #FFF8EE; color: #7a4600; }
-    .node-box.nat   { border-color: #5a6472;             background: #f3f4f6; color: #374151; }
-    .node-box.asg   { border-color: var(--aws-orange);   background: #FFF8EE; color: #7a4600; }
-    .node-box.ec2   { border-color: var(--aws-orange);   background: #FFF8EE; color: #7a4600; }
-    .node-box.aurora{ border-color: var(--aws-db);       background: #EBF1F6; color: #1A4A80; }
+    .node-box.alb   { border-color: var(--diagram-line); background: #fff; color: #5b2dbd; }
+    .node-box.nat   { border-color: var(--diagram-line); background: #fff; color: #5b2dbd; }
+    .node-box.asg   { border-color: #FF9900; background: #fff8ef; color: #b94d00; }
+    .node-box.ec2   { border-color: #FF9900; background: #fff8ef; color: #b94d00; }
+    .node-box.aurora{ border-color: var(--aws-db); background: #f5f8ff; color: var(--aws-db); }
 
     /* DB replication row */
     .db-repl-row {
@@ -720,6 +740,165 @@
       flex-shrink: 0;
     }
 
+    .arch-explain {
+      background: #fbfffb;
+      border: 1.5px solid #2ca24d;
+      border-radius: 8px;
+      padding: 14px 18px;
+      box-shadow: var(--shadow);
+    }
+    .arch-explain-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--diagram-navy);
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .arch-explain-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 14px;
+    }
+    .arch-explain-item {
+      font-size: 10.5px;
+      color: #1e293b;
+      line-height: 1.65;
+      background: #fff;
+      border: 1px solid #d8eadb;
+      border-left: 3px solid #2ca24d;
+      border-radius: 6px;
+      padding: 7px 10px;
+    }
+    .arch-explain-item strong {
+      color: var(--diagram-navy);
+      font-weight: 800;
+    }
+
+    /* ── PNG-like architecture styling shared by both tabs ── */
+    .legend-bar,
+    .rpanel,
+    .cicd-panel,
+    .sg-panel {
+      background: #fff !important;
+      border-color: var(--diagram-blue) !important;
+    }
+    .rpanel-title,
+    .cicd-title,
+    .sg-title {
+      color: var(--diagram-navy) !important;
+      border-bottom-color: var(--diagram-line) !important;
+    }
+    .rpanel.vpc-ep { border-left: 4px solid #007B8E !important; }
+    .rpanel.secrets { border-left: 4px solid #DD344C !important; }
+    .rpanel.backup { border-left: 4px solid #3F8624 !important; }
+    .rpanel.dr { border-left: 4px solid #8C4FFF !important; }
+    .cicd-panel { border-left: 4px solid #C7131F !important; }
+    .sg-panel { border-left: 4px solid #DD344C !important; }
+    .sg-card,
+    .cicd-step-box,
+    .sg-rule,
+    .retention-box,
+    .repl-label,
+    .cf-routes {
+      background: #fff !important;
+      border-color: var(--diagram-line) !important;
+    }
+
+    /* Enhanced tab contains inline styles; keep it visually aligned with the PNG. */
+    .enhanced-diagram > div {
+      background: #fff !important;
+      border-color: var(--diagram-blue) !important;
+      box-shadow: var(--shadow) !important;
+    }
+    .enhanced-diagram div[style*="background:#F4EFFF"],
+    .enhanced-diagram div[style*="background:#FFF8EE"],
+    .enhanced-diagram div[style*="background:#FFF0F2"],
+    .enhanced-diagram div[style*="background:#EBF7F8"],
+    .enhanced-diagram div[style*="background:#F0F9EC"],
+    .enhanced-diagram div[style*="background:#EBF1F6"],
+    .enhanced-diagram div[style*="background:#D0E4F5"],
+    .enhanced-diagram div[style*="background:#FFF0D0"],
+    .enhanced-diagram div[style*="background:rgba"] {
+      background: #fff !important;
+    }
+    .enhanced-diagram [data-tip] {
+      background: #fff !important;
+      border-color: var(--diagram-line) !important;
+      color: var(--diagram-navy) !important;
+    }
+    .enhanced-diagram [data-tip="route53"],
+    .enhanced-diagram [data-tip="cloudfront"],
+    .enhanced-diagram [data-tip="alb"],
+    .enhanced-diagram [data-tip="nat"],
+    .enhanced-diagram [data-tip="enh-tgw"],
+    .enhanced-diagram [data-tip="enh-multi-region"] {
+      border-color: #8C4FFF !important;
+    }
+    .enhanced-diagram [data-tip="waf"],
+    .enhanced-diagram [data-tip="shield"],
+    .enhanced-diagram [data-tip="enh-governance"],
+    .enhanced-diagram [data-tip="enh-security-svcs"],
+    .enhanced-diagram [data-tip="enh-sec-controls"],
+    .enhanced-diagram [data-tip="enh-compliance"],
+    .enhanced-diagram [data-tip="secrets-mgr"] {
+      border-color: #DD344C !important;
+    }
+    .enhanced-diagram [data-tip="asg"],
+    .enhanced-diagram [data-tip="ec2"],
+    .enhanced-diagram [data-tip="enh-ecr"],
+    .enhanced-diagram [data-tip="enh-cicd"] {
+      border-color: #FF9900 !important;
+    }
+    .enhanced-diagram [data-tip="aurora-writer"],
+    .enhanced-diagram [data-tip="aurora-standby"],
+    .enhanced-diagram [data-tip="aurora-read"] {
+      border-color: #286FBE !important;
+    }
+    .enhanced-diagram [data-tip="enh-s3"],
+    .enhanced-diagram [data-tip="aws-backup"] {
+      border-color: #3F8624 !important;
+    }
+    .enhanced-diagram [data-tip="enh-finops"],
+    .enhanced-diagram [data-tip="observability"],
+    .enhanced-diagram [data-tip="enh-cloudwatch"],
+    .enhanced-diagram [data-tip="enh-enterprise-int"],
+    .enhanced-diagram [data-tip="enh-api-gw"],
+    .enhanced-diagram [data-tip="enh-eventbridge"],
+    .enhanced-diagram [data-tip="enh-sqs-sns"],
+    .enhanced-diagram [data-tip="enh-step-functions"] {
+      border-color: #007B8E !important;
+    }
+    .enhanced-diagram [data-tip="enh-kms"],
+    .enhanced-diagram [data-tip="enh-ssm-ps"] {
+      border-color: #E7157B !important;
+    }
+    .enhanced-diagram [data-tip="route53"] > div:first-child,
+    .enhanced-diagram [data-tip="cloudfront"] > div:first-child,
+    .enhanced-diagram [data-tip="waf"] > div:first-child,
+    .enhanced-diagram [data-tip="shield"] > div:first-child {
+      width: 46px;
+      height: 46px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      margin-bottom: 4px !important;
+    }
+    .enhanced-diagram [data-tip="route53"] > div:first-child,
+    .enhanced-diagram [data-tip="cloudfront"] > div:first-child { background: linear-gradient(135deg,#8C4FFF,#5b2dbd); }
+    .enhanced-diagram [data-tip="waf"] > div:first-child,
+    .enhanced-diagram [data-tip="shield"] > div:first-child { background: linear-gradient(135deg,#DD344C,#b91c1c); }
+    .enhanced-diagram div[style*="border:1.5px dashed"] {
+      background: #fbfdff !important;
+      border-style: dashed !important;
+    }
+    .enhanced-diagram div[style*="border:1px solid"] {
+      border-color: var(--diagram-line) !important;
+    }
+
     /* ── Vertical flow arrow ── */
     .vert-arrow {
       text-align: center;
@@ -940,6 +1119,9 @@
       .bottom-grid {
         grid-template-columns: 1fr;
       }
+      .arch-explain-grid {
+        grid-template-columns: 1fr;
+      }
       .edge-flow {
         flex-direction: column;
         align-items: center;
@@ -969,13 +1151,13 @@
   <section class="arch-tab-panel active" data-arch-panel="basic">
 
   <div style="margin-bottom:8px;">
-    <div style="background:#232F3E;border-radius:12px;padding:28px 24px 22px;text-align:center;color:#fff;border:2px solid #FF9900;">
+    <div style="background:#fff;border-radius:12px;padding:28px 24px 22px;text-align:center;color:#0b1b3f;border:2px solid #123b7a;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
       <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.4px;margin-bottom:8px;">🏢 Enterprise-Grade AWS Architecture — Basic</h2>
       <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px;">
-        <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🌐 Edge Traffic</span>
-        <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">☁️ Multi-AZ VPC</span>
-        <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🖥️ EC2 Auto Scaling</span>
-        <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🗄️ Aurora PostgreSQL</span>
+        <span style="background:#f8fbff;border:1px solid #b8c7dc;color:#0b1b3f;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🌐 Edge Traffic</span>
+        <span style="background:#f8fbff;border:1px solid #b8c7dc;color:#0b1b3f;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">☁️ Multi-AZ VPC</span>
+        <span style="background:#f8fbff;border:1px solid #b8c7dc;color:#0b1b3f;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🖥️ EC2 Auto Scaling</span>
+        <span style="background:#f8fbff;border:1px solid #b8c7dc;color:#0b1b3f;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🗄️ Aurora PostgreSQL</span>
       </div>
       <button class="view-diagram-btn" onclick="openLightbox('lb1')">
         🖼️ View Full Architecture Diagram
@@ -1448,22 +1630,34 @@
     <span class="legend-item"><span class="legend-swatch" style="background:#E7157B;"></span>Governance</span>
   </div>
 
+  <div class="arch-explain">
+    <div class="arch-explain-title">How This Architecture Works</div>
+    <div class="arch-explain-grid">
+      <div class="arch-explain-item"><strong>Traffic entry:</strong> Users resolve DNS through Route 53, then requests pass through CloudFront, WAF, Shield, and the internet-facing ALB.</div>
+      <div class="arch-explain-item"><strong>Application tier:</strong> ALB sends approved HTTPS traffic to EC2 instances in private app subnets across multiple Availability Zones.</div>
+      <div class="arch-explain-item"><strong>Database tier:</strong> Aurora PostgreSQL stays in private DB subnets with writer, standby, and read replica roles for availability and read scaling.</div>
+      <div class="arch-explain-item"><strong>Security model:</strong> Security groups enforce least privilege: internet to ALB only, ALB to app only, and app to database only.</div>
+      <div class="arch-explain-item"><strong>Operations:</strong> VPC endpoints, Systems Manager, CloudWatch, X-Ray, Secrets Manager, and AWS Backup support private operations and recovery.</div>
+      <div class="arch-explain-item"><strong>Resilience:</strong> Multi-AZ placement, Route 53 failover, Aurora replication, and cross-region backup/DR reduce downtime and data loss risk.</div>
+    </div>
+  </div>
+
   </section>
 
 <!-- ═══════════════════════════════════════════════════════════
      ENHANCED ARCHITECTURE SECTION DIVIDER
 ════════════════════════════════════════════════════════════ -->
 <div class="arch-tab-panel" data-arch-panel="enhanced" hidden style="margin-top:0;margin-bottom:8px;">
-  <div style="background:#232F3E;border-radius:12px;padding:28px 24px 22px;text-align:center;color:#fff;border:2px solid #FF9900;">
+  <div style="background:#fff;border-radius:12px;padding:28px 24px 22px;text-align:center;color:#0b1b3f;border:2px solid #123b7a;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
     <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.4px;margin-bottom:8px;">🏢 Enterprise-Grade AWS Architecture — Enhanced</h2>
     <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px;">
-      <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">✅ Highly Available</span>
-      <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🔒 Secure</span>
-      <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">📈 Scalable</span>
-      <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">💰 Cost-Optimized</span>
-      <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🏛️ Well-Architected</span>
-      <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🌐 Multi-Account</span>
-      <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🌍 Multi-Region</span>
+      <span style="background:#f8fbff;border:1px solid #b8c7dc;color:#0b1b3f;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">✅ Highly Available</span>
+      <span style="background:#f8fbff;border:1px solid #b8c7dc;color:#0b1b3f;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🔒 Secure</span>
+      <span style="background:#f8fbff;border:1px solid #b8c7dc;color:#0b1b3f;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">📈 Scalable</span>
+      <span style="background:#f8fbff;border:1px solid #b8c7dc;color:#0b1b3f;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">💰 Cost-Optimized</span>
+      <span style="background:#f8fbff;border:1px solid #b8c7dc;color:#0b1b3f;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🏛️ Well-Architected</span>
+      <span style="background:#f8fbff;border:1px solid #b8c7dc;color:#0b1b3f;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🌐 Multi-Account</span>
+      <span style="background:#f8fbff;border:1px solid #b8c7dc;color:#0b1b3f;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;">🌍 Multi-Region</span>
     </div>
     <button class="view-diagram-btn" onclick="openLightbox('lb2')">
       🖼️ View Full Architecture Diagram
@@ -1925,7 +2119,7 @@
 </script>
 
 <!-- Enhanced Architecture wrapper -->
-<div class="arch-tab-panel" data-arch-panel="enhanced" hidden style="display:flex;flex-direction:column;gap:14px;">
+<div class="arch-tab-panel enhanced-diagram" data-arch-panel="enhanced" hidden style="display:flex;flex-direction:column;gap:14px;">
 
 <!-- ── ENHANCED ROW 1: Edge Flow ── -->
 <div style="background:white;border:1px solid #d1d9e0;border-radius:8px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
@@ -2472,6 +2666,18 @@
       <div>✅ Observable with Centralized Logging &amp; Monitoring</div>
       <div>✅ Governed, Compliant &amp; Audit Ready</div>
     </div>
+  </div>
+</div>
+
+<div class="arch-explain">
+  <div class="arch-explain-title">Enhanced Architecture Notes</div>
+  <div class="arch-explain-grid">
+    <div class="arch-explain-item"><strong>Enterprise governance:</strong> Organizations, Control Tower, SCPs, Config, CloudTrail, and Audit Manager provide account-level guardrails and audit evidence.</div>
+    <div class="arch-explain-item"><strong>Central security:</strong> Security Hub, GuardDuty, Inspector, Macie, IAM Identity Center, KMS, and Secrets Manager create layered protection.</div>
+    <div class="arch-explain-item"><strong>Private AWS access:</strong> S3, ECR, SSM, CloudWatch, KMS, and Secrets Manager endpoints reduce public internet exposure and NAT costs.</div>
+    <div class="arch-explain-item"><strong>Multi-region DR:</strong> Aurora Global Database and Route 53 failover support a warm standby region with low RTO/RPO targets.</div>
+    <div class="arch-explain-item"><strong>Network scale:</strong> Transit Gateway, shared services, security VPC patterns, and private integrations support multi-account enterprise growth.</div>
+    <div class="arch-explain-item"><strong>Delivery model:</strong> CI/CD with Terraform, security scanning, approvals, cost checks, and policy gates keeps infrastructure repeatable and controlled.</div>
   </div>
 </div>
 
