@@ -816,6 +816,93 @@
       border-color: #e68900;
     }
 
+    /* =====================================================
+       AWS TOOLTIP SYSTEM
+    ===================================================== */
+    [data-tip] { cursor: help; position: relative; }
+    .node-box[data-tip], .cicd-step-box[data-tip] { cursor: help; }
+
+    #aws-tip {
+      display: none;
+      position: fixed;
+      z-index: 99999;
+      max-width: 300px;
+      min-width: 200px;
+      background: var(--aws-ink);
+      color: #f1f5f9;
+      border-radius: 10px;
+      border: 1.5px solid var(--aws-orange);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+      padding: 0;
+      pointer-events: none;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 12px;
+      line-height: 1.5;
+      overflow: hidden;
+    }
+    #aws-tip.visible { display: block; }
+    #aws-tip .tip-header {
+      background: linear-gradient(90deg, rgba(255,153,0,0.18) 0%, rgba(255,153,0,0.06) 100%);
+      border-bottom: 1px solid rgba(255,153,0,0.3);
+      padding: 8px 12px 7px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    #aws-tip .tip-icon { font-size: 16px; flex-shrink: 0; }
+    #aws-tip .tip-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--aws-orange);
+      letter-spacing: .2px;
+    }
+    #aws-tip .tip-category {
+      font-size: 9px;
+      color: #94a3b8;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      margin-top: 1px;
+    }
+    #aws-tip .tip-body {
+      padding: 9px 12px 10px;
+    }
+    #aws-tip .tip-desc {
+      font-size: 11.5px;
+      color: #cbd5e1;
+      margin-bottom: 7px;
+      line-height: 1.55;
+    }
+    #aws-tip .tip-facts {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    #aws-tip .tip-facts li {
+      font-size: 10.5px;
+      color: #94a3b8;
+      padding: 2px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 5px;
+      line-height: 1.45;
+    }
+    #aws-tip .tip-facts li::before {
+      content: '›';
+      color: var(--aws-orange);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0px;
+    }
+    #aws-tip .tip-footer {
+      background: rgba(255,255,255,0.04);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 5px 12px;
+      font-size: 9.5px;
+      color: #64748b;
+      font-style: italic;
+    }
+
     @media (max-width: 900px) {
       .main-grid {
         grid-template-columns: 1fr;
@@ -861,7 +948,7 @@
 
       <!-- Users -->
       <div class="edge-node">
-        <div class="users-box">
+        <div class="users-box" data-tip="users">
           <div class="svc-icon">👥</div>
           <div class="svc-name">Users</div>
         </div>
@@ -871,7 +958,7 @@
 
       <!-- Route 53 -->
       <div class="edge-node">
-        <div class="service-box edge">
+        <div class="service-box edge" data-tip="route53">
           <div class="svc-icon">🔵</div>
           <div class="svc-name">Route 53</div>
           <div class="svc-details">
@@ -886,7 +973,7 @@
 
       <!-- CloudFront -->
       <div class="edge-node">
-        <div class="service-box net">
+        <div class="service-box net" data-tip="cloudfront">
           <div class="svc-icon">☁️</div>
           <div class="svc-name">CloudFront</div>
           <div class="svc-details">
@@ -907,7 +994,7 @@
 
       <!-- AWS WAF -->
       <div class="edge-node">
-        <div class="service-box sec">
+        <div class="service-box sec" data-tip="waf">
           <div class="svc-icon">🔥</div>
           <div class="svc-name">AWS WAF</div>
           <div class="svc-details">
@@ -924,7 +1011,7 @@
 
       <!-- AWS Shield -->
       <div class="edge-node">
-        <div class="service-box shield">
+        <div class="service-box shield" data-tip="shield">
           <div class="svc-icon">🛡️</div>
           <div class="svc-name">AWS Shield Advanced</div>
           <div class="svc-details">
@@ -946,7 +1033,7 @@
     <!-- ── LEFT: Security & Governance / Observability / Operations ── -->
     <div class="left-panels">
 
-      <div class="panel sec-gov">
+      <div class="panel sec-gov" data-tip="sec-gov">
         <div class="panel-title">🔒 Security &amp; Governance<br><small style="font-size:9px;color:#666;">Organization Level</small></div>
         <div class="panel-item">
           <span class="pi-icon">🏢</span>
@@ -974,7 +1061,7 @@
         </div>
       </div>
 
-      <div class="panel obs">
+      <div class="panel obs" data-tip="observability">
         <div class="panel-title">📊 Observability</div>
         <div class="panel-item">
           <span class="pi-icon">📈</span>
@@ -990,7 +1077,7 @@
         </div>
       </div>
 
-      <div class="panel ops">
+      <div class="panel ops" data-tip="operations">
         <div class="panel-title">🛠️ Operations</div>
         <div class="panel-item">
           <span class="pi-icon">💻</span>
@@ -1004,8 +1091,7 @@
 
     </div>
 
-    <!-- ── CENTER: VPC ── -->
-    <div class="vpc-container">
+    <div class="vpc-container" data-tip="vpc">
       <div class="vpc-label">
         ☁️ <strong>VPC</strong>
         <span class="cidr">10.0.0.0/16</span>
@@ -1026,23 +1112,23 @@
 
           <div class="subnet-cell pub-cell">
             <div class="cidr-badge">10.0.1.0/24</div>
-            <div class="node-box alb">🔀 ALB Node</div>
+            <div class="node-box alb" data-tip="alb">🔀 ALB Node</div>
             <div class="vert-arrow">↓</div>
-            <div class="node-box nat">🔁 NAT GW<br><small style="font-size:9px;color:#6b7280;">(Per AZ)</small></div>
+            <div class="node-box nat" data-tip="nat">🔁 NAT GW<br><small style="font-size:9px;color:#6b7280;">(Per AZ)</small></div>
           </div>
 
           <div class="subnet-cell pub-cell">
             <div class="cidr-badge">10.0.2.0/24</div>
-            <div class="node-box alb">🔀 ALB Node</div>
+            <div class="node-box alb" data-tip="alb">🔀 ALB Node</div>
             <div class="vert-arrow">↓</div>
-            <div class="node-box nat">🔁 NAT GW<br><small style="font-size:9px;color:#6b7280;">(Per AZ)</small></div>
+            <div class="node-box nat" data-tip="nat">🔁 NAT GW<br><small style="font-size:9px;color:#6b7280;">(Per AZ)</small></div>
           </div>
 
           <div class="subnet-cell pub-cell">
             <div class="cidr-badge">10.0.3.0/24</div>
-            <div class="node-box alb">🔀 ALB Node</div>
+            <div class="node-box alb" data-tip="alb">🔀 ALB Node</div>
             <div class="vert-arrow">↓</div>
-            <div class="node-box nat">🔁 NAT GW<br><small style="font-size:9px;color:#6b7280;">(Per AZ)</small></div>
+            <div class="node-box nat" data-tip="nat">🔁 NAT GW<br><small style="font-size:9px;color:#6b7280;">(Per AZ)</small></div>
           </div>
 
         </div>
@@ -1057,23 +1143,23 @@
 
           <div class="subnet-cell app-cell">
             <div class="cidr-badge">10.0.11.0/24</div>
-            <div class="node-box asg">⚡ Auto Scaling Group</div>
+            <div class="node-box asg" data-tip="asg">⚡ Auto Scaling Group</div>
             <div class="vert-arrow">↓</div>
-            <div class="node-box ec2">🖥️ EC2 Instances (×2)</div>
+            <div class="node-box ec2" data-tip="ec2">🖥️ EC2 Instances (×2)</div>
           </div>
 
           <div class="subnet-cell app-cell">
             <div class="cidr-badge">10.0.12.0/24</div>
-            <div class="node-box asg">⚡ Auto Scaling Group</div>
+            <div class="node-box asg" data-tip="asg">⚡ Auto Scaling Group</div>
             <div class="vert-arrow">↓</div>
-            <div class="node-box ec2">🖥️ EC2 Instances (×2)</div>
+            <div class="node-box ec2" data-tip="ec2">🖥️ EC2 Instances (×2)</div>
           </div>
 
           <div class="subnet-cell app-cell">
             <div class="cidr-badge">10.0.13.0/24</div>
-            <div class="node-box asg">⚡ Auto Scaling Group</div>
+            <div class="node-box asg" data-tip="asg">⚡ Auto Scaling Group</div>
             <div class="vert-arrow">↓</div>
-            <div class="node-box ec2">🖥️ EC2 Instances (×2)</div>
+            <div class="node-box ec2" data-tip="ec2">🖥️ EC2 Instances (×2)</div>
           </div>
 
         </div>
@@ -1122,7 +1208,7 @@
     <!-- ── RIGHT PANELS ── -->
     <div class="right-panels">
 
-      <div class="rpanel vpc-ep">
+      <div class="rpanel vpc-ep" data-tip="vpc-endpoints">
         <div class="rpanel-title">🔗 VPC Endpoints<br><small style="font-size:9px;font-weight:400;color:#007B8E;">Keep Traffic In AWS Network</small></div>
         <div class="ep-item"><span class="ep-check">✅</span> S3 Gateway Endpoint</div>
         <div class="ep-item"><span class="ep-dot"></span> ECR (API) Interface</div>
@@ -1136,7 +1222,7 @@
         <div class="ep-note">✓ Reduces NAT Gateway Data Processing Charges</div>
       </div>
 
-      <div class="rpanel secrets">
+      <div class="rpanel secrets" data-tip="secrets-mgr">
         <div class="rpanel-title">🔐 Secrets Management</div>
         <div style="font-size:10px;font-weight:600;color:#DD344C;margin-bottom:5px;">AWS Secrets Manager</div>
         <div class="secret-item">DB Credentials</div>
@@ -1145,7 +1231,7 @@
         <div class="secret-item">App Secrets</div>
       </div>
 
-      <div class="rpanel backup">
+      <div class="rpanel backup" data-tip="aws-backup">
         <div class="rpanel-title">💾 Backup &amp; Recovery</div>
         <div style="font-size:10px;font-weight:600;color:#3F8624;margin-bottom:5px;">AWS Backup</div>
         <div class="backup-item">RDS Backups</div>
@@ -1160,7 +1246,7 @@
         </div>
       </div>
 
-      <div class="rpanel dr">
+      <div class="rpanel dr" data-tip="disaster-recovery">
         <div class="rpanel-title">🌍 Disaster Recovery</div>
         <div class="dr-item">🗄️ Aurora Global Database</div>
         <div class="dr-item" style="font-size:9px;color:#8C4FFF;padding-left:16px;">Cross-Region Replication</div>
@@ -1192,7 +1278,7 @@
       <div class="cicd-flow">
 
         <div class="cicd-step">
-          <div class="cicd-step-box">
+          <div class="cicd-step-box" data-tip="cicd-dev">
             <div class="step-icon">👨‍💻</div>
             <div class="step-name">Developer</div>
           </div>
@@ -1200,7 +1286,7 @@
         <div class="cicd-arrow">→</div>
 
         <div class="cicd-step">
-          <div class="cicd-step-box">
+          <div class="cicd-step-box" data-tip="cicd-github">
             <div class="step-icon">🐙</div>
             <div class="step-name">GitHub</div>
           </div>
@@ -1208,7 +1294,7 @@
         <div class="cicd-arrow">→</div>
 
         <div class="cicd-step">
-          <div class="cicd-step-box">
+          <div class="cicd-step-box" data-tip="cicd-pr">
             <div class="step-icon">📥</div>
             <div class="step-name">Pull Request</div>
           </div>
@@ -1216,7 +1302,7 @@
         <div class="cicd-arrow">→</div>
 
         <div class="cicd-step">
-          <div class="cicd-step-box">
+          <div class="cicd-step-box" data-tip="cicd-actions">
             <div class="step-icon">⚙️</div>
             <div class="step-name">GitHub Actions</div>
             <div class="step-sub">Workflow</div>
@@ -1225,7 +1311,7 @@
         <div class="cicd-arrow">→</div>
 
         <div class="cicd-step">
-          <div class="cicd-step-box">
+          <div class="cicd-step-box" data-tip="cicd-tfplan">
             <div class="step-icon">📋</div>
             <div class="step-name">Terraform Plan</div>
             <div class="step-sub">tflint, checkov</div>
@@ -1234,7 +1320,7 @@
         <div class="cicd-arrow">→</div>
 
         <div class="cicd-step">
-          <div class="cicd-step-box" style="border-color:#FF9900;background:#FFF8EE;">
+          <div class="cicd-step-box" data-tip="cicd-approval" style="border-color:#FF9900;background:#FFF8EE;">
             <div class="step-icon">✅</div>
             <div class="step-name" style="color:#7a4600;">Approval</div>
             <div class="step-sub">Manual / Policy</div>
@@ -1243,7 +1329,7 @@
         <div class="cicd-arrow">→</div>
 
         <div class="cicd-step">
-          <div class="cicd-step-box">
+          <div class="cicd-step-box" data-tip="cicd-tfapply">
             <div class="step-icon">🚀</div>
             <div class="step-name">Terraform Apply</div>
           </div>
@@ -1251,7 +1337,7 @@
         <div class="cicd-arrow">→</div>
 
         <div class="cicd-step">
-          <div class="cicd-step-box" style="border-color:#FF9900;background:#FFF0D0;">
+          <div class="cicd-step-box" data-tip="cicd-awsenv" style="border-color:#FF9900;background:#FFF0D0;">
             <div class="step-icon">☁️</div>
             <div class="step-name" style="color:#7a4600;">AWS Environment</div>
           </div>
@@ -1270,7 +1356,7 @@
       <div class="sg-title">🛡️ Security Groups — Least Privilege</div>
       <div class="sg-grid">
 
-        <div class="sg-card alb-sg">
+        <div class="sg-card alb-sg" data-tip="sg-alb">
           <div class="sg-name">alb-sg</div>
           <div class="sg-sub">ALB Security Group</div>
           <div class="sg-rule">
@@ -1279,7 +1365,7 @@
           </div>
         </div>
 
-        <div class="sg-card app-sg">
+        <div class="sg-card app-sg" data-tip="sg-app">
           <div class="sg-name">app-sg</div>
           <div class="sg-sub">App Security Group</div>
           <div class="sg-rule">
@@ -1288,7 +1374,7 @@
           </div>
         </div>
 
-        <div class="sg-card db-sg">
+        <div class="sg-card db-sg" data-tip="sg-db">
           <div class="sg-name">db-sg</div>
           <div class="sg-sub">DB Security Group</div>
           <div class="sg-rule">
@@ -1377,7 +1463,24 @@
   </div>
 </div>
 
+<!-- ── AWS Tooltip Element ── -->
+<div id="aws-tip">
+  <div class="tip-header">
+    <span class="tip-icon" id="tip-icon"></span>
+    <div>
+      <div class="tip-title" id="tip-title"></div>
+      <div class="tip-category" id="tip-category"></div>
+    </div>
+  </div>
+  <div class="tip-body">
+    <div class="tip-desc" id="tip-desc"></div>
+    <ul class="tip-facts" id="tip-facts"></ul>
+  </div>
+  <div class="tip-footer" id="tip-footer"></div>
+</div>
+
 <script>
+  /* ── Lightbox ── */
   function openLightbox(id) {
     document.getElementById(id).classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -1396,6 +1499,257 @@
       });
       document.body.style.overflow = '';
     }
+  });
+
+  /* ── Tooltip Data ── */
+  var TIPS = {
+    'users': {
+      icon:'👥', title:'End Users', cat:'Traffic Origin',
+      desc:'Web browsers, mobile apps, and API clients sending HTTPS requests to your application from anywhere on the internet.',
+      facts:['All traffic enters via Route 53 DNS resolution','Supports web, mobile, IoT, and API clients','TLS 1.2/1.3 enforced end-to-end'],
+      footer:'Origin of all inbound requests'
+    },
+    'route53': {
+      icon:'🔵', title:'Amazon Route 53', cat:'Networking & Content Delivery',
+      desc:'AWS\'s highly available and scalable cloud DNS service. Routes users to the optimal endpoint based on health, latency, or geography.',
+      facts:['DNS routing with 100% SLA uptime','Health checks with automatic failover to DR region','Latency-based & geolocation routing policies','Supports weighted routing for blue/green deployments','Integrates with CloudFront, ALB, and S3'],
+      footer:'AWS Service Category: Networking & Content Delivery'
+    },
+    'cloudfront': {
+      icon:'☁️', title:'Amazon CloudFront', cat:'CDN & Edge Delivery',
+      desc:'Global Content Delivery Network (CDN) with 450+ edge locations. Caches static assets close to users and proxies dynamic requests to the origin.',
+      facts:['Static assets (/static/*) served from S3 via edge cache','Dynamic requests (/api/*) forwarded to ALB','SSL/TLS termination with ACM certificates','Origin failover to secondary S3 or ALB if primary fails','Geo-restriction blocks traffic from specific countries','WAF and Shield are integrated at the CloudFront layer'],
+      footer:'Reduces latency by up to 50% for global users'
+    },
+    'waf': {
+      icon:'🔥', title:'AWS WAF', cat:'Security, Identity & Compliance',
+      desc:'Web Application Firewall that filters malicious HTTP/S traffic before it reaches your application. Deployed at CloudFront edge.',
+      facts:['AWS Managed Rule Groups: OWASP Top 10, CVE patches','Custom rules for business logic protection','Rate limiting prevents DDoS and brute-force attacks','Geo blocking restricts access by country/IP','Bot Control blocks scrapers and credential stuffing','IP reputation lists updated automatically by AWS'],
+      footer:'Processes rules in order: Allow / Block / Count / Challenge'
+    },
+    'shield': {
+      icon:'🛡️', title:'AWS Shield Advanced', cat:'Security, Identity & Compliance',
+      desc:'Managed DDoS protection service providing always-on detection and automatic mitigations for volumetric, state-exhaustion, and application-layer attacks.',
+      facts:['24/7 access to AWS DDoS Response Team (DRT)','Protects Route 53, CloudFront, ALB, EC2, and EIPs','Automatic attack detection and inline mitigation','Cost protection: AWS credits back DDoS-related scaling costs','Real-time attack visibility in AWS Shield console','Integrates with WAF for application-layer protection'],
+      footer:'Upgrade from Shield Standard (free) to Advanced for enterprise SLA'
+    },
+    'vpc': {
+      icon:'🌐', title:'Amazon VPC (10.0.0.0/16)', cat:'Networking & Content Delivery',
+      desc:'Your private, isolated section of the AWS Cloud. All compute and database resources run inside this VPC, completely isolated from the public internet by default.',
+      facts:['CIDR block 10.0.0.0/16 provides 65,536 IP addresses','Spans 3 Availability Zones for high availability','3 tiers: Public (internet-facing), App (private), DB (private)','Internet Gateway for outbound public traffic','NAT Gateway per AZ for private subnet outbound access','Flow Logs capture all VPC traffic metadata for security audit'],
+      footer:'Network ACLs at subnet level + Security Groups at instance level'
+    },
+    'alb': {
+      icon:'🔀', title:'Application Load Balancer', cat:'Compute — Networking',
+      desc:'Layer 7 HTTP/S load balancer that distributes incoming requests across EC2 instances in all 3 AZs. One ALB Node per AZ ensures zone-isolated traffic handling.',
+      facts:['Path-based routing: /api/* → App TG, /static/* → S3','Health checks every 30s — unhealthy targets removed automatically','Cross-zone load balancing distributes evenly across all instances','HTTP → HTTPS redirect (port 80 → 443) enforced','Sticky sessions with application-based cookies if required','Access logs sent to S3 for traffic analysis'],
+      footer:'ALB operates at Layer 7 — understands HTTP headers and cookies'
+    },
+    'nat': {
+      icon:'🔁', title:'NAT Gateway', cat:'Networking & Content Delivery',
+      desc:'Allows EC2 instances in private subnets to initiate outbound internet connections (e.g., software updates, API calls) without exposing them to inbound internet traffic.',
+      facts:['One NAT Gateway per AZ eliminates cross-AZ data transfer costs','Managed service — no patching or maintenance required','Supports up to 45 Gbps bandwidth automatically','Private EC2 instances route 0.0.0.0/0 through NAT GW','VPC Endpoints reduce NAT GW costs for AWS service traffic','NAT GW has an Elastic IP for whitelisting in external systems'],
+      footer:'VPC Endpoints bypass NAT GW entirely for AWS APIs — saves cost'
+    },
+    'asg': {
+      icon:'⚡', title:'Auto Scaling Group', cat:'Compute',
+      desc:'Automatically adjusts the number of EC2 instances based on demand. Ensures you have the right capacity to handle traffic spikes while minimizing cost during low-traffic periods.',
+      facts:['Minimum: 2 instances, Maximum: configurable per AZ','Scale-out policy: CPU > 70% for 2 consecutive minutes','Scale-in policy: CPU < 30% for 10 consecutive minutes','Instances launched from a Launch Template for consistency','Integrates with ALB — new instances auto-registered to target group','Health checks replace failed instances automatically'],
+      footer:'Use target tracking policies for simplest auto scaling'
+    },
+    'ec2': {
+      icon:'🖥️', title:'Amazon EC2 Instances', cat:'Compute',
+      desc:'Virtual machines running your application code in private subnets. No direct internet access — all traffic comes via ALB and outbound traffic goes via NAT Gateway.',
+      facts:['Instance types: m6i, c6i, or r6i family recommended','IMDSv2 enforced to prevent SSRF metadata attacks','IAM Instance Profile grants least-privilege AWS API access','EBS-backed with encrypted GP3 volumes at rest','Systems Manager (SSM) used for shell access — no SSH port open','Security Group only allows port 443 from ALB Security Group'],
+      footer:'No public IP addresses assigned — all access via private subnet'
+    },
+    'aurora-writer': {
+      icon:'🐘', title:'Aurora PostgreSQL — Writer (Primary)', cat:'Database',
+      desc:'The primary read/write node of the Aurora cluster. All INSERT, UPDATE, DELETE, and DDL operations go to this instance. Aurora uses a distributed storage system shared across all nodes.',
+      facts:['Aurora storage auto-scales from 10 GB to 128 TB','6 copies of data stored across 3 AZs automatically','Write availability maintained even if 2 out of 6 copies are lost','Automatic failover to Standby in < 30 seconds','Performance Insights for real-time query monitoring','IAM database authentication — no static passwords'],
+      footer:'Aurora is up to 3× faster than standard PostgreSQL'
+    },
+    'aurora-standby': {
+      icon:'🐘', title:'Aurora PostgreSQL — Standby (Sync Replica)', cat:'Database',
+      desc:'A synchronously replicated replica in a second AZ. Aurora ensures the standby is always up to date with the primary before acknowledging writes. Becomes primary during failover.',
+      facts:['Synchronous replication — zero data loss on failover','Failover to standby completes in < 30 seconds automatically','DNS endpoint (cluster endpoint) switches automatically','Can be promoted to read replica after failover to reduce load','Participates in Aurora\'s 6-copy distributed storage','Does not serve read traffic until promoted to primary'],
+      footer:'Use the cluster reader endpoint to direct read traffic to replicas'
+    },
+    'aurora-read': {
+      icon:'🐘', title:'Aurora PostgreSQL — Read Replica', cat:'Database',
+      desc:'An asynchronously replicated read-only instance used to offload SELECT queries from the primary writer. Scales read throughput horizontally.',
+      facts:['Serves all SELECT queries — offloads 60-80% of DB load','Asynchronous replication — minimal lag (usually < 100ms)','Can have up to 15 read replicas per Aurora cluster','Replica lag monitored via AuroraBinlogReplicaLag metric','Can be promoted to standalone DB cluster if needed','Endpoint: cluster reader endpoint load-balances across all replicas'],
+      footer:'Connect analytics workloads to reader endpoint to protect writer'
+    },
+    'sync-repl': {
+      icon:'🔄', title:'Synchronous Replication', cat:'Database Replication',
+      desc:'Aurora writes data to both the Primary Writer and the Standby Replica before acknowledging the write to the application. Guarantees zero data loss.',
+      facts:['Write is not committed until Standby confirms receipt','RPO = 0 (zero data loss) between Writer and Standby','Slight write latency overhead (~1-2ms) compared to async','Used for the primary failover target (highest priority)','Aurora manages this automatically with distributed storage'],
+      footer:'Trade-off: slightly higher write latency for zero data loss'
+    },
+    'async-repl': {
+      icon:'⚡', title:'Asynchronous Replication', cat:'Database Replication',
+      desc:'Aurora replicates writes to the Read Replica after acknowledging the write to the application. Minimizes write latency but allows brief replication lag.',
+      facts:['Write acknowledged immediately after Primary commits','Replication lag typically < 100 milliseconds','RPO > 0 — small window of potential data loss on Read Replica','Ideal for read scaling — analytics, reporting, dashboards','Replica lag metric: AuroraBinlogReplicaLag in CloudWatch'],
+      footer:'Use read replicas for reporting queries to protect write performance'
+    },
+    'sec-gov': {
+      icon:'🔒', title:'Security & Governance', cat:'Security, Identity & Compliance',
+      desc:'Organization-level controls that apply to all AWS accounts in your AWS Organization. Enforces security baselines and compliance policies centrally.',
+      facts:['AWS Organizations: centrally manage multiple AWS accounts','Service Control Policies (SCPs): guardrails that restrict what IAM can do','AWS Security Hub: aggregates findings from GuardDuty, Inspector, Macie','Amazon GuardDuty: ML-based threat detection on CloudTrail, DNS, VPC flow logs','AWS Config: continuously evaluates resource configurations against rules','CloudTrail: immutable API activity log for every AWS action'],
+      footer:'SCPs cannot be overridden even by account root users'
+    },
+    'observability': {
+      icon:'📊', title:'Observability Stack', cat:'Management & Governance',
+      desc:'Full-stack observability combining metrics, logs, traces, and synthetics. Detects anomalies, identifies root causes, and alerts on-call engineers automatically.',
+      facts:['CloudWatch Metrics: 1-second granularity for EC2, RDS, ALB','CloudWatch Logs: centralized log aggregation with Insights queries','AWS X-Ray: distributed tracing traces each request end-to-end','OpenTelemetry: vendor-neutral instrumentation standard','CloudWatch Synthetics: canaries check uptime every minute','Dashboards: unified view of MTTD/MTTR KPIs'],
+      footer:'Target: MTTD < 5 min, MTTR < 30 min for P1 incidents'
+    },
+    'operations': {
+      icon:'🛠️', title:'Operations', cat:'Management & Governance',
+      desc:'Secure, auditable operational access to infrastructure. AWS Systems Manager replaces SSH bastion hosts with session recording and IAM-based access control.',
+      facts:['Session Manager: browser/CLI shell — no open port 22','Patch Manager: auto-patches OS and applications on schedule','Run Command: execute scripts on 1 or 1000 instances without SSH','Inventory: collects installed software and config from all instances','Parameter Store: secure key-value store for config and non-secret values','Automation: runbooks for common operational tasks'],
+      footer:'No SSH keys, no bastion hosts, no firewall holes required'
+    },
+    'vpc-endpoints': {
+      icon:'🔗', title:'VPC Endpoints', cat:'Networking & Content Delivery',
+      desc:'Private connections from your VPC to AWS services without traffic ever leaving the AWS network. Eliminates NAT Gateway data processing costs for AWS API calls.',
+      facts:['S3 Gateway Endpoint: free, routes S3 traffic via private network','ECR (API + DKR) Interface: container image pulls stay private','SSM Interface: Session Manager and Parameter Store access','Secrets Manager Interface: secret rotation without internet','CloudWatch Logs/Monitoring: metrics and logs without NAT GW','KMS Interface: encryption key operations stay private','STS Interface: AssumeRole calls without internet'],
+      footer:'Each interface endpoint reduces NAT GW costs by ~$0.045/GB'
+    },
+    'secrets-mgr': {
+      icon:'🔐', title:'AWS Secrets Manager', cat:'Security, Identity & Compliance',
+      desc:'Fully managed service to store, retrieve, and automatically rotate credentials. Applications retrieve secrets via API — no hardcoded passwords in code or config files.',
+      facts:['Automatic rotation for RDS, Redshift, DocumentDB, and custom','Rotation uses Lambda — zero downtime credential rotation','Fine-grained IAM policies control who can access each secret','All secrets encrypted with KMS CMK at rest','CloudTrail logs every GetSecretValue call for audit','Cross-account and cross-region secret replication supported'],
+      footer:'Never store passwords in environment variables or source code'
+    },
+    'aws-backup': {
+      icon:'💾', title:'AWS Backup', cat:'Storage',
+      desc:'Centralized, policy-driven backup service for all AWS data services. Automates backup schedules, retention, and cross-region copies from a single console.',
+      facts:['Covers RDS Aurora, EBS, EFS, S3, DynamoDB, and FSx','Daily backups with 35-day retention (configurable)','Monthly backups retained for 1 year','Yearly backups retained for 7 years (compliance)','Cross-region copy replicates backups to DR region automatically','Vault Lock: WORM protection prevents backup deletion'],
+      footer:'PITR (Point-in-Time Recovery) available for Aurora — restore to any second'
+    },
+    'disaster-recovery': {
+      icon:'🌍', title:'Disaster Recovery', cat:'Multi-Region DR',
+      desc:'Multi-region failover strategy using Aurora Global Database and Route 53. Achieves RTO < 5 minutes and RPO < 1 minute with automated or manual failover.',
+      facts:['Aurora Global Database: replication lag < 1 second to DR region','Route 53 health checks trigger automatic DNS failover','Route 53 Failover routing policy: Primary → Secondary','RTO < 5 minutes: time to restore service after failure','RPO < 1 minute: maximum data loss window','Active-Passive by default; can convert to Active-Active'],
+      footer:'Test failover quarterly in non-production — never assume it works'
+    },
+    'cicd-dev': {
+      icon:'👨‍💻', title:'Developer', cat:'CI/CD Pipeline',
+      desc:'Engineers write application code and infrastructure-as-code (Terraform) locally, then push changes to a feature branch in GitHub to trigger the pipeline.',
+      facts:['Feature branches follow GitFlow or trunk-based development','Pre-commit hooks run linting and secret scanning locally','Conventional commits enforce structured change messages','Branch protection rules require PR review before merge'],
+      footer:'Infrastructure changes require the same review process as app code'
+    },
+    'cicd-github': {
+      icon:'🐙', title:'GitHub', cat:'Version Control',
+      desc:'Source of truth for all code and infrastructure configuration. Branch protection rules ensure no direct pushes to main — all changes go through pull requests.',
+      facts:['All Terraform modules, app code, and docs in one monorepo or multi-repo','Branch protection: require PR + 1 approver before merge to main','CODEOWNERS file routes PRs to the right team automatically','GitHub Advanced Security: secret scanning on every push','Signed commits enforce developer identity verification'],
+      footer:'Infrastructure as Code means your git history is your change log'
+    },
+    'cicd-pr': {
+      icon:'📥', title:'Pull Request', cat:'CI/CD Pipeline',
+      desc:'Code review gate. All changes — app code and infrastructure — must be reviewed and approved before merging. Automated checks run on every PR.',
+      facts:['Terraform fmt and validate run automatically on PR open','tfsec and Checkov scan IaC for security misconfigurations','Unit and integration tests run against the PR branch','Cost estimation with Infracost shows AWS cost delta','Required status checks must pass before merge is allowed','At least 1 reviewer approval required by branch protection'],
+      footer:'Good PRs are small, focused, and well-described'
+    },
+    'cicd-actions': {
+      icon:'⚙️', title:'GitHub Actions', cat:'CI/CD — Developer Tools',
+      desc:'Event-driven automation platform that runs workflows on push, PR, merge, or schedule. Orchestrates the entire CI/CD pipeline from test to deploy.',
+      facts:['Workflow triggered on: push to main, PR creation, scheduled runs','GitHub-hosted runners for standard jobs; self-hosted for VPC access','OIDC-based AWS authentication — no long-lived access keys stored','Environment variables and secrets stored in GitHub Secrets','Matrix builds can test against multiple environments simultaneously','Artifacts (Terraform plans, test reports) stored in GitHub'],
+      footer:'OIDC with AWS removes the need to rotate GitHub Secrets'
+    },
+    'cicd-tfplan': {
+      icon:'📋', title:'Terraform Plan', cat:'Infrastructure as Code',
+      desc:'Generates an execution plan showing exactly what AWS resources will be created, modified, or destroyed. Runs security and cost checks before any changes are applied.',
+      facts:['terraform init: downloads providers and modules from registry','terraform validate: checks HCL syntax and provider schema','tflint: catches misconfigurations not caught by validate','Checkov: SAST scanner checks 1000+ IaC security policies','Infracost: estimates monthly AWS cost change from the plan','Plan output saved as artifact and attached to the PR for review'],
+      footer:'Never apply infrastructure changes without reviewing the plan first'
+    },
+    'cicd-approval': {
+      icon:'✅', title:'Manual Approval Gate', cat:'CI/CD Pipeline',
+      desc:'Human review checkpoint before infrastructure changes are applied to production. Ensures someone with authority reviews the Terraform plan and authorizes deployment.',
+      facts:['GitHub Environments feature provides manual approval workflow','Named approvers (team leads, senior engineers) required','Approval window: 7 days before the workflow times out','OPA (Open Policy Agent) can automate approval for low-risk changes','All approvals logged in GitHub audit trail','Emergency bypass requires additional justification and audit'],
+      footer:'For auto-approval: use OPA/Sentinel policies to define safe change criteria'
+    },
+    'cicd-tfapply': {
+      icon:'🚀', title:'Terraform Apply', cat:'Infrastructure as Code',
+      desc:'Executes the approved Terraform plan against AWS. Creates, updates, or deletes resources as declared. State is stored in S3 with DynamoDB locking.',
+      facts:['terraform apply uses the saved plan file — no surprises','State file stored in S3 with server-side encryption (KMS)','DynamoDB table prevents concurrent state modifications','-parallelism=10 creates up to 10 resources simultaneously','On failure: partial apply leaves state updated for completed resources','Post-apply: integration tests verify infrastructure is healthy'],
+      footer:'Terraform state = source of truth for your infrastructure'
+    },
+    'cicd-awsenv': {
+      icon:'☁️', title:'AWS Environment', cat:'Cloud Infrastructure',
+      desc:'The target AWS account and region where Terraform provisions and manages all infrastructure resources. Multiple environments (dev, staging, prod) use separate AWS accounts.',
+      facts:['Separate AWS accounts per environment (dev/staging/prod)','Account isolation prevents dev mistakes from affecting production','OIDC role assumed by GitHub Actions with least-privilege policy','All resources tagged with: Environment, Team, CostCenter, ManagedBy=Terraform','AWS Service Quotas checked before large deployments','Post-deploy: smoke tests and synthetic canaries verify functionality'],
+      footer:'AWS Organizations + SCPs enforce guardrails across all accounts'
+    },
+    'sg-alb': {
+      icon:'🔒', title:'ALB Security Group (alb-sg)', cat:'Security — Networking',
+      desc:'Controls inbound and outbound traffic for the Application Load Balancer. Only allows HTTPS from anywhere on the internet — HTTP is redirected to HTTPS.',
+      facts:['Inbound: TCP 443 (HTTPS) from 0.0.0.0/0 and ::/0 (IPv6)','Inbound: TCP 80 (HTTP) from 0.0.0.0/0 — redirected to 443','Outbound: TCP 443 to app-sg only (EC2 instances)','Security Groups are stateful — no need for explicit return rules','Attached to all 3 ALB Nodes across AZ-1a, 1b, 1c','Changes apply instantly without rebooting the load balancer'],
+      footer:'Never open port 22 or 3389 on the ALB security group'
+    },
+    'sg-app': {
+      icon:'🔒', title:'App Security Group (app-sg)', cat:'Security — Networking',
+      desc:'Controls traffic to EC2 application instances. Only allows HTTPS from the ALB — direct internet access to app servers is completely blocked.',
+      facts:['Inbound: TCP 443 from alb-sg only (source is a security group ID)','No inbound rules from the internet — zero direct exposure','Outbound: TCP 443/80 to external APIs via NAT Gateway','Outbound: TCP 5432 to db-sg for database connections','Security group reference (not CIDR) ensures only ALB traffic is allowed','SSM Session Manager connects without any open inbound ports'],
+      footer:'Referencing alb-sg by ID means only that exact ALB can connect'
+    },
+    'sg-db': {
+      icon:'🔒', title:'DB Security Group (db-sg)', cat:'Security — Networking',
+      desc:'Controls traffic to Aurora PostgreSQL instances. Only allows PostgreSQL connections from the application tier — database is completely unreachable from the internet.',
+      facts:['Inbound: TCP 5432 (PostgreSQL) from app-sg only','Zero inbound rules from internet, NAT Gateway, or bastion hosts','Aurora writer and reader endpoints both use this security group','Outbound: restricted — no egress needed from database tier','Database management via RDS console, not direct connections','AWS DMS (migration) traffic requires temporary rule addition'],
+      footer:'Port 5432 open only to app-sg ensures defense-in-depth database protection'
+    }
+  };
+
+  /* ── Tooltip Engine ── */
+  var tip = document.getElementById('aws-tip');
+  var PAD = 16; // pixels from cursor
+
+  function showTip(key, e) {
+    var d = TIPS[key];
+    if (!d) return;
+    document.getElementById('tip-icon').textContent     = d.icon;
+    document.getElementById('tip-title').textContent    = d.title;
+    document.getElementById('tip-category').textContent = d.cat;
+    document.getElementById('tip-desc').textContent     = d.desc;
+    document.getElementById('tip-footer').textContent   = d.footer || '';
+    var ul = document.getElementById('tip-facts');
+    ul.innerHTML = '';
+    (d.facts || []).forEach(function(f) {
+      var li = document.createElement('li');
+      li.textContent = f;
+      ul.appendChild(li);
+    });
+    tip.classList.add('visible');
+    positionTip(e);
+  }
+
+  function positionTip(e) {
+    var W = window.innerWidth, H = window.innerHeight;
+    var tw = tip.offsetWidth, th = tip.offsetHeight;
+    var x = e.clientX + PAD, y = e.clientY + PAD;
+    if (x + tw > W - 8) x = e.clientX - tw - PAD;
+    if (y + th > H - 8) y = e.clientY - th - PAD;
+    if (x < 8) x = 8;
+    if (y < 8) y = 8;
+    tip.style.left = x + 'px';
+    tip.style.top  = y + 'px';
+  }
+
+  function hideTip() { tip.classList.remove('visible'); }
+
+  document.addEventListener('mouseover', function(e) {
+    var el = e.target.closest('[data-tip]');
+    if (el) showTip(el.getAttribute('data-tip'), e);
+  });
+  document.addEventListener('mouseout', function(e) {
+    var el = e.target.closest('[data-tip]');
+    if (el && !el.contains(e.relatedTarget)) hideTip();
+  });
+  document.addEventListener('mousemove', function(e) {
+    if (tip.classList.contains('visible')) positionTip(e);
   });
 </script>
 
