@@ -187,6 +187,59 @@
                         <figcaption>Security &amp; IAM — Enterprise Architecture Overview</figcaption>
                     </figure>
 
+                    <section class="sec-flow-panel is-edge" aria-labelledby="sec-flow-title">
+                        <div class="sec-flow-copy">
+                            <span class="sec-flow-kicker">Animated security flow</span>
+                            <h2 id="sec-flow-title">Follow a request through AWS security layers</h2>
+                            <p>Each step shows where a security control evaluates, protects, records, or responds during a normal cloud request.</p>
+                        </div>
+                        <div class="sec-flow-controls" role="tablist" aria-label="Security flow step selector">
+                            <button type="button" class="sec-flow-tab active" role="tab" aria-selected="true" data-sec-step="edge">Edge protection</button>
+                            <button type="button" class="sec-flow-tab" role="tab" aria-selected="false" data-sec-step="identity">IAM decision</button>
+                            <button type="button" class="sec-flow-tab" role="tab" aria-selected="false" data-sec-step="network">Network guardrails</button>
+                            <button type="button" class="sec-flow-tab" role="tab" aria-selected="false" data-sec-step="data">Data protection</button>
+                            <button type="button" class="sec-flow-tab" role="tab" aria-selected="false" data-sec-step="detect">Detection</button>
+                            <button type="button" class="sec-flow-tab" role="tab" aria-selected="false" data-sec-step="respond">Response</button>
+                        </div>
+                        <div class="sec-flow-grid">
+                            <div class="sec-flow-stage" aria-hidden="true">
+                                <div class="sec-node sec-node-request"><span>Request</span><small>user, app, API call</small></div>
+                                <div class="sec-node sec-step-node sec-node-edge"><span>WAF + Shield</span><small>block bad traffic</small></div>
+                                <div class="sec-node sec-step-node sec-node-identity"><span>IAM + STS</span><small>allow or deny</small></div>
+                                <div class="sec-node sec-step-node sec-node-network"><span>VPC Controls</span><small>SG, NACL, endpoints</small></div>
+                                <div class="sec-node sec-step-node sec-node-data"><span>KMS + Secrets</span><small>encrypt and protect</small></div>
+                                <div class="sec-node sec-step-node sec-node-detect"><span>CloudTrail + GuardDuty</span><small>find suspicious activity</small></div>
+                                <div class="sec-node sec-step-node sec-node-respond"><span>Security Hub + EventBridge</span><small>route remediation</small></div>
+                                <div class="sec-flow-line line-request-edge"></div>
+                                <div class="sec-flow-line line-edge-identity"></div>
+                                <div class="sec-flow-line line-identity-network"></div>
+                                <div class="sec-flow-line line-network-data"></div>
+                                <div class="sec-flow-line line-data-detect"></div>
+                                <div class="sec-flow-line line-detect-respond"></div>
+                                <span class="sec-signal signal-one"></span>
+                                <span class="sec-signal signal-two"></span>
+                            </div>
+                            <div class="sec-flow-details" aria-live="polite">
+                                <span class="sec-detail-label">Current layer</span>
+                                <h3 id="secFlowStep">Edge protection</h3>
+                                <dl>
+                                    <div>
+                                        <dt>What happens</dt>
+                                        <dd id="secFlowWhat">CloudFront, AWS WAF, and Shield evaluate incoming traffic before it reaches the application.</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Primary services</dt>
+                                        <dd id="secFlowServices">AWS WAF, Shield, CloudFront, Route 53, AWS Firewall Manager.</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Interview phrase</dt>
+                                        <dd id="secFlowPhrase">Start at the edge: block known bad patterns early and reduce load before IAM or app code runs.</dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </div>
+                    </section>
+
                     <!-- Topic 1: IAM Policies -->
                     <article id="iam-policies" class="topic-card" data-difficulty="intermediate">
                         <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">

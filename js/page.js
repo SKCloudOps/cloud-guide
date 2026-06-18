@@ -350,6 +350,80 @@
         setActiveService('lambda');
     })();
 
+    // === Security Flow Animation ===
+    (function initSecurityFlowAnimation() {
+        var panel = document.querySelector('.sec-flow-panel');
+        if (!panel) return;
+
+        var tabs = panel.querySelectorAll('.sec-flow-tab');
+        var stepName = document.getElementById('secFlowStep');
+        var stepWhat = document.getElementById('secFlowWhat');
+        var stepServices = document.getElementById('secFlowServices');
+        var stepPhrase = document.getElementById('secFlowPhrase');
+        var stepOrder = ['edge', 'identity', 'network', 'data', 'detect', 'respond'];
+        var stepDetails = {
+            edge: {
+                name: 'Edge protection',
+                what: 'CloudFront, AWS WAF, and Shield evaluate incoming traffic before it reaches the application.',
+                services: 'AWS WAF, Shield, CloudFront, Route 53, AWS Firewall Manager.',
+                phrase: 'Start at the edge: block known bad patterns early and reduce load before IAM or app code runs.'
+            },
+            identity: {
+                name: 'IAM decision',
+                what: 'AWS evaluates authentication, identity policies, resource policies, permission boundaries, SCPs, and explicit denies.',
+                services: 'IAM, IAM Identity Center, STS, Organizations SCPs, resource-based policies.',
+                phrase: 'Every AWS action is an API call; authorization is the center of the security model.'
+            },
+            network: {
+                name: 'Network guardrails',
+                what: 'Traffic is constrained by VPC routing, security groups, NACLs, private endpoints, and firewall inspection.',
+                services: 'VPC, Security Groups, NACLs, VPC Endpoints, Network Firewall, Transit Gateway.',
+                phrase: 'Use network controls as blast-radius guardrails, not as a replacement for IAM least privilege.'
+            },
+            data: {
+                name: 'Data protection',
+                what: 'Sensitive data is encrypted, keys are governed, and secrets are retrieved without hard-coding credentials.',
+                services: 'KMS, CloudHSM, Secrets Manager, ACM, S3 Block Public Access, Macie.',
+                phrase: 'Protect data with encryption, key policy design, rotation, and clear ownership of secrets.'
+            },
+            detect: {
+                name: 'Detection',
+                what: 'Activity logs and findings are analyzed for risky configuration, anomalous behavior, and known threat patterns.',
+                services: 'CloudTrail, CloudWatch, GuardDuty, Config, Inspector, Security Hub.',
+                phrase: 'Assume prevention will miss something; centralize logs and findings so detection is fast.'
+            },
+            respond: {
+                name: 'Response',
+                what: 'Findings trigger notifications, tickets, automated isolation, key rotation, or rollback workflows.',
+                services: 'EventBridge, Security Hub, Systems Manager Automation, Lambda, SNS, Incident Manager.',
+                phrase: 'A strong answer closes the loop: detect, prioritize, notify, remediate, and preserve evidence.'
+            }
+        };
+
+        function setActiveStep(step) {
+            var details = stepDetails[step];
+            if (!details) return;
+            stepOrder.forEach(function (item) { panel.classList.toggle('is-' + item, item === step); });
+            tabs.forEach(function (tab) {
+                var selected = tab.getAttribute('data-sec-step') === step;
+                tab.classList.toggle('active', selected);
+                tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+            });
+            if (stepName) stepName.textContent = details.name;
+            if (stepWhat) stepWhat.textContent = details.what;
+            if (stepServices) stepServices.textContent = details.services;
+            if (stepPhrase) stepPhrase.textContent = details.phrase;
+        }
+
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                setActiveStep(tab.getAttribute('data-sec-step'));
+            });
+        });
+
+        setActiveStep('edge');
+    })();
+
     // Ctrl+K search
     document.addEventListener('keydown', function (e) {
         if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); if (searchInput) searchInput.focus(); }
