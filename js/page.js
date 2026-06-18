@@ -249,7 +249,12 @@
             var details = serviceDetails[service];
             if (!details) return;
             activeService = service;
-            serviceOrder.forEach(function (item) { panel.classList.toggle('is-' + item, item === service); });
+            // Highlight matching SVG row; dim all others
+            panel.querySelectorAll('.db-row').forEach(function (row) {
+                var isActive = row.getAttribute('data-for') === service;
+                row.classList.toggle('db-active', isActive);
+                row.classList.toggle('db-dim', !isActive);
+            });
             tabs.forEach(function (tab) {
                 var selected = tab.getAttribute('data-db-service') === service;
                 tab.classList.toggle('active', selected);
@@ -280,7 +285,15 @@
         var serviceUse = document.getElementById('slsAnimationUse');
         var serviceWhy = document.getElementById('slsAnimationWhy');
         var servicePhrase = document.getElementById('slsAnimationPhrase');
-        var serviceOrder = ['lambda', 'apigateway', 'stepfunctions', 'eventbridge', 'sqs', 'sns', 'fargate'];
+        var slsHighlight = {
+            lambda:        { nodes: ['sls-ng-client', 'sls-ng-apigateway', 'sls-ng-lambda'], edges: ['sls-e-apigw', 'sls-e-lambda', 'sls-e-sqs', 'sls-e-sns', 'sls-e-eventbridge', 'sls-e-stepfunctions'] },
+            apigateway:    { nodes: ['sls-ng-client', 'sls-ng-apigateway'], edges: ['sls-e-apigw'] },
+            sqs:           { nodes: ['sls-ng-client', 'sls-ng-apigateway', 'sls-ng-lambda', 'sls-ng-sqs'], edges: ['sls-e-apigw', 'sls-e-lambda', 'sls-e-sqs'] },
+            sns:           { nodes: ['sls-ng-client', 'sls-ng-apigateway', 'sls-ng-lambda', 'sls-ng-sns'], edges: ['sls-e-apigw', 'sls-e-lambda', 'sls-e-sns'] },
+            eventbridge:   { nodes: ['sls-ng-client', 'sls-ng-apigateway', 'sls-ng-lambda', 'sls-ng-eventbridge'], edges: ['sls-e-apigw', 'sls-e-lambda', 'sls-e-eventbridge'] },
+            stepfunctions: { nodes: ['sls-ng-client', 'sls-ng-apigateway', 'sls-ng-lambda', 'sls-ng-stepfunctions'], edges: ['sls-e-apigw', 'sls-e-lambda', 'sls-e-stepfunctions'] },
+            fargate:       { nodes: ['sls-ng-client', 'sls-ng-apigateway', 'sls-ng-fargate'], edges: ['sls-e-apigw', 'sls-e-fargate'] }
+        };
         var serviceDetails = {
             lambda: {
                 name: 'Lambda',
@@ -329,7 +342,18 @@
         function setActiveService(service) {
             var details = serviceDetails[service];
             if (!details) return;
-            serviceOrder.forEach(function (item) { panel.classList.toggle('is-' + item, item === service); });
+            var hl = slsHighlight[service] || { nodes: [], edges: [] };
+            // Highlight nodes on the active path; dim others
+            panel.querySelectorAll('.sls-ng').forEach(function (g) {
+                var active = hl.nodes.some(function (cls) { return g.classList.contains(cls); });
+                g.classList.toggle('sls-active', active);
+                g.classList.toggle('sls-dim', !active);
+            });
+            // Draw active edges; hide others
+            panel.querySelectorAll('.sls-edge').forEach(function (line) {
+                var active = hl.edges.some(function (cls) { return line.classList.contains(cls); });
+                line.classList.toggle('sls-edge-active', active);
+            });
             tabs.forEach(function (tab) {
                 var selected = tab.getAttribute('data-sls-service') === service;
                 tab.classList.toggle('active', selected);
@@ -403,7 +427,24 @@
         function setActiveStep(step) {
             var details = stepDetails[step];
             if (!details) return;
-            stepOrder.forEach(function (item) { panel.classList.toggle('is-' + item, item === step); });
+            var activeIdx = stepOrder.indexOf(step);
+            // Mark pipeline stages as passed / active / waiting
+            panel.querySelectorAll('.sec-stage').forEach(function (g, i) {
+                g.classList.remove('sec-passed', 'sec-active', 'sec-waiting');
+                if (i < activeIdx) g.classList.add('sec-passed');
+                else if (i === activeIdx) g.classList.add('sec-active');
+                else g.classList.add('sec-waiting');
+            });
+            // Color connecting arrows accordingly
+            panel.querySelectorAll('.sec-arr').forEach(function (arr) {
+                arr.classList.remove('sec-arr-passed', 'sec-arr-active');
+            });
+            stepOrder.forEach(function (s, i) {
+                var arr = panel.querySelector('.sec-arr-' + s);
+                if (!arr) return;
+                if (i < activeIdx) arr.classList.add('sec-arr-passed');
+                else if (i === activeIdx) arr.classList.add('sec-arr-active');
+            });
             tabs.forEach(function (tab) {
                 var selected = tab.getAttribute('data-sec-step') === step;
                 tab.classList.toggle('active', selected);

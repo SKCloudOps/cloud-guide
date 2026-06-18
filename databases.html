@@ -191,24 +191,75 @@
                         </div>
                         <div class="db-animation-grid">
                             <div class="db-animation-stage" aria-hidden="true">
-                                <div class="db-node db-node-app">
-                                    <span>Application</span>
-                                    <small>request</small>
-                                </div>
-                                <div class="db-node db-node-router">
-                                    <span>Access Pattern</span>
-                                    <small>decision point</small>
-                                </div>
-                                <div class="db-path db-path-main"></div>
-                                <div class="db-path db-path-target"></div>
-                                <span class="db-packet packet-one"></span>
-                                <span class="db-packet packet-two"></span>
-                                <div class="db-node db-service-node node-aurora" data-db-node="aurora"><span>Aurora</span><small>SQL + ACID</small></div>
-                                <div class="db-node db-service-node node-dynamodb" data-db-node="dynamodb"><span>DynamoDB</span><small>key-value scale</small></div>
-                                <div class="db-node db-service-node node-elasticache" data-db-node="elasticache"><span>ElastiCache</span><small>hot cache</small></div>
-                                <div class="db-node db-service-node node-redshift" data-db-node="redshift"><span>Redshift</span><small>analytics</small></div>
-                                <div class="db-node db-service-node node-documentdb" data-db-node="documentdb"><span>DocumentDB</span><small>documents</small></div>
-                                <div class="db-node db-service-node node-neptune" data-db-node="neptune"><span>Neptune</span><small>graphs</small></div>
+                              <svg viewBox="0 0 700 342" width="100%" class="db-svg">
+                                <defs>
+                                  <marker id="dbArrow" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+                                    <polygon points="0 0, 7 2.5, 0 5" class="db-arrowhead"/>
+                                  </marker>
+                                </defs>
+                                <text x="111" y="11" text-anchor="middle" class="db-col-hdr">When you need…</text>
+                                <text x="579" y="11" text-anchor="middle" class="db-col-hdr">Choose…</text>
+                                <!-- aurora -->
+                                <g class="db-row" data-for="aurora">
+                                  <rect x="2" y="17" width="218" height="44" rx="5" class="db-req-rect"/>
+                                  <text x="111" y="39" text-anchor="middle" class="db-req-txt">SQL joins + ACID transactions</text>
+                                  <text x="111" y="54" text-anchor="middle" class="db-req-sub">relational, consistent writes</text>
+                                  <line x1="220" y1="39" x2="458" y2="39" class="db-line" stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#dbArrow)"/>
+                                  <rect x="460" y="17" width="238" height="44" rx="5" class="db-svc-rect db-c-aurora"/>
+                                  <text x="579" y="37" text-anchor="middle" class="db-svc-txt">Aurora / RDS</text>
+                                  <text x="579" y="51" text-anchor="middle" class="db-svc-sub">PostgreSQL · MySQL · managed SQL</text>
+                                </g>
+                                <!-- dynamodb -->
+                                <g class="db-row" data-for="dynamodb">
+                                  <rect x="2" y="75" width="218" height="44" rx="5" class="db-req-rect"/>
+                                  <text x="111" y="97" text-anchor="middle" class="db-req-txt">Key-value at any scale &lt;10 ms</text>
+                                  <text x="111" y="112" text-anchor="middle" class="db-req-sub">serverless, on-demand or provisioned</text>
+                                  <line x1="220" y1="97" x2="458" y2="97" class="db-line" stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#dbArrow)"/>
+                                  <rect x="460" y="75" width="238" height="44" rx="5" class="db-svc-rect db-c-dynamodb"/>
+                                  <text x="579" y="95" text-anchor="middle" class="db-svc-txt">DynamoDB</text>
+                                  <text x="579" y="109" text-anchor="middle" class="db-svc-sub">Serverless key-value · global tables</text>
+                                </g>
+                                <!-- elasticache -->
+                                <g class="db-row" data-for="elasticache">
+                                  <rect x="2" y="133" width="218" height="44" rx="5" class="db-req-rect"/>
+                                  <text x="111" y="155" text-anchor="middle" class="db-req-txt">Sub-millisecond hot reads</text>
+                                  <text x="111" y="170" text-anchor="middle" class="db-req-sub">sessions, leaderboards, counters</text>
+                                  <line x1="220" y1="155" x2="458" y2="155" class="db-line" stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#dbArrow)"/>
+                                  <rect x="460" y="133" width="238" height="44" rx="5" class="db-svc-rect db-c-elasticache"/>
+                                  <text x="579" y="153" text-anchor="middle" class="db-svc-txt">ElastiCache</text>
+                                  <text x="579" y="167" text-anchor="middle" class="db-svc-sub">Redis · Memcached · in-memory</text>
+                                </g>
+                                <!-- redshift -->
+                                <g class="db-row" data-for="redshift">
+                                  <rect x="2" y="191" width="218" height="44" rx="5" class="db-req-rect"/>
+                                  <text x="111" y="213" text-anchor="middle" class="db-req-txt">OLAP analytics on large datasets</text>
+                                  <text x="111" y="228" text-anchor="middle" class="db-req-sub">aggregations, dashboards, petabytes</text>
+                                  <line x1="220" y1="213" x2="458" y2="213" class="db-line" stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#dbArrow)"/>
+                                  <rect x="460" y="191" width="238" height="44" rx="5" class="db-svc-rect db-c-redshift"/>
+                                  <text x="579" y="211" text-anchor="middle" class="db-svc-txt">Redshift</text>
+                                  <text x="579" y="225" text-anchor="middle" class="db-svc-sub">Columnar MPP · Spectrum · BI</text>
+                                </g>
+                                <!-- documentdb -->
+                                <g class="db-row" data-for="documentdb">
+                                  <rect x="2" y="249" width="218" height="44" rx="5" class="db-req-rect"/>
+                                  <text x="111" y="271" text-anchor="middle" class="db-req-txt">Flexible JSON document schema</text>
+                                  <text x="111" y="286" text-anchor="middle" class="db-req-sub">MongoDB-compatible API</text>
+                                  <line x1="220" y1="271" x2="458" y2="271" class="db-line" stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#dbArrow)"/>
+                                  <rect x="460" y="249" width="238" height="44" rx="5" class="db-svc-rect db-c-documentdb"/>
+                                  <text x="579" y="269" text-anchor="middle" class="db-svc-txt">DocumentDB</text>
+                                  <text x="579" y="283" text-anchor="middle" class="db-svc-sub">Managed document store</text>
+                                </g>
+                                <!-- neptune -->
+                                <g class="db-row" data-for="neptune">
+                                  <rect x="2" y="307" width="218" height="44" rx="5" class="db-req-rect"/>
+                                  <text x="111" y="329" text-anchor="middle" class="db-req-txt">Graph traversal relationships</text>
+                                  <text x="111" y="344" text-anchor="middle" class="db-req-sub">paths, recommendations, fraud</text>
+                                  <line x1="220" y1="329" x2="458" y2="329" class="db-line" stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#dbArrow)"/>
+                                  <rect x="460" y="307" width="238" height="44" rx="5" class="db-svc-rect db-c-neptune"/>
+                                  <text x="579" y="327" text-anchor="middle" class="db-svc-txt">Neptune</text>
+                                  <text x="579" y="341" text-anchor="middle" class="db-svc-sub">Gremlin · openCypher · graph DB</text>
+                                </g>
+                              </svg>
                             </div>
                             <div class="db-animation-details" aria-live="polite">
                                 <span class="db-detail-label">Current choice</span>

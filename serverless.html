@@ -184,19 +184,73 @@
             </div>
             <div class="sls-animation-grid">
               <div class="sls-animation-stage" aria-hidden="true">
-                <div class="sls-node sls-source-node"><span>Workload</span><small>request, event, or task</small></div>
-                <div class="sls-node sls-decision-node"><span>Shape</span><small>sync, async, workflow</small></div>
-                <div class="sls-rail sls-rail-main"></div>
-                <div class="sls-rail sls-rail-target"></div>
-                <span class="sls-pulse sls-pulse-one"></span>
-                <span class="sls-pulse sls-pulse-two"></span>
-                <div class="sls-node sls-service-node sls-node-lambda"><span>Lambda</span><small>run code</small></div>
-                <div class="sls-node sls-service-node sls-node-apigateway"><span>API Gateway</span><small>front door</small></div>
-                <div class="sls-node sls-service-node sls-node-stepfunctions"><span>Step Functions</span><small>orchestrate</small></div>
-                <div class="sls-node sls-service-node sls-node-eventbridge"><span>EventBridge</span><small>route events</small></div>
-                <div class="sls-node sls-service-node sls-node-sqs"><span>SQS</span><small>buffer queue</small></div>
-                <div class="sls-node sls-service-node sls-node-sns"><span>SNS</span><small>fan out</small></div>
-                <div class="sls-node sls-service-node sls-node-fargate"><span>Fargate</span><small>run containers</small></div>
+                <svg viewBox="0 0 700 278" width="100%" class="sls-arch-svg">
+                  <defs>
+                    <marker id="slsArrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                      <polygon points="0 0, 8 3, 0 6" class="sls-arrowhead"/>
+                    </marker>
+                  </defs>
+                  <!-- Client -->
+                  <g class="sls-ng sls-ng-client">
+                    <rect x="275" y="4" width="150" height="38" rx="5" class="sls-client-rect"/>
+                    <text x="350" y="24" text-anchor="middle" class="sls-ng-txt">Client Request</text>
+                    <text x="350" y="36" text-anchor="middle" class="sls-ng-sub">HTTP · SDK · event trigger</text>
+                  </g>
+                  <!-- Client → API GW -->
+                  <line x1="350" y1="42" x2="350" y2="62" class="sls-edge sls-e-apigw" stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#slsArrow)"/>
+                  <!-- API Gateway -->
+                  <g class="sls-ng sls-ng-apigateway">
+                    <rect x="230" y="62" width="240" height="38" rx="5" class="sls-svc-rect"/>
+                    <text x="350" y="82" text-anchor="middle" class="sls-ng-txt">API Gateway</text>
+                    <text x="350" y="94" text-anchor="middle" class="sls-ng-sub">REST · HTTP · WebSocket · auth · throttle</text>
+                  </g>
+                  <!-- API GW → Lambda -->
+                  <line x1="350" y1="100" x2="350" y2="122" class="sls-edge sls-e-lambda" stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#slsArrow)"/>
+                  <!-- Lambda -->
+                  <g class="sls-ng sls-ng-lambda">
+                    <rect x="258" y="122" width="184" height="38" rx="5" class="sls-svc-rect sls-lambda-rect"/>
+                    <text x="350" y="142" text-anchor="middle" class="sls-ng-txt">Lambda</text>
+                    <text x="350" y="154" text-anchor="middle" class="sls-ng-sub">stateless compute · 15 min max · pay/req</text>
+                  </g>
+                  <!-- Lambda fan-out lines -->
+                  <line x1="350" y1="160" x2="68"  y2="218" class="sls-edge sls-e-sqs"           stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#slsArrow)"/>
+                  <line x1="350" y1="160" x2="200" y2="218" class="sls-edge sls-e-sns"           stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#slsArrow)"/>
+                  <line x1="350" y1="160" x2="350" y2="218" class="sls-edge sls-e-eventbridge"   stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#slsArrow)"/>
+                  <line x1="350" y1="160" x2="504" y2="218" class="sls-edge sls-e-stepfunctions" stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#slsArrow)"/>
+                  <!-- Fargate from API GW (container alternative, not Lambda output) -->
+                  <line x1="470" y1="81"  x2="638" y2="218" class="sls-edge sls-e-fargate"       stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#slsArrow)"/>
+                  <!-- Fan-out service boxes -->
+                  <g class="sls-ng sls-ng-sqs">
+                    <rect x="8"   y="218" width="120" height="54" rx="5" class="sls-svc-rect"/>
+                    <text x="68"  y="240" text-anchor="middle" class="sls-ng-txt">SQS</text>
+                    <text x="68"  y="252" text-anchor="middle" class="sls-ng-sub">durable queue</text>
+                    <text x="68"  y="263" text-anchor="middle" class="sls-ng-sub">back-pressure buffer</text>
+                  </g>
+                  <g class="sls-ng sls-ng-sns">
+                    <rect x="140" y="218" width="120" height="54" rx="5" class="sls-svc-rect"/>
+                    <text x="200" y="240" text-anchor="middle" class="sls-ng-txt">SNS</text>
+                    <text x="200" y="252" text-anchor="middle" class="sls-ng-sub">pub/sub fan-out</text>
+                    <text x="200" y="263" text-anchor="middle" class="sls-ng-sub">multi-subscriber</text>
+                  </g>
+                  <g class="sls-ng sls-ng-eventbridge">
+                    <rect x="272" y="218" width="156" height="54" rx="5" class="sls-svc-rect"/>
+                    <text x="350" y="240" text-anchor="middle" class="sls-ng-txt">EventBridge</text>
+                    <text x="350" y="252" text-anchor="middle" class="sls-ng-sub">event routing rules</text>
+                    <text x="350" y="263" text-anchor="middle" class="sls-ng-sub">cross-service decoupling</text>
+                  </g>
+                  <g class="sls-ng sls-ng-stepfunctions">
+                    <rect x="440" y="218" width="128" height="54" rx="5" class="sls-svc-rect"/>
+                    <text x="504" y="238" text-anchor="middle" class="sls-ng-txt">Step Functions</text>
+                    <text x="504" y="252" text-anchor="middle" class="sls-ng-sub">workflow orchestration</text>
+                    <text x="504" y="263" text-anchor="middle" class="sls-ng-sub">retries · branches · waits</text>
+                  </g>
+                  <g class="sls-ng sls-ng-fargate">
+                    <rect x="580" y="218" width="116" height="54" rx="5" class="sls-svc-rect"/>
+                    <text x="638" y="240" text-anchor="middle" class="sls-ng-txt">Fargate</text>
+                    <text x="638" y="252" text-anchor="middle" class="sls-ng-sub">container tasks</text>
+                    <text x="638" y="263" text-anchor="middle" class="sls-ng-sub">no EC2 management</text>
+                  </g>
+                </svg>
               </div>
               <div class="sls-animation-details" aria-live="polite">
                 <span class="sls-detail-label">Current choice</span>

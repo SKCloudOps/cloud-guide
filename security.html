@@ -203,21 +203,87 @@
                         </div>
                         <div class="sec-flow-grid">
                             <div class="sec-flow-stage" aria-hidden="true">
-                                <div class="sec-node sec-node-request"><span>Request</span><small>user, app, API call</small></div>
-                                <div class="sec-node sec-step-node sec-node-edge"><span>WAF + Shield</span><small>block bad traffic</small></div>
-                                <div class="sec-node sec-step-node sec-node-identity"><span>IAM + STS</span><small>allow or deny</small></div>
-                                <div class="sec-node sec-step-node sec-node-network"><span>VPC Controls</span><small>SG, NACL, endpoints</small></div>
-                                <div class="sec-node sec-step-node sec-node-data"><span>KMS + Secrets</span><small>encrypt and protect</small></div>
-                                <div class="sec-node sec-step-node sec-node-detect"><span>CloudTrail + GuardDuty</span><small>find suspicious activity</small></div>
-                                <div class="sec-node sec-step-node sec-node-respond"><span>Security Hub + EventBridge</span><small>route remediation</small></div>
-                                <div class="sec-flow-line line-request-edge"></div>
-                                <div class="sec-flow-line line-edge-identity"></div>
-                                <div class="sec-flow-line line-identity-network"></div>
-                                <div class="sec-flow-line line-network-data"></div>
-                                <div class="sec-flow-line line-data-detect"></div>
-                                <div class="sec-flow-line line-detect-respond"></div>
-                                <span class="sec-signal signal-one"></span>
-                                <span class="sec-signal signal-two"></span>
+                              <svg viewBox="0 0 700 175" width="100%" class="sec-pipeline-svg">
+                                <defs>
+                                  <marker id="secArrow" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+                                    <polygon points="0 0, 7 2.5, 0 5" class="sec-arrowhead"/>
+                                  </marker>
+                                </defs>
+                                <!-- Internet source -->
+                                <g class="sec-src-g">
+                                  <rect x="5" y="28" width="68" height="90" rx="5" class="sec-src-rect"/>
+                                  <text x="39" y="67" text-anchor="middle" class="sec-src-label">In&#x2011;bound</text>
+                                  <text x="39" y="82" text-anchor="middle" class="sec-src-sub">request</text>
+                                  <text x="39" y="96" text-anchor="middle" class="sec-src-sub">from</text>
+                                  <text x="39" y="110" text-anchor="middle" class="sec-src-sub">internet</text>
+                                </g>
+                                <!-- Arrow → Edge -->
+                                <line x1="73" y1="73" x2="83" y2="73" class="sec-arr sec-arr-edge" stroke-dasharray="20" stroke-dashoffset="20" marker-end="url(#secArrow)"/>
+                                <!-- Edge -->
+                                <g class="sec-stage" data-step="edge">
+                                  <rect x="85" y="28" width="96" height="90" rx="5" class="sec-stage-rect"/>
+                                  <text x="133" y="56" text-anchor="middle" class="sec-stage-lbl">1 · Edge</text>
+                                  <text x="133" y="72" text-anchor="middle" class="sec-stage-svc">WAF</text>
+                                  <text x="133" y="84" text-anchor="middle" class="sec-stage-svc">Shield</text>
+                                  <text x="133" y="96" text-anchor="middle" class="sec-stage-svc">CloudFront</text>
+                                  <text x="133" y="110" text-anchor="middle" class="sec-stage-svc">Route 53</text>
+                                </g>
+                                <!-- Arrow → Identity -->
+                                <line x1="181" y1="73" x2="191" y2="73" class="sec-arr sec-arr-identity" stroke-dasharray="20" stroke-dashoffset="20" marker-end="url(#secArrow)"/>
+                                <!-- Identity -->
+                                <g class="sec-stage" data-step="identity">
+                                  <rect x="193" y="28" width="96" height="90" rx="5" class="sec-stage-rect"/>
+                                  <text x="241" y="56" text-anchor="middle" class="sec-stage-lbl">2 · IAM</text>
+                                  <text x="241" y="72" text-anchor="middle" class="sec-stage-svc">IAM Policies</text>
+                                  <text x="241" y="84" text-anchor="middle" class="sec-stage-svc">STS / Roles</text>
+                                  <text x="241" y="96" text-anchor="middle" class="sec-stage-svc">SCPs</text>
+                                  <text x="241" y="110" text-anchor="middle" class="sec-stage-svc">Perms Bounds</text>
+                                </g>
+                                <!-- Arrow → Network -->
+                                <line x1="289" y1="73" x2="299" y2="73" class="sec-arr sec-arr-network" stroke-dasharray="20" stroke-dashoffset="20" marker-end="url(#secArrow)"/>
+                                <!-- Network -->
+                                <g class="sec-stage" data-step="network">
+                                  <rect x="301" y="28" width="96" height="90" rx="5" class="sec-stage-rect"/>
+                                  <text x="349" y="56" text-anchor="middle" class="sec-stage-lbl">3 · Network</text>
+                                  <text x="349" y="72" text-anchor="middle" class="sec-stage-svc">VPC</text>
+                                  <text x="349" y="84" text-anchor="middle" class="sec-stage-svc">Security Groups</text>
+                                  <text x="349" y="96" text-anchor="middle" class="sec-stage-svc">NACL</text>
+                                  <text x="349" y="110" text-anchor="middle" class="sec-stage-svc">Firewall</text>
+                                </g>
+                                <!-- Arrow → Data -->
+                                <line x1="397" y1="73" x2="407" y2="73" class="sec-arr sec-arr-data" stroke-dasharray="20" stroke-dashoffset="20" marker-end="url(#secArrow)"/>
+                                <!-- Data -->
+                                <g class="sec-stage" data-step="data">
+                                  <rect x="409" y="28" width="82" height="90" rx="5" class="sec-stage-rect"/>
+                                  <text x="450" y="56" text-anchor="middle" class="sec-stage-lbl">4 · Data</text>
+                                  <text x="450" y="72" text-anchor="middle" class="sec-stage-svc">KMS</text>
+                                  <text x="450" y="84" text-anchor="middle" class="sec-stage-svc">Secrets Mgr</text>
+                                  <text x="450" y="96" text-anchor="middle" class="sec-stage-svc">Macie</text>
+                                  <text x="450" y="110" text-anchor="middle" class="sec-stage-svc">ACM</text>
+                                </g>
+                                <!-- Arrow → Detect -->
+                                <line x1="491" y1="73" x2="501" y2="73" class="sec-arr sec-arr-detect" stroke-dasharray="20" stroke-dashoffset="20" marker-end="url(#secArrow)"/>
+                                <!-- Detect -->
+                                <g class="sec-stage" data-step="detect">
+                                  <rect x="503" y="28" width="96" height="90" rx="5" class="sec-stage-rect"/>
+                                  <text x="551" y="56" text-anchor="middle" class="sec-stage-lbl">5 · Detect</text>
+                                  <text x="551" y="72" text-anchor="middle" class="sec-stage-svc">CloudTrail</text>
+                                  <text x="551" y="84" text-anchor="middle" class="sec-stage-svc">GuardDuty</text>
+                                  <text x="551" y="96" text-anchor="middle" class="sec-stage-svc">Config</text>
+                                  <text x="551" y="110" text-anchor="middle" class="sec-stage-svc">Inspector</text>
+                                </g>
+                                <!-- Arrow → Respond -->
+                                <line x1="599" y1="73" x2="609" y2="73" class="sec-arr sec-arr-respond" stroke-dasharray="20" stroke-dashoffset="20" marker-end="url(#secArrow)"/>
+                                <!-- Respond -->
+                                <g class="sec-stage" data-step="respond">
+                                  <rect x="611" y="28" width="84" height="90" rx="5" class="sec-stage-rect"/>
+                                  <text x="653" y="56" text-anchor="middle" class="sec-stage-lbl">6 · Respond</text>
+                                  <text x="653" y="72" text-anchor="middle" class="sec-stage-svc">Security Hub</text>
+                                  <text x="653" y="84" text-anchor="middle" class="sec-stage-svc">EventBridge</text>
+                                  <text x="653" y="96" text-anchor="middle" class="sec-stage-svc">SSM Auto.</text>
+                                  <text x="653" y="110" text-anchor="middle" class="sec-stage-svc">Incident Mgr</text>
+                                </g>
+                              </svg>
                             </div>
                             <div class="sec-flow-details" aria-live="polite">
                                 <span class="sec-detail-label">Current layer</span>
