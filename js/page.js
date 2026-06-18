@@ -194,6 +194,162 @@
     }, { passive: true });
     if (scrollTopBtn) scrollTopBtn.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
+    // === Database Services Animation ===
+    (function initDatabaseAnimation() {
+        var panel = document.querySelector('.db-animation-panel');
+        if (!panel) return;
+
+        var tabs = panel.querySelectorAll('.db-service-tab');
+        var serviceName = document.getElementById('dbAnimationService');
+        var serviceUse = document.getElementById('dbAnimationUse');
+        var serviceWhy = document.getElementById('dbAnimationWhy');
+        var servicePhrase = document.getElementById('dbAnimationPhrase');
+        var serviceOrder = ['aurora', 'dynamodb', 'elasticache', 'redshift', 'documentdb', 'neptune'];
+        var activeService = 'aurora';
+        var serviceDetails = {
+            aurora: {
+                name: 'Aurora / RDS',
+                use: 'You need SQL joins, relational constraints, and transactional writes.',
+                why: 'Managed relational database with Multi-AZ, backups, read replicas, and Aurora\'s distributed storage option.',
+                phrase: 'Start with Aurora for production MySQL/PostgreSQL when consistency and relational modeling matter.'
+            },
+            dynamodb: {
+                name: 'DynamoDB',
+                use: 'You know the access patterns and need single-digit millisecond reads or writes at massive scale.',
+                why: 'Serverless key-value and document store with on-demand capacity, global tables, TTL, streams, and predictable latency.',
+                phrase: 'Choose DynamoDB when the access pattern is simple, high-volume, and can be modeled around partition keys.'
+            },
+            elasticache: {
+                name: 'ElastiCache',
+                use: 'The database is correct but hot reads, sessions, counters, or leaderboards need sub-millisecond response.',
+                why: 'Redis or Memcached keeps frequently accessed data in memory so the primary database handles fewer repeated reads.',
+                phrase: 'Add ElastiCache as a cache-aside layer when latency and read pressure are the bottlenecks.'
+            },
+            redshift: {
+                name: 'Redshift',
+                use: 'Analysts need joins, aggregations, and dashboards across large historical datasets.',
+                why: 'Columnar MPP warehouse optimized for OLAP queries, compression, spectrum access, and BI workloads.',
+                phrase: 'Pick Redshift for analytics, not transactional app reads; it is built for scan-heavy reporting.'
+            },
+            documentdb: {
+                name: 'DocumentDB',
+                use: 'Records have flexible JSON-like structure and the team wants MongoDB-compatible APIs.',
+                why: 'Managed document database for evolving schemas, nested attributes, and application-owned document models.',
+                phrase: 'Use DocumentDB when flexible document shape matters more than joins or relational integrity.'
+            },
+            neptune: {
+                name: 'Neptune',
+                use: 'The question is about relationships: paths, recommendations, fraud rings, dependencies, or knowledge graphs.',
+                why: 'Purpose-built graph database supporting Gremlin and openCypher for fast traversal across connected data.',
+                phrase: 'Choose Neptune when the relationships are the data model, not just a few foreign keys.'
+            }
+        };
+
+        function setActiveService(service) {
+            var details = serviceDetails[service];
+            if (!details) return;
+            activeService = service;
+            serviceOrder.forEach(function (item) { panel.classList.toggle('is-' + item, item === service); });
+            tabs.forEach(function (tab) {
+                var selected = tab.getAttribute('data-db-service') === service;
+                tab.classList.toggle('active', selected);
+                tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+            });
+            if (serviceName) serviceName.textContent = details.name;
+            if (serviceUse) serviceUse.textContent = details.use;
+            if (serviceWhy) serviceWhy.textContent = details.why;
+            if (servicePhrase) servicePhrase.textContent = details.phrase;
+        }
+
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                setActiveService(tab.getAttribute('data-db-service'));
+            });
+        });
+
+        setActiveService(activeService);
+    })();
+
+    // === Serverless Services Animation ===
+    (function initServerlessAnimation() {
+        var panel = document.querySelector('.sls-animation-panel');
+        if (!panel) return;
+
+        var tabs = panel.querySelectorAll('.sls-service-tab');
+        var serviceName = document.getElementById('slsAnimationService');
+        var serviceUse = document.getElementById('slsAnimationUse');
+        var serviceWhy = document.getElementById('slsAnimationWhy');
+        var servicePhrase = document.getElementById('slsAnimationPhrase');
+        var serviceOrder = ['lambda', 'apigateway', 'stepfunctions', 'eventbridge', 'sqs', 'sns', 'fargate'];
+        var serviceDetails = {
+            lambda: {
+                name: 'Lambda',
+                use: 'You need short-lived event-driven code with no servers to manage.',
+                why: 'Lambda scales per invocation and charges only for requests and duration.',
+                phrase: 'Choose Lambda for bursty, stateless work under 15 minutes.'
+            },
+            apigateway: {
+                name: 'API Gateway',
+                use: 'Clients need a secure HTTP, REST, or WebSocket front door for backend services.',
+                why: 'API Gateway handles routing, auth integration, throttling, request validation, and custom domains.',
+                phrase: 'Put API Gateway in front when the serverless workload starts with an external API call.'
+            },
+            stepfunctions: {
+                name: 'Step Functions',
+                use: 'A process has multiple steps, retries, approvals, branching, or long-running coordination.',
+                why: 'State machines make orchestration explicit instead of hiding workflow state inside Lambda code.',
+                phrase: 'Use Step Functions when the business process is more important than any single function.'
+            },
+            eventbridge: {
+                name: 'EventBridge',
+                use: 'Services need to publish and react to events without tight coupling.',
+                why: 'EventBridge routes events by rules, supports SaaS sources, archive/replay, and cross-account patterns.',
+                phrase: 'Choose EventBridge for event-driven integration and domain event routing.'
+            },
+            sqs: {
+                name: 'SQS',
+                use: 'Producers and consumers run at different speeds and need durable buffering.',
+                why: 'SQS absorbs spikes, retries failed work, and protects downstream systems from overload.',
+                phrase: 'Use SQS when reliability and back-pressure matter more than instant fan-out.'
+            },
+            sns: {
+                name: 'SNS',
+                use: 'One event must notify many subscribers at the same time.',
+                why: 'SNS fan-out sends messages to queues, functions, HTTP endpoints, email, or mobile push targets.',
+                phrase: 'Use SNS for pub/sub broadcast; pair it with SQS when subscribers need durability.'
+            },
+            fargate: {
+                name: 'Fargate',
+                use: 'The workload is containerized, longer-running, or needs more control than Lambda limits allow.',
+                why: 'Fargate runs containers without managing EC2 hosts while supporting custom runtimes and steady services.',
+                phrase: 'Choose Fargate when serverless operations are desired but the unit of work is a container.'
+            }
+        };
+
+        function setActiveService(service) {
+            var details = serviceDetails[service];
+            if (!details) return;
+            serviceOrder.forEach(function (item) { panel.classList.toggle('is-' + item, item === service); });
+            tabs.forEach(function (tab) {
+                var selected = tab.getAttribute('data-sls-service') === service;
+                tab.classList.toggle('active', selected);
+                tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+            });
+            if (serviceName) serviceName.textContent = details.name;
+            if (serviceUse) serviceUse.textContent = details.use;
+            if (serviceWhy) serviceWhy.textContent = details.why;
+            if (servicePhrase) servicePhrase.textContent = details.phrase;
+        }
+
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                setActiveService(tab.getAttribute('data-sls-service'));
+            });
+        });
+
+        setActiveService('lambda');
+    })();
+
     // Ctrl+K search
     document.addEventListener('keydown', function (e) {
         if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); if (searchInput) searchInput.focus(); }

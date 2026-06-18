@@ -175,6 +175,62 @@
                         <figcaption>Databases — Services Decision Framework</figcaption>
                     </figure>
 
+                    <section class="db-animation-panel is-aurora" aria-labelledby="db-animation-title">
+                        <div class="db-animation-copy">
+                            <span class="db-animation-kicker">Animated decision guide</span>
+                            <h2 id="db-animation-title">Pick the database by workload shape</h2>
+                            <p>Watch the same application request route to a different AWS database service as the access pattern changes.</p>
+                        </div>
+                        <div class="db-animation-controls" role="tablist" aria-label="Database service animation selector">
+                            <button type="button" class="db-service-tab active" role="tab" aria-selected="true" data-db-service="aurora">Aurora / RDS</button>
+                            <button type="button" class="db-service-tab" role="tab" aria-selected="false" data-db-service="dynamodb">DynamoDB</button>
+                            <button type="button" class="db-service-tab" role="tab" aria-selected="false" data-db-service="elasticache">ElastiCache</button>
+                            <button type="button" class="db-service-tab" role="tab" aria-selected="false" data-db-service="redshift">Redshift</button>
+                            <button type="button" class="db-service-tab" role="tab" aria-selected="false" data-db-service="documentdb">DocumentDB</button>
+                            <button type="button" class="db-service-tab" role="tab" aria-selected="false" data-db-service="neptune">Neptune</button>
+                        </div>
+                        <div class="db-animation-grid">
+                            <div class="db-animation-stage" aria-hidden="true">
+                                <div class="db-node db-node-app">
+                                    <span>Application</span>
+                                    <small>request</small>
+                                </div>
+                                <div class="db-node db-node-router">
+                                    <span>Access Pattern</span>
+                                    <small>decision point</small>
+                                </div>
+                                <div class="db-path db-path-main"></div>
+                                <div class="db-path db-path-target"></div>
+                                <span class="db-packet packet-one"></span>
+                                <span class="db-packet packet-two"></span>
+                                <div class="db-node db-service-node node-aurora" data-db-node="aurora"><span>Aurora</span><small>SQL + ACID</small></div>
+                                <div class="db-node db-service-node node-dynamodb" data-db-node="dynamodb"><span>DynamoDB</span><small>key-value scale</small></div>
+                                <div class="db-node db-service-node node-elasticache" data-db-node="elasticache"><span>ElastiCache</span><small>hot cache</small></div>
+                                <div class="db-node db-service-node node-redshift" data-db-node="redshift"><span>Redshift</span><small>analytics</small></div>
+                                <div class="db-node db-service-node node-documentdb" data-db-node="documentdb"><span>DocumentDB</span><small>documents</small></div>
+                                <div class="db-node db-service-node node-neptune" data-db-node="neptune"><span>Neptune</span><small>graphs</small></div>
+                            </div>
+                            <div class="db-animation-details" aria-live="polite">
+                                <span class="db-detail-label">Current choice</span>
+                                <h3 id="dbAnimationService">Aurora / RDS</h3>
+                                <dl>
+                                    <div>
+                                        <dt>Use when</dt>
+                                        <dd id="dbAnimationUse">You need SQL joins, relational constraints, and transactional writes.</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Why it fits</dt>
+                                        <dd id="dbAnimationWhy">Managed relational database with Multi-AZ, backups, read replicas, and Aurora's distributed storage option.</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Interview phrase</dt>
+                                        <dd id="dbAnimationPhrase">Start with Aurora for production MySQL/PostgreSQL when consistency and relational modeling matter.</dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </div>
+                    </section>
+
                     <!-- Topic 1: Database Selection -->
                     <article id="db-selection" class="topic-card" data-difficulty="advanced">
                         <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">

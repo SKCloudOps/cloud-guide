@@ -167,6 +167,58 @@
             </div>
           </header>
 
+          <section class="sls-animation-panel is-lambda" aria-labelledby="sls-animation-title">
+            <div class="sls-animation-copy">
+              <span class="sls-animation-kicker">Animated decision guide</span>
+              <h2 id="sls-animation-title">Choose the serverless service by job type</h2>
+              <p>Use the selector to see how the same workload moves through AWS serverless building blocks.</p>
+            </div>
+            <div class="sls-animation-controls" role="tablist" aria-label="Serverless service animation selector">
+              <button type="button" class="sls-service-tab active" role="tab" aria-selected="true" data-sls-service="lambda">Lambda</button>
+              <button type="button" class="sls-service-tab" role="tab" aria-selected="false" data-sls-service="apigateway">API Gateway</button>
+              <button type="button" class="sls-service-tab" role="tab" aria-selected="false" data-sls-service="stepfunctions">Step Functions</button>
+              <button type="button" class="sls-service-tab" role="tab" aria-selected="false" data-sls-service="eventbridge">EventBridge</button>
+              <button type="button" class="sls-service-tab" role="tab" aria-selected="false" data-sls-service="sqs">SQS</button>
+              <button type="button" class="sls-service-tab" role="tab" aria-selected="false" data-sls-service="sns">SNS</button>
+              <button type="button" class="sls-service-tab" role="tab" aria-selected="false" data-sls-service="fargate">Fargate</button>
+            </div>
+            <div class="sls-animation-grid">
+              <div class="sls-animation-stage" aria-hidden="true">
+                <div class="sls-node sls-source-node"><span>Workload</span><small>request, event, or task</small></div>
+                <div class="sls-node sls-decision-node"><span>Shape</span><small>sync, async, workflow</small></div>
+                <div class="sls-rail sls-rail-main"></div>
+                <div class="sls-rail sls-rail-target"></div>
+                <span class="sls-pulse sls-pulse-one"></span>
+                <span class="sls-pulse sls-pulse-two"></span>
+                <div class="sls-node sls-service-node sls-node-lambda"><span>Lambda</span><small>run code</small></div>
+                <div class="sls-node sls-service-node sls-node-apigateway"><span>API Gateway</span><small>front door</small></div>
+                <div class="sls-node sls-service-node sls-node-stepfunctions"><span>Step Functions</span><small>orchestrate</small></div>
+                <div class="sls-node sls-service-node sls-node-eventbridge"><span>EventBridge</span><small>route events</small></div>
+                <div class="sls-node sls-service-node sls-node-sqs"><span>SQS</span><small>buffer queue</small></div>
+                <div class="sls-node sls-service-node sls-node-sns"><span>SNS</span><small>fan out</small></div>
+                <div class="sls-node sls-service-node sls-node-fargate"><span>Fargate</span><small>run containers</small></div>
+              </div>
+              <div class="sls-animation-details" aria-live="polite">
+                <span class="sls-detail-label">Current choice</span>
+                <h3 id="slsAnimationService">Lambda</h3>
+                <dl>
+                  <div>
+                    <dt>Use when</dt>
+                    <dd id="slsAnimationUse">You need short-lived event-driven code with no servers to manage.</dd>
+                  </div>
+                  <div>
+                    <dt>Why it fits</dt>
+                    <dd id="slsAnimationWhy">Lambda scales per invocation and charges only for requests and duration.</dd>
+                  </div>
+                  <div>
+                    <dt>Interview phrase</dt>
+                    <dd id="slsAnimationPhrase">Choose Lambda for bursty, stateless work under 15 minutes.</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </section>
+
 
           <article id="lambda-cheaper" class="topic-card" data-difficulty="beginner">
             <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
