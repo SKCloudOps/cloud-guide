@@ -115,6 +115,284 @@
                         </div>
                     </header>
 
+                    <!-- ===== COMPUTE SERVICES ANIMATION ===== -->
+                    <div id="computeAnimSection">
+                    <style>
+                    #computeAnimSection{margin:0 0 2rem;}
+                    .cam-wrap{background:linear-gradient(160deg,#0f172a 0%,#1a2744 100%);border-radius:16px;padding:1.75rem;border:1px solid rgba(148,163,184,0.12);box-shadow:0 4px 24px rgba(0,0,0,0.35);}
+                    .cam-tag{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:#10b981;font-weight:700;margin:0 0 .35rem;text-align:center;display:block;}
+                    .cam-title{font-size:1.15rem;font-weight:700;color:#f1f5f9;margin:0 0 .35rem;text-align:center;}
+                    .cam-desc{font-size:.84rem;color:#94a3b8;margin:0 0 1.25rem;text-align:center;min-height:2.8em;line-height:1.55;transition:opacity .3s;}
+                    .cam-steps{display:flex;justify-content:center;gap:8px;margin-bottom:1.25rem;}
+                    .cam-step-dot{width:28px;height:6px;border-radius:3px;background:rgba(148,163,184,.18);transition:all .3s;cursor:pointer;}
+                    .cam-step-dot.active{background:#10b981;width:42px;}
+                    .cam-step-dot:hover:not(.active){background:rgba(148,163,184,.35);}
+                    .cam-traffic-bar{background:rgba(148,163,184,.05);border-radius:8px;padding:.5rem 1rem;margin-bottom:.7rem;display:flex;align-items:center;gap:.75rem;}
+                    .cam-traffic-lbl{font-size:.7rem;font-weight:700;color:#64748b;white-space:nowrap;}
+                    .cam-traffic-track{flex:1;height:8px;background:rgba(148,163,184,.14);border-radius:4px;overflow:hidden;}
+                    .cam-traffic-fill{height:100%;border-radius:4px;transition:width 1.2s cubic-bezier(.4,0,.2,1),background .8s;width:0%;}
+                    .cam-req-track{height:22px;background:rgba(148,163,184,.03);border-radius:6px;margin-bottom:1rem;overflow:hidden;position:relative;border:1px solid rgba(148,163,184,.06);}
+                    .cam-req-dot{position:absolute;border-radius:50%;animation:camDotFlow linear infinite;}
+                    @keyframes camDotFlow{from{left:-8px;opacity:.85}90%{opacity:.85}to{left:calc(100% + 8px);opacity:0}}
+                    .cam-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.25rem;}
+                    @media(max-width:680px){.cam-grid{grid-template-columns:repeat(2,1fr);}}
+                    .cam-svc{background:rgba(255,255,255,.038);border-radius:10px;border:1px solid rgba(148,163,184,.1);overflow:hidden;}
+                    .cam-svc-hdr{padding:.55rem .75rem;display:flex;align-items:center;gap:.45rem;}
+                    .cam-svc-name{font-size:.74rem;font-weight:700;color:#fff;}
+                    .cam-svc-body{padding:.65rem .75rem;}
+                    .cam-badge{font-size:.66rem;font-weight:700;padding:.22rem .45rem;border-radius:4px;margin-bottom:.5rem;text-align:center;transition:background .4s,color .4s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;}
+                    .cam-badge.idle{background:rgba(148,163,184,.12);color:#94a3b8;}
+                    .cam-badge.scaling{background:rgba(251,191,36,.15);color:#fbbf24;}
+                    .cam-badge.running{background:rgba(16,185,129,.15);color:#10b981;}
+                    .cam-badge.instant{background:rgba(139,92,246,.18);color:#a78bfa;}
+                    .cam-badge.waiting{background:rgba(239,68,68,.15);color:#f87171;}
+                    .cam-insts{display:flex;flex-wrap:wrap;gap:3px;min-height:42px;align-content:flex-start;margin-bottom:.5rem;padding:.3rem;background:rgba(0,0,0,.18);border-radius:6px;}
+                    .cam-inst-box{border-radius:3px;width:18px;height:18px;animation:camInstPop .35s cubic-bezier(.34,1.56,.64,1) both;flex-shrink:0;}
+                    @keyframes camInstPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+                    .cam-inst-extra{font-size:.58rem;color:#64748b;font-weight:700;align-self:center;padding:0 2px;}
+                    .cam-timer-txt{font-size:.64rem;color:#64748b;font-weight:600;margin-bottom:.4rem;min-height:1.3em;display:block;}
+                    .cam-cost-badge{font-size:.67rem;padding:.22rem .4rem;border-radius:4px;text-align:center;font-weight:700;transition:all .4s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;}
+                    .cam-cost-badge.low{background:rgba(16,185,129,.15);color:#10b981;}
+                    .cam-cost-badge.med{background:rgba(251,191,36,.15);color:#fbbf24;}
+                    .cam-cost-badge.high{background:rgba(239,68,68,.15);color:#f87171;}
+                    .cam-cost-badge.zero{background:rgba(16,185,129,.22);color:#34d399;}
+                    .cam-ctrl{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;}
+                    .cam-ctrl-lbl{font-size:.7rem;color:#475569;font-weight:600;}
+                    .cam-btn{background:rgba(148,163,184,.1);border:1px solid rgba(148,163,184,.18);border-radius:8px;color:#cbd5e1;font-size:.79rem;font-weight:600;padding:.44rem .9rem;cursor:pointer;transition:all .2s;font-family:inherit;}
+                    .cam-btn:hover{background:rgba(148,163,184,.2);color:#f1f5f9;border-color:rgba(148,163,184,.3);}
+                    .cam-btn.cam-primary{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.35);color:#10b981;}
+                    .cam-btn.cam-primary:hover{background:rgba(16,185,129,.22);}
+                    </style>
+
+                    <div class="cam-wrap">
+                        <span class="cam-tag">Interactive Animation</span>
+                        <h3 class="cam-title">How Each Compute Service Handles Traffic</h3>
+                        <p class="cam-desc" id="camDesc">Step through 4 real-world scenarios to see how EC2, ECS, EKS, and Lambda respond to changing load</p>
+
+                        <!-- Step indicator dots -->
+                        <div class="cam-steps">
+                            <div class="cam-step-dot active" onclick="camGoTo(0)" title="Steady State"></div>
+                            <div class="cam-step-dot" onclick="camGoTo(1)" title="Traffic Spike"></div>
+                            <div class="cam-step-dot" onclick="camGoTo(2)" title="Peak Load"></div>
+                            <div class="cam-step-dot" onclick="camGoTo(3)" title="3 AM Off-Peak"></div>
+                        </div>
+
+                        <!-- Traffic level bar -->
+                        <div class="cam-traffic-bar">
+                            <span class="cam-traffic-lbl">Traffic</span>
+                            <div class="cam-traffic-track"><div class="cam-traffic-fill" id="camTraffic"></div></div>
+                            <span class="cam-traffic-lbl" id="camTrafficTxt">100 req/s</span>
+                        </div>
+
+                        <!-- Animated request packets -->
+                        <div class="cam-req-track" id="camReqTrack"></div>
+
+                        <!-- Service cards -->
+                        <div class="cam-grid">
+                            <!-- EC2 -->
+                            <div class="cam-svc">
+                                <div class="cam-svc-hdr" style="background:linear-gradient(135deg,rgba(249,115,22,.25),rgba(234,88,12,.25))">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                                    <span class="cam-svc-name">Amazon EC2</span>
+                                </div>
+                                <div class="cam-svc-body">
+                                    <span class="cam-badge running" id="camE2Badge">✅ 1 Instance Running</span>
+                                    <div class="cam-insts" id="camE2Insts"></div>
+                                    <span class="cam-timer-txt" id="camE2Timer">Steady. Full OS control.</span>
+                                    <span class="cam-cost-badge low" id="camE2Cost">$0.096/hr</span>
+                                </div>
+                            </div>
+                            <!-- ECS -->
+                            <div class="cam-svc">
+                                <div class="cam-svc-hdr" style="background:linear-gradient(135deg,rgba(59,130,246,.25),rgba(37,99,235,.25))">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                                    <span class="cam-svc-name">Amazon ECS</span>
+                                </div>
+                                <div class="cam-svc-body">
+                                    <span class="cam-badge running" id="camEcsBadge">✅ 2 Tasks Running</span>
+                                    <div class="cam-insts" id="camEcsInsts"></div>
+                                    <span class="cam-timer-txt" id="camEcsTimer">Managed containers.</span>
+                                    <span class="cam-cost-badge low" id="camEcsCost">$0.04/vCPU/hr</span>
+                                </div>
+                            </div>
+                            <!-- EKS -->
+                            <div class="cam-svc">
+                                <div class="cam-svc-hdr" style="background:linear-gradient(135deg,rgba(99,102,241,.25),rgba(79,70,229,.25))">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5.64 5.64l2.83 2.83M15.54 15.54l2.82 2.82M18.36 5.64l-2.83 2.83M8.46 15.54l-2.82 2.82"/></svg>
+                                    <span class="cam-svc-name">Amazon EKS</span>
+                                </div>
+                                <div class="cam-svc-body">
+                                    <span class="cam-badge running" id="camEksBadge">✅ 2 Pods Running</span>
+                                    <div class="cam-insts" id="camEksInsts"></div>
+                                    <span class="cam-timer-txt" id="camEksTimer">K8s control plane.</span>
+                                    <span class="cam-cost-badge med" id="camEksCost">+$0.10/hr cluster</span>
+                                </div>
+                            </div>
+                            <!-- Lambda -->
+                            <div class="cam-svc">
+                                <div class="cam-svc-hdr" style="background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(124,58,237,.25))">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                                    <span class="cam-svc-name">AWS Lambda</span>
+                                </div>
+                                <div class="cam-svc-body">
+                                    <span class="cam-badge running" id="camLamBadge">⚡ On-Demand</span>
+                                    <div class="cam-insts" id="camLamInsts"></div>
+                                    <span class="cam-timer-txt" id="camLamTimer">Pay per invocation.</span>
+                                    <span class="cam-cost-badge low" id="camLamCost">~$0.002 total</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Controls -->
+                        <div class="cam-ctrl">
+                            <span class="cam-ctrl-lbl" id="camStepLbl">Step 1 of 4</span>
+                            <button class="cam-btn" onclick="camPrev()">&#9664; Prev</button>
+                            <button class="cam-btn cam-primary" id="camPlayBtn" onclick="camTogglePlay()">&#9654; Auto-Play</button>
+                            <button class="cam-btn" onclick="camNext()">Next &#9654;</button>
+                        </div>
+                    </div>
+
+                    <script>
+                    (function () {
+                        var step = 0, playing = false, playTimer = null, dotTimer = null;
+
+                        var STEPS = [
+                            {
+                                lbl: 'Step 1 of 4 \u2014 Steady State',
+                                desc: '\uD83D\uDFE2 <strong>Steady State (100 req/s):</strong> Normal daytime traffic. All services running fine. Notice EKS already costs <em>+$0.10/hr</em> for the cluster even at low traffic.',
+                                traf: { pct: 15, txt: '100 req/s', color: '#10b981' },
+                                e2:  { badge: '\u2705 1 Instance Running', cls: 'running', count: 1,  color: '#f97316', round: false, timer: 'Steady. Full OS control.',   cost: '$0.096/hr',          cc: 'low'  },
+                                ecs: { badge: '\u2705 2 Tasks Running',    cls: 'running', count: 2,  color: '#3b82f6', round: false, timer: 'AWS-native containers.',   cost: '$0.04/vCPU/hr',      cc: 'low'  },
+                                eks: { badge: '\u2705 2 Pods Running',     cls: 'running', count: 2,  color: '#6366f1', round: true,  timer: 'K8s control plane active.', cost: '+$0.10/hr cluster',  cc: 'med'  },
+                                lam: { badge: '\u26A1 On-Demand',          cls: 'running', count: 3,  color: '#8b5cf6', round: true,  timer: 'Pay per invocation.',      cost: '~$0.002 total',      cc: 'low'  },
+                            },
+                            {
+                                lbl: 'Step 2 of 4 \u2014 Traffic Spike!',
+                                desc: '\uD83D\uDEA8 <strong>Flash Sale! (10\u00D7 spike \u2192 1,000 req/s):</strong> Lambda responds in <em>milliseconds</em>. ECS &amp; EKS schedule in ~30s. EC2 takes <strong>3\u20135 minutes</strong> to boot new VMs \u2014 dropping requests the whole time.',
+                                traf: { pct: 85, txt: '1,000 req/s', color: '#f59e0b' },
+                                e2:  { badge: '\u23F3 Booting VMs...',    cls: 'waiting', count: 1,   color: '#f97316', round: false, timer: '\u23F1 3\u20135 min to scale!',   cost: 'DROPPING REQUESTS', cc: 'high' },
+                                ecs: { badge: '\uD83D\uDD04 Scheduling...', cls: 'scaling', count: 2,  color: '#3b82f6', round: false, timer: '\u23F1 ~30 seconds',             cost: 'Scaling...',         cc: 'med'  },
+                                eks: { badge: '\uD83D\uDD04 Pods Pending...',cls:'scaling', count: 2,  color: '#6366f1', round: true,  timer: '\u23F1 ~30 seconds',             cost: '+$0.10/hr cluster',  cc: 'med'  },
+                                lam: { badge: '\u26A1 Instant Scale!',    cls: 'instant', count: 100, color: '#8b5cf6', round: true,  timer: '\u2705 Serving in ms!',          cost: 'Pay per request',    cc: 'low'  },
+                            },
+                            {
+                                lbl: 'Step 3 of 4 \u2014 Peak Load',
+                                desc: '\uD83D\uDCC8 <strong>Peak Traffic (1,000 req/s sustained):</strong> Lambda has served every request from second 1. EC2 just finished booting after 3+ minutes of dropped traffic \u2014 too late.',
+                                traf: { pct: 98, txt: '1,000 req/s', color: '#ef4444' },
+                                e2:  { badge: '\u2705 Finally Ready!',    cls: 'running', count: 4,    color: '#f97316', round: false, timer: '\u26A0\uFE0F Missed 3 min of traffic', cost: '$0.384/hr (4 VMs)',    cc: 'high' },
+                                ecs: { badge: '\u2705 8 Tasks Active',    cls: 'running', count: 8,    color: '#3b82f6', round: false, timer: '\u2705 Ready in ~30s',               cost: '$0.32/vCPU/hr',       cc: 'med'  },
+                                eks: { badge: '\u2705 8 Pods Active',     cls: 'running', count: 8,    color: '#6366f1', round: true,  timer: '\u2705 Ready in ~30s',               cost: '$0.32/hr + cluster',  cc: 'high' },
+                                lam: { badge: '\u26A1 1000s Active',      cls: 'instant', count: 1000, color: '#8b5cf6', round: true,  timer: '\u2705 From millisecond 1',          cost: 'Exact usage billed',  cc: 'low'  },
+                            },
+                            {
+                                lbl: 'Step 4 of 4 \u2014 3 AM, Zero Traffic',
+                                desc: '\uD83C\uDF19 <strong>3 AM \u2014 Zero Requests:</strong> The most revealing question: <em>what are you paying when nobody uses your app?</em> Lambda costs <strong>$0</strong>. EC2 keeps billing. EKS charges a cluster fee regardless.',
+                                traf: { pct: 0, txt: '0 req/s', color: '#475569' },
+                                e2:  { badge: '\uD83D\uDE34 Idle, Still Paying!', cls: 'waiting', count: 1, color: '#f97316', round: false, timer: '\uD83D\uDCB8 Always-on billing',    cost: '$0.096/hr \u2014 WASTED!', cc: 'high' },
+                                ecs: { badge: '\uD83D\uDE34 1 Standby Task',     cls: 'idle',    count: 1, color: '#3b82f6', round: false, timer: 'Minimal footprint.',          cost: '$0.04/vCPU/hr',     cc: 'low'  },
+                                eks: { badge: '\uD83D\uDE34 Scaled In',          cls: 'idle',    count: 1, color: '#6366f1', round: true,  timer: '\u26A0\uFE0F Cluster still running', cost: '$0.10/hr cluster!', cc: 'high' },
+                                lam: { badge: '\u2705 Zero Cost!',               cls: 'running', count: 0, color: '#8b5cf6', round: true,  timer: '$0 when no requests.',       cost: '$0.00 \u2014 Nothing!', cc: 'zero' },
+                            },
+                        ];
+
+                        function el(id) { return document.getElementById(id); }
+
+                        function render(s) {
+                            var d = STEPS[s];
+                            el('camDesc').innerHTML = d.desc;
+                            el('camStepLbl').textContent = d.lbl;
+
+                            document.querySelectorAll('#computeAnimSection .cam-step-dot').forEach(function (dot, i) {
+                                dot.classList.toggle('active', i === s);
+                            });
+
+                            el('camTraffic').style.width = d.traf.pct + '%';
+                            el('camTraffic').style.background = d.traf.color;
+                            el('camTrafficTxt').textContent = d.traf.txt;
+
+                            startPackets(d.traf.pct, d.traf.color);
+
+                            updateSvc('E2',  d.e2);
+                            updateSvc('Ecs', d.ecs);
+                            updateSvc('Eks', d.eks);
+                            updateSvc('Lam', d.lam);
+                        }
+
+                        function updateSvc(id, d) {
+                            var badge  = el('cam' + id + 'Badge');
+                            var insts  = el('cam' + id + 'Insts');
+                            var timer  = el('cam' + id + 'Timer');
+                            var cost   = el('cam' + id + 'Cost');
+
+                            badge.textContent = d.badge;
+                            badge.className   = 'cam-badge ' + d.cls;
+                            timer.textContent = d.timer;
+                            cost.textContent  = d.cost;
+                            cost.className    = 'cam-cost-badge ' + d.cc;
+
+                            insts.innerHTML = '';
+                            var show = Math.min(d.count, 12);
+                            for (var i = 0; i < show; i++) {
+                                var box = document.createElement('div');
+                                box.className = 'cam-inst-box';
+                                box.style.background    = d.color + '2e';
+                                box.style.border        = '1px solid ' + d.color + '77';
+                                box.style.animationDelay = (i * 55) + 'ms';
+                                if (d.round) box.style.borderRadius = '50%';
+                                insts.appendChild(box);
+                            }
+                            if (d.count > 12) {
+                                var extra = document.createElement('div');
+                                extra.className = 'cam-inst-extra';
+                                extra.textContent = '+' + (d.count - 12);
+                                insts.appendChild(extra);
+                            }
+                        }
+
+                        function startPackets(pct, color) {
+                            if (dotTimer) clearInterval(dotTimer);
+                            var track = el('camReqTrack');
+                            track.innerHTML = '';
+                            if (pct <= 0) return;
+                            var interval = Math.max(35, 480 - pct * 4.2);
+
+                            function addDot() {
+                                var t = el('camReqTrack');
+                                if (!t) return;
+                                var dot = document.createElement('div');
+                                dot.className = 'cam-req-dot';
+                                var size = 4 + Math.random() * 4;
+                                dot.style.cssText = 'width:' + size + 'px;height:' + size + 'px;background:' + color
+                                    + ';opacity:.75;top:' + (15 + Math.random() * 65) + '%;'
+                                    + 'animation-duration:' + (0.65 + Math.random() * 1.1) + 's;animation-delay:0s;';
+                                t.appendChild(dot);
+                                setTimeout(function () { dot.remove(); }, 2000);
+                            }
+                            addDot();
+                            dotTimer = setInterval(addDot, interval);
+                        }
+
+                        window.camGoTo = function (s) { step = s; render(s); };
+                        window.camPrev = function () { step = (step - 1 + STEPS.length) % STEPS.length; render(step); };
+                        window.camNext = function () { step = (step + 1) % STEPS.length; render(step); };
+                        window.camTogglePlay = function () {
+                            playing = !playing;
+                            var btn = el('camPlayBtn');
+                            if (playing) {
+                                btn.textContent = '\u23F8 Pause';
+                                playTimer = setInterval(function () { step = (step + 1) % STEPS.length; render(step); }, 3500);
+                            } else {
+                                btn.textContent = '\u25B6 Auto-Play';
+                                clearInterval(playTimer);
+                            }
+                        };
+
+                        render(0);
+                    })();
+                    </script>
+                    </div>
+                    <!-- ===== END COMPUTE ANIMATION ===== -->
+
                     <!-- Topic 1: The Decision Matrix -->
                     <article id="decision-matrix" class="topic-card" data-difficulty="beginner">
                         <div class="topic-card-header" tabindex="0" role="button" aria-expanded="true">
