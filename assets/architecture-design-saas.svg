@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Multi-tenant SaaS bridge model architecture</title>
+  <desc id="desc">Diagram showing tenant custom domains routed through Route 53 and an ALB to shared EKS compute, with Cognito, Aurora schema-per-tenant, S3 prefixes, SQS, and CloudWatch metrics.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fbff"/>
+      <stop offset="100%" stop-color="#eef6ff"/>
+    </linearGradient>
+    <linearGradient id="banner" x1="0" x2="1">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#334155"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="720" rx="32" fill="url(#bg)"/>
+  <rect x="40" y="32" width="1120" height="90" rx="24" fill="url(#banner)"/>
+  <text x="76" y="78" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700" fill="#fff">System Design: Multi-Tenant SaaS Platform</text>
+  <text x="76" y="106" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#ede9fe">Bridge model: shared compute with tenant-aware isolation in the data layer.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="70" y="228" width="188" height="120" rx="22" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="164" y="272" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#0f172a">Tenants</text>
+    <text x="164" y="302" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Custom domains and SLAs</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="328" y="228" width="188" height="120" rx="22" fill="#fff7ed" stroke="#fdba74" stroke-width="2"/>
+    <text x="422" y="272" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#9a3412">Route 53 + ALB</text>
+    <text x="422" y="302" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Shared ingress and routing</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="586" y="168" width="262" height="182" rx="22" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+    <text x="717" y="206" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" fill="#1d4ed8">Shared EKS API Layer</text>
+    <text x="717" y="236" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Middleware extracts tenant_id from JWT</text>
+    <rect x="622" y="260" width="186" height="34" rx="10" fill="#dbeafe"/>
+    <text x="715" y="282" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#1e3a8a">Rate limits per tenant</text>
+    <rect x="622" y="306" width="186" height="34" rx="10" fill="#ede9fe"/>
+    <text x="715" y="328" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#6d28d9">Policy and query scoping</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="908" y="150" width="216" height="92" rx="22" fill="#ecfeff" stroke="#67e8f9" stroke-width="2"/>
+    <text x="1016" y="188" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" fill="#155e75">Cognito</text>
+    <text x="1016" y="216" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">User pools and tenant claims</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="908" y="270" width="216" height="92" rx="22" fill="#fff1f2" stroke="#fda4af" stroke-width="2"/>
+    <text x="1016" y="308" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" fill="#be123c">Aurora PostgreSQL</text>
+    <text x="1016" y="336" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Schema-per-tenant</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="908" y="390" width="216" height="92" rx="22" fill="#fefce8" stroke="#fde047" stroke-width="2"/>
+    <text x="1016" y="428" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" fill="#854d0e">S3 + SQS</text>
+    <text x="1016" y="456" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Prefix-per-tenant and queued work</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="908" y="510" width="216" height="92" rx="22" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+    <text x="1016" y="548" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" fill="#166534">CloudWatch</text>
+    <text x="1016" y="576" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Per-tenant dashboards and alarms</text>
+  </g>
+
+  <line x1="258" y1="288" x2="328" y2="288" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="516" y1="288" x2="586" y2="250" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="848" y1="204" x2="908" y2="196" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="848" y1="252" x2="908" y2="316" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="848" y1="278" x2="908" y2="436" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="848" y1="302" x2="908" y2="556" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect x="96" y="552" width="680" height="96" rx="20" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="126" y="590" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#0f172a">Isolation model</text>
+  <text x="126" y="620" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Shared compute keeps cost efficient; tenant claims, schema isolation, and per-tenant monitoring protect data and performance.</text>
+</svg>

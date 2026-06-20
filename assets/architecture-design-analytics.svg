@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Real-time analytics pipeline architecture</title>
+  <desc id="desc">Diagram showing event producers feeding Kinesis, Flink, Redis, Firehose, S3, Athena, and Grafana in a speed layer and batch layer design.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fbff"/>
+      <stop offset="100%" stop-color="#eef6ff"/>
+    </linearGradient>
+    <linearGradient id="banner" x1="0" x2="1">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#334155"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="720" rx="32" fill="url(#bg)"/>
+  <rect x="40" y="32" width="1120" height="90" rx="24" fill="url(#banner)"/>
+  <text x="76" y="78" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700" fill="#fff">System Design: Real-Time Analytics Pipeline</text>
+  <text x="76" y="106" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#dbeafe">Speed layer for live dashboards, batch layer for historical analytics.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="74" y="238" width="178" height="106" rx="22" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="163" y="280" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#0f172a">Mobile App</text>
+    <text x="163" y="310" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">1M events/sec peak</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="314" y="238" width="212" height="106" rx="22" fill="#fff7ed" stroke="#fdba74" stroke-width="2"/>
+    <text x="420" y="280" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#9a3412">Kinesis Data Streams</text>
+    <text x="420" y="310" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Ordered ingestion with shards</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="608" y="164" width="232" height="112" rx="22" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+    <text x="724" y="206" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#1d4ed8">Apache Flink</text>
+    <text x="724" y="236" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Windows, trends, anomaly detection</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="608" y="316" width="232" height="112" rx="22" fill="#fefce8" stroke="#fde047" stroke-width="2"/>
+    <text x="724" y="358" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#854d0e">Firehose</text>
+    <text x="724" y="388" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Batch delivery to Parquet in S3</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="910" y="150" width="214" height="110" rx="22" fill="#ecfeff" stroke="#67e8f9" stroke-width="2"/>
+    <text x="1017" y="192" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#155e75">Redis</text>
+    <text x="1017" y="222" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Trending sets, hot metrics</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="910" y="302" width="214" height="110" rx="22" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="2"/>
+    <text x="1017" y="344" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#6d28d9">S3 + Athena</text>
+    <text x="1017" y="374" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Historical queries and BI</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="910" y="486" width="214" height="110" rx="22" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+    <text x="1017" y="528" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#166534">Grafana API</text>
+    <text x="1017" y="558" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Live dashboards under 30 sec</text>
+  </g>
+
+  <line x1="252" y1="291" x2="314" y2="291" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="526" y1="270" x2="608" y2="220" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="526" y1="314" x2="608" y2="372" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="840" y1="220" x2="910" y2="205" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="840" y1="372" x2="910" y2="357" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="1017" y1="260" x2="1017" y2="486" stroke="#334155" stroke-width="4" stroke-dasharray="10 10" marker-end="url(#arrow)"/>
+  <line x1="1017" y1="412" x2="1017" y2="486" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect x="80" y="576" width="330" height="92" rx="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="108" y="615" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#0f172a">Speed layer</text>
+  <text x="108" y="643" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Kinesis → Flink → Redis for near-real-time leaderboards</text>
+  <rect x="458" y="576" width="334" height="92" rx="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="486" y="615" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#0f172a">Batch layer</text>
+  <text x="486" y="643" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Firehose → S3 → Athena for durable historical analytics</text>
+</svg>

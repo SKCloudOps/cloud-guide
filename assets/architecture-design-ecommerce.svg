@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Global e-commerce platform architecture</title>
+  <desc id="desc">Multi-region e-commerce design showing Route 53, CloudFront, regional application stacks on EKS, Aurora Global Database, DynamoDB Global Tables, Redis Global Datastore, and asynchronous order processing.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fbff"/>
+      <stop offset="100%" stop-color="#eef4ff"/>
+    </linearGradient>
+    <linearGradient id="banner" x1="0" x2="1">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#334155"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="720" rx="32" fill="url(#bg)"/>
+  <rect x="40" y="32" width="1120" height="90" rx="24" fill="url(#banner)"/>
+  <text x="76" y="78" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700" fill="#fff">System Design: Global E-Commerce Platform</text>
+  <text x="76" y="106" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#dbeafe">Multi-region reads, strongly consistent checkout, and async order workflows.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="76" y="184" width="164" height="94" rx="20" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="158" y="224" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#0f172a">Users</text>
+    <text x="158" y="250" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">US • EU • APAC</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="300" y="170" width="212" height="70" rx="18" fill="#fff7ed" stroke="#fdba74" stroke-width="2"/>
+    <text x="406" y="214" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" fill="#9a3412">Route 53</text>
+    <text x="406" y="236" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#7c2d12">Latency routing</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="300" y="264" width="212" height="70" rx="18" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+    <text x="406" y="306" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" fill="#1d4ed8">CloudFront</text>
+    <text x="406" y="328" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#475569">Static assets and CDN</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="584" y="160" width="236" height="182" rx="22" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="702" y="198" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#0f172a">Primary Region</text>
+    <text x="702" y="224" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#475569">ALB → EKS microservices</text>
+    <rect x="614" y="246" width="176" height="34" rx="10" fill="#dbeafe"/>
+    <text x="702" y="268" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#1e3a8a">Catalog • Cart • Checkout</text>
+    <rect x="614" y="292" width="176" height="34" rx="10" fill="#dcfce7"/>
+    <text x="702" y="314" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#166534">Inventory • Payment</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="876" y="160" width="236" height="182" rx="22" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="994" y="198" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#0f172a">Secondary Regions</text>
+    <text x="994" y="224" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#475569">Read scale and failover</text>
+    <rect x="906" y="246" width="176" height="34" rx="10" fill="#dbeafe"/>
+    <text x="994" y="268" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#1e3a8a">EU application stack</text>
+    <rect x="906" y="292" width="176" height="34" rx="10" fill="#ede9fe"/>
+    <text x="994" y="314" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#6d28d9">APAC application stack</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="154" y="430" width="224" height="118" rx="20" fill="#fefce8" stroke="#fde047" stroke-width="2"/>
+    <text x="266" y="470" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" fill="#854d0e">DynamoDB</text>
+    <text x="266" y="500" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Global Tables</text>
+    <text x="266" y="526" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Catalog and profile reads</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="452" y="430" width="296" height="118" rx="20" fill="#fff1f2" stroke="#fda4af" stroke-width="2"/>
+    <text x="600" y="470" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" fill="#be123c">Aurora Global Database</text>
+    <text x="600" y="500" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Orders and inventory with strong writes</text>
+    <text x="600" y="526" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Single writer, fast regional reads</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="822" y="430" width="224" height="118" rx="20" fill="#ecfeff" stroke="#67e8f9" stroke-width="2"/>
+    <text x="934" y="470" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" fill="#155e75">Redis Global</text>
+    <text x="934" y="500" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Cart and session cache</text>
+    <text x="934" y="526" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">Sub-ms hot reads</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="452" y="580" width="296" height="82" rx="20" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+    <text x="600" y="618" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#166534">EventBridge + SQS + Step Functions</text>
+    <text x="600" y="646" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#475569">Async order, shipping, and notification workflow</text>
+  </g>
+
+  <line x1="240" y1="230" x2="300" y2="205" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="240" y1="244" x2="300" y2="300" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="512" y1="205" x2="584" y2="206" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="512" y1="300" x2="584" y2="250" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="820" y1="250" x2="876" y2="250" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="702" y1="342" x2="600" y2="430" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="646" y1="342" x2="266" y2="430" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="760" y1="342" x2="934" y2="430" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="600" y1="548" x2="600" y2="580" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+</svg>
