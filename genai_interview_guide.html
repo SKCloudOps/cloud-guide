@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GenAI Architect Interview Guide — Sathish Kumar Prakash</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0a0c10;
+  --paper:#f7f6f2;
+  --surface:#ffffff;
+  --muted:#f0efe9;
+  --border:#e2e0d8;
+  --text:#1a1c22;
+  --dim:#6b7280;
+  --rule:#d1cfc6;
+  --amber:#c97c2a;
+  --amber-light:#fdf3e3;
+  --amber-mid:#f5e0b8;
+  --teal:#1a6b5e;
+  --teal-light:#e8f5f2;
+  --red:#b83232;
+  --red-light:#fdf0f0;
+  --blue:#1e4fa3;
+  --blue-light:#eef2fc;
+  --mono:#2d3748;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--paper);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  font-size:15px;
+  line-height:1.7;
+}
+
+/* ── LAYOUT ── */
+.layout{display:flex;min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:240px;
+  min-width:240px;
+  background:var(--ink);
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+}
+
+.sidebar-brand{
+  padding:28px 24px 20px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-brand .eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.35);
+  margin-bottom:6px;
+}
+
+.sidebar-brand .name{
+  font-family:'Syne',sans-serif;
+  font-size:13px;
+  font-weight:700;
+  color:#fff;
+  line-height:1.3;
+}
+
+.sidebar-brand .role{
+  font-size:11px;
+  color:rgba(255,255,255,0.4);
+  margin-top:2px;
+}
+
+.nav-section{padding:16px 0 8px;}
+
+.nav-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.25);
+  padding:0 24px;
+  margin-bottom:6px;
+}
+
+.nav-link{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 24px;
+  font-size:12.5px;
+  color:rgba(255,255,255,0.5);
+  cursor:pointer;
+  border-left:2px solid transparent;
+  transition:all .15s;
+  text-decoration:none;
+}
+
+.nav-link:hover{
+  color:rgba(255,255,255,0.9);
+  background:rgba(255,255,255,0.05);
+  border-left-color:rgba(255,255,255,0.2);
+}
+
+.nav-link.active{
+  color:#fff;
+  background:rgba(255,255,255,0.08);
+  border-left-color:var(--amber);
+}
+
+.nav-dot{
+  width:5px;height:5px;
+  border-radius:50%;
+  flex-shrink:0;
+  background:rgba(255,255,255,0.25);
+}
+
+.nav-link.active .nav-dot{background:var(--amber);}
+
+.sidebar-footer{
+  margin-top:auto;
+  padding:20px 24px;
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-footer .cert{
+  font-size:11px;
+  color:rgba(255,255,255,0.3);
+  font-family:'JetBrains Mono',monospace;
+  line-height:1.8;
+}
+
+.sidebar-footer .cert span{
+  color:rgba(255,255,255,0.6);
+}
+
+/* ── MAIN ── */
+.main{flex:1;max-width:900px;}
+
+/* ── HERO ── */
+.hero{
+  background:var(--ink);
+  padding:64px 64px 56px;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,var(--amber),#e8a84a,transparent);
+}
+
+.hero-kicker{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--amber);
+  margin-bottom:16px;
+}
+
+.hero h1{
+  font-family:'Syne',sans-serif;
+  font-size:42px;
+  font-weight:800;
+  color:#fff;
+  line-height:1.1;
+  margin-bottom:16px;
+  max-width:600px;
+}
+
+.hero h1 em{
+  font-style:normal;
+  color:var(--amber);
+}
+
+.hero-sub{
+  font-size:15px;
+  color:rgba(255,255,255,0.5);
+  max-width:520px;
+  margin-bottom:36px;
+  line-height:1.6;
+}
+
+.hero-stats{
+  display:flex;
+  gap:0;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:10px;
+  overflow:hidden;
+  max-width:520px;
+}
+
+.stat{
+  flex:1;
+  padding:16px 20px;
+  border-right:1px solid rgba(255,255,255,0.1);
+}
+
+.stat:last-child{border-right:none;}
+
+.stat-n{
+  font-family:'Syne',sans-serif;
+  font-size:26px;
+  font-weight:800;
+  color:var(--amber);
+  line-height:1;
+  margin-bottom:3px;
+}
+
+.stat-l{
+  font-size:10px;
+  color:rgba(255,255,255,0.35);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-family:'JetBrains Mono',monospace;
+}
+
+/* ── PRINCIPLE BANNER ── */
+.principle-banner{
+  background:var(--amber);
+  padding:24px 64px;
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+}
+
+.principle-banner .icon{
+  font-size:20px;
+  flex-shrink:0;
+  margin-top:2px;
+}
+
+.principle-banner .text{
+  font-size:14px;
+  color:var(--ink);
+  line-height:1.6;
+  font-weight:500;
+}
+
+.principle-banner .text strong{
+  font-weight:700;
+  display:block;
+  font-size:11px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  margin-bottom:4px;
+  font-family:'JetBrains Mono',monospace;
+}
+
+/* ── SECTIONS ── */
+.section{
+  padding:56px 64px;
+  border-bottom:1px solid var(--border);
+}
+
+.section:last-child{border-bottom:none;}
+
+.section-kicker{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--amber);
+  margin-bottom:8px;
+}
+
+.section h2{
+  font-family:'Syne',sans-serif;
+  font-size:26px;
+  font-weight:800;
+  color:var(--ink);
+  margin-bottom:6px;
+  line-height:1.2;
+}
+
+.section-desc{
+  font-size:14px;
+  color:var(--dim);
+  margin-bottom:32px;
+  max-width:560px;
+}
+
+/* ── COMPARE BLOCK ── */
+.compare{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-bottom:24px;
+}
+
+.compare-card{
+  border-radius:10px;
+  padding:20px 22px;
+  border:1px solid;
+}
+
+.compare-card.weak{
+  background:var(--red-light);
+  border-color:#f0c0c0;
+}
+
+.compare-card.strong{
+  background:var(--teal-light);
+  border-color:#a8d8d0;
+}
+
+.compare-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+  font-weight:600;
+}
+
+.compare-card.weak .compare-label{color:var(--red);}
+.compare-card.strong .compare-label{color:var(--teal);}
+
+.compare-card p{
+  font-size:14px;
+  line-height:1.6;
+  font-style:italic;
+  color:var(--mono);
+}
+
+/* ── FORMULA ── */
+.formula-box{
+  background:var(--blue-light);
+  border:1px solid #c5d4f5;
+  border-radius:10px;
+  padding:18px 22px;
+  margin-bottom:24px;
+}
+
+.formula-box .formula-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--blue);
+  margin-bottom:8px;
+}
+
+.formula-box .formula-text{
+  font-size:14px;
+  color:var(--mono);
+  font-weight:600;
+}
+
+/* ── ANCHOR CARDS ── */
+.anchor-grid{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.anchor-card{
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  background:var(--surface);
+}
+
+.anchor-header{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:18px 22px;
+  cursor:pointer;
+  user-select:none;
+  border-bottom:1px solid transparent;
+  transition:background .15s;
+}
+
+.anchor-header:hover{background:var(--muted);}
+
+.anchor-num{
+  font-family:'Syne',sans-serif;
+  font-size:28px;
+  font-weight:800;
+  color:var(--border);
+  line-height:1;
+  flex-shrink:0;
+  width:36px;
+}
+
+.anchor-meta{flex:1;}
+
+.anchor-title{
+  font-family:'Syne',sans-serif;
+  font-size:17px;
+  font-weight:700;
+  color:var(--ink);
+  margin-bottom:2px;
+}
+
+.anchor-sub{
+  font-size:12px;
+  color:var(--dim);
+  font-family:'JetBrains Mono',monospace;
+}
+
+.anchor-chevron{
+  color:var(--dim);
+  font-size:13px;
+  transition:transform .2s;
+}
+
+.anchor-chevron.open{transform:rotate(180deg);}
+
+.anchor-body{
+  display:none;
+  padding:22px 22px 24px;
+  border-top:1px solid var(--border);
+  background:var(--muted);
+}
+
+.anchor-body.open{display:block;}
+
+.anchor-oneliner{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-left:3px solid var(--amber);
+  border-radius:8px;
+  padding:14px 18px;
+  font-size:14px;
+  line-height:1.65;
+  color:var(--mono);
+  margin-bottom:16px;
+  font-style:italic;
+}
+
+.proof-box{
+  background:var(--amber-light);
+  border:1px solid var(--amber-mid);
+  border-radius:8px;
+  padding:14px 18px;
+  margin-bottom:16px;
+}
+
+.proof-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--amber);
+  margin-bottom:6px;
+}
+
+.proof-text{
+  font-size:13.5px;
+  color:var(--mono);
+  line-height:1.6;
+}
+
+.use-for{
+  font-size:12.5px;
+  color:var(--dim);
+}
+
+.use-for strong{
+  color:var(--text);
+  font-weight:600;
+}
+
+/* ── BRIDGE BOX ── */
+.bridge-box{
+  background:var(--surface);
+  border:2px solid var(--teal);
+  border-radius:12px;
+  padding:24px 28px;
+  margin-bottom:24px;
+}
+
+.bridge-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--teal);
+  margin-bottom:12px;
+}
+
+.bridge-text{
+  font-size:15px;
+  line-height:1.75;
+  color:var(--mono);
+  font-style:italic;
+  border-left:3px solid var(--teal);
+  padding-left:16px;
+}
+
+/* ── GAP ANSWERS ── */
+.gap-grid{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.gap-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.gap-q{
+  background:var(--muted);
+  padding:14px 18px;
+  font-size:13.5px;
+  font-weight:600;
+  color:var(--red);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.gap-q::before{content:'Q';font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--red);color:#fff;padding:2px 6px;border-radius:3px;flex-shrink:0;}
+
+.gap-a{
+  padding:14px 18px;
+  font-size:14px;
+  line-height:1.65;
+  color:var(--mono);
+  border-left:3px solid var(--teal);
+}
+
+/* ── OPENING PITCH ── */
+.pitch-box{
+  background:var(--ink);
+  border-radius:12px;
+  padding:28px 32px;
+  margin-bottom:24px;
+  position:relative;
+  overflow:hidden;
+}
+
+.pitch-box::before{
+  content:'90s';
+  position:absolute;
+  right:24px;top:20px;
+  font-family:'Syne',sans-serif;
+  font-size:48px;
+  font-weight:800;
+  color:rgba(255,255,255,0.06);
+  line-height:1;
+}
+
+.pitch-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--amber);
+  margin-bottom:14px;
+}
+
+.pitch-text{
+  font-size:15px;
+  line-height:1.8;
+  color:rgba(255,255,255,0.8);
+  font-style:italic;
+}
+
+.pitch-text mark{
+  background:rgba(201,124,42,0.25);
+  color:var(--amber);
+  border-radius:2px;
+  padding:0 2px;
+  font-style:normal;
+}
+
+.pitch-structure{
+  margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.pitch-step{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  font-size:13px;
+  color:rgba(255,255,255,0.5);
+}
+
+.pitch-step-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  background:rgba(255,255,255,0.08);
+  color:rgba(255,255,255,0.4);
+  padding:2px 6px;
+  border-radius:3px;
+  flex-shrink:0;
+  margin-top:1px;
+}
+
+/* ── RULES ── */
+.rules-grid{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.rule-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:20px 22px;
+  display:flex;
+  gap:16px;
+}
+
+.rule-num{
+  font-family:'Syne',sans-serif;
+  font-size:22px;
+  font-weight:800;
+  color:var(--border);
+  flex-shrink:0;
+  line-height:1;
+  width:28px;
+}
+
+.rule-content{}
+
+.rule-title{
+  font-family:'Syne',sans-serif;
+  font-size:15px;
+  font-weight:700;
+  color:var(--ink);
+  margin-bottom:6px;
+}
+
+.rule-body{
+  font-size:13.5px;
+  color:var(--dim);
+  line-height:1.65;
+}
+
+.rule-body strong{
+  color:var(--text);
+  font-weight:600;
+}
+
+/* ── DEEP DIVE ── */
+.dive-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+.dive-card{
+  border-radius:10px;
+  padding:18px 20px;
+  border:1px solid var(--border);
+  background:var(--surface);
+}
+
+.dive-card h4{
+  font-family:'Syne',sans-serif;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:8px;
+  color:var(--ink);
+}
+
+.dive-card p{
+  font-size:13px;
+  color:var(--dim);
+  line-height:1.6;
+}
+
+/* ── QUESTIONS ── */
+.q-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.q-item{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:14px 18px;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+
+.q-bullet{
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--amber);
+  flex-shrink:0;
+  margin-top:6px;
+}
+
+.q-text{
+  font-size:14px;
+  color:var(--mono);
+  line-height:1.55;
+  font-style:italic;
+}
+
+.q-why{
+  font-size:12px;
+  color:var(--dim);
+  margin-top:4px;
+  font-style:normal;
+}
+
+/* ── DIFFERENTIATOR ── */
+.diff-banner{
+  background:var(--ink);
+  border-radius:12px;
+  padding:32px 36px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-bottom:24px;
+}
+
+.diff-col h4{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  margin-bottom:12px;
+}
+
+.diff-col.them h4{color:rgba(255,255,255,0.3);}
+.diff-col.you h4{color:var(--amber);}
+
+.diff-item{
+  display:flex;
+  gap:8px;
+  margin-bottom:8px;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.diff-col.them .diff-item{color:rgba(255,255,255,0.35);}
+.diff-col.them .diff-item::before{content:'×';color:rgba(255,255,255,0.2);flex-shrink:0;font-family:'JetBrains Mono',monospace;}
+
+.diff-col.you .diff-item{color:rgba(255,255,255,0.8);}
+.diff-col.you .diff-item::before{content:'✓';color:var(--amber);flex-shrink:0;font-family:'JetBrains Mono',monospace;}
+
+.diff-divider{
+  width:1px;
+  background:rgba(255,255,255,0.08);
+  grid-column:unset;
+}
+
+.verdict-box{
+  background:var(--amber);
+  border-radius:10px;
+  padding:20px 24px;
+}
+
+.verdict-box p{
+  font-size:15px;
+  font-weight:600;
+  color:var(--ink);
+  line-height:1.6;
+}
+
+/* ── CERT STRIP ── */
+.cert-strip{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:24px;
+}
+
+.cert-pill{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:6px 14px;
+  font-size:12px;
+  font-family:'JetBrains Mono',monospace;
+  color:var(--mono);
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.cert-pill.done{border-color:#a8d8d0;background:var(--teal-light);color:var(--teal);}
+.cert-pill.next{border-color:var(--amber-mid);background:var(--amber-light);color:var(--amber);}
+
+/* ── PRINT ── */
+@media print{
+  .sidebar{display:none;}
+  .anchor-body,.q-body{display:block!important;}
+  body{background:white;}
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .hero{padding:36px 28px;}
+  .section{padding:40px 28px;}
+  .principle-banner{padding:20px 28px;}
+  .compare{grid-template-columns:1fr;}
+  .dive-grid{grid-template-columns:1fr;}
+  .diff-banner{grid-template-columns:1fr;}
+  .hero h1{font-size:30px;}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <div class="eyebrow">Interview Guide</div>
+    <div class="name">Sathish Kumar Prakash</div>
+    <div class="role">GenAI Architect · June 2026</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Core Strategy</div>
+    <a class="nav-link active" onclick="scrollTo('principle')"><span class="nav-dot"></span>The Core Principle</a>
+    <a class="nav-link" onclick="scrollTo('opening')"><span class="nav-dot"></span>Opening 90 Seconds</a>
+    <a class="nav-link" onclick="scrollTo('differentiator')"><span class="nav-dot"></span>Your Differentiator</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Anchor Stories</div>
+    <a class="nav-link" onclick="scrollTo('anchors')"><span class="nav-dot"></span>RAG Pipeline</a>
+    <a class="nav-link" onclick="scrollTo('anchors')"><span class="nav-dot"></span>MCP Server</a>
+    <a class="nav-link" onclick="scrollTo('anchors')"><span class="nav-dot"></span>Marketplace Tools</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Interview Tactics</div>
+    <a class="nav-link" onclick="scrollTo('bridge')"><span class="nav-dot"></span>MLOps Bridge</a>
+    <a class="nav-link" onclick="scrollTo('gaps')"><span class="nav-dot"></span>Gap Answers</a>
+    <a class="nav-link" onclick="scrollTo('deepdive')"><span class="nav-dot"></span>Technical Deep Dive</a>
+    <a class="nav-link" onclick="scrollTo('rules')"><span class="nav-dot"></span>7 Rules</a>
+    <a class="nav-link" onclick="scrollTo('questions')"><span class="nav-dot"></span>Questions to Ask</a>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="cert">
+      <span>SAP-C02</span> ✓ Passed<br>
+      <span>CCA-F</span> ✓ Passed<br>
+      <span>Claude Certified Architect</span> ✓<br>
+      <span>Terraform 004</span> → Jul 2026<br>
+      <span>AWS ML Engineer</span> → Sep 2026
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-kicker">Sathish Kumar Prakash · GenAI Architect · Interview Prep</div>
+  <h1>Win the Interview.<br>Not by <em>claiming</em> depth.<br>By <em>proving</em> it.</h1>
+  <p class="hero-sub">Every answer in this guide is built from your real Takeda work — not generic advice. Three anchor stories. Seven rules. Gap answers you can say without flinching.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-n">971</div>
+      <div class="stat-l">RAG Chunks</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">42</div>
+      <div class="stat-l">Error Patterns</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">205</div>
+      <div class="stat-l">Test Cases</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">15+</div>
+      <div class="stat-l">Years</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRINCIPLE BANNER -->
+<div class="principle-banner" id="principle">
+  <div class="icon">⚡</div>
+  <div class="text">
+    <strong>The Core Principle</strong>
+    Never say what you did. Say what you solved and what it cost before you solved it. Weak: "I built a RAG pipeline using LangChain and ChromaDB." Strong: "In a pharma environment where a hallucinated policy answer is a compliance event — not just a wrong answer — I built a retrieval system that grounds every response in verified source documentation." Same facts. Completely different weight.
+  </div>
+</div>
+
+<!-- OPENING 90 SECONDS -->
+<div class="section" id="opening">
+  <div class="section-kicker">Rule Zero</div>
+  <h2>The Opening 90 Seconds</h2>
+  <p class="section-desc">When they say "walk me through your background" — this is your entire interview in miniature. Get this right and everything else is easier. Practice until it takes exactly 90 seconds. Time yourself.</p>
+
+  <div class="pitch-box">
+    <div class="pitch-label">Your Word-for-Word Opening — Memorize This</div>
+    <div class="pitch-text">
+      "I've spent 15 years building platforms other engineers build on top of — the through-line is taking fragile infrastructure and making it <mark>reliable at scale</mark>. Most recently at Takeda I've been working at the intersection of platform engineering and GenAI: a <mark>production MCP server on AWS</mark> governing agentic CI/CD decisions, a <mark>RAG pipeline serving real operational queries in a pharma compliance environment</mark>, and two tools I shipped on the GitHub Marketplace — <mark>42 error patterns and 205 test cases</mark>. Not prototypes. Production systems. My AWS infrastructure depth is backed by SAP-C02, 15 years of EKS, Terraform, and multi-account architecture. Key outcome: developer onboarding from <mark>2 weeks to 2 hours</mark>, release cycles from <mark>2 days to 15 minutes</mark>. Where I'm still building is the classical SageMaker training pipeline side — I'm transparent about that. But for a role where GenAI productionization and governance is the primary brief, my production track record is more directly relevant than someone with deep training pipeline history and no shipped GenAI systems."
+    </div>
+    <div class="pitch-structure">
+      <div class="pitch-step"><span class="pitch-step-num">01</span>One sentence on your career through-line</div>
+      <div class="pitch-step"><span class="pitch-step-num">02</span>Two sentences on current production GenAI work — be specific</div>
+      <div class="pitch-step"><span class="pitch-step-num">03</span>One sentence on AWS/infrastructure depth + cert</div>
+      <div class="pitch-step"><span class="pitch-step-num">04</span>One sentence — your two key metrics</div>
+      <div class="pitch-step"><span class="pitch-step-num">05</span>One honest sentence on where you're building — not apologetic</div>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="compare-card weak">
+      <div class="compare-label">❌ Never Open Like This</div>
+      <p>"I used LangChain and ChromaDB to build a RAG pipeline and I'm familiar with AWS ML services and I've been working with Jenkins and CodePipeline..."</p>
+    </div>
+    <div class="compare-card strong">
+      <div class="compare-label">✓ Always Open Like This</div>
+      <p>"At Takeda, the problem was giving engineers accurate answers about compliance policy without hallucination risk — in pharma, a wrong answer isn't an inconvenience, it's a regulatory event..."</p>
+    </div>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-label">Answer Formula for Every Technical Question</div>
+    <div class="formula-text">Situation (the problem + the stakes) → What you built (specific, not generic) → The proof detail (unfakeable specifics) → What it changed</div>
+  </div>
+</div>
+
+<!-- YOUR DIFFERENTIATOR -->
+<div class="section" id="differentiator">
+  <div class="section-kicker">The Market Reality</div>
+  <h2>What Makes You Different</h2>
+  <p class="section-desc">Most GenAI Architect candidates in 2026 are one of two profiles. You are the intersection. Say this matter-of-factly in every interview — not arrogantly, because it's simply true.</p>
+
+  <div class="diff-banner">
+    <div class="diff-col them">
+      <h4>Most candidates applying to this role</h4>
+      <div class="diff-item">Prompt engineering + ChatGPT integrations</div>
+      <div class="diff-item">AWS Bedrock hello-world demos</div>
+      <div class="diff-item">LangChain tutorial projects</div>
+      <div class="diff-item">ML engineers who can't own prod infra</div>
+      <div class="diff-item">Cloud architects with no shipped GenAI</div>
+      <div class="diff-item">No pharma/regulated environment depth</div>
+    </div>
+    <div class="diff-col you">
+      <h4>You</h4>
+      <div class="diff-item">Production RAG pipeline — real compliance environment</div>
+      <div class="diff-item">Production MCP server governing agentic CI/CD on AWS</div>
+      <div class="diff-item">Two shipped GitHub Marketplace tools — publicly verifiable</div>
+      <div class="diff-item">SAP-C02 + 15 years AWS/EKS/Terraform production depth</div>
+      <div class="diff-item">Pharma GxP + 21 CFR Part 11 compliance context</div>
+      <div class="diff-item">Debugged real production bugs under real constraints</div>
+    </div>
+  </div>
+
+  <div class="verdict-box">
+    <p>The difference between you and the average GenAI Architect candidate is the word <strong>production</strong>. Anyone can clone a RAG tutorial. Almost nobody has debugged one under a 4GB RAM constraint in a regulated pharma environment and shipped the governance layer as a public tool.</p>
+  </div>
+</div>
+
+<!-- THREE ANCHOR STORIES -->
+<div class="section" id="anchors">
+  <div class="section-kicker">Core Evidence</div>
+  <h2>Your Three Anchor Stories</h2>
+  <p class="section-desc">Every technical question should route back to one of these three. They are your proof points. Memorize them cold — especially the specific numbers, because those are what signal "I actually built this."</p>
+
+  <div class="anchor-grid">
+
+    <!-- Anchor 1 -->
+    <div class="anchor-card">
+      <div class="anchor-header" onclick="toggleAnchor(this)">
+        <div class="anchor-num">1</div>
+        <div class="anchor-meta">
+          <div class="anchor-title">The RAG Pipeline</div>
+          <div class="anchor-sub">RAG · MLOps · GenAI Productionization · Pharma Compliance</div>
+        </div>
+        <div class="anchor-chevron">▼</div>
+      </div>
+      <div class="anchor-body">
+        <div class="anchor-oneliner">
+          "I built a production RAG pipeline in a pharma environment — 180-page document, 971 chunks, hit a real EOF batching bug under memory pressure, fixed it with 25-chunk batching, shipped it. It runs in our production CI/CD workflow today."
+        </div>
+        <div class="proof-box">
+          <div class="proof-label">⚡ The Proof Detail — Your "I Actually Built It" Moment</div>
+          <div class="proof-text">The 25-chunk batching fix. Ollama was throwing EOF errors when embedding in large batches. You traced it to memory pressure on the server, not network — and fixed it by redesigning to 25-chunk groups with retry logic. Any engineer who has built a real RAG pipeline under resource constraints immediately recognizes this as genuine production debugging, not a tutorial clone. Lead with this when probed.</div>
+        </div>
+        <div class="use-for"><strong>Use this anchor for:</strong> MLOps experience, GenAI productionization, data pipelines, serving infrastructure, debugging under constraints, pharma compliance, observability for AI systems.</div>
+      </div>
+    </div>
+
+    <!-- Anchor 2 -->
+    <div class="anchor-card">
+      <div class="anchor-header" onclick="toggleAnchor(this)">
+        <div class="anchor-num">2</div>
+        <div class="anchor-meta">
+          <div class="anchor-title">The MCP Server</div>
+          <div class="anchor-sub">Agentic AI · GenAI Governance · AWS Production · Enterprise Scale</div>
+        </div>
+        <div class="anchor-chevron">▼</div>
+      </div>
+      <div class="anchor-body">
+        <div class="anchor-oneliner">
+          "I built an MCP server on AWS that governs agentic CI/CD decisions — AI takes actions in production pipelines, with a governance layer controlling what it can and cannot do. Built in pharma. Governance from day one, not bolted on."
+        </div>
+        <div class="proof-box">
+          <div class="proof-label">⚡ The Proof Detail — What Makes This Rare</div>
+          <div class="proof-text">Most "agentic AI" work in the market is demos or sandboxed tools. Yours runs in production on real CI/CD pipelines at a pharmaceutical company where an agentic system making an unchecked decision has compliance consequences. The governance-first design — not governance added after — is what signals architectural maturity. That's the detail that lands with technical interviewers.</div>
+        </div>
+        <div class="use-for"><strong>Use this anchor for:</strong> Agentic AI systems, GenAI governance, enterprise AI productionization, AWS architecture for AI, security and compliance in AI, stakeholder trust in AI systems.</div>
+      </div>
+    </div>
+
+    <!-- Anchor 3 -->
+    <div class="anchor-card">
+      <div class="anchor-header" onclick="toggleAnchor(this)">
+        <div class="anchor-num">3</div>
+        <div class="anchor-meta">
+          <div class="anchor-title">The GitHub Marketplace Tools</div>
+          <div class="anchor-sub">Shipped Production · Public Verification · Engineering Rigor · Scale</div>
+        </div>
+        <div class="anchor-chevron">▼</div>
+      </div>
+      <div class="anchor-body">
+        <div class="anchor-oneliner">
+          "I published two tools on the GitHub Marketplace — AI CI/CD Guardian and Action Log Analyser — 42 error patterns, 205 test cases. Publicly verifiable. Not a side project — production-grade engineering discipline applied to an AI system."
+        </div>
+        <div class="proof-box">
+          <div class="proof-label">⚡ The Proof Detail — Why 205 Test Cases Matters</div>
+          <div class="proof-text">205 test cases isn't a number someone invents for a demo. It signals you applied production software engineering discipline — test coverage, edge cases, regression prevention — to an AI system. That's rare. Most AI projects have zero tests. The GitHub Marketplace publication means anyone in the room can pull it up and verify it exists. That's a fundamentally different claim than "I built something internally."</div>
+        </div>
+        <div class="use-for"><strong>Use this anchor for:</strong> Evidence of shipped work, engineering rigor, AI system quality, open source contribution, scalable pattern libraries, production AI tooling.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MLOps BRIDGE -->
+<div class="section" id="bridge">
+  <div class="section-kicker">Gap Management</div>
+  <h2>The MLOps Bridge Sentence</h2>
+  <p class="section-desc">You will be asked about classical MLOps — SageMaker, retraining pipelines, feature stores. Use this bridge every single time. Say it confidently, not apologetically. You are framing your depth accurately, not confessing a weakness.</p>
+
+  <div class="bridge-box">
+    <div class="bridge-label">Memorize This — Use It Verbatim</div>
+    <div class="bridge-text">
+      "My MLOps depth is concentrated on the GenAI and serving side — which is increasingly where 'MLOps' actually lives in 2026. On the classical training pipeline side I have working familiarity with SageMaker; I'd be building that depth on the job, and I'm transparent about that. What I bring is the governance, serving, and observability layer — which is typically the harder problem in production GenAI systems anyway."
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="compare-card weak">
+      <div class="compare-label">❌ Don't Say This</div>
+      <p>"I think I can manage MLOps... I mean I have the RAG pipeline so I understand the concepts and I can learn SageMaker pretty quickly..."</p>
+    </div>
+    <div class="compare-card strong">
+      <div class="compare-label">✓ Say This Instead</div>
+      <p>"My MLOps depth is on the GenAI/serving side. On classical training pipelines I have working SageMaker familiarity. The governance and observability layer — where production GenAI systems actually break — is where I'm deep."</p>
+    </div>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-label">Your MLOps Vocabulary Bridge — Use These Translations</div>
+    <div class="formula-text">
+      Feature store → ChromaDB vector store + embedding pipeline &nbsp;|&nbsp;
+      Experiment tracking → 971-chunk batching iteration with measured outcomes &nbsp;|&nbsp;
+      Model registry → GitHub Marketplace versioning + MCP tool management &nbsp;|&nbsp;
+      Drift detection → RAG retrieval quality via Prometheus/Grafana &nbsp;|&nbsp;
+      Inference serving → TinyLlama on 4GB RAM via st.cache_resource
+    </div>
+  </div>
+</div>
+
+<!-- GAP ANSWERS -->
+<div class="section" id="gaps">
+  <div class="section-kicker">Prepared Responses</div>
+  <h2>Gap Answers — Memorize These Exactly</h2>
+  <p class="section-desc">These are the three questions where candidates lose interviews by either bluffing or over-apologizing. Neither is the right move. These answers are direct, honest, and forward-leaning.</p>
+
+  <div class="gap-grid">
+
+    <div class="gap-card">
+      <div class="gap-q">You mentioned GitHub Actions — this role requires Jenkins. How deep is your Jenkins experience?</div>
+      <div class="gap-a">My primary CI/CD tool at Takeda is GitHub Actions — deep hands-on across complex multi-environment pipelines, artifact management, environment promotion, and stage gating. Jenkins uses the same pipeline-as-code model; Jenkinsfile declarative syntax is structurally parallel to GitHub Actions YAML. I've worked with Jenkins in earlier roles. I'd be building Jenkins ML-specific depth on this role and I'm transparent about that — but the architectural patterns are identical. The evaluation gate design, model registry handoff, CodePipeline integration I'd build — that's tool-agnostic thinking, not Jenkins configuration work.</div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-q">Do you hold the AWS Machine Learning Specialty certification?</div>
+      <div class="gap-a">I don't hold it currently. What I have instead is a production RAG pipeline and a shipped MCP server — which is more direct evidence of ML engineering capability than a cert would be. My current certification is SAP-C02 which I've just passed, the Claude Certified Architect from Anthropic, and CCA-F. AWS ML Engineer Associate is next in my queue after Terraform Associate in July. But I'd rather be judged on the production systems I've built than on a certification I could pass with two weeks of study.</div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-q">How deep is your SageMaker experience specifically?</div>
+      <div class="gap-a">I've run training jobs and deployed endpoints to build familiarity with the managed workflow — my production depth is on the serving and governance side rather than the training pipeline side. I'm transparent about that distinction. What I bring at the SageMaker layer is strong infrastructure judgment — VPC isolation, IAM/IRSA patterns, endpoint scaling, cost optimization — which is the architect layer, not the data scientist layer. I'd be ramping on SageMaker Pipelines and Model Monitor depth on the job, which I'd expect to happen over the first 60-90 days.</div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-q">Have you done classical model training — retraining pipelines, feature engineering, experiment tracking?</div>
+      <div class="gap-a">My experience is concentrated on the GenAI and retrieval side rather than classical supervised model training. The data pipeline, serving, and governance disciplines are the same — I've applied them to RAG systems. On the training side I understand the patterns — data validation gates, evaluation gates, model registry approval workflows — and I've implemented the MLOps equivalent in my CI/CD work. The classical training depth is where I'd be building, and I'm honest about that. For a role primarily focused on GenAI productionization, I think the production GenAI experience I have is the harder piece to find in the market.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TECHNICAL DEEP DIVE -->
+<div class="section" id="deepdive">
+  <div class="section-kicker">Interview Intelligence</div>
+  <h2>Handling the Technical Deep Dive</h2>
+  <p class="section-desc">When an interviewer probes technically, they are testing one of exactly three things. Know which one you're facing and respond accordingly.</p>
+
+  <div class="dive-grid">
+
+    <div class="dive-card">
+      <h4>🔍 Testing if you actually built it</h4>
+      <p>Answer with the specific debugging detail. The 25-chunk EOF fix. The 4GB RAM constraint. The disk persistence setup on ChromaDB. These details are unfakeable — you can't Google them in the moment and they're not in any tutorial. This is your strongest mode. Go deep and specific.</p>
+    </div>
+
+    <div class="dive-card">
+      <h4>⚖️ Testing your architectural judgment</h4>
+      <p>Don't just describe what you built. Say why you made each choice and what you traded away. "I chose ChromaDB for simplicity and disk persistence — for production scale beyond this I'd move to pgvector or Pinecone for concurrency. I chose TinyLlama for memory constraint — with proper GPU infrastructure I'd evaluate Llama 3 or Mistral." Tradeoffs signal architect thinking.</p>
+    </div>
+
+    <div class="dive-card">
+      <h4>🎯 Testing your self-awareness</h4>
+      <p>This is the trap most candidates fail by bluffing. Don't. Say clearly what you know, what you've touched, and what you'd ramp on. Senior-level interviewers respect honesty far more than false confidence — because false confidence in an architect means production incidents. State the gap, state the ramp plan, move forward.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- 7 RULES -->
+<div class="section" id="rules">
+  <div class="section-kicker">Field Rules</div>
+  <h2>7 Rules for Every Interview</h2>
+  <p class="section-desc">These apply regardless of the question being asked. Internalize them before you walk in.</p>
+
+  <div class="rules-grid">
+
+    <div class="rule-card">
+      <div class="rule-num">1</div>
+      <div class="rule-content">
+        <div class="rule-title">Open with the problem, not the technology</div>
+        <div class="rule-body">Interviewers tune out tool lists in the first 10 seconds. They tune in to <strong>problems with stakes</strong>. Never open with "I used LangChain..." — always open with "At Takeda, the problem was..." The technology becomes interesting after you've established why it mattered.</div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-num">2</div>
+      <div class="rule-content">
+        <div class="rule-title">Route every answer to one of your three anchors</div>
+        <div class="rule-body">RAG Pipeline. MCP Server. Marketplace Tools. These are your proof points. Every technical question has a path to one of them. Practice routing: "Tell me about your GenAI experience" → RAG + MCP. "Describe a production AI system" → MCP governance story. "Have you shipped AI tools?" → Marketplace immediately.</div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-num">3</div>
+      <div class="rule-content">
+        <div class="rule-title">Use specific numbers — always</div>
+        <div class="rule-body">971 chunks. 25-chunk batching. 4GB RAM. 42 patterns. 205 test cases. 180 pages. These aren't decoration — they're the signal that you built the thing rather than read about it. Vague answers sound like tutorials. Specific numbers sound like production work. If you can't remember an exact number, give a range and say so.</div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-num">4</div>
+      <div class="rule-content">
+        <div class="rule-title">State tradeoffs — not just decisions</div>
+        <div class="rule-body">Architects make tradeoffs, not just choices. "I chose X" is a junior answer. "I chose X because of Y constraint — in a different context I'd consider Z" is an architect answer. Apply this to every technology decision you describe: ChromaDB vs pgvector, TinyLlama vs hosted models, GitHub Actions vs Jenkins. The tradeoff analysis is what they're actually evaluating.</div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-num">5</div>
+      <div class="rule-content">
+        <div class="rule-title">Never volunteer gaps unprompted</div>
+        <div class="rule-body">Jenkins, SageMaker training depth, AWS ML Specialty cert — these are real gaps. But you should never introduce them unless directly asked. Lead with your strengths, let your answers demonstrate depth, and if a gap question comes, use the prepared answers in this guide. <strong>Don't preemptively confess weaknesses that the interviewer hasn't thought to ask about.</strong></div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-num">6</div>
+      <div class="rule-content">
+        <div class="rule-title">When you don't know something — say so cleanly</div>
+        <div class="rule-body">The formula: "I haven't worked with [X] in production — what I'd do is [approach based on analogous experience], and I'd validate that with [research/team/testing]. Is there a specific aspect of [X] you'd like me to think through?" This is better than guessing wrong, and it's better than saying "I don't know" with nothing after it. Show your reasoning process even when you lack the answer.</div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-num">7</div>
+      <div class="rule-content">
+        <div class="rule-title">End every behavioral answer with what changed</div>
+        <div class="rule-body">STAR is not enough. The Result should include both what changed immediately AND what you do differently now because of it. "Developer onboarding went from 2 weeks to 2 hours" is a result. "And that's why I now instrument every pipeline before I call it working — I learned the cost of debugging without observability" is a result with a lesson. The lesson is what senior interviewers are actually listening for.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- QUESTIONS TO ASK -->
+<div class="section" id="questions">
+  <div class="section-kicker">Close Strong</div>
+  <h2>Questions to Ask the Interviewer</h2>
+  <p class="section-desc">These signal architectural maturity. They show you think at the system level. They also tell you whether the role is actually what the JD says it is — which matters for your decision as much as theirs.</p>
+
+  <div class="q-list">
+
+    <div class="q-item">
+      <div class="q-bullet"></div>
+      <div>
+        <div class="q-text">"What does the current state of your GenAI governance layer look like — is there an existing framework or is this greenfield?"</div>
+        <div class="q-why">Tells you whether you'd be building from scratch or inheriting something. Also signals whether they've thought seriously about governance — a green flag if yes, a flag if they haven't.</div>
+      </div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-bullet"></div>
+      <div>
+        <div class="q-text">"How mature is the MLOps pipeline today — are teams running independent model deployments or is there a centralized platform?"</div>
+        <div class="q-why">Reveals the actual scope of the role. "Independent deployments" means you'd be building the platform from scratch. "Centralized but needs improvement" means you're inheriting something with constraints.</div>
+      </div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-bullet"></div>
+      <div>
+        <div class="q-text">"What's the biggest friction point between your data science teams and the platform engineering layer right now?"</div>
+        <div class="q-why">This is the architect question. The answer tells you where the real work is — and gives you an opportunity to connect your experience with the exact problem they're trying to solve.</div>
+      </div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-bullet"></div>
+      <div>
+        <div class="q-text">"Is the primary brief here productionizing existing GenAI POCs, or architecting the platform from scratch?"</div>
+        <div class="q-why">Critical for your positioning. If it's productionizing POCs — your RAG/MCP work is directly relevant. If it's greenfield platform architecture — your AWS/Terraform depth is the lead story.</div>
+      </div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-bullet"></div>
+      <div>
+        <div class="q-text">"How does the team currently handle model drift monitoring and retraining triggers in production?"</div>
+        <div class="q-why">Shows MLOps architectural awareness. Also gives you information about how mature their ML operations are — which shapes how much classical MLOps depth the role actually needs day-to-day.</div>
+      </div>
+    </div>
+
+    <div class="q-item">
+      <div class="q-bullet"></div>
+      <div>
+        <div class="q-text">"What does success look like at 90 days in this role — what would you expect someone to have delivered?"</div>
+        <div class="q-why">Practical and shows you think in deliverables. The answer also reveals whether their expectations are realistic given the scope they've described — important information for your own decision.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:32px;">
+    <div class="section-kicker">Your Cert Stack</div>
+    <div style="margin-top:8px;margin-bottom:16px;font-size:14px;color:var(--dim);">What you can state confidently when certs come up:</div>
+    <div class="cert-strip">
+      <div class="cert-pill done">✓ SAP-C02 Passed</div>
+      <div class="cert-pill done">✓ CCA-F · 796/1000</div>
+      <div class="cert-pill done">✓ Claude Certified Architect</div>
+      <div class="cert-pill next">→ Terraform 004 · Mid-July</div>
+      <div class="cert-pill next">→ AWS ML Engineer · Sep–Oct</div>
+    </div>
+    <div style="font-size:13px;color:var(--dim);margin-top:8px;">If asked about AWS ML Specialty: "Not held currently — AWS ML Engineer Associate is queued after Terraform in July. My production GenAI work is the more direct evidence of capability anyway."</div>
+  </div>
+</div>
+
+<div style="background:var(--ink);padding:32px 64px;display:flex;align-items:center;justify-content:space-between;flex-wrap:gap;">
+  <div>
+    <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:4px;">Stop questioning. Start applying.</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.4);">You have the work. You have the stories. You have the answers. The gap is in submitting, not in qualifying.</div>
+  </div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.25);text-align:right;">
+    July 10 – Sep 12, 2026<br>Venus Pratyantar Window<br>Apply Now
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  event.target.closest('.nav-link').classList.add('active');
+}
+
+function toggleAnchor(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.anchor-chevron');
+  const open = body.classList.toggle('open');
+  chevron.classList.toggle('open', open);
+  if(open) header.style.borderBottomColor = 'var(--border)';
+  else header.style.borderBottomColor = 'transparent';
+}
+
+// Highlight active nav on scroll
+const sections = ['principle','opening','differentiator','anchors','bridge','gaps','deepdive','rules','questions'];
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if(el && el.getBoundingClientRect().top < 160) current = id;
+  });
+  if(current) {
+    document.querySelectorAll('.nav-link').forEach(l => {
+      l.classList.toggle('active', l.getAttribute('onclick') && l.getAttribute('onclick').includes(current));
+    });
+  }
+});
+
+// Open first anchor by default
+document.addEventListener('DOMContentLoaded', () => {
+  const first = document.querySelector('.anchor-header');
+  if(first) toggleAnchor(first);
+});
+</script>
+</body>
+</html>
