@@ -1167,6 +1167,184 @@
         </div>
       </details>
 
+      <!-- Q17 -->
+      <details class="qa reveal" data-diff="inter" data-kw="end-to-end llm solution built production rag mcp ownership delivery lifecycle">
+        <summary>
+          <span class="qmeta"><span class="badge inter">Intermediate</span><span class="badge theme">Profile</span></span>
+          <span class="qtxt">Describe an AI/LLM solution you built end-to-end.</span>
+          <span class="chev">›</span>
+        </summary>
+        <div class="ans">
+          <div class="why">Screens for real ownership versus prompt tinkering. They want to hear the full lifecycle in your own voice.</div>
+          <p>The clearest example is this governed DevOps execution platform. I owned it from problem to production. The problem was that engineers wanted natural-language operations but the org could not let a chat model touch infrastructure. I designed the full path: intent classification at the entry, a context optimizer that ranks and trims runbooks and policy, a multi-agent layer with one supervisor and five domain specialists, and a deterministic validation pipeline that gates every proposed action against a DynamoDB policy store, RBAC on the JWT, throttling, and change windows.</p>
+          <p>Execution goes through MCP servers so the model never speaks to infrastructure directly, and every decision and approval lands in an EventBridge audit trail. I also built the lifecycle around it, prompts and tool schemas versioned as infrastructure, X-Ray tracing for the reasoning timeline, and model tiering for cost. So it was not a demo, it was design, build, security review, and operate.</p>
+          <div class="lab">Key points to hit</div>
+          <ul>
+            <li>Frame the business problem before the technology.</li>
+            <li>Walk the full path: ingestion, reasoning, validation, execution, audit.</li>
+            <li>Show you owned operations and lifecycle, not just the prototype.</li>
+            <li>Land on a concrete proof point you can defend under follow-ups.</li>
+          </ul>
+          <div class="followups">
+            <div class="fu"><div class="fq">What was the hardest part to get right?</div><div class="fa">Keeping policy out of the prompt. The moment enforcement lives in data the model reads, it becomes negotiable. Moving it into deterministic gates was the unlock.</div></div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Q18 -->
+      <details class="qa reveal" data-diff="inter" data-kw="rag retrieval augmented generation chunking embeddings reranking opensearch grounding hallucination">
+        <summary>
+          <span class="qmeta"><span class="badge inter">Intermediate</span><span class="badge theme">Profile</span></span>
+          <span class="qtxt">How have you implemented RAG architectures?</span>
+          <span class="chev">›</span>
+        </summary>
+        <div class="ans">
+          <div class="why">Tests depth beyond "I called a vector DB." They want the retrieval engineering, not the buzzword.</div>
+          <p>My RAG work is the Knowledge Agent in this platform. The pipeline starts at ingestion: I chunk source content, runbooks, Confluence, Jira, with structure-aware splitting so I am not cutting a procedure in half, attach provenance metadata, and embed into serverless OpenSearch. At query time I do hybrid retrieval, semantic plus keyword, then rerank so the top-k that reaches the model is genuinely relevant rather than just nearby in vector space.</p>
+          <p>Two things I treat as non-negotiable. Grounding: the model answers from retrieved context and cites the source, which is how I keep hallucination down and make answers auditable. And trust boundaries: retrieved content is untrusted data, never instructions, because a poisoned runbook is an injection vector. The context optimizer then budgets tokens so I am not paying to stuff irrelevant passages into the window.</p>
+          <div class="lab">Key points to hit</div>
+          <ul>
+            <li>Structure-aware chunking with provenance metadata.</li>
+            <li>Hybrid retrieval plus reranking, not raw vector top-k.</li>
+            <li>Grounding and citation to control hallucination.</li>
+            <li>Retrieved content is untrusted data, never instructions.</li>
+          </ul>
+          <div class="followups">
+            <div class="fu"><div class="fq">How do you evaluate retrieval quality?</div><div class="fa">Offline I track retrieval hit rate and answer faithfulness against a curated set; online I watch citation click-through and the rate of "no good answer" fallbacks.</div></div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Q19 -->
+      <details class="qa reveal" data-diff="inter" data-kw="langgraph autogen multi-agent orchestration supervisor framework crewai state machine">
+        <summary>
+          <span class="qmeta"><span class="badge inter">Intermediate</span><span class="badge theme">Profile</span></span>
+          <span class="qtxt">Have you worked with LangGraph, AutoGen, or multi-agent systems?</span>
+          <span class="chev">›</span>
+        </summary>
+        <div class="ans">
+          <div class="why">Checks whether you understand orchestration patterns, not just whether you can name a library.</div>
+          <p>Yes. This architecture is a multi-agent system by design, a supervisor that owns decomposition and memory synthesis, and five specialists for DevOps, Security, Knowledge, Monitoring, and one more domain, each with its own least-privilege role. The orchestration is a graph of states and transitions, which is exactly the model LangGraph expresses well: nodes for agents and tools, edges for control flow, and a shared session state in Redis. AutoGen-style conversational agents solve a similar problem with a different ergonomics, multiple agents negotiating in a conversation loop.</p>
+          <p>My opinion is that the framework is the easy part. The hard part is bounding autonomy, per-agent IAM roles, deterministic gates between reasoning and action, and tracing the whole timeline in X-Ray so a multi-agent run is debuggable. I pick the framework that fits the control flow, but the safety and observability are mine to design regardless of the library.</p>
+          <div class="lab">Key points to hit</div>
+          <ul>
+            <li>Map your system to the graph/state-machine pattern these tools express.</li>
+            <li>Supervisor owns decomposition and memory; specialists own domains.</li>
+            <li>The framework is replaceable; bounded autonomy and tracing are the real work.</li>
+          </ul>
+          <div class="followups">
+            <div class="fu"><div class="fq">When would you not use multi-agent?</div><div class="fa">When a single tightly-scoped agent covers the domain. Multi-agent buys blast-radius isolation and specialization at the cost of orchestration latency and harder debugging, so I only pay that when the domains genuinely diverge.</div></div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Q20 -->
+      <details class="qa reveal" data-diff="found" data-kw="cloud platform azure gcp aws experience portability transferable bedrock vertex openai">
+        <summary>
+          <span class="qmeta"><span class="badge found">Foundation</span><span class="badge theme">Profile</span></span>
+          <span class="qtxt">What cloud platform experience do you have (Azure/GCP)?</span>
+          <span class="chev">›</span>
+        </summary>
+        <div class="ans">
+          <div class="why">Often a gap-probing question. Lead with strength, then show the concepts transfer instead of overclaiming.</div>
+          <p>My deepest hands-on depth is AWS, this platform runs on Bedrock, OpenSearch Serverless, DynamoDB, Lambda and Fargate, EventBridge, and X-Ray, and I architect to AWS Well-Architected. That said, the architecture is built on portable concepts, not AWS trivia: managed model endpoints, a vector store, a policy store, an event bus, and tracing. Those map cleanly onto Azure, AI Foundry and Azure OpenAI, AI Search, Cosmos DB, Event Grid, and onto GCP, Vertex AI, Vector Search, Firestore, Pub/Sub.</p>
+          <p>So I would be honest about the depth gradient: AWS is where I have shipped and operated; Azure and GCP I work with at the design and concept level and would ramp quickly because the patterns are the same. I would rather state that cleanly than pretend equal fluency everywhere.</p>
+          <div class="lab">Key points to hit</div>
+          <ul>
+            <li>Lead with your strongest platform and concrete services.</li>
+            <li>Show the architecture is concept-portable, then map services across clouds.</li>
+            <li>Be honest about the depth gradient instead of overclaiming parity.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Q21 -->
+      <details class="qa reveal" data-diff="inter" data-kw="adoption business impact metrics roi kpi measurement value usage outcomes">
+        <summary>
+          <span class="qmeta"><span class="badge inter">Intermediate</span><span class="badge theme">Profile</span></span>
+          <span class="qtxt">How do you measure AI product adoption and business impact?</span>
+          <span class="chev">›</span>
+        </summary>
+        <div class="ans">
+          <div class="why">Separates engineers who ship features from people who tie AI to business outcomes. They want a metrics tree, not "users like it."</div>
+          <p>I split it into three layers. Adoption: active users, request volume, and repeat usage, because a tool people try once and abandon has not landed. Quality and trust: task success rate, the rate of human overrides or rejected plans, and grounded-answer rate, since trust is what drives sustained adoption. Business impact: the outcome the tool was funded to move, for the DevOps platform that is mean time to remediate, change lead time, and engineer hours saved on routine operations, ideally measured against a baseline or a holdout.</p>
+          <p>The discipline is choosing the impact metric before building, instrumenting it from day one, and connecting the usage funnel to it so I can say not just "people use it" but "people use it and incidents resolve faster." Cost per request sits alongside so impact is net of spend.</p>
+          <div class="lab">Key points to hit</div>
+          <ul>
+            <li>Three layers: adoption, quality/trust, business impact.</li>
+            <li>Pick the impact metric before building and instrument from day one.</li>
+            <li>Connect the usage funnel to the outcome, net of cost.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Q22 -->
+      <details class="qa reveal" data-diff="found" data-kw="github copilot cursor devin ai coding assistant agentic developer productivity tooling">
+        <summary>
+          <span class="qmeta"><span class="badge found">Foundation</span><span class="badge theme">Profile</span></span>
+          <span class="qtxt">Have you used GitHub Copilot, Cursor, or Devin?</span>
+          <span class="chev">›</span>
+        </summary>
+        <div class="ans">
+          <div class="why">Tests whether you use AI tooling deliberately and understand where it fits, not just whether you've installed it.</div>
+          <p>Yes, daily. GitHub Copilot and Cursor are part of my normal workflow for code completion, refactoring, and scaffolding tests, and I use Cursor's repo-aware chat for navigating unfamiliar code. Devin and the agentic end of the spectrum I treat differently, those are autonomous agents that take a task and run multi-step, which is exactly the pattern I architect, so I am as interested in how they bound autonomy as in what they produce.</p>
+          <p>My practical stance: these tools accelerate the first draft and the boilerplate, but the engineer owns the design, the security review, and the correctness. That is the same principle as my platform, the model proposes, the human and the deterministic checks decide. I have also worked the other side, building the agentic tooling itself, so I understand both the productivity and the governance angle.</p>
+          <div class="lab">Key points to hit</div>
+          <ul>
+            <li>Show daily, deliberate use across completion and agentic tools.</li>
+            <li>Distinguish autocomplete (Copilot/Cursor) from autonomous agents (Devin).</li>
+            <li>Engineer owns design, security, and correctness; the tool drafts.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Q23 -->
+      <details class="qa reveal" data-diff="expert" data-kw="ai governance compliance audit policy data privacy responsible ai guardrails regulation eu act">
+        <summary>
+          <span class="qmeta"><span class="badge expert">Expert</span><span class="badge theme">Governance</span></span>
+          <span class="qtxt">How do you address AI governance and compliance?</span>
+          <span class="chev">›</span>
+        </summary>
+        <div class="ans">
+          <div class="why">A leadership-level question. They want governance designed into the system, not a policy PDF bolted on after.</div>
+          <p>I treat governance as architecture, not paperwork. Four pillars. Policy as data: what an agent may do lives in a DynamoDB policy store and RBAC checks, not in a prompt, so it is enforced deterministically and cannot be talked around. Auditability: every proposal, gate decision, and approval is written to an immutable EventBridge trail, which is what makes the system defensible in a security or regulatory review, I can show exactly what was decided and why. Human-in-the-loop: high-risk actions pause for explicit approval, bounding autonomy where consequences are irreversible.</p>
+          <p>And data governance: least-privilege IAM end to end, provenance on retrieved content, and treating untrusted data as data. On the compliance side I map to frameworks the org cares about, data residency, PII handling, and the risk-tiering spirit of regulations like the EU AI Act, classify the use case by risk and apply controls proportionally. The throughline is that every claim about safety is backed by a deterministic mechanism, not a promise about model behavior.</p>
+          <div class="lab">Key points to hit</div>
+          <ul>
+            <li>Policy as data and deterministic enforcement, not prompt instructions.</li>
+            <li>Immutable audit trail of decisions and approvals.</li>
+            <li>Human-in-the-loop for irreversible, high-risk actions.</li>
+            <li>Data governance, least privilege, and risk-tiered compliance mapping.</li>
+          </ul>
+          <div class="followups">
+            <div class="fu"><div class="fq">How would you handle a regulator asking why the system took a specific action?</div><div class="fa">Replay it from the audit trail: the triggering request, the retrieved context, the proposed plan, which gates it passed, who approved it, and what executed. The decision chain is reconstructable end to end.</div></div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Q24 -->
+      <details class="qa reveal" data-diff="inter" data-kw="prototype production scaling hardening poc mvp pilot mature operate reliability">
+        <summary>
+          <span class="qmeta"><span class="badge inter">Intermediate</span><span class="badge theme">Profile</span></span>
+          <span class="qtxt">Tell us about a prototype that became a production solution.</span>
+          <span class="chev">›</span>
+        </summary>
+        <div class="ans">
+          <div class="why">Tests whether you can cross the hardest gap in AI work, the distance between a demo that impresses and a system that survives production.</div>
+          <p>This DevOps platform started as a prototype: a single agent that could read a runbook and propose an action. It was compelling in a demo and completely unsafe for production, because the model was effectively the last line of defense. The journey to production was about closing that gap deliberately. I split the monolith into a supervisor and least-privilege specialists to bound blast radius. I moved policy out of the prompt into a deterministic validation pipeline. I put execution behind MCP servers so the model never touches infrastructure. And I added the operational spine, X-Ray tracing, an EventBridge audit trail, human approval gates, model tiering for cost, and prompts and schemas versioned as infrastructure.</p>
+          <p>The lesson I carry from it: a prototype proves the idea is possible; production proves it is safe, observable, and affordable. The interesting engineering lives almost entirely in that second half, and that is where I spend my time.</p>
+          <div class="lab">Key points to hit</div>
+          <ul>
+            <li>Name what made the prototype unsafe, then how you closed it.</li>
+            <li>Production is safety, observability, and cost, not just features.</li>
+            <li>Show the deliberate hardening steps, not a vague "we scaled it."</li>
+          </ul>
+          <div class="followups">
+            <div class="fu"><div class="fq">What did you cut from the prototype on the way to production?</div><div class="fa">Unbounded autonomy. The demo's appeal was that the agent just acted; production required that every action earn the right to run through the gates, which is a feature, not a regression.</div></div>
+          </div>
+        </div>
+      </details>
+
     </div>
     <div class="iv-empty" id="ivEmpty">No questions match that filter.</div>
   </div>
