@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise AI Assistant for DevOps & IT Operations — Reference Architecture</title>
+<meta name="description" content="A full reference architecture for an enterprise AI assistant that operates DevOps and IT — context engineering, multi-agent orchestration, deterministic validation, and governance on AWS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#ffffff;
+    --bg:#eef2f7;
+    --bg-2:#e6ebf2;
+    --ink:#0f172a;
+    --text:#1e293b;
+    --muted:#475569;
+    --faint:#64748b;
+    --border:#cbd5e1;
+    --border-soft:#e2e8f0;
+
+    --blue:#2563eb;     --blue-bg:#eff6ff;
+    --indigo:#4f46e5;   --indigo-bg:#eef2ff;
+    --purple:#7c3aed;   --purple-bg:#f5f3ff;
+    --green:#16a34a;    --green-bg:#ecfdf5;
+    --teal:#0891b2;     --teal-bg:#ecfeff;
+    --orange:#ea580c;   --orange-bg:#fff7ed;
+    --amber:#b45309;    --amber-bg:#fffbeb;
+    --red:#dc2626;      --red-bg:#fef2f2;
+    --slate:#475569;    --slate-bg:#f1f5f9;
+
+    --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+    --sans:'Inter',system-ui,-apple-system,"Segoe UI",sans-serif;
+    --radius:12px;
+    --maxw:1280px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;scroll-padding-top:72px;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.9);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .topbar-inner{
+    max-width:var(--maxw);margin:0 auto;padding:12px 24px;
+    display:flex;align-items:center;gap:16px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);}
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px var(--blue-bg);}
+  .topbar-links{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;}
+  .topbar-links a{
+    font-size:13px;color:var(--muted);padding:6px 11px;border-radius:8px;font-weight:500;
+  }
+  .topbar-links a:hover{background:var(--slate-bg);color:var(--ink);}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+
+  /* ---------- hero ---------- */
+  .hero{padding:48px 0 12px;text-align:center;}
+  .hero .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--blue);font-weight:600;margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:clamp(26px,4vw,40px);font-weight:800;color:var(--ink);
+    letter-spacing:-.02em;line-height:1.12;
+  }
+  .hero .sub{font-size:16px;color:var(--muted);margin-top:10px;}
+
+  /* ---------- diagram board ---------- */
+  .board{
+    background:
+      linear-gradient(var(--bg-2) 1px,transparent 1px),
+      linear-gradient(90deg,var(--bg-2) 1px,transparent 1px),
+      var(--paper);
+    background-size:28px 28px,28px 28px,auto;
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px;
+    margin:30px 0 10px;
+    box-shadow:0 10px 30px rgba(15,23,42,.06);
+  }
+  .board-title{text-align:center;margin-bottom:18px;}
+  .board-title h2{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:.01em;}
+  .board-title p{font-size:13px;color:var(--muted);font-weight:500;}
+
+  /* zone panel */
+  .zone{
+    background:var(--paper);
+    border:1.5px solid var(--zc,var(--blue));
+    border-radius:10px;
+    padding:12px 13px 13px;
+    position:relative;
+  }
+  .zone>.zh{
+    display:flex;align-items:center;gap:8px;margin-bottom:9px;
+  }
+  .zone .znum{
+    flex:none;width:20px;height:20px;border-radius:50%;
+    background:var(--zc,var(--blue));color:#fff;
+    font-family:var(--mono);font-size:11px;font-weight:600;
+    display:grid;place-items:center;
+  }
+  .zone .zt{font-size:12.5px;font-weight:700;color:var(--zc,var(--blue));letter-spacing:.02em;text-transform:uppercase;}
+  .zone .zsub{font-size:11px;color:var(--faint);font-weight:500;margin-left:auto;}
+
+  .chip{
+    background:var(--slate-bg);border:1px solid var(--border-soft);border-radius:7px;
+    padding:7px 9px;font-size:11.5px;color:var(--text);font-weight:500;
+  }
+  .chip b{display:block;font-size:11.5px;color:var(--ink);font-weight:700;margin-bottom:2px;}
+  .chip ul{margin:0;padding-left:14px;color:var(--muted);font-size:10.5px;line-height:1.5;}
+  .grid{display:grid;gap:8px;}
+
+  .mini-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:2px 0 4px;}
+
+  /* layout rows */
+  .row{display:grid;gap:14px;margin-bottom:14px;}
+  .row.top{grid-template-columns:260px 1fr 270px;}
+  .row.mid{grid-template-columns:1fr 280px;}
+  .row.bottom{grid-template-columns:repeat(6,1fr);}
+
+  .stack{display:grid;gap:12px;align-content:start;}
+
+  /* colored helpers */
+  .c-blue{--zc:var(--blue);}   .c-indigo{--zc:var(--indigo);}
+  .c-purple{--zc:var(--purple);}.c-green{--zc:var(--green);}
+  .c-teal{--zc:var(--teal);}   .c-orange{--zc:var(--orange);}
+  .c-amber{--zc:var(--amber);} .c-red{--zc:var(--red);}
+  .c-slate{--zc:var(--slate);}
+
+  .persona{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text);padding:4px 0;}
+  .persona .ic{width:18px;height:18px;border-radius:5px;background:var(--blue-bg);color:var(--blue);font-size:10px;display:grid;place-items:center;font-weight:700;}
+
+  .flowline{
+    text-align:center;font-family:var(--mono);font-size:10.5px;color:var(--faint);
+    letter-spacing:.12em;text-transform:uppercase;margin:2px 0 12px;
+  }
+  .flowline span{display:inline-block;padding:0 8px;}
+  .arrow-down{display:block;text-align:center;color:var(--blue);font-size:18px;line-height:1;margin:-6px 0 8px;}
+
+  /* context cards row */
+  .ctx-row{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;}
+  .opt-row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px;}
+  .opt{font-family:var(--mono);font-size:10px;color:var(--slate);background:var(--slate-bg);border:1px solid var(--border-soft);border-radius:6px;padding:4px 8px;}
+
+  /* pipeline */
+  .pipe{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;}
+  .pstep{background:var(--blue-bg);border:1px solid #bfdbfe;border-radius:8px;padding:8px 6px;text-align:center;}
+  .pstep .pn{width:18px;height:18px;border-radius:50%;background:var(--blue);color:#fff;font-family:var(--mono);font-size:10px;display:grid;place-items:center;margin:0 auto 5px;font-weight:600;}
+  .pstep .pl{font-size:10px;font-weight:600;color:var(--ink);line-height:1.25;}
+  .vbar{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;}
+  .vbar .vb{font-size:10px;font-weight:600;color:var(--green);background:var(--green-bg);border:1px solid #bbf7d0;border-radius:6px;padding:4px 8px;}
+
+  .mcp-row{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;}
+  .mcp{background:var(--paper);border:1px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center;font-size:10.5px;font-weight:600;color:var(--text);}
+  .mcp small{display:block;color:var(--faint);font-size:9px;font-weight:500;}
+  .adapter{margin-top:8px;text-align:center;font-size:10.5px;color:var(--muted);background:var(--indigo-bg);border:1px solid #c7d2fe;border-radius:8px;padding:7px;}
+  .adapter b{color:var(--indigo);}
+
+  /* legend / principles */
+  .foot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px;}
+  .foot-card{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px 13px;}
+  .foot-card h4{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:7px;}
+  .foot-card ul{list-style:none;display:grid;gap:4px;}
+  .foot-card li{font-size:11.5px;color:var(--text);display:flex;gap:7px;align-items:center;}
+  .foot-card li::before{content:"";width:6px;height:6px;border-radius:2px;background:var(--blue);flex:none;}
+  .foot-card.green li::before{background:var(--green);}
+  .foot-card.amber li::before{background:var(--amber);}
+
+  .legend{display:flex;flex-wrap:wrap;gap:14px;}
+  .legend .lg{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted);}
+  .legend .ln{width:24px;height:0;border-top:2px solid var(--blue);}
+  .legend .ln.green{border-top-style:solid;border-color:var(--green);}
+  .legend .ln.red{border-top-style:dashed;border-color:var(--red);}
+  .legend .ln.purple{border-top-style:dotted;border-color:var(--purple);}
+
+  /* ---------- explanation ---------- */
+  .explain{padding:48px 0 20px;}
+  .explain h2{font-size:26px;font-weight:800;color:var(--ink);letter-spacing:-.01em;margin-bottom:8px;}
+  .explain .lead{font-size:17px;color:var(--muted);max-width:70ch;margin-bottom:30px;}
+  .ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
+  .ex{background:var(--paper);border:1px solid var(--border-soft);border-left:3px solid var(--zc,var(--blue));border-radius:10px;padding:16px 18px;}
+  .ex .en{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--zc,var(--blue));letter-spacing:.08em;text-transform:uppercase;}
+  .ex h3{font-size:16px;font-weight:700;color:var(--ink);margin:6px 0 8px;}
+  .ex p{font-size:13.5px;color:var(--muted);line-height:1.6;}
+
+  .flow-note{
+    background:var(--paper);border:1px solid var(--border);border-radius:12px;
+    padding:22px 24px;margin:34px 0 10px;
+  }
+  .flow-note h3{font-size:16px;color:var(--ink);margin-bottom:10px;}
+  .flow-note ol{margin:0;padding-left:20px;color:var(--text);font-size:14px;line-height:1.8;}
+  .flow-note b{color:var(--ink);}
+
+  footer{border-top:1px solid var(--border-soft);margin-top:40px;padding:26px 0;}
+  .foot-inner{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;}
+  .foot-inner a{color:var(--blue);font-weight:600;}
+
+  /* responsive */
+  @media(max-width:1080px){
+    .row.top{grid-template-columns:1fr;}
+    .row.mid{grid-template-columns:1fr;}
+    .ctx-row{grid-template-columns:repeat(3,1fr);}
+    .pipe{grid-template-columns:repeat(4,1fr);}
+    .mcp-row{grid-template-columns:repeat(5,1fr);}
+    .row.bottom{grid-template-columns:repeat(3,1fr);}
+    .foot-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media(max-width:640px){
+    .ctx-row{grid-template-columns:repeat(2,1fr);}
+    .pipe{grid-template-columns:repeat(2,1fr);}
+    .mcp-row{grid-template-columns:repeat(2,1fr);}
+    .row.bottom{grid-template-columns:1fr;}
+    .foot-grid{grid-template-columns:1fr;}
+    .board{padding:14px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html"><span class="dot"></span> Enterprise AI Assistant</a>
+    <nav class="topbar-links">
+      <a href="#diagram">Diagram</a>
+      <a href="#flow">Request Flow</a>
+      <a href="#zones">Zone Guide</a>
+      <a href="autonomous-it-operations.html">Blueprint Deep-Dive ↗</a>
+      <a href="index.html">Home</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Reference Architecture</div>
+    <h1>Enterprise AI Assistant for DevOps &amp; IT Operations</h1>
+    <p class="sub">Architecture with Context Engineering, Validation &amp; Governance on AWS</p>
+  </div>
+</section>
+
+<!-- DIAGRAM BOARD -->
+<section id="diagram">
+  <div class="wrap">
+    <div class="board">
+      <div class="board-title">
+        <h2>End-to-End System Map</h2>
+        <p>A single governed path — enter, enrich, reason, validate, execute — surrounded by memory, integrations, data, and governance.</p>
+      </div>
+
+      <!-- ROW 1: users | entry+orchestration | integrations -->
+      <div class="row top">
+
+        <!-- 1. USERS & ACCESS -->
+        <div class="stack">
+          <div class="zone c-blue">
+            <div class="zh"><span class="znum">1</span><span class="zt">Users &amp; Access</span></div>
+            <div class="mini-title">User Personas</div>
+            <div class="persona"><span class="ic">L1</span> L1 Support Engineer</div>
+            <div class="persona"><span class="ic">L2</span> L2 Support Engineer</div>
+            <div class="persona"><span class="ic">L3</span> L3 / DevOps Engineer</div>
+            <div class="persona"><span class="ic">A</span> Admin / Platform Team</div>
+            <div class="persona"><span class="ic">O</span> Application Owners</div>
+            <div class="persona"><span class="ic">B</span> Business Users</div>
+            <div class="mini-title" style="margin-top:8px;">Channels</div>
+            <div class="chip">Web Chat · Microsoft Teams · Slack · Email / Portal</div>
+          </div>
+          <div class="zone c-blue">
+            <div class="zh"><span class="zt">Authentication &amp; SSO</span></div>
+            <div class="chip"><b>Microsoft Entra ID</b>SSO (SAML / OIDC) · MFA · Conditional Access</div>
+            <div class="chip" style="margin-top:6px;"><b>User Groups / Roles</b>L1 · L2 · Admins · App Owners</div>
+          </div>
+        </div>
+
+        <!-- center: 2 + 3 -->
+        <div class="stack">
+          <!-- 2. APPLICATION ENTRY POINT -->
+          <div class="zone c-indigo">
+            <div class="zh"><span class="znum">2</span><span class="zt">Application Entry Point</span></div>
+            <div class="grid" style="grid-template-columns:1fr 1fr;">
+              <div class="chip"><b>Amazon API Gateway</b>OIDC / JWT token validation</div>
+              <div class="chip"><b>AWS WAF</b>Edge protection &amp; throttling</div>
+            </div>
+            <div class="mini-title" style="margin-top:8px;">Backend Services (ECS / Fargate)</div>
+            <div class="grid" style="grid-template-columns:repeat(4,1fr);">
+              <div class="chip">Chat Service</div>
+              <div class="chip">User Service</div>
+              <div class="chip">Session Service</div>
+              <div class="chip">Notification</div>
+            </div>
+          </div>
+
+          <div class="arrow-down">▼</div>
+
+          <!-- 3. AI ORCHESTRATION LAYER -->
+          <div class="zone c-purple">
+            <div class="zh"><span class="znum">3</span><span class="zt">AI Orchestration Layer</span><span class="zsub">Amazon Bedrock Agents</span></div>
+            <div class="mini-title">Supervisor / Orchestrator Agent</div>
+            <div class="grid" style="grid-template-columns:repeat(3,1fr);">
+              <div class="chip">Intent Understanding</div>
+              <div class="chip">Task Planning</div>
+              <div class="chip">Tool Selection</div>
+              <div class="chip">Reasoning &amp; Execution</div>
+              <div class="chip">Response Generation</div>
+              <div class="chip">Memory Manager</div>
+            </div>
+            <div class="mini-title" style="margin-top:8px;">Specialized Agents (Collaborative)</div>
+            <div class="grid" style="grid-template-columns:repeat(5,1fr);">
+              <div class="chip">DevOps Agent</div>
+              <div class="chip">Knowledge Agent</div>
+              <div class="chip">Change / Incident</div>
+              <div class="chip">Monitoring Agent</div>
+              <div class="chip">Security &amp; Compliance</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- right: agent memory + 9 integrations -->
+        <div class="stack">
+          <div class="zone c-green">
+            <div class="zh"><span class="zt">Agent Memory</span></div>
+            <div class="chip"><b>Short-term</b>Conversation buffer</div>
+            <div class="chip" style="margin-top:6px;"><b>Session (Redis)</b>Active task state</div>
+            <div class="chip" style="margin-top:6px;"><b>Long-term</b>Conversation history</div>
+            <div class="chip" style="margin-top:6px;"><b>Vector Store</b>OpenSearch Serverless</div>
+          </div>
+          <div class="zone c-teal">
+            <div class="zh"><span class="znum">9</span><span class="zt">Enterprise Integrations</span><span class="zsub">Execution Plane</span></div>
+            <div class="chip"><b>Jira</b>Search · Tickets · Comments</div>
+            <div class="chip" style="margin-top:6px;"><b>ServiceNow</b>Incident / Problem · Change / KB</div>
+            <div class="chip" style="margin-top:6px;"><b>Confluence</b>Page &amp; Space search</div>
+            <div class="chip" style="margin-top:6px;"><b>GitHub / GitLab</b>Repos · Workflows · PRs · Code</div>
+            <div class="chip" style="margin-top:6px;"><b>Other APIs</b>HR / Finance / ITSM · Custom</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 2: context engineering + infrastructure -->
+      <div class="row mid">
+        <!-- 4. CONTEXT ENGINEERING -->
+        <div class="zone c-green">
+          <div class="zh"><span class="znum">4</span><span class="zt">Context Engineering Layer</span></div>
+          <div class="ctx-row">
+            <div class="chip"><b>1 · Identity</b><ul><li>Profile</li><li>Roles &amp; groups</li><li>Permissions</li></ul></div>
+            <div class="chip"><b>2 · Conversation</b><ul><li>Recent messages</li><li>User intent</li><li>Session state</li></ul></div>
+            <div class="chip"><b>3 · App &amp; Infra</b><ul><li>App details</li><li>Topology</li><li>CMDB / catalog</li></ul></div>
+            <div class="chip"><b>4 · Knowledge (RAG)</b><ul><li>Runbooks</li><li>SOPs / policies</li><li>Best practices</li></ul></div>
+            <div class="chip"><b>5 · Operational</b><ul><li>Tool outputs</li><li>System status</li><li>Logs / metrics</li></ul></div>
+            <div class="chip"><b>6 · Execution</b><ul><li>Current plan</li><li>Approved actions</li><li>In-flight tasks</li></ul></div>
+            <div class="chip"><b>7 · Business Rules</b><ul><li>RBAC / ABAC</li><li>Change windows</li><li>Guardrails</li></ul></div>
+          </div>
+          <div class="mini-title" style="text-align:center;margin-top:10px;">Context Optimizer &amp; Assembler</div>
+          <div class="opt-row">
+            <span class="opt">Relevance Ranking</span>
+            <span class="opt">De-duplication</span>
+            <span class="opt">Summarization</span>
+            <span class="opt">Compression</span>
+            <span class="opt">Freshness Check</span>
+            <span class="opt">Token Budget</span>
+            <span class="opt">PII Redaction</span>
+            <span class="opt">Format for Model</span>
+          </div>
+        </div>
+
+        <!-- INFRASTRUCTURE / PLATFORMS -->
+        <div class="zone c-slate">
+          <div class="zh"><span class="zt">Infrastructure / Platforms</span></div>
+          <div class="grid" style="grid-template-columns:1fr 1fr;">
+            <div class="chip">AWS Services</div>
+            <div class="chip">Kubernetes</div>
+            <div class="chip">Linux / Windows</div>
+            <div class="chip">Networks</div>
+            <div class="chip">Databases</div>
+            <div class="chip">Cloud / SaaS</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 3: validation pipeline + tool registry / execution -->
+      <div class="row mid">
+        <!-- 5. VALIDATION PIPELINE -->
+        <div class="zone c-blue">
+          <div class="zh"><span class="znum">5</span><span class="zt">Validation &amp; Tool Selection Pipeline</span></div>
+          <div class="pipe">
+            <div class="pstep"><div class="pn">1</div><div class="pl">Intent Classification (NLU)</div></div>
+            <div class="pstep"><div class="pn">2</div><div class="pl">Capability Registry Lookup</div></div>
+            <div class="pstep"><div class="pn">3</div><div class="pl">RBAC / ABAC Filtering</div></div>
+            <div class="pstep"><div class="pn">4</div><div class="pl">Tool Ranking (LLM + Rules)</div></div>
+            <div class="pstep"><div class="pn">5</div><div class="pl">Confidence Scoring</div></div>
+            <div class="pstep"><div class="pn">6</div><div class="pl">Plan Validation (Policy)</div></div>
+            <div class="pstep"><div class="pn">7</div><div class="pl">Human Approval (if required)</div></div>
+            <div class="pstep"><div class="pn">8</div><div class="pl">Final Tool Plan (Execution Ready)</div></div>
+          </div>
+          <div class="mini-title" style="margin-top:10px;">Validation Engine — Rules &amp; Policies</div>
+          <div class="vbar">
+            <span class="vb">✓ Input Validation</span>
+            <span class="vb">✓ Permission Validation</span>
+            <span class="vb">✓ Data Validation</span>
+            <span class="vb">✓ Business Rule Validation</span>
+            <span class="vb">✓ Security Validation</span>
+            <span class="vb">✓ Risk &amp; Impact Check</span>
+          </div>
+        </div>
+
+        <!-- tool registry + 7 execution -->
+        <div class="stack">
+          <div class="zone c-slate">
+            <div class="zh"><span class="zt">Tool Registry (DynamoDB)</span></div>
+            <div class="chip"><ul style="padding-left:14px;"><li>Tool metadata</li><li>Capabilities</li><li>Permissions &amp; owners</li><li>SLA / limits</li></ul></div>
+          </div>
+          <div class="zone c-orange">
+            <div class="zh"><span class="znum">7</span><span class="zt">Execution &amp; Response</span></div>
+            <div class="grid" style="grid-template-columns:1fr 1fr;">
+              <div class="chip">Execute Tools</div>
+              <div class="chip">Aggregate Results</div>
+              <div class="chip">Error Handling</div>
+              <div class="chip">Summarize Response</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 4: tool orchestration / MCP -->
+      <div class="zone c-indigo" style="margin-bottom:14px;">
+        <div class="zh"><span class="znum">6</span><span class="zt">Tool Orchestration</span><span class="zsub">via MCP Protocol</span></div>
+        <div class="mcp-row">
+          <div class="mcp">GitHub<small>MCP</small></div>
+          <div class="mcp">Jira<small>MCP</small></div>
+          <div class="mcp">ServiceNow<small>MCP</small></div>
+          <div class="mcp">Confluence<small>MCP</small></div>
+          <div class="mcp">Terraform<small>MCP</small></div>
+          <div class="mcp">Ansible<small>MCP</small></div>
+          <div class="mcp">AWS<small>MCP</small></div>
+          <div class="mcp">Kubernetes<small>MCP</small></div>
+          <div class="mcp">Custom<small>MCP</small></div>
+        </div>
+        <div class="adapter"><b>MCP Server (Adapter) Layer</b> — Standardized interface · Auth token forwarding · Request / response transformation · Error handling · Rate limiting · Retries</div>
+      </div>
+
+      <!-- ROW 5: bottom operational zones -->
+      <div class="row bottom">
+        <div class="zone c-red">
+          <div class="zh"><span class="znum">8</span><span class="zt">Human Approval</span></div>
+          <div class="chip"><ul style="padding-left:14px;"><li>Sensitive action detected</li><li>Approval request</li><li>Approver review</li><li>Execute / abort</li><li>Multi-level supported</li></ul></div>
+        </div>
+        <div class="zone c-blue">
+          <div class="zh"><span class="znum">10</span><span class="zt">Observability</span></div>
+          <div class="chip"><ul style="padding-left:14px;"><li>CloudWatch (metrics)</li><li>X-Ray (tracing)</li><li>OpenSearch analytics</li><li>CloudTrail (API audit)</li></ul></div>
+        </div>
+        <div class="zone c-green">
+          <div class="zh"><span class="znum">11</span><span class="zt">Security &amp; Governance</span></div>
+          <div class="chip"><ul style="padding-left:14px;"><li>Entra ID conditional access</li><li>IAM RBAC / ABAC</li><li>KMS encryption · Secrets Mgr</li><li>Bedrock guardrails</li><li>Prompt-injection &amp; content filters</li></ul></div>
+        </div>
+        <div class="zone c-purple">
+          <div class="zh"><span class="znum">12</span><span class="zt">Data &amp; Storage</span></div>
+          <div class="chip"><ul style="padding-left:14px;"><li>S3 (docs, artifacts, backups)</li><li>OpenSearch (vectors, logs)</li><li>Neptune (graph)</li><li>DynamoDB (sessions, state)</li></ul></div>
+        </div>
+        <div class="zone c-orange">
+          <div class="zh"><span class="znum">13</span><span class="zt">Event Bus</span></div>
+          <div class="chip"><ul style="padding-left:14px;"><li>Amazon EventBridge</li><li>Change &amp; security events</li><li>Workflow events</li><li>SNS / SQS notifications</li></ul></div>
+        </div>
+        <div class="zone c-teal">
+          <div class="zh"><span class="znum">14</span><span class="zt">CI/CD Lifecycle</span></div>
+          <div class="chip"><ul style="padding-left:14px;"><li>GitHub (agent code, prompts)</li><li>CodePipeline build/test/deploy</li><li>Deploy to Bedrock agent</li><li>Versioning &amp; rollback · canary</li></ul></div>
+        </div>
+      </div>
+
+      <!-- footer cards inside board -->
+      <div class="foot-grid">
+        <div class="foot-card">
+          <h4>Key Design Principles</h4>
+          <ul>
+            <li>Security first</li>
+            <li>Least privilege access</li>
+            <li>Modular &amp; extensible (MCP + agents)</li>
+            <li>Cloud native &amp; highly available</li>
+            <li>Observability &amp; governance by design</li>
+          </ul>
+        </div>
+        <div class="foot-card green">
+          <h4>High Availability &amp; Resilience</h4>
+          <ul>
+            <li>Multi-AZ deployment (ECS / Fargate)</li>
+            <li>Auto scaling &amp; load balancing</li>
+            <li>Route 53 + CloudFront global edge</li>
+            <li>S3 cross-region replication</li>
+            <li>Backups &amp; DR strategy</li>
+          </ul>
+        </div>
+        <div class="foot-card amber">
+          <h4>Cost Optimization</h4>
+          <ul>
+            <li>Model selection (right model per task)</li>
+            <li>Caching of responses &amp; context</li>
+            <li>Right-sizing &amp; auto scaling</li>
+            <li>OpenSearch Serverless auto scaling</li>
+            <li>Reserved instances / savings plans</li>
+          </ul>
+        </div>
+        <div class="foot-card">
+          <h4>Legend — Data / Process Flow</h4>
+          <div class="legend">
+            <div class="lg"><span class="ln"></span> User / request flow</div>
+            <div class="lg"><span class="ln green"></span> Response flow</div>
+            <div class="lg"><span class="ln red"></span> Approval flow</div>
+            <div class="lg"><span class="ln purple"></span> Data retrieval</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- REQUEST FLOW -->
+<section id="flow">
+  <div class="wrap">
+    <div class="flow-note">
+      <h3>How a single request travels the system</h3>
+      <ol>
+        <li>A user asks in <b>Teams, Slack, web, or email</b>. The request hits <b>API Gateway behind WAF</b>, where the OIDC / JWT token is validated and identity, groups, and roles are attached.</li>
+        <li>The <b>supervisor agent</b> classifies intent and decides which <b>specialized agent</b> owns the work — DevOps, Knowledge, Change/Incident, Monitoring, or Security.</li>
+        <li>The <b>context engineering layer</b> assembles seven context streams and the optimizer ranks, de-duplicates, compresses, budgets tokens, and redacts PII before anything reaches the model.</li>
+        <li>The agent proposes a plan. The <b>validation &amp; tool selection pipeline</b> runs eight deterministic stages — RBAC/ABAC, confidence scoring, policy validation, and human approval for sensitive actions.</li>
+        <li>Only an approved plan is executed through the <b>MCP adapter layer</b> to GitHub, Jira, ServiceNow, Terraform, AWS, Kubernetes, and other tools. The model never touches infrastructure directly.</li>
+        <li><b>Execution</b> aggregates results, handles errors, and generates a response, while <b>observability, the event bus, and storage</b> capture a full audit trail of every decision.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ZONE EXPLANATION -->
+<section id="zones" class="explain">
+  <div class="wrap">
+    <h2>The fourteen zones, explained</h2>
+    <p class="lead">Each numbered block on the diagram plays one role. Together they wrap a powerful but untrusted model so that intelligence stays flexible while the governance boundary stays fixed.</p>
+
+    <div class="ex-grid">
+      <div class="ex c-blue"><div class="en">Zone 1 · 2</div><h3>Users &amp; entry point</h3><p>L1–L3 support, DevOps, admins, and business users reach the assistant over Web, Teams, Slack, or email. Microsoft Entra ID handles SSO, MFA, and conditional access; every call enters through API Gateway behind AWS WAF carrying an OIDC / JWT token, with identity, groups, and roles travelling alongside it.</p></div>
+      <div class="ex c-purple"><div class="en">Zone 3</div><h3>AI orchestration layer</h3><p>Amazon Bedrock agents. A supervisor owns intent understanding, task planning, tool selection, reasoning, response generation, and memory. Collaborating specialists — DevOps, Knowledge, Change/Incident, Monitoring, Security &amp; Compliance — each own a single domain to bound blast radius.</p></div>
+      <div class="ex c-green"><div class="en">Agent Memory</div><h3>Four memory tiers</h3><p>Short-term conversation buffer, session state in Redis, long-term conversation history, and a vector store on OpenSearch Serverless. Together they let the assistant hold context across turns instead of starting cold on every request.</p></div>
+      <div class="ex c-green"><div class="en">Zone 4</div><h3>Context engineering layer</h3><p>Seven context streams — identity, conversation, application &amp; infra, knowledge (RAG), live operational data, execution state, and business rules — are merged by a context optimizer that ranks, de-duplicates, summarizes, compresses, budgets tokens, redacts PII, and formats for the model.</p></div>
+      <div class="ex c-blue"><div class="en">Zone 5</div><h3>Validation &amp; tool selection</h3><p>The deterministic heart. Eight stages: intent classification, capability registry lookup, RBAC/ABAC filtering, tool ranking, confidence scoring, plan validation against policy, human approval if required, and a final execution-ready plan. A rules engine runs input, permission, data, business-rule, security, and risk checks.</p></div>
+      <div class="ex c-indigo"><div class="en">Zone 6</div><h3>Tool orchestration via MCP</h3><p>Approved plans run through the MCP adapter layer — GitHub, Jira, ServiceNow, Confluence, Terraform, Ansible, AWS, Kubernetes, and custom servers — with token forwarding, request/response transformation, error handling, rate limiting, and retries.</p></div>
+      <div class="ex c-orange"><div class="en">Zone 7</div><h3>Execution &amp; response</h3><p>Executes the validated tools, aggregates results across systems, handles errors and retries, and summarizes a clean response back to the user.</p></div>
+      <div class="ex c-red"><div class="en">Zone 8</div><h3>Human approval workflow</h3><p>Sensitive actions trigger a configurable, multi-level approval flow before they execute, bounded by risk level, environment, and action type. High-risk operations pause and wait rather than run autonomously.</p></div>
+      <div class="ex c-teal"><div class="en">Zone 9</div><h3>Enterprise integrations</h3><p>The execution plane: Jira, ServiceNow, Confluence, GitHub/GitLab, and other HR / finance / ITSM systems. Agents never call these directly — only validated MCP tool calls reach them.</p></div>
+      <div class="ex c-blue"><div class="en">Zone 10</div><h3>Observability &amp; monitoring</h3><p>CloudWatch, X-Ray, OpenSearch analytics, and CloudTrail provide a full reasoning-and-action audit trail, so any production decision can be reconstructed end to end.</p></div>
+      <div class="ex c-green"><div class="en">Zone 11</div><h3>Security &amp; governance</h3><p>Entra ID conditional access, IAM RBAC/ABAC, KMS encryption, Secrets Manager, Bedrock guardrails, prompt-injection defense, content filters, and audit reviews — governance enforced as architecture, not paperwork.</p></div>
+      <div class="ex c-purple"><div class="en">Zone 12 · 13 · 14</div><h3>Data, events &amp; lifecycle</h3><p>S3 for docs and backups, OpenSearch vectors, Neptune graph relationships, and DynamoDB session state. EventBridge and SNS/SQS carry change, security, and workflow events. A CI/CD lifecycle deploys agent code, prompts, and tools with versioning, rollback, and canary releases.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div>Reference architecture by <b>Sathish</b> · Senior AI / Cloud Solutions Architect</div>
+    <div><a href="autonomous-it-operations.html">Read the full blueprint &amp; interview Q&amp;A →</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
