@@ -87,6 +87,10 @@
     margin:0 0 18px;
   }
   .lead{font-size:18px;color:var(--muted);max-width:62ch;margin:0 0 42px;}
+  .zone{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 18px 16px;}
+  .zone .znum{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase;}
+  .zone h4{font-family:var(--display);font-size:16px;margin:8px 0 8px;color:var(--ink);}
+  .zone p{font-size:14px;line-height:1.6;color:var(--muted);margin:0;max-width:none;}
   h3{font-family:var(--display);font-weight:500;font-size:20px;margin:0 0 8px;letter-spacing:-.01em;}
   p{margin:0 0 16px;}
   .mono{font-family:var(--mono);}
@@ -317,6 +321,7 @@
     <div class="brand"><span class="dot"></span> Autonomous IT Operations</div>
     <button class="nav-toggle" aria-label="Toggle navigation">Menu</button>
     <nav class="nav-links">
+      <a href="#blueprint">Blueprint</a>
       <a href="#shift">Shift</a>
       <a href="#system">System</a>
       <a href="#lifecycle">Lifecycle</a>
@@ -395,6 +400,41 @@
         <line class="flow" x1="866" y1="180" x2="928" y2="180" stroke="#41D08C" stroke-width="2" marker-end="url(#arr)"/>
       </svg>
     </div>
+  </div>
+</section>
+
+<!-- BLUEPRINT DIAGRAM -->
+<section id="blueprint">
+  <div class="wrap">
+    <div class="eyebrow reveal">The full blueprint</div>
+    <h2 class="reveal">One diagram, fourteen governed zones</h2>
+    <p class="lead reveal">The complete reference architecture for an enterprise AI assistant that operates DevOps and IT. A request flows left to right through a single governed path: it enters through an authenticated edge, is enriched with context, reasoned over by specialized agents, validated against deterministic policy, and only then executed through MCP. Every other block on the diagram — memory, integrations, storage, observability, governance — exists to support or constrain that one path.</p>
+
+    <figure class="diagram reveal" style="margin:0 0 40px;">
+      <img src="assets/enterprise-ai-devops-architecture.png"
+           alt="Enterprise AI Assistant for DevOps and IT Operations — full reference architecture with context engineering, validation, and governance on AWS"
+           loading="lazy"
+           style="width:100%;height:auto;display:block;border:1px solid var(--line-strong);border-radius:var(--radius);background:#0d1626;">
+      <figcaption style="font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:12px;text-align:center;letter-spacing:.04em;">
+        Enterprise AI Assistant for DevOps &amp; IT Operations — context engineering, validation &amp; governance on AWS.
+      </figcaption>
+    </figure>
+
+    <p class="lead reveal">Reading the diagram by zone:</p>
+
+    <div class="zone-grid reveal" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:8px;">
+      <div class="zone"><span class="znum">1 &middot; 2</span><h4>Users &amp; entry point</h4><p>L1–L3 support, DevOps, admins, and business users reach the assistant over Web, Teams, Slack, or email. Microsoft Entra ID handles SSO, MFA, and conditional access, and every call enters through API Gateway behind AWS WAF carrying an OIDC / JWT token. Identity, groups, and roles travel with the request.</p></div>
+      <div class="zone"><span class="znum">3</span><h4>AI orchestration layer</h4><p>Amazon Bedrock agents. A supervisor owns intent understanding, task planning, tool selection, reasoning, response generation, and memory. Collaborating specialists — DevOps, Knowledge, Change/Incident, Monitoring, Security &amp; Compliance — each own one domain. Agent memory spans short-term, session (Redis), long-term, and a vector store on OpenSearch Serverless.</p></div>
+      <div class="zone"><span class="znum">4</span><h4>Context engineering layer</h4><p>Seven context streams — identity, conversation, application &amp; infra, knowledge (RAG), live operational data, current execution state, and business rules &amp; policies — are merged by a context optimizer that ranks, de-duplicates, summarizes, compresses, budgets tokens, redacts PII, and formats for the model.</p></div>
+      <div class="zone"><span class="znum">5</span><h4>Validation &amp; tool selection pipeline</h4><p>The deterministic heart. Eight stages: intent classification, capability registry lookup, RBAC/ABAC filtering, tool ranking, confidence scoring, plan validation against policy, human approval if required, and a final execution-ready tool plan. A rules engine runs input, permission, data, business-rule, security, and risk checks.</p></div>
+      <div class="zone"><span class="znum">6 &middot; 7</span><h4>Tool orchestration &amp; execution</h4><p>Approved plans run through the MCP server (adapter) layer — GitHub, Jira, ServiceNow, Confluence, Terraform, Ansible, AWS, Kubernetes, and custom MCP servers — with token forwarding, request/response transformation, error handling, and rate limiting. Execution then aggregates results, handles retries, and generates the response.</p></div>
+      <div class="zone"><span class="znum">8</span><h4>Human approval workflow</h4><p>Sensitive actions trigger a configurable, multi-level approval flow before they execute, bounded by risk level, environment, and action type. High-risk operations pause and wait rather than run autonomously.</p></div>
+      <div class="zone"><span class="znum">9</span><h4>Enterprise integrations</h4><p>The execution plane: Jira, ServiceNow, Confluence, GitHub/GitLab, and other HR / finance / ITSM systems. The agents never call these directly — only validated MCP tool calls reach them.</p></div>
+      <div class="zone"><span class="znum">10 &middot; 11</span><h4>Observability &amp; governance</h4><p>CloudWatch, X-Ray, OpenSearch analytics, and CloudTrail give a full reasoning-and-action audit trail. Security &amp; governance layers in Entra ID conditional access, IAM RBAC/ABAC, KMS encryption, Secrets Manager, guardrails for Bedrock, prompt-injection defense, content filters, and audit reviews.</p></div>
+      <div class="zone"><span class="znum">12 &middot; 13 &middot; 14</span><h4>Data, events &amp; lifecycle</h4><p>S3 (docs, artifacts, backups), OpenSearch Serverless vectors, Neptune graph relationships, and DynamoDB session state. Amazon EventBridge and SNS/SQS carry security, change, and workflow events. A CI/CD lifecycle deploys agent code, prompts, and tools to the Bedrock agent with versioning, rollback, and canary releases.</p></div>
+    </div>
+
+    <p class="lead reveal" style="margin-top:40px;">The single idea the diagram encodes: the model is powerful but untrusted, so it is wrapped on every side. Context is curated before it reaches the model, policy is enforced deterministically after it, execution is brokered through MCP rather than direct access, and every decision is logged. Intelligence stays flexible; the boundary stays fixed.</p>
   </div>
 </section>
 
@@ -1399,7 +1439,7 @@
       }
     });
   },{rootMargin:'-45% 0px -50% 0px'});
-  ['shift','system','lifecycle','agents','context','validation','registry','mcp','security','ops','lifecycle-mgmt','interview']
+  ['blueprint','shift','system','lifecycle','agents','context','validation','registry','mcp','security','ops','lifecycle-mgmt','interview']
     .forEach(id=>{const el=document.getElementById(id);el&&spy.observe(el);});
 
   // reveal on scroll
