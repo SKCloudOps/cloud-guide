@@ -207,6 +207,34 @@
   .flow-note ol{margin:0;padding-left:20px;color:var(--text);font-size:14px;line-height:1.8;}
   .flow-note b{color:var(--ink);}
 
+  /* ---------- technical deep steps ---------- */
+  .steps{display:grid;gap:18px;margin-top:26px;}
+  .step{
+    background:var(--paper);border:1px solid var(--border-soft);border-radius:14px;
+    padding:22px 24px;position:relative;overflow:hidden;
+  }
+  .step::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--zc,var(--blue));}
+  .step-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+  .step-n{
+    flex:none;width:40px;height:40px;border-radius:11px;background:var(--zc,var(--blue));color:#fff;
+    font-family:var(--mono);font-size:17px;font-weight:600;display:grid;place-items:center;
+    box-shadow:0 4px 12px rgba(37,99,235,.22);
+  }
+  .step-head h3{font-size:18px;font-weight:700;color:var(--ink);line-height:1.25;}
+  .step-head .step-zone{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;font-weight:500;}
+  .step p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:12px;}
+  .step p:last-child{margin-bottom:0;}
+  .step b{color:var(--ink);font-weight:600;}
+  .step .tech{display:grid;gap:9px;margin:12px 0;}
+  .step .tech .t{display:flex;gap:10px;font-size:13px;line-height:1.55;color:var(--text);}
+  .step .tech .t .tk{flex:none;font-weight:700;color:var(--zc,var(--blue));min-width:132px;}
+  .step .stack-line{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+  .step .tag{
+    font-family:var(--mono);font-size:11px;font-weight:500;color:var(--slate);
+    background:var(--slate-bg);border:1px solid var(--border-soft);border-radius:20px;padding:4px 11px;
+  }
+  .step code{font-family:var(--mono);font-size:12.5px;background:var(--slate-bg);border:1px solid var(--border-soft);border-radius:5px;padding:1px 6px;color:var(--ink);}
+
   footer{border-top:1px solid var(--border-soft);margin-top:40px;padding:26px 0;}
   .foot-inner{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;}
   .foot-inner a{color:var(--blue);font-weight:600;}
@@ -239,6 +267,7 @@
     <nav class="topbar-links">
       <a href="#diagram">Diagram</a>
       <a href="#flow">Request Flow</a>
+      <a href="#flow-tech">Deep Dive</a>
       <a href="#zones">Zone Guide</a>
       <a href="autonomous-it-operations.html">Blueprint Deep-Dive ↗</a>
       <a href="index.html">Home</a>
@@ -564,6 +593,144 @@
       <div class="ex c-blue"><div class="en">Zone 10</div><h3>Observability &amp; monitoring</h3><p>CloudWatch, X-Ray, OpenSearch analytics, and CloudTrail provide a full reasoning-and-action audit trail, so any production decision can be reconstructed end to end.</p></div>
       <div class="ex c-green"><div class="en">Zone 11</div><h3>Security &amp; governance</h3><p>Entra ID conditional access, IAM RBAC/ABAC, KMS encryption, Secrets Manager, Bedrock guardrails, prompt-injection defense, content filters, and audit reviews — governance enforced as architecture, not paperwork.</p></div>
       <div class="ex c-purple"><div class="en">Zone 12 · 13 · 14</div><h3>Data, events &amp; lifecycle</h3><p>S3 for docs and backups, OpenSearch vectors, Neptune graph relationships, and DynamoDB session state. EventBridge and SNS/SQS carry change, security, and workflow events. A CI/CD lifecycle deploys agent code, prompts, and tools with versioning, rollback, and canary releases.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNICAL REQUEST FLOW -->
+<section id="flow-tech" class="explain" style="padding-top:20px;">
+  <div class="wrap">
+    <h2>How a single request travels the system — technically</h2>
+    <p class="lead">The same six steps, one layer deeper: the protocols, AWS services, data structures, and failure controls that make each hop safe, observable, and reversible.</p>
+
+    <div class="steps">
+
+      <!-- STEP 1 -->
+      <div class="step c-blue">
+        <div class="step-head">
+          <span class="step-n">1</span>
+          <div>
+            <div class="step-zone">Zones 1 · 2 — Ingress &amp; identity</div>
+            <h3>Authenticated entry and request normalization</h3>
+          </div>
+        </div>
+        <p>The user sends a message from Teams, Slack, a web widget, or email. The channel adapter posts it to <b>Amazon API Gateway</b>, which sits behind <b>AWS WAF</b> for rate limiting, IP reputation, and payload inspection before any compute is touched.</p>
+        <div class="tech">
+          <div class="t"><span class="tk">Authentication</span><span>A JWT / OIDC bearer token issued by <b>Microsoft Entra ID</b> is validated at the gateway using a Lambda authorizer or JWT authorizer. Signature, <code>iss</code>, <code>aud</code>, and <code>exp</code> are checked; expired or malformed tokens are rejected with <code>401</code> before reaching backend services.</span></div>
+          <div class="t"><span class="tk">Claims → context</span><span>Verified claims (user id, groups, roles, tenant) are extracted and attached to the request as a signed context object. This becomes the authority for every downstream RBAC/ABAC decision — the model never re-derives identity.</span></div>
+          <div class="t"><span class="tk">Session</span><span>The Session Service (ECS/Fargate) resolves or creates a session id, writes state to <b>DynamoDB</b>, and mints a correlation / trace id used across the whole request for X-Ray.</span></div>
+          <div class="t"><span class="tk">Failure controls</span><span>WAF throttling, gateway usage plans, and input schema validation reject oversized or malformed payloads at the edge, keeping injection surface and cost down.</span></div>
+        </div>
+        <div class="stack-line">
+          <span class="tag">API Gateway</span><span class="tag">AWS WAF</span><span class="tag">Entra ID (OIDC/JWT)</span><span class="tag">Lambda authorizer</span><span class="tag">ECS / Fargate</span><span class="tag">DynamoDB session</span>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step c-purple">
+        <div class="step-head">
+          <span class="step-n">2</span>
+          <div>
+            <div class="step-zone">Zone 3 — Orchestration &amp; routing</div>
+            <h3>Intent classification and agent routing</h3>
+          </div>
+        </div>
+        <p>The normalized request reaches the <b>supervisor / orchestrator agent</b> on <b>Amazon Bedrock</b>. Its job is decomposition and routing, not domain execution.</p>
+        <div class="tech">
+          <div class="t"><span class="tk">Intent NLU</span><span>A lightweight, cheap model classifies the request into an intent and a target domain (deploy, incident, query, change). Using a small model here keeps routing fast and inexpensive — flagship models are reserved for genuinely hard reasoning.</span></div>
+          <div class="t"><span class="tk">Routing</span><span>Based on the classified domain, the supervisor dispatches to a <b>specialized agent</b> — DevOps, Knowledge, Change/Incident, Monitoring, or Security &amp; Compliance. Each specialist holds its own least-privilege IAM role, which bounds blast radius.</span></div>
+          <div class="t"><span class="tk">Memory hydration</span><span>The Memory Manager loads relevant state: short-term buffer, session state from <b>Redis</b>, long-term history, and semantic recall from the <b>OpenSearch Serverless</b> vector store.</span></div>
+          <div class="t"><span class="tk">Multi-agent tasks</span><span>If the task spans domains, the supervisor decomposes it into ordered sub-tasks and synthesizes results through shared session memory — each sub-task still passes its own validation gates.</span></div>
+        </div>
+        <div class="stack-line">
+          <span class="tag">Bedrock Agents</span><span class="tag">Supervisor / router</span><span class="tag">Model tiering</span><span class="tag">Redis (session)</span><span class="tag">OpenSearch vectors</span><span class="tag">Per-agent IAM role</span>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step c-green">
+        <div class="step-head">
+          <span class="step-n">3</span>
+          <div>
+            <div class="step-zone">Zone 4 — Context engineering</div>
+            <h3>Context assembly, RAG retrieval and optimization</h3>
+          </div>
+        </div>
+        <p>Before the model reasons, the <b>context engineering layer</b> builds exactly the right prompt payload from seven streams: identity, conversation, app &amp; infra, knowledge (RAG), live operational data, execution state, and business rules.</p>
+        <div class="tech">
+          <div class="t"><span class="tk">RAG retrieval</span><span>The Knowledge stream does hybrid retrieval — semantic (vector) + keyword — against runbooks and SOPs in <b>OpenSearch</b>, then reranks so only the most relevant top-k reaches the model. Retrieved content carries provenance metadata.</span></div>
+          <div class="t"><span class="tk">Live operational data</span><span>Current system status, recent tool outputs, and metrics are pulled live via MCP so the model reasons over the real state of infrastructure, not a stale snapshot.</span></div>
+          <div class="t"><span class="tk">Optimizer pipeline</span><span>The assembler runs relevance ranking, de-duplication, summarization, compression, freshness checks, <b>token-budget management</b>, and <b>PII redaction</b>, then formats for the model. This controls both accuracy and cost per invocation.</span></div>
+          <div class="t"><span class="tk">Trust boundary</span><span>All retrieved content is treated as <b>untrusted data, never instructions</b> — delimited and tagged — so a poisoned runbook produces a proposal, not an action. This is the first line against indirect prompt injection.</span></div>
+        </div>
+        <div class="stack-line">
+          <span class="tag">Hybrid retrieval + rerank</span><span class="tag">OpenSearch Serverless</span><span class="tag">Token budgeting</span><span class="tag">PII redaction</span><span class="tag">Provenance tagging</span><span class="tag">Untrusted-data pattern</span>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step c-red">
+        <div class="step-head">
+          <span class="step-n">4</span>
+          <div>
+            <div class="step-zone">Zones 5 · 8 — Deterministic validation</div>
+            <h3>The validation pipeline and human approval</h3>
+          </div>
+        </div>
+        <p>The agent proposes a plan — a structured set of tool calls with parameters. That proposal is free; execution is not. It now passes eight <b>deterministic gates</b> whose logic lives in data, not in the prompt, so the model cannot talk its way past them.</p>
+        <div class="tech">
+          <div class="t"><span class="tk">Schema &amp; capability</span><span>Intent classification → <b>capability registry lookup</b> in <b>DynamoDB</b> (tool metadata, permissions, SLA/limits). The proposed call is strictly schema-validated against the tool definition; a malformed plan is rejected with certainty.</span></div>
+          <div class="t"><span class="tk">RBAC / ABAC</span><span>Permissions are filtered against the JWT claims from step 1 — the caller must be authorized for both the tool and the target resource/environment.</span></div>
+          <div class="t"><span class="tk">Confidence scoring</span><span>Not the model's self-reported confidence. Structural signals — schema pass, parameters inside hardcoded bounds, and a separate classifier's intent-to-tool match — are thresholded per risk tier. The <b>threshold</b> is deterministic, the model only supplies evidence.</span></div>
+          <div class="t"><span class="tk">Policy &amp; risk</span><span>Plan validation checks <code>BlockedEnvironments</code>, change windows, and risk/impact. The rules engine runs input, permission, data, business-rule, security, and risk checks.</span></div>
+          <div class="t"><span class="tk">Human-in-the-loop</span><span>If the action is high-risk (prod mutation, destructive op), it enters the <b>approval workflow (Zone 8)</b>: the request pauses, an approver is notified, and only an explicit approval releases the final execution-ready plan. Multi-level approvals are configurable by risk, environment, and action type.</span></div>
+        </div>
+        <div class="stack-line">
+          <span class="tag">DynamoDB policy store</span><span class="tag">Capability registry</span><span class="tag">RBAC / ABAC</span><span class="tag">Schema validation</span><span class="tag">Risk tiering</span><span class="tag">Approval workflow</span>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step c-indigo">
+        <div class="step-head">
+          <span class="step-n">5</span>
+          <div>
+            <div class="step-zone">Zones 6 · 9 — Brokered execution</div>
+            <h3>Tool execution through the MCP adapter layer</h3>
+          </div>
+        </div>
+        <p>Only a validated plan is executed, and never by the model directly. It is dispatched to the <b>MCP server (adapter) layer</b>, which exposes a standardized tool interface over the Model Context Protocol.</p>
+        <div class="tech">
+          <div class="t"><span class="tk">Adapter responsibilities</span><span>Each MCP server (GitHub, Jira, ServiceNow, Confluence, Terraform, Ansible, AWS, Kubernetes, custom) handles <b>auth token forwarding</b>, request/response transformation, error handling, rate limiting, and retries against its downstream system.</span></div>
+          <div class="t"><span class="tk">Least privilege</span><span>The adapter uses scoped, short-lived credentials from <b>Secrets Manager</b> / IAM role assumption — narrowed with <code>aws:SourceAccount</code> and <code>aws:SourceArn</code> conditions to close confused-deputy paths. The model never sees a raw credential.</span></div>
+          <div class="t"><span class="tk">Resilience</span><span>Idempotency keys, exponential backoff with jitter, timeouts, and circuit breakers keep a flaky or slow downstream from cascading. The enterprise systems in Zone 9 are only ever reached through this validated path.</span></div>
+        </div>
+        <div class="stack-line">
+          <span class="tag">MCP protocol</span><span class="tag">Adapter layer</span><span class="tag">Secrets Manager</span><span class="tag">STS role assumption</span><span class="tag">Backoff + retries</span><span class="tag">Circuit breaker</span>
+        </div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step c-orange">
+        <div class="step-head">
+          <span class="step-n">6</span>
+          <div>
+            <div class="step-zone">Zones 7 · 10 · 12 · 13 — Response &amp; audit</div>
+            <h3>Aggregation, response generation and the audit trail</h3>
+          </div>
+        </div>
+        <p>The <b>execution &amp; response</b> stage collects tool outputs, reconciles partial failures, and asks the model to summarize a clear, grounded answer for the user — while the platform records everything that happened.</p>
+        <div class="tech">
+          <div class="t"><span class="tk">Aggregation</span><span>Results from one or more tools are aggregated, errors are handled and retried where safe, and the response is generated with citations back to the sources used, keeping the answer auditable.</span></div>
+          <div class="t"><span class="tk">Observability</span><span><b>X-Ray</b> captures the reasoning-and-tool timeline (which agent, which tools, latency between generation and execution); <b>CloudWatch</b> holds metrics and errors; <b>CloudTrail</b> records API-level audit.</span></div>
+          <div class="t"><span class="tk">Immutable audit</span><span>Every proposal, gate decision, approval, and state mutation is emitted to <b>Amazon EventBridge</b> and persisted — the queryable record that makes autonomy defensible in a security or compliance review. <b>SNS/SQS</b> fan out notifications.</span></div>
+          <div class="t"><span class="tk">State &amp; memory</span><span>Outcomes are written back to <b>DynamoDB</b> (session/state), <b>S3</b> (artifacts/logs), and the vector store, so the next turn starts with accurate context and the full decision chain is reconstructable end to end.</span></div>
+        </div>
+        <div class="stack-line">
+          <span class="tag">X-Ray tracing</span><span class="tag">CloudWatch</span><span class="tag">CloudTrail</span><span class="tag">EventBridge audit</span><span class="tag">SNS / SQS</span><span class="tag">S3 · DynamoDB</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
