@@ -729,9 +729,124 @@
         </div>
         <div class="stack-line">
           <span class="tag">X-Ray tracing</span><span class="tag">CloudWatch</span><span class="tag">CloudTrail</span><span class="tag">EventBridge audit</span><span class="tag">SNS / SQS</span><span class="tag">S3 · DynamoDB</span>
-        </div>
-      </div>
+    </div>
+  </div>
+</section>
 
+<!-- NETWORK FLOW DIAGRAM -->
+<section id="network" class="explain" style="padding-top:20px;">
+  <div class="wrap">
+    <h2>Network flow diagram</h2>
+    <p class="lead">The data path end to end: a request enters at the edge, is authenticated, reasoned over, validated, and brokered to enterprise systems — with memory, storage, human approval, and an audit plane wired alongside.</p>
+
+    <div class="board" style="padding:26px 18px;">
+      <svg viewBox="0 0 1140 380" role="img" width="100%" style="height:auto;display:block;"
+           aria-label="Network flow: users to channels, edge (WAF and API Gateway), Entra ID authentication, supervisor agent, context engineering, validation pipeline, MCP adapters, and enterprise systems, with agent memory, human approval, data storage, and an observability and audit plane.">
+        <defs>
+          <marker id="ar-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2563eb"/></marker>
+          <marker id="ar-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#16a34a"/></marker>
+          <marker id="ar-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#dc2626"/></marker>
+          <marker id="ar-purple" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed"/></marker>
+          <marker id="ar-slate" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker>
+        </defs>
+
+        <style>
+          .nfx{font-family:'Inter',sans-serif;}
+          .nl1{font-size:12px;font-weight:700;fill:#0f172a;}
+          .nl2{font-size:9.5px;font-weight:500;fill:#64748b;font-family:'JetBrains Mono',monospace;}
+          .nbox{fill:#ffffff;stroke-width:1.6;}
+          .nflow-lbl{font-size:9.5px;font-weight:600;font-family:'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;}
+        </style>
+
+        <!-- RESPONSE ARC (green, top) -->
+        <path d="M1049 55 V22 H83 V52" fill="none" stroke="#16a34a" stroke-width="1.8" marker-end="url(#ar-green)"/>
+        <text class="nfx nflow-lbl" x="566" y="16" text-anchor="middle" fill="#16a34a">Response flow</text>
+
+        <!-- MAIN REQUEST ROW -->
+        <!-- n1 Users -->
+        <rect class="nbox" x="24"  y="55" width="118" height="68" rx="10" stroke="#2563eb"/>
+        <text class="nfx nl1" x="83"  y="84"  text-anchor="middle">Users</text>
+        <text class="nfx nl2" x="83"  y="100" text-anchor="middle">&amp; Channels</text>
+        <!-- n2 Edge -->
+        <rect class="nbox" x="162" y="55" width="118" height="68" rx="10" stroke="#4f46e5"/>
+        <text class="nfx nl1" x="221" y="84"  text-anchor="middle">WAF +</text>
+        <text class="nfx nl2" x="221" y="100" text-anchor="middle">API Gateway</text>
+        <!-- n3 Auth -->
+        <rect class="nbox" x="300" y="55" width="118" height="68" rx="10" stroke="#2563eb"/>
+        <text class="nfx nl1" x="359" y="84"  text-anchor="middle">Entra ID</text>
+        <text class="nfx nl2" x="359" y="100" text-anchor="middle">Auth · JWT</text>
+        <!-- n4 Supervisor -->
+        <rect class="nbox" x="438" y="55" width="118" height="68" rx="10" stroke="#7c3aed"/>
+        <text class="nfx nl1" x="497" y="84"  text-anchor="middle">Supervisor</text>
+        <text class="nfx nl2" x="497" y="100" text-anchor="middle">Bedrock Agent</text>
+        <!-- n5 Context -->
+        <rect class="nbox" x="576" y="55" width="118" height="68" rx="10" stroke="#16a34a"/>
+        <text class="nfx nl1" x="635" y="84"  text-anchor="middle">Context</text>
+        <text class="nfx nl2" x="635" y="100" text-anchor="middle">Engineering</text>
+        <!-- n6 Validation -->
+        <rect class="nbox" x="714" y="55" width="118" height="68" rx="10" stroke="#2563eb"/>
+        <text class="nfx nl1" x="773" y="84"  text-anchor="middle">Validation</text>
+        <text class="nfx nl2" x="773" y="100" text-anchor="middle">Pipeline</text>
+        <!-- n7 MCP -->
+        <rect class="nbox" x="852" y="55" width="118" height="68" rx="10" stroke="#4f46e5"/>
+        <text class="nfx nl1" x="911" y="84"  text-anchor="middle">MCP</text>
+        <text class="nfx nl2" x="911" y="100" text-anchor="middle">Adapters</text>
+        <!-- n8 Enterprise -->
+        <rect class="nbox" x="990" y="55" width="118" height="68" rx="10" stroke="#0891b2"/>
+        <text class="nfx nl1" x="1049" y="84"  text-anchor="middle">Enterprise</text>
+        <text class="nfx nl2" x="1049" y="100" text-anchor="middle">Systems</text>
+
+        <!-- request arrows (blue) -->
+        <line x1="144" y1="89" x2="160" y2="89" stroke="#2563eb" stroke-width="1.8" marker-end="url(#ar-blue)"/>
+        <line x1="282" y1="89" x2="298" y2="89" stroke="#2563eb" stroke-width="1.8" marker-end="url(#ar-blue)"/>
+        <line x1="420" y1="89" x2="436" y2="89" stroke="#2563eb" stroke-width="1.8" marker-end="url(#ar-blue)"/>
+        <line x1="558" y1="89" x2="574" y2="89" stroke="#2563eb" stroke-width="1.8" marker-end="url(#ar-blue)"/>
+        <line x1="696" y1="89" x2="712" y2="89" stroke="#2563eb" stroke-width="1.8" marker-end="url(#ar-blue)"/>
+        <line x1="834" y1="89" x2="850" y2="89" stroke="#2563eb" stroke-width="1.8" marker-end="url(#ar-blue)"/>
+        <line x1="972" y1="89" x2="988" y2="89" stroke="#2563eb" stroke-width="1.8" marker-end="url(#ar-blue)"/>
+
+        <!-- SUPPORT ROW -->
+        <!-- Agent Memory (purple, under n4/n5) -->
+        <rect class="nbox" x="438" y="170" width="256" height="56" rx="10" stroke="#7c3aed"/>
+        <text class="nfx nl1" x="566" y="194" text-anchor="middle">Agent Memory</text>
+        <text class="nfx nl2" x="566" y="210" text-anchor="middle">Redis · Vector Store · History</text>
+        <line x1="497" y1="123" x2="497" y2="168" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ar-purple)"/>
+        <line x1="635" y1="123" x2="635" y2="168" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ar-purple)"/>
+
+        <!-- Human Approval (red, under n6) -->
+        <rect class="nbox" x="714" y="170" width="118" height="56" rx="10" stroke="#dc2626"/>
+        <text class="nfx nl1" x="773" y="194" text-anchor="middle">Human</text>
+        <text class="nfx nl2" x="773" y="210" text-anchor="middle">Approval</text>
+        <line x1="767" y1="123" x2="767" y2="168" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ar-red)"/>
+        <line x1="779" y1="168" x2="779" y2="125" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ar-red)"/>
+
+        <!-- Data & Storage (purple, under n7/n8) -->
+        <rect class="nbox" x="852" y="170" width="256" height="56" rx="10" stroke="#7c3aed"/>
+        <text class="nfx nl1" x="980" y="194" text-anchor="middle">Data &amp; Storage</text>
+        <text class="nfx nl2" x="980" y="210" text-anchor="middle">S3 · DynamoDB · OpenSearch</text>
+        <line x1="911" y1="123" x2="911" y2="168" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ar-purple)"/>
+        <line x1="1049" y1="123" x2="1049" y2="168" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ar-purple)"/>
+
+        <!-- OBSERVABILITY BAND -->
+        <rect class="nbox" x="24" y="285" width="1084" height="56" rx="10" stroke="#2563eb" fill="#eff6ff"/>
+        <text class="nfx nl1" x="566" y="309" text-anchor="middle">Observability &amp; Audit Plane</text>
+        <text class="nfx nl2" x="566" y="326" text-anchor="middle">X-Ray · CloudWatch · CloudTrail · EventBridge · SNS / SQS</text>
+        <!-- taps into pipeline (slate dotted) -->
+        <line x1="359" y1="285" x2="359" y2="125" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2 4" marker-end="url(#ar-slate)"/>
+        <line x1="660" y1="285" x2="660" y2="125" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2 4" marker-end="url(#ar-slate)"/>
+        <line x1="845" y1="285" x2="845" y2="125" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2 4" marker-end="url(#ar-slate)"/>
+        <!-- taps into support boxes -->
+        <line x1="566" y1="285" x2="566" y2="228" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2 4" marker-end="url(#ar-slate)"/>
+        <line x1="980" y1="285" x2="980" y2="228" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2 4" marker-end="url(#ar-slate)"/>
+      </svg>
+
+      <div class="legend" style="justify-content:center;margin-top:18px;">
+        <div class="lg"><span class="ln"></span> User / request flow</div>
+        <div class="lg"><span class="ln green"></span> Response flow</div>
+        <div class="lg"><span class="ln red"></span> Approval (pause &amp; resume)</div>
+        <div class="lg"><span class="ln purple"></span> Data / memory retrieval</div>
+        <div class="lg"><span class="ln" style="border-top-style:dotted;border-color:#64748b;"></span> Observability tap</div>
+      </div>
     </div>
   </div>
 </section>
