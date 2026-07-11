@@ -1411,13 +1411,22 @@ gh actions-importer migrate azure-devops pipeline --pipeline-id ID --target-url 
 <li>Re-read the cheat sheet and the two pipeline rails out loud.</li>
 <li>Have the SKCloudOps repos open in browser tabs, ready to screen-share.</li>
 <li>Say the three importer commands from memory once.</li>
-<li>Rehearse the five honest gap lines, they build more trust than any claim.</li>
+<li>Rehearse the five honest gap lines, they build more trust than any claim.<li>
+
+</ul
+<h3>Day-of checklist2</h3>
+<ul class="kp">
+<li>For organizations already using GitHub for source control, migrating from Azure Pipelines is generally more straightforward because both platforms are YAML-based and share similar CI/CD concepts. Migrating from Jenkins typically requires more effort due to Groovy-based pipelines, extensive plugin usage, and self-managed infrastructure, but it also offers the largest reduction in operational overhead when moving to GitHub Actions</li>
+
+
+<li>GitHub Actions Importer is GitHub's official migration tool for moving CI/CD pipelines from Jenkins, Azure DevOps, GitLab CI, CircleCI, and Travis CI to GitHub Actions. We typically start by running an assessment to inventory pipelines, plugins, and unsupported features. Next, we use the importer to generate GitHub Actions workflow YAML files and a migration report. We then replace unsupported plugins with marketplace actions or reusable workflows, migrate secrets to GitHub Secrets or OIDC-based authentication, validate the generated workflows by running them in parallel with the existing pipelines, and finally cut over to GitHub Actions once the results are verified. This approach greatly reduces manual conversion effort while maintaining a controlled migration process</li>
+<li>
+When migrating from Jenkins or Azure DevOps to GitHub Actions, I wouldn't start by converting pipelines one by one. Instead, I would use the GitHub Actions Importer as part of a structured migration process to reduce risk and standardize the migration."
+
+</li>
 </ul>
 </div>
 </section>
-
-For organizations already using GitHub for source control, migrating from Azure Pipelines is generally more straightforward because both platforms are YAML-based and share similar CI/CD concepts. Migrating from Jenkins typically requires more effort due to Groovy-based pipelines, extensive plugin usage, and self-managed infrastructure, but it also offers the largest reduction in operational overhead when moving to GitHub Actions
-GitHub Actions Importer is GitHub's official migration tool for moving CI/CD pipelines from Jenkins, Azure DevOps, GitLab CI, CircleCI, and Travis CI to GitHub Actions. We typically start by running an assessment to inventory pipelines, plugins, and unsupported features. Next, we use the importer to generate GitHub Actions workflow YAML files and a migration report. We then replace unsupported plugins with marketplace actions or reusable workflows, migrate secrets to GitHub Secrets or OIDC-based authentication, validate the generated workflows by running them in parallel with the existing pipelines, and finally cut over to GitHub Actions once the results are verified. This approach greatly reduces manual conversion effort while maintaining a controlled migration process
 <footer style="margin-top:60px;color:var(--muted);font-family:var(--mono);font-size:12px;border-top:1px solid var(--line);padding-top:16px">
 Prepared for Sathish &middot; July 2026 &middot; Rehearse out loud. Honest gaps, stated first, are a strength.
 </footer>
