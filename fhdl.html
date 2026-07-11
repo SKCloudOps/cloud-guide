@@ -102,6 +102,29 @@ code{font-family:var(--mono);font-size:.92em;background:var(--bg);border:1px sol
 .fit-t td.s-part{color:var(--i);font-weight:700}
 .fit-t td.s-gap{color:var(--e);font-weight:700}
 
+/* devsecops flow diagram */
+.flowdiag{margin:4px 0 26px;display:flex;flex-direction:column;align-items:center;gap:0;padding:18px 10px;background:var(--bg);border:1.5px solid var(--line);border-radius:12px}
+.flow-banner{width:100%;max-width:520px;background:var(--ink);color:#fff;font-family:var(--disp);font-weight:800;font-size:13px;letter-spacing:.02em;text-align:center;padding:13px 16px;border-radius:8px;margin-bottom:2px}
+.flow-actor{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);margin:8px 0 2px}
+.farrow{width:2px;height:15px;background:var(--muted);position:relative;flex:none}
+.farrow:after{content:"";position:absolute;bottom:-1px;left:-3px;border:4px solid transparent;border-top-color:var(--muted)}
+.fnode{background:var(--surface);border:1.5px solid var(--line);border-radius:8px;padding:9px 16px;min-width:210px;text-align:center;font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--ink)}
+.fnode small{display:block;color:var(--muted);font-weight:400;font-size:11px;margin-top:2px;line-height:1.4}
+.fnode.tool{border-color:var(--gold)}
+.fnode.deploy{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--surface))}
+.fnode.fail{border-color:var(--e);color:var(--e)}
+.fband{width:100%;max-width:520px;text-align:center;font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff;background:var(--accent);padding:9px;border-radius:8px;margin:8px 0}
+.fband.cd{background:var(--accent-ink)}
+.fgate{width:100%;max-width:520px;border:2px dashed var(--gold);border-radius:10px;padding:12px;margin:8px 0;text-align:center;background:color-mix(in srgb,var(--gold) 10%,var(--surface))}
+.fgate .gt{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--i);margin-bottom:6px}
+.fgate .gq{font-family:var(--body);font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.5}
+.fbranch{display:flex;gap:34px;justify-content:center;align-items:flex-start;margin:6px 0}
+.fbranch .opt{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ftag{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 12px;border-radius:999px;color:#fff}
+.ftag.yes{background:var(--e)}
+.ftag.no{background:var(--f)}
+.fpill{width:100%;max-width:340px;text-align:center;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--accent-ink);border:1.5px solid var(--accent);border-radius:999px;padding:8px;margin:8px 0}
+
 /* print */
 @media print{
   .topbar{display:none}
@@ -708,7 +731,113 @@ gh actions-importer migrate azure-devops pipeline --pipeline-id ID --target-url 
     <h2>Secure Pipelines for Java &amp; React</h2>
     <p class="dom-blurb">The flagship section for a DevSecOps interviewer. Full stage-by-stage flows for their actual stack. <span class="count">8 questions</span></p>
   </header>
-  
+
+  <div class="flowdiag" role="img" aria-label="Enterprise DevSecOps CI/CD pipeline flow using GitHub Actions">
+    <div class="flow-banner">Enterprise DevSecOps CI/CD Pipeline &middot; GitHub Actions</div>
+    <div class="flow-actor">Developer</div>
+    <div class="farrow"></div>
+    <div class="fnode">Git Commit</div>
+    <div class="farrow"></div>
+    <div class="fnode">Pull Request</div>
+    <div class="farrow"></div>
+
+    <div class="fband">CI Pipeline</div>
+    <div class="fnode">Checkout Source</div>
+    <div class="farrow"></div>
+    <div class="fnode">Restore Cache<small>Maven / npm</small></div>
+    <div class="farrow"></div>
+    <div class="fnode">Compile / Build</div>
+    <div class="farrow"></div>
+    <div class="fnode">Unit Tests</div>
+    <div class="farrow"></div>
+    <div class="fnode tool">Code Coverage<small>JaCoCo / Jest</small></div>
+    <div class="farrow"></div>
+    <div class="fnode tool">SonarQube<small>Code Quality</small></div>
+    <div class="farrow"></div>
+    <div class="fnode">Quality Gate<small>Fail if not passed</small></div>
+    <div class="farrow"></div>
+    <div class="fnode tool">SAST<small>CodeQL / Checkmarx</small></div>
+    <div class="farrow"></div>
+    <div class="fnode tool">SCA<small>Dependency Review &middot; Dependabot &middot; Snyk / Mend</small></div>
+    <div class="farrow"></div>
+    <div class="fnode tool">Secret Scan<small>GitHub Secret Scanning &middot; Gitleaks</small></div>
+    <div class="farrow"></div>
+    <div class="fnode tool">IaC Scan<small>Checkov / tfsec</small></div>
+    <div class="farrow"></div>
+    <div class="fnode">License Compliance</div>
+    <div class="farrow"></div>
+
+    <div class="fgate">
+      <div class="gt">Security Gate #1</div>
+      <div class="gq">High / Critical vulnerabilities?</div>
+      <div class="fbranch">
+        <div class="opt"><span class="ftag yes">YES</span><div class="farrow"></div><div class="fnode fail">Pipeline Failed</div></div>
+        <div class="opt"><span class="ftag no">NO</span><div class="farrow"></div><div class="fnode">Continue</div></div>
+      </div>
+    </div>
+
+    <div class="farrow"></div>
+    <div class="fnode">Docker Buildx<small>Multi-stage build</small></div>
+    <div class="farrow"></div>
+    <div class="fnode">Distroless Image</div>
+    <div class="farrow"></div>
+    <div class="fnode tool">Trivy Scan<small>Container scan</small></div>
+    <div class="farrow"></div>
+    <div class="fnode tool">Generate SBOM<small>Syft</small></div>
+    <div class="farrow"></div>
+    <div class="fnode tool">Cosign Sign Image</div>
+    <div class="farrow"></div>
+
+    <div class="fgate">
+      <div class="gt">Security Gate #2</div>
+      <div class="gq">Container vulnerabilities? &middot; Image signed? &middot; SBOM generated?</div>
+    </div>
+
+    <div class="farrow"></div>
+    <div class="fpill">PR Approved</div>
+    <div class="farrow"></div>
+
+    <div class="fband cd">CD Pipeline</div>
+    <div class="fnode">GitHub OIDC Login</div>
+    <div class="farrow"></div>
+    <div class="fnode">Push to Amazon ECR</div>
+    <div class="farrow"></div>
+    <div class="fnode tool">ECR Scan</div>
+    <div class="farrow"></div>
+    <div class="fnode">Update GitOps Repo</div>
+    <div class="farrow"></div>
+    <div class="fnode">ArgoCD Sync</div>
+    <div class="farrow"></div>
+    <div class="fnode deploy">Deploy DEV</div>
+    <div class="farrow"></div>
+    <div class="fnode">Smoke Test</div>
+    <div class="farrow"></div>
+    <div class="fnode tool">ZAP Baseline DAST</div>
+    <div class="farrow"></div>
+
+    <div class="fgate">
+      <div class="gt">Security Gate #3</div>
+      <div class="gq">DAST passed?</div>
+    </div>
+
+    <div class="farrow"></div>
+    <div class="fnode">QA Approval</div>
+    <div class="farrow"></div>
+    <div class="fnode deploy">Deploy QA</div>
+    <div class="farrow"></div>
+    <div class="fnode">UAT Approval</div>
+    <div class="farrow"></div>
+    <div class="fnode deploy">Deploy UAT</div>
+    <div class="farrow"></div>
+    <div class="fnode">PROD Approval</div>
+    <div class="farrow"></div>
+    <div class="fnode deploy">Deploy Production</div>
+    <div class="farrow"></div>
+    <div class="fnode">Health Checks</div>
+    <div class="farrow"></div>
+    <div class="fnode">Notifications<small>Slack / Teams</small></div>
+  </div>
+
 <article class="card" data-search="design a complete devsecops pipeline in github actions for a java spring boot service deploying to eks. i will walk it as two flows. pull request flow, goal is fast and safe feedback: 1) checkout with full history for sonar. 2) set up java 17/21 with maven dependency caching. 3) compile and run unit tests with jacoco coverage. 4) sonarqube scan with the coverage report, central bank quality gate, fail on gate failure. 5) checkmarx incremental sast scan, break on high or critical, findings as pr annotations. 6) software composition analysis on dependencies, checkmarx sca or owasp dependency-check, fail on critical cves with a fix available. 7) secret scan on the diff. 8) build the container with a multi-stage dockerfile, jdk to build, jre distroless to run, non-root user. 9) trivy or prisma image scan, block criticals. 10) generate sbom with cyclonedx maven plugin and attach it as an artifact. all of this under ten minutes using caching and parallel jobs: sonar, checkmarx, and sca can run in parallel after the build. main branch flow, goal is a trusted, traceable release: rebuild and full checkmarx scan nightly-style, push the image to ecr tagged with the commit sha only via oidc, sign the image with cosign, then gitops deploy: update the image tag in the deployment repo, argocd syncs to the dev namespace on eks. run dast with owasp zap baseline against the dev url plus smoke tests. staging needs one approval via github environments. prod needs approval plus a staging soak, deployed by argocd with the eks admission controller verifying the cosign signature and our ecr registry. every artifact is traceable: commit sha to image tag to running pod.">
   <div class="card-head">
     <input type="checkbox" class="done" id="ck-pipe-1" aria-label="Mark reviewed">
