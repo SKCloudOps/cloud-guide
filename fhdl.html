@@ -290,6 +290,54 @@ gh actions-importer migrate azure-devops pipeline --pipeline-id ID --target-url 
     <li>GitHub Actions Importer is GitHub's official migration tool for moving CI/CD pipelines from Jenkins, Azure DevOps, GitLab CI, CircleCI, and Travis CI to GitHub Actions. We typically start by running an assessment to inventory pipelines, plugins, and unsupported features. Next, we use the importer to generate GitHub Actions workflow YAML files and a migration report. We then replace unsupported plugins with marketplace actions or reusable workflows, migrate secrets to GitHub Secrets or OIDC-based authentication, validate the generated workflows by running them in parallel with the existing pipelines, and finally cut over to GitHub Actions once the results are verified. This approach greatly reduces manual conversion effort while maintaining a controlled migration process.</li>
     <li>When migrating from Jenkins or Azure DevOps to GitHub Actions, I wouldn't start by converting pipelines one by one. Instead, I would use the GitHub Actions Importer as part of a structured migration process to reduce risk and standardize the migration.</li>
   </ul>
+
+  <h3>6. Enterprise Migration Best Practices</h3>
+  <p class="lbl">Phase 1: Assessment</p>
+  <ul class="kp">
+    <li>Inventory all pipelines, repositories, agents, plugins/tasks, secrets, and external integrations.</li>
+    <li>Identify pipeline owners and business criticality.</li>
+    <li>Classify applications as low, medium, or high risk.</li>
+  </ul>
+
+  <p class="lbl">Phase 2: Foundation</p>
+  <ul class="kp">
+    <li>Create the GitHub organization structure.</li>
+    <li>Configure GitHub runners, hosted or self-hosted.</li>
+    <li>Set up environments for Dev, QA, UAT, and Prod.</li>
+    <li>Implement OIDC federation for cloud access.</li>
+    <li>Configure organization and repository secrets and variables.</li>
+  </ul>
+
+  <p class="lbl">Phase 3: Pilot</p>
+  <ul class="kp">
+    <li>Migrate 5 to 10 low-risk applications.</li>
+    <li>Validate build outputs, deployment behavior, security scans, and notifications.</li>
+    <li>Gather feedback and refine reusable workflows.</li>
+  </ul>
+
+  <p class="lbl">Phase 4: Factory Migration</p>
+  <ul class="kp">
+    <li>Migrate applications in waves.</li>
+    <li>Use standardized reusable workflows and composite actions.</li>
+    <li>Run old and new pipelines in parallel for a defined validation period.</li>
+    <li>Monitor success rates, execution time, and deployment consistency.</li>
+  </ul>
+
+  <p class="lbl">Phase 5: Cutover</p>
+  <ul class="kp">
+    <li>Freeze changes on the legacy platform.</li>
+    <li>Switch repository webhooks to GitHub Actions.</li>
+    <li>Monitor production deployments closely.</li>
+    <li>Roll back to the legacy pipeline if critical issues occur.</li>
+  </ul>
+
+  <p class="lbl">Phase 6: Decommission</p>
+  <ul class="kp">
+    <li>Disable legacy jobs.</li>
+    <li>Remove unused plugins and tasks.</li>
+    <li>Archive pipeline definitions and logs according to retention policies.</li>
+    <li>Decommission Jenkins infrastructure or Azure DevOps pipeline resources.</li>
+  </ul>
   
 <article class="card" data-search="why would a company move from azure devops to github actions? a few reasons usually drive this. first, one platform for everything. code, ci/cd, security scanning, and code review all live in github. fewer tools means less context switching and lower license cost. second, the ecosystem. the github actions marketplace has thousands of ready-made actions, so teams build pipelines faster. third, security. github gives you oidc federation to aws, so you can remove long-lived credentials completely. fourth, developer experience. most engineers already know github, so onboarding is easier. the trade-off is real too: ado has strong built-in boards and test plans, so those pieces need a plan of their own. for a bank, i would lead with the security and audit story: every pipeline change goes through a pull request, and the full history is in git.">
   <div class="card-head">
