@@ -103,6 +103,9 @@ code{font-family:var(--mono);font-size:.92em;background:var(--bg);border:1px sol
 .fit-t td.s-gap{color:var(--e);font-weight:700}
 
 /* devsecops flow diagram */
+.flow-figure{margin:4px 0 18px}
+.flow-figure img{width:100%;height:auto;display:block;border:1.5px solid var(--line);border-radius:12px;background:var(--surface)}
+.flow-figure figcaption{font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center;margin-top:8px}
 .flowdiag{margin:4px 0 26px;display:flex;flex-direction:column;align-items:center;gap:0;padding:18px 10px;background:var(--bg);border:1.5px solid var(--line);border-radius:12px}
 .flow-banner{width:100%;max-width:520px;background:var(--ink);color:#fff;font-family:var(--disp);font-weight:800;font-size:13px;letter-spacing:.02em;text-align:center;padding:13px 16px;border-radius:8px;margin-bottom:2px}
 .flow-actor{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);margin:8px 0 2px}
@@ -731,6 +734,11 @@ gh actions-importer migrate azure-devops pipeline --pipeline-id ID --target-url 
     <h2>Secure Pipelines for Java &amp; React</h2>
     <p class="dom-blurb">The flagship section for a DevSecOps interviewer. Full stage-by-stage flows for their actual stack. <span class="count">8 questions</span></p>
   </header>
+
+  <figure class="flow-figure">
+    <img src="assets/ci-cd.png" alt="Enterprise DevSecOps CI/CD pipeline: GitHub Actions with security scanning, AWS, and GitOps. CI pipeline runs source, build and test, code quality, SAST, SCA, secret scan, IaC scan, and license check with Security Gate 1, then build container, image scan, SBOM, sign image, push to registry, and registry scan with Security Gate 2. CD pipeline covers deploy to dev, smoke test, DAST, then QA, UAT, and production approvals and deployments." loading="lazy">
+    <figcaption>Enterprise DevSecOps CI/CD pipeline &mdash; GitHub Actions + Security + AWS + GitOps.</figcaption>
+  </figure>
 
   <div class="flowdiag" role="img" aria-label="Enterprise DevSecOps CI/CD pipeline flow using GitHub Actions">
     <div class="flow-banner">Enterprise DevSecOps CI/CD Pipeline &middot; GitHub Actions</div>
