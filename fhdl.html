@@ -260,6 +260,29 @@ gh actions-importer migrate azure-devops pipeline --pipeline-id ID --target-url 
     <h2>ADO to GitHub Actions Migration &amp; CI/CD</h2>
     <p class="dom-blurb">The critical multi-year project. Importer workflow, concept mapping, OIDC to AWS, runners, and migration leadership. <span class="count">14 questions</span></p>
   </header>
+
+  <div class="flowdiag" role="img" aria-label="Migration flow from Jenkins or Azure DevOps to GitHub Actions">
+    <div class="flow-banner">Existing Jenkins / Azure DevOps &middot; Migration Flow</div>
+    <div class="flow-actor">Assessment (Importer)</div>
+    <div class="farrow"></div>
+    <div class="fnode tool">Pipeline Inventory</div>
+    <div class="farrow"></div>
+    <div class="fnode tool">Generate GitHub Workflows</div>
+    <div class="farrow"></div>
+    <div class="fnode">Review Unsupported Features</div>
+    <div class="farrow"></div>
+    <div class="fnode tool">Standardize Reusable Workflows</div>
+    <div class="farrow"></div>
+    <div class="fnode tool">Migrate Secrets using OIDC</div>
+    <div class="farrow"></div>
+    <div class="fnode tool">Configure GitHub Runners</div>
+    <div class="farrow"></div>
+    <div class="fnode">Parallel Validation</div>
+    <div class="farrow"></div>
+    <div class="fnode deploy">Production Cutover</div>
+    <div class="farrow"></div>
+    <div class="fnode fail">Decommission Legacy CI/CD</div>
+  </div>
   
 <article class="card" data-search="why would a company move from azure devops to github actions? a few reasons usually drive this. first, one platform for everything. code, ci/cd, security scanning, and code review all live in github. fewer tools means less context switching and lower license cost. second, the ecosystem. the github actions marketplace has thousands of ready-made actions, so teams build pipelines faster. third, security. github gives you oidc federation to aws, so you can remove long-lived credentials completely. fourth, developer experience. most engineers already know github, so onboarding is easier. the trade-off is real too: ado has strong built-in boards and test plans, so those pieces need a plan of their own. for a bank, i would lead with the security and audit story: every pipeline change goes through a pull request, and the full history is in git.">
   <div class="card-head">
