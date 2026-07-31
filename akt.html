@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AWS Architecture Interview Guide</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --surface: #ffffff;
+      --surface-soft: #eef4f8;
+      --ink: #182230;
+      --muted: #617084;
+      --line: #d9e2ea;
+      --accent: #0f766e;
+      --accent-strong: #0b5f59;
+      --code: #172033;
+      --shadow: 0 16px 40px rgba(24, 34, 48, 0.08);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.58;
+    }
+    a { color: inherit; text-decoration: none; }
+    .layout {
+      display: grid;
+      grid-template-columns: 290px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 20px;
+      background: #172033;
+      color: #eff6ff;
+      overflow-y: auto;
+    }
+    .brand { margin-bottom: 26px; }
+    .brand p {
+      margin: 8px 0 0;
+      color: #b9c7d8;
+      font-size: 14px;
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 23px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 0 0 24px;
+    }
+    .stat {
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(255,255,255,0.06);
+    }
+    .stat strong { display: block; font-size: 22px; line-height: 1; }
+    .stat span { color: #b9c7d8; font-size: 12px; }
+    nav { display: grid; gap: 4px; }
+    nav a {
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 9px;
+      align-items: center;
+      border-radius: 8px;
+      padding: 8px 9px;
+      color: #dbeafe;
+      font-size: 14px;
+    }
+    nav a:hover, nav a:focus { background: rgba(255,255,255,0.09); outline: none; }
+    nav span {
+      display: inline-grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: rgba(15, 118, 110, 0.95);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    main { min-width: 0; }
+    .hero {
+      padding: 42px clamp(18px, 4vw, 58px) 26px;
+      background: linear-gradient(180deg, #ffffff 0%, #f6f8fb 100%);
+      border-bottom: 1px solid var(--line);
+    }
+    .hero h2 {
+      max-width: 940px;
+      margin: 0 0 10px;
+      font-size: clamp(30px, 4vw, 52px);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+    .hero p {
+      max-width: 860px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 14px clamp(18px, 4vw, 58px);
+      background: rgba(246, 248, 251, 0.92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .search {
+      width: min(620px, 100%);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font: inherit;
+      color: var(--ink);
+      background: var(--surface);
+    }
+    .search:focus { border-color: var(--accent); outline: 3px solid rgba(15,118,110,0.16); }
+    .count { color: var(--muted); font-size: 14px; white-space: nowrap; }
+    .content { padding: 28px clamp(18px, 4vw, 58px) 64px; }
+    .section { margin: 0 0 36px; scroll-margin-top: 82px; }
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 14px;
+      padding-top: 8px;
+    }
+    .section-heading > span {
+      display: inline-grid;
+      place-items: center;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      color: #ffffff;
+      background: var(--accent);
+      font-weight: 800;
+    }
+    .section-heading h2 {
+      margin: 0;
+      font-size: 25px;
+      letter-spacing: 0;
+    }
+    .section-heading em {
+      margin-left: auto;
+      color: var(--muted);
+      font-style: normal;
+      font-size: 14px;
+    }
+    .qa-card {
+      margin: 12px 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .question {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 17px 18px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface-soft);
+    }
+    .question span {
+      display: inline-grid;
+      place-items: center;
+      min-width: 48px;
+      height: 30px;
+      border-radius: 999px;
+      background: #c7eee8;
+      color: var(--accent-strong);
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .question h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+    .answer { padding: 16px 18px 18px; }
+    .answer p { margin: 0 0 10px; }
+    .answer p:last-child { margin-bottom: 0; }
+    .answer h4 {
+      margin: 16px 0 8px;
+      font-size: 15px;
+      color: var(--accent-strong);
+      letter-spacing: 0;
+    }
+    .answer-row {
+      display: grid;
+      grid-template-columns: minmax(150px, 240px) 1fr;
+      gap: 12px;
+      padding: 8px 0;
+      border-top: 1px solid #edf2f7;
+    }
+    .answer-row:first-child { border-top: 0; padding-top: 0; }
+    .answer-row strong { color: var(--accent-strong); }
+    pre {
+      margin: 10px 0;
+      padding: 12px 14px;
+      overflow-x: auto;
+      border-radius: 8px;
+      background: var(--code);
+      color: #e6edf7;
+    }
+    code { font-family: "Cascadia Code", Consolas, monospace; font-size: 13px; }
+    .hidden { display: none; }
+    @media (max-width: 940px) {
+      .layout { grid-template-columns: 1fr; }
+      aside {
+        position: static;
+        height: auto;
+        padding: 22px 18px;
+      }
+      nav { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+      .toolbar { top: 0; flex-wrap: wrap; }
+      .count { width: 100%; }
+    }
+    @media (max-width: 620px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .hero { padding-top: 28px; }
+      .section-heading { align-items: start; flex-wrap: wrap; }
+      .section-heading em { width: 100%; margin-left: 46px; }
+      .question { grid-template-columns: 1fr; }
+      .answer-row { grid-template-columns: 1fr; gap: 2px; }
+    }
+    @media print {
+      aside, .toolbar { display: none; }
+      .layout { display: block; }
+      .hero, .content { padding: 0; }
+      .qa-card { box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <div class="brand">
+        <h1>AWS Architecture Interview Guide</h1>
+        <p>Structured question bank for cloud architecture, DevOps, security, observability, databases, and leadership.</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><strong>13</strong><span>Sections</span></div>
+        <div class="stat"><strong>130</strong><span>Questions</span></div>
+      </div>
+      <nav aria-label="Sections">
+<a href="#section-1"><span>1</span>Architecture</a>
+<a href="#section-2"><span>2</span>AWS Networking</a>
+<a href="#section-3"><span>3</span>API Gateway</a>
+<a href="#section-4"><span>4</span>Terraform</a>
+<a href="#section-5"><span>5</span>GitHub &amp; DevOps</a>
+<a href="#section-6"><span>6</span>Kubernetes / Containers</a>
+<a href="#section-7"><span>7</span>Security</a>
+<a href="#section-8"><span>8</span>Monitoring</a>
+<a href="#section-9"><span>9</span>Cost Optimization</a>
+<a href="#section-10"><span>10</span>Databases</a>
+<a href="#section-11"><span>11</span>Leadership</a>
+<a href="#section-12"><span>12</span>Scenario-Based Questions</a>
+<a href="#section-13"><span>13</span>Questions Relevant to OneSource QA Platform / AWS Architectural Experience</a>
+
+      </nav>
+    </aside>
+    <main>
+      <header class="hero">
+        <h2>Cloud architecture interview questions and answers</h2>
+        <p>Use the search box to filter by topic, AWS service, scenario, or question number. The page is self-contained and printable.</p>
+      </header>
+      <div class="toolbar">
+        <input class="search" id="search" type="search" placeholder="Search questions, answers, or AWS services" aria-label="Search questions" />
+        <span class="count" id="count">Showing 130 questions</span>
+      </div>
+      <div class="content" id="content">
+<section class="section" id="section-1">
+  <div class="section-heading"><span>1</span><h2>Architecture</h2><em>10 questions</em></div>
+  <article class="qa-card" data-search="q1 walk me through an aws architecture you designed from scratch. a multi-tier enterprise web platform: cloudfront + waf at the edge for cdn/ddos protection; route 53 with latency-based routing; api gateway with custom lambda authorizers; stateless microservices hosted on eks across 3 availability zones; aurora mysql multi-az for transactional data; elasticache redis for session caching; s3 with kms for static assets; and terraform/github actions for automated gitops infrastructure delivery.">
+    <div class="question"><span>Q1</span><h3>Walk me through an AWS architecture you designed from scratch.</h3></div>
+    <div class="answer"><div class="answer-row"><strong>A multi-tier enterprise web platform</strong><span>CloudFront + WAF at the edge for CDN/DDoS protection; Route 53 with latency-based routing; API Gateway with custom Lambda Authorizers; stateless microservices hosted on EKS across 3 Availability Zones; Aurora MySQL Multi-AZ for transactional data; ElastiCache Redis for session caching; S3 with KMS for static assets; and Terraform/GitHub Actions for automated GitOps infrastructure delivery.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q2 how do you design a highly available application on aws? deploy compute across at least 3 azs behind an alb/nlb; use auto scaling groups (or eks node pools); decouple components asynchronously using sqs / eventbridge; use aurora multi-az for seamless database failover; manage dns routing via route 53 health checks; and cache static content at edge locations via cloudfront.">
+    <div class="question"><span>Q2</span><h3>How do you design a highly available application on AWS?</h3></div>
+    <div class="answer"><p>Deploy compute across at least 3 AZs behind an ALB/NLB; use Auto Scaling Groups (or EKS node pools); decouple components asynchronously using SQS / EventBridge; use Aurora Multi-AZ for seamless database failover; manage DNS routing via Route 53 health checks; and cache static content at edge locations via CloudFront.</p></div>
+  </article>
+  <article class="qa-card" data-search="q3 how do you achieve multi-region disaster recovery? choose a strategy based on rto/rpo requirements: backup &amp; restore (rto/rpo hours): s3 cross-region replication (crr), cross-region aws backup. pilot light (rto tens of mins): core data continuously replicated (aurora global database, dynamodb global tables), compute templates ready in standby region via terraform. warm standby (rto mins): scaled-down production replica running in dr region. active-active (rto ~0, rpo ~0): route 53 application recovery controller (arc), multi-region aurora/dynamodb global tables.">
+    <div class="question"><span>Q3</span><h3>How do you achieve multi-region disaster recovery?</h3></div>
+    <div class="answer"><h4>Choose a strategy based on RTO/RPO requirements</h4>
+<div class="answer-row"><strong>Backup &amp; Restore (RTO/RPO hours)</strong><span>S3 Cross-Region Replication (CRR), cross-region AWS Backup.</span></div>
+<div class="answer-row"><strong>Pilot Light (RTO tens of mins)</strong><span>Core data continuously replicated (Aurora Global Database, DynamoDB Global Tables), compute templates ready in standby region via Terraform.</span></div>
+<div class="answer-row"><strong>Warm Standby (RTO mins)</strong><span>Scaled-down production replica running in DR region.</span></div>
+<div class="answer-row"><strong>Active-Active (RTO ~0, RPO ~0)</strong><span>Route 53 Application Recovery Controller (ARC), Multi-Region Aurora/DynamoDB Global Tables.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q4 how do you design for 99.99% availability? 99.99% availability allows maximum 52.6 minutes of downtime per year. requires zero single points of failure (spofs), multi-az active-active deployment, stateless compute layers, automated circuit breakers (aws app mesh/envoy), health checks with rapid automated failover, and non-disruptive canary/blue-green deployments.">
+    <div class="question"><span>Q4</span><h3>How do you design for 99.99% availability?</h3></div>
+    <div class="answer"><p>99.99% availability allows maximum 52.6 minutes of downtime per year. Requires zero single points of failure (SPOFs), multi-AZ active-active deployment, stateless compute layers, automated circuit breakers (AWS App Mesh/Envoy), health checks with rapid automated failover, and non-disruptive Canary/Blue-Green deployments.</p></div>
+  </article>
+  <article class="qa-card" data-search="q5 explain your architecture review process. perform periodic aws well-architected framework reviews (wafr) across all 6 pillars. identify high/medium risk issues (hris/mris), create prioritized backlog remediation tickets, maintain architecture decision records (adrs) in git, and enforce security/cost compliance guardrails using aws config and aws security hub.">
+    <div class="question"><span>Q5</span><h3>Explain your architecture review process.</h3></div>
+    <div class="answer"><p>Perform periodic AWS Well-Architected Framework Reviews (WAFR) across all 6 pillars. Identify High/Medium Risk Issues (HRIs/MRIs), create prioritized backlog remediation tickets, maintain Architecture Decision Records (ADRs) in Git, and enforce security/cost compliance guardrails using AWS Config and AWS Security Hub.</p></div>
+  </article>
+  <article class="qa-card" data-search="q6 how do you decide between ecs, eks, ec2, and lambda?  lambda: event-driven, execution &lt;15 mins, stateless, rapid scaling, zero server management. ecs: containerized apps seeking low operational overhead within a pure aws-native ecosystem. eks: complex microservices requiring kubernetes api standardization, helm/argocd tooling, and multi-cloud portability. ec2: stateful legacy monoliths, custom os kernel requirements, or continuous 24/7 fixed compute workloads.">
+    <div class="question"><span>Q6</span><h3>How do you decide between ECS, EKS, EC2, and Lambda?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>Lambda</strong><span>Event-driven, execution &lt;15 mins, stateless, rapid scaling, zero server management.</span></div>
+<div class="answer-row"><strong>ECS</strong><span>Containerized apps seeking low operational overhead within a pure AWS-native ecosystem.</span></div>
+<div class="answer-row"><strong>EKS</strong><span>Complex microservices requiring Kubernetes API standardization, Helm/ArgoCD tooling, and multi-cloud portability.</span></div>
+<div class="answer-row"><strong>EC2</strong><span>Stateful legacy monoliths, custom OS kernel requirements, or continuous 24/7 fixed compute workloads.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q7 what are the aws well-architected pillars? operational excellence, security, reliability, performance efficiency, cost optimization, and sustainability.">
+    <div class="question"><span>Q7</span><h3>What are the AWS Well-Architected pillars?</h3></div>
+    <div class="answer"><p>Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, and Sustainability.</p></div>
+  </article>
+  <article class="qa-card" data-search="q8 how do you reduce cloud costs without impacting performance? right-size instance types; purchase compute savings plans / reserved instances for baseline workloads; use spot instances for fault-tolerant/batch workloads; enforce s3 lifecycle rules and intelligent-tiering; eliminate unattached ebs volumes and idle elastic ips; and optimize database provisioned iops.">
+    <div class="question"><span>Q8</span><h3>How do you reduce cloud costs without impacting performance?</h3></div>
+    <div class="answer"><p>Right-size instance types; purchase Compute Savings Plans / Reserved Instances for baseline workloads; use Spot Instances for fault-tolerant/batch workloads; enforce S3 Lifecycle Rules and Intelligent-Tiering; eliminate unattached EBS volumes and idle Elastic IPs; and optimize database provisioned IOPS.</p></div>
+  </article>
+  <article class="qa-card" data-search="q9 how do you migrate a monolithic application to aws? follow the 6 rs framework (rehost, replatform, refactor, repurchase, retire, retain). lift-and-shift initially using aws application migration service (mgn) to minimize downtime, then strangulate the monolith incrementally into containerized/serverless microservices behind api gateway (strangler fig pattern).">
+    <div class="question"><span>Q9</span><h3>How do you migrate a monolithic application to AWS?</h3></div>
+    <div class="answer"><p>Follow the 6 Rs framework (Rehost, Replatform, Refactor, Repurchase, Retire, Retain). Lift-and-shift initially using AWS Application Migration Service (MGN) to minimize downtime, then strangulate the monolith incrementally into containerized/serverless microservices behind API Gateway (Strangler Fig Pattern).</p></div>
+  </article>
+  <article class="qa-card" data-search="q10 explain a cloud migration you led. led a migration of monolithic legacy apps: containerized the application tier onto eks, migrated relational databases to rds aurora using aws dms with minimal downtime, automated infrastructure via terraform, and refactored ci/cd pipelines into github actions.">
+    <div class="question"><span>Q10</span><h3>Explain a cloud migration you led.</h3></div>
+    <div class="answer"><div class="answer-row"><strong>Led a migration of monolithic legacy apps</strong><span>containerized the application tier onto EKS, migrated relational databases to RDS Aurora using AWS DMS with minimal downtime, automated infrastructure via Terraform, and refactored CI/CD pipelines into GitHub Actions.</span></div></div>
+  </article>
+</section>
+<section class="section" id="section-2">
+  <div class="section-heading"><span>2</span><h2>AWS Networking</h2><em>10 questions</em></div>
+  <article class="qa-card" data-search="q11 explain your vpc design. a /16 cidr block spanning 3 azs. each az contains three subnet tiers: public subnet: internet gateway (igw), albs, nat gateways. private app subnet: eks worker nodes, ecs, lambda tasks (routes egress traffic through nat gateway). isolated db subnet: rds aurora, elasticache (no route to the internet). uses vpc endpoints (gateway &amp; interface) to keep aws service traffic off the public internet.">
+    <div class="question"><span>Q11</span><h3>Explain your VPC design.</h3></div>
+    <div class="answer"><h4>A /16 CIDR block spanning 3 AZs. Each AZ contains three subnet tiers</h4>
+<div class="answer-row"><strong>Public Subnet</strong><span>Internet Gateway (IGW), ALBs, NAT Gateways.</span></div>
+<div class="answer-row"><strong>Private App Subnet</strong><span>EKS worker nodes, ECS, Lambda tasks (routes egress traffic through NAT Gateway).</span></div>
+<div class="answer-row"><strong>Isolated DB Subnet</strong><span>RDS Aurora, ElastiCache (no route to the internet).</span></div>
+<p>Uses VPC Endpoints (Gateway &amp; Interface) to keep AWS service traffic off the public internet.</p></div>
+  </article>
+  <article class="qa-card" data-search="q12 public vs private subnet?  public subnet: has a direct route (0.0.0.0/0) to an internet gateway (igw); resources can be assigned public ips. private subnet: no direct route to an igw; egress traffic is routed via a nat gateway located in a public subnet.">
+    <div class="question"><span>Q12</span><h3>Public vs Private subnet?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>Public Subnet</strong><span>Has a direct route (0.0.0.0/0) to an Internet Gateway (IGW); resources can be assigned public IPs.</span></div>
+<div class="answer-row"><strong>Private Subnet</strong><span>No direct route to an IGW; egress traffic is routed via a NAT Gateway located in a public subnet.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q13 nat gateway vs internet gateway?  internet gateway (igw): scalable vpc component enabling bi-directional communication between public subnet resources and the public internet. nat gateway: managed service allowing resources in private subnets to initiate outbound internet connections while blocking unsolicited inbound connections from the internet.">
+    <div class="question"><span>Q13</span><h3>NAT Gateway vs Internet Gateway?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>Internet Gateway (IGW)</strong><span>Scalable VPC component enabling bi-directional communication between public subnet resources and the public internet.</span></div>
+<div class="answer-row"><strong>NAT Gateway</strong><span>Managed service allowing resources in private subnets to initiate outbound internet connections while blocking unsolicited inbound connections from the internet.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q14 how does route53 routing work? authoritative dns service that maps domain names to aws resources using various routing policies: simple, weighted (a/b testing), latency-based, failover (active-passive dr), geolocation, geoproximity, and multi-value answer.">
+    <div class="question"><span>Q14</span><h3>How does Route53 routing work?</h3></div>
+    <div class="answer"><p>Authoritative DNS service that maps domain names to AWS resources using various routing policies: Simple, Weighted (A/B testing), Latency-based, Failover (active-passive DR), Geolocation, Geoproximity, and Multi-Value Answer.</p></div>
+  </article>
+  <article class="qa-card" data-search="q15 explain transit gateway. a central network transit hub that connects thousands of vpcs and on-premises networks (via vpn or direct connect) in a hub-and-spoke topology, replacing complex vpc peering meshes.">
+    <div class="question"><span>Q15</span><h3>Explain Transit Gateway.</h3></div>
+    <div class="answer"><p>A central network transit hub that connects thousands of VPCs and on-premises networks (via VPN or Direct Connect) in a hub-and-spoke topology, replacing complex VPC Peering meshes.</p></div>
+  </article>
+  <article class="qa-card" data-search="q16 when would you use vpc peering? for high-throughput, low-latency, non-transitive connection between a small number of vpcs (e.g., 2 to 5 vpcs) where transit gateway data processing fees are unnecessary.">
+    <div class="question"><span>Q16</span><h3>When would you use VPC Peering?</h3></div>
+    <div class="answer"><p>For high-throughput, low-latency, non-transitive connection between a small number of VPCs (e.g., 2 to 5 VPCs) where Transit Gateway data processing fees are unnecessary.</p></div>
+  </article>
+  <article class="qa-card" data-search="q17 explain direct connect. a dedicated physical network connection from an on-premises data center directly to aws, providing consistent bandwidth, lower network latency, and reduced data egress costs compared to vpns over the public internet.">
+    <div class="question"><span>Q17</span><h3>Explain Direct Connect.</h3></div>
+    <div class="answer"><p>A dedicated physical network connection from an on-premises data center directly to AWS, providing consistent bandwidth, lower network latency, and reduced data egress costs compared to VPNs over the public internet.</p></div>
+  </article>
+  <article class="qa-card" data-search="q18 hybrid connectivity design? dual redundant aws direct connect links connected to an aws transit gateway with dynamic bgp routing, backed up by an ipsec site-to-site vpn tunnel over the public internet for automatic failover.">
+    <div class="question"><span>Q18</span><h3>Hybrid connectivity design?</h3></div>
+    <div class="answer"><p>Dual redundant AWS Direct Connect links connected to an AWS Transit Gateway with dynamic BGP routing, backed up by an IPsec Site-to-Site VPN tunnel over the public internet for automatic failover.</p></div>
+  </article>
+  <article class="qa-card" data-search="q19 how do you isolate workloads? multi-account architecture managed by aws organizations (separate accounts for dev, staging, prod); distinct vpcs per environment; strict security groups / nacls; and governance via service control policies (scps).">
+    <div class="question"><span>Q19</span><h3>How do you isolate workloads?</h3></div>
+    <div class="answer"><p>Multi-account architecture managed by AWS Organizations (separate accounts for Dev, Staging, Prod); distinct VPCs per environment; strict Security Groups / NACLs; and governance via Service Control Policies (SCPs).</p></div>
+  </article>
+  <article class="qa-card" data-search="q20 explain security groups vs nacls.  security group: stateful, operates at the instance/eni level, supports allow rules only, evaluates all rules before making a decision. nacl: stateless, operates at the subnet level, supports allow and deny rules, evaluated in strict numerical order.">
+    <div class="question"><span>Q20</span><h3>Explain Security Groups vs NACLs.</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>Security Group</strong><span>Stateful, operates at the instance/ENI level, supports Allow rules only, evaluates all rules before making a decision.</span></div>
+<div class="answer-row"><strong>NACL</strong><span>Stateless, operates at the subnet level, supports Allow and Deny rules, evaluated in strict numerical order.</span></div></div>
+  </article>
+</section>
+<section class="section" id="section-3">
+  <div class="section-heading"><span>3</span><h2>API Gateway</h2><em>10 questions</em></div>
+  <article class="qa-card" data-search="q21 describe your api gateway architecture. regional rest/http api gateway protected by aws waf at the front. requests are authenticated using a custom lambda authorizer (validating jwts against corporate idp). integrates directly with eks services or lambda functions, with caching enabled at the stage level.">
+    <div class="question"><span>Q21</span><h3>Describe your API Gateway architecture.</h3></div>
+    <div class="answer"><p>Regional REST/HTTP API Gateway protected by AWS WAF at the front. Requests are authenticated using a custom Lambda Authorizer (validating JWTs against corporate IdP). Integrates directly with EKS services or Lambda functions, with caching enabled at the stage level.</p></div>
+  </article>
+  <article class="qa-card" data-search="q22 rest api vs http api?  rest api: full-featured (api keys, usage plans, request validation, waf native integration, client sdk generation, x-ray tracing). http api: optimized for speed, up to 70% cheaper, lower latency, native support for oidc/oauth2, built for lambda and http backends.">
+    <div class="question"><span>Q22</span><h3>REST API vs HTTP API?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>REST API</strong><span>Full-featured (API keys, usage plans, request validation, WAF native integration, client SDK generation, X-Ray tracing).</span></div>
+<div class="answer-row"><strong>HTTP API</strong><span>Optimized for speed, up to 70% cheaper, lower latency, native support for OIDC/OAuth2, built for Lambda and HTTP backends.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q23 lambda authorizer vs cognito?  cognito: managed identity pool/user pool for standard user management, issuing oidc/jwt tokens out of the box. lambda authorizer: custom authorization logic (rbac, abac, database permission checks, parsing custom header signatures).">
+    <div class="question"><span>Q23</span><h3>Lambda Authorizer vs Cognito?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>Cognito</strong><span>Managed identity pool/user pool for standard user management, issuing OIDC/JWT tokens out of the box.</span></div>
+<div class="answer-row"><strong>Lambda Authorizer</strong><span>Custom authorization logic (RBAC, ABAC, database permission checks, parsing custom header signatures).</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q24 jwt validation flow? client attaches bearer jwt token in http header -&gt; api gateway passes token to lambda authorizer -&gt; authorizer checks cached json web key set (jwks) from identity provider -&gt; validates signature, expiration (exp), issuer (iss), and audience (aud) -&gt; generates an iam policy (allow/deny) cached by api gateway.">
+    <div class="question"><span>Q24</span><h3>JWT validation flow?</h3></div>
+    <div class="answer"><p>Client attaches Bearer JWT token in HTTP header -&gt; API Gateway passes token to Lambda Authorizer -&gt; Authorizer checks cached JSON Web Key Set (JWKS) from Identity Provider -&gt; Validates signature, expiration (exp), issuer (iss), and audience (aud) -&gt; Generates an IAM policy (Allow/Deny) cached by API Gateway.</p></div>
+  </article>
+  <article class="qa-card" data-search="q25 how do you implement throttling? uses the token bucket algorithm. configured globally across the account, per api stage, or per client usage plan (using api keys) by setting rate (average requests/sec) and burst (maximum concurrent capacity).">
+    <div class="question"><span>Q25</span><h3>How do you implement throttling?</h3></div>
+    <div class="answer"><p>Uses the Token Bucket algorithm. Configured globally across the account, per API stage, or per client usage plan (using API Keys) by setting Rate (average requests/sec) and Burst (maximum concurrent capacity).</p></div>
+  </article>
+  <article class="qa-card" data-search="q26 api versioning strategy? uri path versioning (e.g., /v1/resource, /v2/resource) combined with api gateway stages (dev, staging, v1) or custom header routing (accept-version: v1).">
+    <div class="question"><span>Q26</span><h3>API versioning strategy?</h3></div>
+    <div class="answer"><p>URI path versioning (e.g., /v1/resource, /v2/resource) combined with API Gateway Stages (dev, staging, v1) or custom header routing (Accept-Version: v1).</p></div>
+  </article>
+  <article class="qa-card" data-search="q27 how do you secure apis? enforce tls 1.2+; place aws waf in front (owasp top 10 rules, rate limiting); require jwt auth via lambda authorizers; implement mutual tls (mtls); hide private backends in private subnets; and enforce usage plans via api keys.">
+    <div class="question"><span>Q27</span><h3>How do you secure APIs?</h3></div>
+    <div class="answer"><p>Enforce TLS 1.2+; place AWS WAF in front (OWASP Top 10 rules, rate limiting); require JWT auth via Lambda Authorizers; implement mutual TLS (mTLS); hide private backends in private subnets; and enforce usage plans via API keys.</p></div>
+  </article>
+  <article class="qa-card" data-search="q28 explain custom domain mapping. map a human-readable domain name (e.g., api.example.com managed in route 53 with an acm ssl certificate) to an api gateway endpoint using custom domain names and base path mappings.">
+    <div class="question"><span>Q28</span><h3>Explain custom domain mapping.</h3></div>
+    <div class="answer"><p>Map a human-readable domain name (e.g., api.example.com managed in Route 53 with an ACM SSL certificate) to an API Gateway endpoint using Custom Domain Names and base path mappings.</p></div>
+  </article>
+  <article class="qa-card" data-search="q29 explain request transformation. uses velocity template language (vtl) mapping templates to modify, add, or strip http headers, query parameters, or json payloads before sending requests to the integration backend or returning responses to the client.">
+    <div class="question"><span>Q29</span><h3>Explain request transformation.</h3></div>
+    <div class="answer"><p>Uses Velocity Template Language (VTL) mapping templates to modify, add, or strip HTTP headers, query parameters, or JSON payloads before sending requests to the integration backend or returning responses to the client.</p></div>
+  </article>
+  <article class="qa-card" data-search="q30 explain api caching. provision a dedicated cache cluster on an api gateway stage to store backend responses for a defined time-to-live (ttl, default 300s), reducing load on backend microservices and lowering response latency.">
+    <div class="question"><span>Q30</span><h3>Explain API caching.</h3></div>
+    <div class="answer"><p>Provision a dedicated cache cluster on an API Gateway stage to store backend responses for a defined Time-To-Live (TTL, default 300s), reducing load on backend microservices and lowering response latency.</p></div>
+  </article>
+</section>
+<section class="section" id="section-4">
+  <div class="section-heading"><span>4</span><h2>Terraform</h2><em>10 questions</em></div>
+  <article class="qa-card" data-search="q31 how do you organize terraform modules? follow a standardized structure: main.tf, variables.tf, outputs.tf, providers.tf. separate into: core infrastructure modules: reusable, version-controlled modules (vpc, eks, rds) hosted in a central git repo. environment live root modules: environment configurations (environments/dev, environments/prod) invoking version-pinned core modules.">
+    <div class="question"><span>Q31</span><h3>How do you organize Terraform modules?</h3></div>
+    <div class="answer"><div class="answer-row"><strong>Follow a standardized structure</strong><span>main.tf, variables.tf, outputs.tf, providers.tf. Separate into:</span></div>
+<div class="answer-row"><strong>Core Infrastructure Modules</strong><span>Reusable, version-controlled modules (VPC, EKS, RDS) hosted in a central Git repo.</span></div>
+<div class="answer-row"><strong>Environment Live Root Modules</strong><span>Environment configurations (environments/dev, environments/prod) invoking version-pinned core modules.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q32 explain remote state. storing terraform.tfstate centrally in an s3 bucket (with versioning, server-side encryption, and public access blocked) paired with a dynamodb table for state locking to prevent concurrent executions and state corruption.">
+    <div class="question"><span>Q32</span><h3>Explain remote state.</h3></div>
+    <div class="answer"><p>Storing terraform.tfstate centrally in an S3 bucket (with versioning, server-side encryption, and public access blocked) paired with a DynamoDB table for state locking to prevent concurrent executions and state corruption.</p></div>
+  </article>
+  <article class="qa-card" data-search="q33 terraform workspace vs separate backend?  workspaces: single backend storing state for multiple environments in different keys; suitable for non-production variants, risky for production blast radius. separate backend: separate s3 buckets/accounts for each environment; gold standard for strict security, state separation, and iam access isolation.">
+    <div class="question"><span>Q33</span><h3>Terraform workspace vs separate backend?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>Workspaces</strong><span>Single backend storing state for multiple environments in different keys; suitable for non-production variants, risky for production blast radius.</span></div>
+<div class="answer-row"><strong>Separate Backend</strong><span>Separate S3 buckets/accounts for each environment; gold standard for strict security, state separation, and IAM access isolation.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q34 how do you manage secrets? never put plaintext secrets in .tf or state files. fetch secrets dynamically at runtime from aws secrets manager or hashicorp vault using data sources, or inject them via secure ci/cd environment variables (tf_var_secret_name).">
+    <div class="question"><span>Q34</span><h3>How do you manage secrets?</h3></div>
+    <div class="answer"><p>Never put plaintext secrets in .tf or state files. Fetch secrets dynamically at runtime from AWS Secrets Manager or HashiCorp Vault using data sources, or inject them via secure CI/CD environment variables (TF_VAR_secret_name).</p></div>
+  </article>
+  <article class="qa-card" data-search="q35 how do you manage multiple aws accounts? use aws organizations / landing zone patterns combined with terraform provider aliases. define an iam cross-account deployment role in target accounts and assume it in the deployment pipeline: provider &quot;aws&quot; {   alias = &quot;prod&quot;   assume_role { role_arn = &quot;arn:aws:iam::123456789012:role/terraformdeploymentrole&quot; } }">
+    <div class="question"><span>Q35</span><h3>How do you manage multiple AWS accounts?</h3></div>
+    <div class="answer"><h4>Use AWS Organizations / Landing Zone patterns combined with Terraform Provider Aliases. Define an IAM cross-account deployment role in target accounts and assume it in the deployment pipeline</h4>
+<pre><code>provider &quot;aws&quot; {</code></pre>
+<pre><code>  alias = &quot;prod&quot;</code></pre>
+<pre><code>  assume_role { role_arn = &quot;arn:aws:iam::123456789012:role/TerraformDeploymentRole&quot; }</code></pre>
+<pre><code>}</code></pre></div>
+  </article>
+  <article class="qa-card" data-search="q36 how do you avoid state corruption? enforce dynamodb state locking; enable s3 bucket versioning; execute terraform exclusively through automated ci/cd pipelines (never local developer machines); avoid manual state edits; and run terraform plan reviews.">
+    <div class="question"><span>Q36</span><h3>How do you avoid state corruption?</h3></div>
+    <div class="answer"><p>Enforce DynamoDB state locking; enable S3 bucket versioning; execute Terraform exclusively through automated CI/CD pipelines (never local developer machines); avoid manual state edits; and run terraform plan reviews.</p></div>
+  </article>
+  <article class="qa-card" data-search="q37 explain terraform lifecycle. meta-arguments controlling resource creation/destruction behavior: create_before_destroy = true (replaces resources without downtime) prevent_destroy = true (protects databases/critical assets) ignore_changes = [tags, scaling_config] (prevents drift on auto-scaled properties)">
+    <div class="question"><span>Q37</span><h3>Explain Terraform lifecycle.</h3></div>
+    <div class="answer"><h4>Meta-arguments controlling resource creation/destruction behavior</h4>
+<pre><code>create_before_destroy = true (replaces resources without downtime)</code></pre>
+<pre><code>prevent_destroy = true (protects databases/critical assets)</code></pre>
+<pre><code>ignore_changes = [tags, scaling_config] (prevents drift on auto-scaled properties)</code></pre></div>
+  </article>
+  <article class="qa-card" data-search="q38 terraform vs cloudformation?  terraform: multi-provider/cloud-agnostic, hcl syntax, explicit state file management, flexible ecosystem. cloudformation: aws-native, state managed automatically by aws, declarative yaml/json, seamless integration with aws stacksets.">
+    <div class="question"><span>Q38</span><h3>Terraform vs CloudFormation?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>Terraform</strong><span>Multi-provider/cloud-agnostic, HCL syntax, explicit state file management, flexible ecosystem.</span></div>
+<div class="answer-row"><strong>CloudFormation</strong><span>AWS-native, state managed automatically by AWS, declarative YAML/JSON, seamless integration with AWS StackSets.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q39 how do you review terraform changes? automated pull request checks running: terraform fmt &amp; terraform validate static security analysis using tfsec or checkov cost estimation using infracost posting output of terraform plan as a pr comment for team approval.">
+    <div class="question"><span>Q39</span><h3>How do you review Terraform changes?</h3></div>
+    <div class="answer"><h4>Automated Pull Request checks running</h4>
+<pre><code>terraform fmt &amp; terraform validate</code></pre>
+<p>Static security analysis using tfsec or Checkov Cost estimation using Infracost Posting output of terraform plan as a PR comment for team approval.</p></div>
+  </article>
+  <article class="qa-card" data-search="q40 how do you promote infrastructure across environments? gitops flow: feature branch -&gt; merge to dev (runs terraform apply on dev) -&gt; release tag to stage -&gt; manual approval gate -&gt; release tag to prod. all environments use the exact same root modules, changing only environment-specific terraform.tfvars.">
+    <div class="question"><span>Q40</span><h3>How do you promote infrastructure across environments?</h3></div>
+    <div class="answer"><div class="answer-row"><strong>GitOps flow</strong><span>feature branch -&gt; merge to dev (runs terraform apply on Dev) -&gt; release tag to stage -&gt; manual approval gate -&gt; release tag to prod. All environments use the exact same root modules, changing only environment-specific terraform.tfvars.</span></div></div>
+  </article>
+</section>
+<section class="section" id="section-5">
+  <div class="section-heading"><span>5</span><h2>GitHub &amp; DevOps</h2><em>10 questions</em></div>
+  <article class="qa-card" data-search="q41 explain your git branching strategy. trunk-based development. short-lived feature branches (feature/abc-123) created from main. changes are reviewed via pull requests, continuously integrated, and merged into main, which automatically triggers deployments to lower environments and builds release tags for production.">
+    <div class="question"><span>Q41</span><h3>Explain your Git branching strategy.</h3></div>
+    <div class="answer"><p>Trunk-Based Development. Short-lived feature branches (feature/ABC-123) created from main. Changes are reviewed via Pull Requests, continuously integrated, and merged into main, which automatically triggers deployments to lower environments and builds release tags for production.</p></div>
+  </article>
+  <article class="qa-card" data-search="q42 gitflow vs trunk-based development?  gitflow: multiple long-lived branches (main, develop, release, feature, hotfix); high overhead, complex merge conflicts, slow release velocity. trunk-based: single main branch with short-lived feature branches; relies on automated ci/cd and feature flags; enables rapid continuous deployment.">
+    <div class="question"><span>Q42</span><h3>GitFlow vs Trunk-Based Development?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>GitFlow</strong><span>Multiple long-lived branches (main, develop, release, feature, hotfix); high overhead, complex merge conflicts, slow release velocity.</span></div>
+<div class="answer-row"><strong>Trunk-Based</strong><span>Single main branch with short-lived feature branches; relies on automated CI/CD and feature flags; enables rapid continuous deployment.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q43 github actions architecture? workflows (.github/workflows/*.yml) triggered by events (e.g., push, pull_request). workflows contain jobs running on runners (github-hosted or self-hosted in eks via actions runner controller), executing sequential steps (actions/scripts).">
+    <div class="question"><span>Q43</span><h3>GitHub Actions architecture?</h3></div>
+    <div class="answer"><p>Workflows (.github/workflows/*.yml) triggered by events (e.g., push, pull_request). Workflows contain Jobs running on Runners (GitHub-hosted or self-hosted in EKS via Actions Runner Controller), executing sequential Steps (Actions/scripts).</p></div>
+  </article>
+  <article class="qa-card" data-search="q44 reusable workflows? centrally managed github actions workflow files (workflow_call) that accept inputs and secrets. allows multiple application repositories to call standard pipelines (e.g., standard security scan, container build, helm deploy), eliminating duplicate code.">
+    <div class="question"><span>Q44</span><h3>Reusable workflows?</h3></div>
+    <div class="answer"><p>Centrally managed GitHub Actions workflow files (workflow_call) that accept inputs and secrets. Allows multiple application repositories to call standard pipelines (e.g., standard security scan, container build, Helm deploy), eliminating duplicate code.</p></div>
+  </article>
+  <article class="qa-card" data-search="q45 how do you secure github actions? use oidc (openid connect) federated authentication with aws (eliminating long-lived access keys); pin third-party actions to full commit shas; grant minimal explicit permissions: scope; enforce secret scanning; and run builds on isolated ephemeral self-hosted runners.">
+    <div class="question"><span>Q45</span><h3>How do you secure GitHub Actions?</h3></div>
+    <div class="answer"><p>Use OIDC (OpenID Connect) federated authentication with AWS (eliminating long-lived access keys); pin third-party actions to full commit SHAs; grant minimal explicit permissions: scope; enforce secret scanning; and run builds on isolated ephemeral self-hosted runners.</p></div>
+  </article>
+  <article class="qa-card" data-search="q46 how do you store secrets? pipeline secrets are stored in github actions secrets (environment secrets for stage separation). runtime secrets are dynamically fetched directly from aws secrets manager via oidc execution roles.">
+    <div class="question"><span>Q46</span><h3>How do you store secrets?</h3></div>
+    <div class="answer"><p>Pipeline secrets are stored in GitHub Actions Secrets (Environment secrets for stage separation). Runtime secrets are dynamically fetched directly from AWS Secrets Manager via OIDC execution roles.</p></div>
+  </article>
+  <article class="qa-card" data-search="q47 explain deployment approvals. use github environments (e.g., production). configure environment protection rules requiring designated individual or team approvals before a deployment job targeting that environment can execute.">
+    <div class="question"><span>Q47</span><h3>Explain deployment approvals.</h3></div>
+    <div class="answer"><p>Use GitHub Environments (e.g., production). Configure environment protection rules requiring designated individual or team approvals before a deployment job targeting that environment can execute.</p></div>
+  </article>
+  <article class="qa-card" data-search="q48 blue-green deployment? maintaining two identical production environments (blue = live, green = new release). the pipeline deploys the new artifact to green, runs automated integration smoke tests, and then switches traffic instantly at the load balancer / route 53 level.">
+    <div class="question"><span>Q48</span><h3>Blue-Green deployment?</h3></div>
+    <div class="answer"><p>Maintaining two identical production environments (Blue = live, Green = new release). The pipeline deploys the new artifact to Green, runs automated integration smoke tests, and then switches traffic instantly at the Load Balancer / Route 53 level.</p></div>
+  </article>
+  <article class="qa-card" data-search="q49 canary deployment? rolling out a new software version to a small subset of users first (e.g., 10% traffic via alb weighted target groups or aws app mesh). monitor cloudwatch error/latency alarms; automatically roll back if errors increase, or scale up to 100% if healthy.">
+    <div class="question"><span>Q49</span><h3>Canary deployment?</h3></div>
+    <div class="answer"><p>Rolling out a new software version to a small subset of users first (e.g., 10% traffic via ALB weighted target groups or AWS App Mesh). Monitor CloudWatch error/latency alarms; automatically roll back if errors increase, or scale up to 100% if healthy.</p></div>
+  </article>
+  <article class="qa-card" data-search="q50 rollback strategy? automated rollbacks triggered by cloudwatch / datadog alarms during blue-green/canary deployments. for stateful deployments, git release tags are reverted, triggering automated redeployment of the previous known-good container image and executing database roll-forward migrations.">
+    <div class="question"><span>Q50</span><h3>Rollback strategy?</h3></div>
+    <div class="answer"><p>Automated rollbacks triggered by CloudWatch / Datadog alarms during Blue-Green/Canary deployments. For stateful deployments, Git release tags are reverted, triggering automated redeployment of the previous known-good container image and executing database roll-forward migrations.</p></div>
+  </article>
+</section>
+<section class="section" id="section-6">
+  <div class="section-heading"><span>6</span><h2>Kubernetes / Containers</h2><em>10 questions</em></div>
+  <article class="qa-card" data-search="q51 why eks instead of ecs? industry-standard kubernetes apis, portability, rich cncf ecosystem (helm, argocd, istio, prometheus, kyverno), granular crd extensions, and complex pod placement/scheduling policies.">
+    <div class="question"><span>Q51</span><h3>Why EKS instead of ECS?</h3></div>
+    <div class="answer"><p>Industry-standard Kubernetes APIs, portability, rich CNCF ecosystem (Helm, ArgoCD, Istio, Prometheus, Kyverno), granular CRD extensions, and complex pod placement/scheduling policies.</p></div>
+  </article>
+  <article class="qa-card" data-search="q52 explain ingress. an api object managing external http/s access to services within a cluster. handled by an ingress controller (e.g., aws load balancer controller), which automatically provisions and configures an aws application load balancer (alb) based on routing rules.">
+    <div class="question"><span>Q52</span><h3>Explain Ingress.</h3></div>
+    <div class="answer"><p>An API object managing external HTTP/S access to services within a cluster. Handled by an Ingress Controller (e.g., AWS Load Balancer Controller), which automatically provisions and configures an AWS Application Load Balancer (ALB) based on routing rules.</p></div>
+  </article>
+  <article class="qa-card" data-search="q53 alb vs nlb?  alb: layer 7 load balancer; path-based/host-based routing, tls termination, waf integration, sticky sessions. nlb: layer 4 load balancer; handles millions of requests/sec with ultra-low latency, static ip support, ideal for grpc, tcp, or udp traffic.">
+    <div class="question"><span>Q53</span><h3>ALB vs NLB?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>ALB</strong><span>Layer 7 load balancer; path-based/host-based routing, TLS termination, WAF integration, sticky sessions.</span></div>
+<div class="answer-row"><strong>NLB</strong><span>Layer 4 load balancer; handles millions of requests/sec with ultra-low latency, static IP support, ideal for gRPC, TCP, or UDP traffic.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q54 horizontal pod autoscaler? hpa automatically scales the number of pod replicas in a deployment based on observed cpu/memory utilization (via metrics server) or custom metrics (e.g., sqs queue depth via keda).">
+    <div class="question"><span>Q54</span><h3>Horizontal Pod Autoscaler?</h3></div>
+    <div class="answer"><p>HPA automatically scales the number of pod replicas in a deployment based on observed CPU/Memory utilization (via Metrics Server) or custom metrics (e.g., SQS queue depth via KEDA).</p></div>
+  </article>
+  <article class="qa-card" data-search="q55 cluster autoscaler? automatically adds worker nodes when pods cannot be scheduled due to insufficient cluster resources, and removes underutilized nodes. modern recommendation: karpenter for faster, right-sized ec2 instance provisioning directly based on pod requirements.">
+    <div class="question"><span>Q55</span><h3>Cluster Autoscaler?</h3></div>
+    <div class="answer"><p>Automatically adds worker nodes when pods cannot be scheduled due to insufficient cluster resources, and removes underutilized nodes. Modern recommendation: Karpenter for faster, right-sized EC2 instance provisioning directly based on pod requirements.</p></div>
+  </article>
+  <article class="qa-card" data-search="q56 how do you deploy applications? using gitops with argocd or fluxcd. application manifests (helm charts or kustomize templates) are maintained in git; argocd continuously reconciles the cluster state with the target git repository state.">
+    <div class="question"><span>Q56</span><h3>How do you deploy applications?</h3></div>
+    <div class="answer"><p>Using GitOps with ArgoCD or FluxCD. Application manifests (Helm charts or Kustomize templates) are maintained in Git; ArgoCD continuously reconciles the cluster state with the target Git repository state.</p></div>
+  </article>
+  <article class="qa-card" data-search="q57 explain helm. a package manager for kubernetes that uses templated yaml manifests bundled into charts, utilizing a values.yaml file to configure environmental variables across different deployment targets.">
+    <div class="question"><span>Q57</span><h3>Explain Helm.</h3></div>
+    <div class="answer"><p>A package manager for Kubernetes that uses templated YAML manifests bundled into Charts, utilizing a values.yaml file to configure environmental variables across different deployment targets.</p></div>
+  </article>
+  <article class="qa-card" data-search="q58 how do you debug failed pods?  kubectl describe pod &lt;pod-name&gt; (check events for oomkilled, imagepullbackoff, node scheduling issues). kubectl logs &lt;pod-name&gt; --previous (check application crash stack traces). kubectl exec -it &lt;pod-name&gt; -- /bin/sh (inspect network and local container environment).">
+    <div class="question"><span>Q58</span><h3>How do you debug failed pods?</h3></div>
+    <div class="answer"><p></p>
+<pre><code>kubectl describe pod &lt;pod-name&gt; (check Events for OOMKilled, ImagePullBackOff, node scheduling issues).</code></pre>
+<pre><code>kubectl logs &lt;pod-name&gt; --previous (check application crash stack traces).</code></pre>
+<pre><code>kubectl exec -it &lt;pod-name&gt; -- /bin/sh (inspect network and local container environment).</code></pre></div>
+  </article>
+  <article class="qa-card" data-search="q59 kubernetes security best practices? use irsa (iam roles for service accounts); enforce kubernetes rbac with least privilege; use pod security standards (restricted profile); enable network policies (calico/cilium); scan container images for vulnerabilities; use read-only root filesystems; and run containers as non-root users.">
+    <div class="question"><span>Q59</span><h3>Kubernetes security best practices?</h3></div>
+    <div class="answer"><p>Use IRSA (IAM Roles for Service Accounts); enforce Kubernetes RBAC with least privilege; use Pod Security Standards (Restricted profile); enable network policies (Calico/Cilium); scan container images for vulnerabilities; use read-only root filesystems; and run containers as non-root users.</p></div>
+  </article>
+  <article class="qa-card" data-search="q60 how do you upgrade eks?  upgrade eks control plane version via aws/terraform. upgrade core cluster add-ons (coredns, kube-proxy, vpc cni). upgrade worker node groups using rolling node updates (karpenter or managed node groups). verify api deprecations using tools like pluto or kubent.">
+    <div class="question"><span>Q60</span><h3>How do you upgrade EKS?</h3></div>
+    <div class="answer"><p> Upgrade EKS Control Plane version via AWS/Terraform. Upgrade core cluster add-ons (CoreDNS, kube-proxy, VPC CNI). Upgrade worker node groups using rolling node updates (Karpenter or Managed Node Groups). Verify API deprecations using tools like pluto or kubent.</p></div>
+  </article>
+</section>
+<section class="section" id="section-7">
+  <div class="section-heading"><span>7</span><h2>Security</h2><em>10 questions</em></div>
+  <article class="qa-card" data-search="q61 iam role vs iam user?  iam user: long-term identity with permanent credentials (passwords, static access keys); intended for legacy human/system access. iam role: identity with temporary security credentials issued via aws sts; assumed by services, applications, or federated users.">
+    <div class="question"><span>Q61</span><h3>IAM Role vs IAM User?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>IAM User</strong><span>Long-term identity with permanent credentials (passwords, static access keys); intended for legacy human/system access.</span></div>
+<div class="answer-row"><strong>IAM Role</strong><span>Identity with temporary security credentials issued via AWS STS; assumed by services, applications, or federated users.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q62 how do you implement least privilege? start with explicit deny-by-default; write granular iam policies restricted to specific actions and resource arns; use condition keys (aws:principalorgid, aws:securetransport); utilize iam access analyzer to trim unused permissions based on activity logs; and set permission boundaries.">
+    <div class="question"><span>Q62</span><h3>How do you implement least privilege?</h3></div>
+    <div class="answer"><p>Start with explicit deny-by-default; write granular IAM policies restricted to specific actions and resource ARNs; use condition keys (aws:PrincipalOrgID, aws:SecureTransport); utilize IAM Access Analyzer to trim unused permissions based on activity logs; and set permission boundaries.</p></div>
+  </article>
+  <article class="qa-card" data-search="q63 kms vs secrets manager?  kms: cryptographic service for generating, managing, and invoking encryption/decryption keys (symmetric/asymmetric). secrets manager: secure storage service for dynamic secrets (database credentials, api keys) featuring automated secret rotation, versioning, and native kms encryption integration.">
+    <div class="question"><span>Q63</span><h3>KMS vs Secrets Manager?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>KMS</strong><span>Cryptographic service for generating, managing, and invoking encryption/decryption keys (Symmetric/Asymmetric).</span></div>
+<div class="answer-row"><strong>Secrets Manager</strong><span>Secure storage service for dynamic secrets (database credentials, API keys) featuring automated secret rotation, versioning, and native KMS encryption integration.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q64 waf architecture? attach aws waf web acls to cloudfront, api gateway, or albs. configure rule groups including aws managed rules (owasp top 10, ip reputation, sqli protection) and custom rate-limiting rules to mitigate layer 7 ddos and abusive traffic.">
+    <div class="question"><span>Q64</span><h3>WAF architecture?</h3></div>
+    <div class="answer"><p>Attach AWS WAF Web ACLs to CloudFront, API Gateway, or ALBs. Configure rule groups including AWS Managed Rules (OWASP Top 10, IP Reputation, SQLi protection) and custom rate-limiting rules to mitigate Layer 7 DDoS and abusive traffic.</p></div>
+  </article>
+  <article class="qa-card" data-search="q65 jwt authentication flow? client authenticates with idp -&gt; receives signed jwt -&gt; client includes jwt in authorization: bearer &lt;token&gt; header -&gt; aws api gateway / application layer extracts token -&gt; verifies signature using idp public key (jwks) -&gt; grants access based on token claims.">
+    <div class="question"><span>Q65</span><h3>JWT authentication flow?</h3></div>
+    <div class="answer"><p>Client authenticates with IdP -&gt; Receives signed JWT -&gt; Client includes JWT in Authorization: Bearer &lt;token&gt; header -&gt; AWS API Gateway / Application layer extracts token -&gt; Verifies signature using IdP public key (JWKS) -&gt; Grants access based on token claims.</p></div>
+  </article>
+  <article class="qa-card" data-search="q66 oauth flow? authorization code flow with pkce (for spas/mobile apps): client redirects user to authorization server -&gt; user logs in -&gt; authorization server returns authorization code to client -&gt; client exchanges code + pkce code verifier for access token &amp; id token.">
+    <div class="question"><span>Q66</span><h3>OAuth flow?</h3></div>
+    <div class="answer"><div class="answer-row"><strong>Authorization Code Flow with PKCE (for SPAs/Mobile Apps)</strong><span>Client redirects user to Authorization Server -&gt; User logs in -&gt; Authorization server returns Authorization Code to client -&gt; Client exchanges Code + PKCE code verifier for Access Token &amp; ID Token.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q67 zero trust architecture? operating under the assumption that network perimeter defense is insufficient: validate every identity and request explicitly. enforce mtls for all microservice-to-microservice traffic. grant least privilege access using irsa and dynamic tokens. micro-segment workloads using network security policies.">
+    <div class="question"><span>Q67</span><h3>Zero Trust architecture?</h3></div>
+    <div class="answer"><h4>Operating under the assumption that network perimeter defense is insufficient</h4>
+<p>Validate every identity and request explicitly. Enforce mTLS for all microservice-to-microservice traffic. Grant least privilege access using IRSA and dynamic tokens. Micro-segment workloads using network security policies.</p></div>
+  </article>
+  <article class="qa-card" data-search="q68 encryption at rest vs in transit?  at rest: data encrypted on disk using aws kms customer managed keys (cmks) across s3, ebs, rds, dynamodb, and efs. in transit: tls 1.2 or tls 1.3 enforced on all http endpoints (alb, cloudfront, api gateway) and inter-service communications.">
+    <div class="question"><span>Q68</span><h3>Encryption at rest vs in transit?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>At Rest</strong><span>Data encrypted on disk using AWS KMS Customer Managed Keys (CMKs) across S3, EBS, RDS, DynamoDB, and EFS.</span></div>
+<div class="answer-row"><strong>In Transit</strong><span>TLS 1.2 or TLS 1.3 enforced on all HTTP endpoints (ALB, CloudFront, API Gateway) and inter-service communications.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q69 scps in aws organizations? service control policies (scps) set maximum permission guardrails at the organization, ou, or account level. they override all local iam permissions (e.g., explicitly blocking the creation of non-approved aws regions or preventing s3 buckets from being made public).">
+    <div class="question"><span>Q69</span><h3>SCPs in AWS Organizations?</h3></div>
+    <div class="answer"><p>Service Control Policies (SCPs) set maximum permission guardrails at the Organization, OU, or Account level. They override all local IAM permissions (e.g., explicitly blocking the creation of non-approved AWS regions or preventing S3 buckets from being made public).</p></div>
+  </article>
+  <article class="qa-card" data-search="q70 security monitoring?  guardduty: intelligent threat detection (analyzing vpc flow logs, cloudtrail, dns logs). security hub: centralized security posture management and compliance checks. cloudtrail: immutable audit trail of all api calls. aws config: real-time tracking of resource configuration changes and compliance drift.">
+    <div class="question"><span>Q70</span><h3>Security monitoring?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>GuardDuty</strong><span>Intelligent threat detection (analyzing VPC Flow Logs, CloudTrail, DNS logs).</span></div>
+<div class="answer-row"><strong>Security Hub</strong><span>Centralized security posture management and compliance checks.</span></div>
+<div class="answer-row"><strong>CloudTrail</strong><span>Immutable audit trail of all API calls.</span></div>
+<div class="answer-row"><strong>AWS Config</strong><span>Real-time tracking of resource configuration changes and compliance drift.</span></div></div>
+  </article>
+</section>
+<section class="section" id="section-8">
+  <div class="section-heading"><span>8</span><h2>Monitoring</h2><em>10 questions</em></div>
+  <article class="qa-card" data-search="q71 explain your monitoring architecture. observability strategy based on three pillars: metrics: cloudwatch &amp; prometheus (scraped by opentelemetry collector). logs: cloudwatch logs / datadog (structured json logs). traces: aws x-ray / opentelemetry. visualized via grafana/datadog dashboards, triggering pagerduty/slack alerts via sns topics.">
+    <div class="question"><span>Q71</span><h3>Explain your monitoring architecture.</h3></div>
+    <div class="answer"><h4>Observability strategy based on three pillars</h4>
+<div class="answer-row"><strong>Metrics</strong><span>CloudWatch &amp; Prometheus (scraped by OpenTelemetry collector).</span></div>
+<div class="answer-row"><strong>Logs</strong><span>CloudWatch Logs / Datadog (structured JSON logs).</span></div>
+<div class="answer-row"><strong>Traces</strong><span>AWS X-Ray / OpenTelemetry.</span></div>
+<p>Visualized via Grafana/Datadog dashboards, triggering PagerDuty/Slack alerts via SNS topics.</p></div>
+  </article>
+  <article class="qa-card" data-search="q72 cloudwatch logs vs metrics?  logs: text/json timestamped event records detailing execution flow, debug information, or stack traces. metrics: numerical time-series data points representing system performance variables (cpu utilization, latency, error count) sampled over time intervals.">
+    <div class="question"><span>Q72</span><h3>CloudWatch Logs vs Metrics?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>Logs</strong><span>Text/JSON timestamped event records detailing execution flow, debug information, or stack traces.</span></div>
+<div class="answer-row"><strong>Metrics</strong><span>Numerical time-series data points representing system performance variables (CPU utilization, latency, error count) sampled over time intervals.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q73 what is x-ray? aws distributed tracing service that collects application request execution spans across distributed microservices, generating a service map to identify performance bottlenecks and latent calls.">
+    <div class="question"><span>Q73</span><h3>What is X-Ray?</h3></div>
+    <div class="answer"><p>AWS distributed tracing service that collects application request execution spans across distributed microservices, generating a service map to identify performance bottlenecks and latent calls.</p></div>
+  </article>
+  <article class="qa-card" data-search="q74 explain distributed tracing. propagating a unique correlation/trace id through http request headers across all microservice boundaries. allows developers to trace an entire end-to-end request lifecycle and diagnose slow down points across deep service dependencies.">
+    <div class="question"><span>Q74</span><h3>Explain distributed tracing.</h3></div>
+    <div class="answer"><p>Propagating a unique Correlation/Trace ID through HTTP request headers across all microservice boundaries. Allows developers to trace an entire end-to-end request lifecycle and diagnose slow down points across deep service dependencies.</p></div>
+  </article>
+  <article class="qa-card" data-search="q75 how do you troubleshoot latency?  check high-level cloudwatch/datadog latency metrics (p95, p99). inspect x-ray / opentelemetry traces to pinpoint the specific microservice or db call causing the bottleneck. analyze db query execution plans, connection pool saturation, or cpu/memory throttling on compute nodes.">
+    <div class="question"><span>Q75</span><h3>How do you troubleshoot latency?</h3></div>
+    <div class="answer"><p> Check high-level CloudWatch/Datadog latency metrics (p95, p99). Inspect X-Ray / OpenTelemetry traces to pinpoint the specific microservice or DB call causing the bottleneck. Analyze DB query execution plans, connection pool saturation, or CPU/Memory throttling on compute nodes.</p></div>
+  </article>
+  <article class="qa-card" data-search="q76 what dashboards do you create?  executive dashboard: sla/slo metrics, error budgets, cost tracking, system availability. application / service dashboard: the 4 golden signals (latency, traffic, errors, saturation). infrastructure dashboard: eks pod health, node resource limits, rds iops, db replication lag, nat gateway throughput.">
+    <div class="question"><span>Q76</span><h3>What dashboards do you create?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>Executive Dashboard</strong><span>SLA/SLO metrics, error budgets, cost tracking, system availability.</span></div>
+<div class="answer-row"><strong>Application / Service Dashboard</strong><span>The 4 Golden Signals (Latency, Traffic, Errors, Saturation).</span></div>
+<div class="answer-row"><strong>Infrastructure Dashboard</strong><span>EKS pod health, node resource limits, RDS IOPS, DB replication lag, NAT Gateway throughput.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q77 alert strategy? alert on symptoms affecting end users (e.g., error rate &gt; 1%, elevated latency) rather than internal causes (e.g., high cpu). route critical action-required alerts to pagerduty with runbook links, and low-priority informational alerts to slack.">
+    <div class="question"><span>Q77</span><h3>Alert strategy?</h3></div>
+    <div class="answer"><p>Alert on symptoms affecting end users (e.g., error rate &gt; 1%, elevated latency) rather than internal causes (e.g., high CPU). Route critical action-required alerts to PagerDuty with runbook links, and low-priority informational alerts to Slack.</p></div>
+  </article>
+  <article class="qa-card" data-search="q78 root cause analysis process? establish incident timeline -&gt; isolate blast radius -&gt; correlate cloudtrail audit logs with deployment timestamps -&gt; analyze log traces during the incident window -&gt; conduct 5-whys analysis -&gt; document findings in a blameless post-mortem and create preventive automation tasks.">
+    <div class="question"><span>Q78</span><h3>Root cause analysis process?</h3></div>
+    <div class="answer"><p>Establish incident timeline -&gt; Isolate blast radius -&gt; Correlate CloudTrail audit logs with deployment timestamps -&gt; Analyze log traces during the incident window -&gt; Conduct 5-Whys analysis -&gt; Document findings in a blameless Post-Mortem and create preventive automation tasks.</p></div>
+  </article>
+  <article class="qa-card" data-search="q79 what metrics matter most? the four golden signals: latency: time taken to service a request. traffic: demand placed on the system (rps). errors: rate of requests that fail. saturation: how full the most constrained resource is (memory, cpu, iops).">
+    <div class="question"><span>Q79</span><h3>What metrics matter most?</h3></div>
+    <div class="answer"><h4>The Four Golden Signals</h4>
+<div class="answer-row"><strong>Latency</strong><span>Time taken to service a request.</span></div>
+<div class="answer-row"><strong>Traffic</strong><span>Demand placed on the system (RPS).</span></div>
+<div class="answer-row"><strong>Errors</strong><span>Rate of requests that fail.</span></div>
+<div class="answer-row"><strong>Saturation</strong><span>How full the most constrained resource is (Memory, CPU, IOPS).</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q80 observability vs monitoring?  monitoring: tracks known metrics to tell you when a predefined system state is bad (addresses &quot;known-unknowns&quot;). observability: measures internal system state based on external outputs (logs, metrics, traces), enabling you to infer why something novel failed (addresses &quot;unknown-unknowns&quot;).">
+    <div class="question"><span>Q80</span><h3>Observability vs Monitoring?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>Monitoring</strong><span>Tracks known metrics to tell you when a predefined system state is bad (addresses &quot;known-unknowns&quot;).</span></div>
+<div class="answer-row"><strong>Observability</strong><span>Measures internal system state based on external outputs (Logs, Metrics, Traces), enabling you to infer why something novel failed (addresses &quot;unknown-unknowns&quot;).</span></div></div>
+  </article>
+</section>
+<section class="section" id="section-9">
+  <div class="section-heading"><span>9</span><h2>Cost Optimization</h2><em>10 questions</em></div>
+  <article class="qa-card" data-search="q81 how do you reduce aws costs? right-size compute/db resources; purchase compute savings plans; adopt spot instances for stateless non-prod and batch workloads; turn off dev/stage environments during non-business hours; use s3 intelligent-tiering; and delete unattached ebs volumes and idle nat gateways.">
+    <div class="question"><span>Q81</span><h3>How do you reduce AWS costs?</h3></div>
+    <div class="answer"><p>Right-size compute/DB resources; purchase Compute Savings Plans; adopt Spot Instances for stateless non-prod and batch workloads; turn off dev/stage environments during non-business hours; use S3 Intelligent-Tiering; and delete unattached EBS volumes and idle NAT Gateways.</p></div>
+  </article>
+  <article class="qa-card" data-search="q82 reserved instances vs savings plans?  reserved instances (ris): direct discount tied to specific ec2/rds configurations (instance family, region, os); rigid structure. savings plans: flexible hourly spend commitment ($/hr) covering ec2, fargate, and lambda across any region, family, or os (offering up to 72% savings).">
+    <div class="question"><span>Q82</span><h3>Reserved Instances vs Savings Plans?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>Reserved Instances (RIs)</strong><span>Direct discount tied to specific EC2/RDS configurations (Instance Family, Region, OS); rigid structure.</span></div>
+<div class="answer-row"><strong>Savings Plans</strong><span>Flexible hourly spend commitment ($/hr) covering EC2, Fargate, and Lambda across any region, family, or OS (offering up to 72% savings).</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q83 spot instances? spare aws compute capacity available at up to 90% discount compared to on-demand prices. subject to 2-minute interruption notices; ideal for fault-tolerant, stateless eks workloads, ci/cd runners, and batch processing.">
+    <div class="question"><span>Q83</span><h3>Spot Instances?</h3></div>
+    <div class="answer"><p>Spare AWS compute capacity available at up to 90% discount compared to On-Demand prices. Subject to 2-minute interruption notices; ideal for fault-tolerant, stateless EKS workloads, CI/CD runners, and batch processing.</p></div>
+  </article>
+  <article class="qa-card" data-search="q84 cost explorer? aws reporting tool that visualizes historical usage patterns, forecasts future spend, identifies top cost drivers, and provides recommendations for savings plans and reserved instances.">
+    <div class="question"><span>Q84</span><h3>Cost Explorer?</h3></div>
+    <div class="answer"><p>AWS reporting tool that visualizes historical usage patterns, forecasts future spend, identifies top cost drivers, and provides recommendations for Savings Plans and Reserved Instances.</p></div>
+  </article>
+  <article class="qa-card" data-search="q85 cloudwatch cost optimization? reduce log group retention periods (change default &quot;never expire&quot; to 14 or 30 days); filter out debug logs at the application logging driver layer; and limit custom metric cardinalities.">
+    <div class="question"><span>Q85</span><h3>CloudWatch cost optimization?</h3></div>
+    <div class="answer"><p>Reduce log group retention periods (change default &quot;Never Expire&quot; to 14 or 30 days); filter out debug logs at the application logging driver layer; and limit custom metric cardinalities.</p></div>
+  </article>
+  <article class="qa-card" data-search="q86 s3 lifecycle? policy rules moving data automatically through storage classes to reduce cost: standard -&gt; standard-ia (30 days) -&gt; glacier flexible retrieve (90 days) -&gt; glacier deep archive (180 days) -&gt; expiration.">
+    <div class="question"><span>Q86</span><h3>S3 lifecycle?</h3></div>
+    <div class="answer"><h4>Policy rules moving data automatically through storage classes to reduce cost</h4>
+<p>Standard -&gt; Standard-IA (30 days) -&gt; Glacier Flexible Retrieve (90 days) -&gt; Glacier Deep Archive (180 days) -&gt; Expiration.</p></div>
+  </article>
+  <article class="qa-card" data-search="q87 compute optimization? use aws compute optimizer recommendations; migrate x86 workloads to aws graviton (arm64) processors (20% lower cost, up to 40% better price-performance); and use auto-scaling based on real demand.">
+    <div class="question"><span>Q87</span><h3>Compute optimization?</h3></div>
+    <div class="answer"><p>Use AWS Compute Optimizer recommendations; migrate x86 workloads to AWS Graviton (ARM64) processors (20% lower cost, up to 40% better price-performance); and use auto-scaling based on real demand.</p></div>
+  </article>
+  <article class="qa-card" data-search="q88 database optimization? use aurora serverless v2 for unpredictable workloads; introduce elasticache redis in front of relational databases to offload read operations; and right-size instance classes using performance insights.">
+    <div class="question"><span>Q88</span><h3>Database optimization?</h3></div>
+    <div class="answer"><p>Use Aurora Serverless v2 for unpredictable workloads; introduce ElastiCache Redis in front of relational databases to offload read operations; and right-size instance classes using performance insights.</p></div>
+  </article>
+  <article class="qa-card" data-search="q89 storage optimization? migrate legacy ebs gp2 volumes to gp3 (up to 20% cheaper with independent iops/throughput provisioning); delete unattached ebs snapshots; and enable s3 intelligent-tiering for unknown access patterns.">
+    <div class="question"><span>Q89</span><h3>Storage optimization?</h3></div>
+    <div class="answer"><p>Migrate legacy EBS gp2 volumes to gp3 (up to 20% cheaper with independent IOPS/throughput provisioning); delete unattached EBS snapshots; and enable S3 Intelligent-Tiering for unknown access patterns.</p></div>
+  </article>
+  <article class="qa-card" data-search="q90 tagging strategy? enforce mandatory cost allocation tags (environment, owner, costcenter, application, managedby) using aws config and terraform variables to assign usage costs directly to business units.">
+    <div class="question"><span>Q90</span><h3>Tagging strategy?</h3></div>
+    <div class="answer"><p>Enforce mandatory cost allocation tags (Environment, Owner, CostCenter, Application, ManagedBy) using AWS Config and Terraform variables to assign usage costs directly to business units.</p></div>
+  </article>
+</section>
+<section class="section" id="section-10">
+  <div class="section-heading"><span>10</span><h2>Databases</h2><em>10 questions</em></div>
+  <article class="qa-card" data-search="q91 rds vs aurora?  rds: traditional managed database running community engines (postgresql, mysql) on standard ebs block storage. aurora: cloud-native engine; highly performant (3-5x faster), decouples compute from storage; automatically replicates data 6 ways across 3 azs with self-healing storage up to 128tb.">
+    <div class="question"><span>Q91</span><h3>RDS vs Aurora?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>RDS</strong><span>Traditional managed database running community engines (PostgreSQL, MySQL) on standard EBS block storage.</span></div>
+<div class="answer-row"><strong>Aurora</strong><span>Cloud-native engine; highly performant (3-5x faster), decouples compute from storage; automatically replicates data 6 ways across 3 AZs with self-healing storage up to 128TB.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q92 dynamodb vs rds?  dynamodb: fully managed nosql key-value/document database; provides consistent single-digit millisecond latency at any scale; schema-less; http api access. rds: relational sql database; enforcing strict acid transactions, complex joins, rigid schemas, and traditional tcp connections.">
+    <div class="question"><span>Q92</span><h3>DynamoDB vs RDS?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>DynamoDB</strong><span>Fully managed NoSQL key-value/document database; provides consistent single-digit millisecond latency at any scale; schema-less; HTTP API access.</span></div>
+<div class="answer-row"><strong>RDS</strong><span>Relational SQL database; enforcing strict ACID transactions, complex JOINs, rigid schemas, and traditional TCP connections.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q93 read replicas? asynchronous read-only database copies used to offload heavy read queries from the primary writer database. can be promoted to a primary database in a disaster recovery scenario.">
+    <div class="question"><span>Q93</span><h3>Read replicas?</h3></div>
+    <div class="answer"><p>Asynchronous read-only database copies used to offload heavy read queries from the primary writer database. Can be promoted to a primary database in a disaster recovery scenario.</p></div>
+  </article>
+  <article class="qa-card" data-search="q94 multi-az? synchronous replication of a database to a secondary availability zone for high availability. in the event of primary database failure, aws automatically performs a dns failover to the standby replica (rto &lt; 60s, rpo ~0).">
+    <div class="question"><span>Q94</span><h3>Multi-AZ?</h3></div>
+    <div class="answer"><p>Synchronous replication of a database to a secondary Availability Zone for high availability. In the event of primary database failure, AWS automatically performs a DNS failover to the standby replica (RTO &lt; 60s, RPO ~0).</p></div>
+  </article>
+  <article class="qa-card" data-search="q95 database backup strategy? automated daily db snapshots + continuous transaction logs enabling point-in-time recovery (pitr) down to the second (up to 35 days); cross-region snapshot copies for disaster recovery; enforced by aws backup.">
+    <div class="question"><span>Q95</span><h3>Database backup strategy?</h3></div>
+    <div class="answer"><p>Automated daily DB snapshots + continuous transaction logs enabling Point-In-Time Recovery (PITR) down to the second (up to 35 days); cross-region snapshot copies for disaster recovery; enforced by AWS Backup.</p></div>
+  </article>
+  <article class="qa-card" data-search="q96 database migration? use aws schema conversion tool (sct) to convert database schemas between heterogeneous engines, and aws database migration service (dms) with change data capture (cdc) for continuous replication with near-zero cutover downtime.">
+    <div class="question"><span>Q96</span><h3>Database migration?</h3></div>
+    <div class="answer"><p>Use AWS Schema Conversion Tool (SCT) to convert database schemas between heterogeneous engines, and AWS Database Migration Service (DMS) with Change Data Capture (CDC) for continuous replication with near-zero cutover downtime.</p></div>
+  </article>
+  <article class="qa-card" data-search="q97 connection pooling? managing database connection overhead. use rds proxy to pool and share database connections efficiently, preventing application connection exhaustion during traffic surges (especially critical for serverless lambda applications).">
+    <div class="question"><span>Q97</span><h3>Connection pooling?</h3></div>
+    <div class="answer"><p>Managing database connection overhead. Use RDS Proxy to pool and share database connections efficiently, preventing application connection exhaustion during traffic surges (especially critical for serverless Lambda applications).</p></div>
+  </article>
+  <article class="qa-card" data-search="q98 aurora serverless? on-demand auto-scaling deployment option for aurora. instantly scales database compute capacity (acus) up or down seamlessly based on application load without dropping active connections.">
+    <div class="question"><span>Q98</span><h3>Aurora Serverless?</h3></div>
+    <div class="answer"><p>On-demand auto-scaling deployment option for Aurora. Instantly scales database compute capacity (ACUs) up or down seamlessly based on application load without dropping active connections.</p></div>
+  </article>
+  <article class="qa-card" data-search="q99 redis use cases? in-memory caching, user session management, api rate limiting, real-time leaderboards, pub/sub messaging channels, and geospatial indexing.">
+    <div class="question"><span>Q99</span><h3>Redis use cases?</h3></div>
+    <div class="answer"><p>In-memory caching, user session management, API rate limiting, real-time leaderboards, pub/sub messaging channels, and geospatial indexing.</p></div>
+  </article>
+  <article class="qa-card" data-search="q100 elasticache architecture? managed redis/memcached cluster deployed across multi-azs with primary-replica replication groups, automatic failover, and cluster mode enabled for horizontal sharding across multiple node groups.">
+    <div class="question"><span>Q100</span><h3>ElastiCache architecture?</h3></div>
+    <div class="answer"><p>Managed Redis/Memcached cluster deployed across Multi-AZs with primary-replica replication groups, automatic failover, and cluster mode enabled for horizontal sharding across multiple node groups.</p></div>
+  </article>
+</section>
+<section class="section" id="section-11">
+  <div class="section-heading"><span>11</span><h2>Leadership</h2><em>10 questions</em></div>
+  <article class="qa-card" data-search="q101 tell us about a difficult architecture decision. deciding between eks and serverless lambda for an enterprise core application platform. evaluated team skillsets, vendor lock-in risk, operational cost, and deployment predictability. selected a hybrid model (api gateway + lambda for stateless event flows, eks for complex core microservices), documenting trade-offs in an architecture decision record (adr) to align stakeholders.">
+    <div class="question"><span>Q101</span><h3>Tell us about a difficult architecture decision.</h3></div>
+    <div class="answer"><p>Deciding between EKS and Serverless Lambda for an enterprise core application platform. Evaluated team skillsets, vendor lock-in risk, operational cost, and deployment predictability. Selected a hybrid model (API Gateway + Lambda for stateless event flows, EKS for complex core microservices), documenting trade-offs in an Architecture Decision Record (ADR) to align stakeholders.</p></div>
+  </article>
+  <article class="qa-card" data-search="q102 how do you mentor engineers? run regular architectural design reviews, pair-program on complex technical implementations, teach first-principles thinking rather than giving direct code answers, and delegate component ownership to help engineers grow into leads.">
+    <div class="question"><span>Q102</span><h3>How do you mentor engineers?</h3></div>
+    <div class="answer"><p>Run regular architectural design reviews, pair-program on complex technical implementations, teach first-principles thinking rather than giving direct code answers, and delegate component ownership to help engineers grow into leads.</p></div>
+  </article>
+  <article class="qa-card" data-search="q103 how do you handle disagreements? rely on objective data and proof-of-concepts (pocs). frame discussions around business goals and technical trade-offs (cost, complexity, maintainability), document options in an adr, and practice &quot;disagree and commit.&quot;">
+    <div class="question"><span>Q103</span><h3>How do you handle disagreements?</h3></div>
+    <div class="answer"><p>Rely on objective data and proof-of-concepts (POCs). Frame discussions around business goals and technical trade-offs (cost, complexity, maintainability), document options in an ADR, and practice &quot;Disagree and Commit.&quot;</p></div>
+  </article>
+  <article class="qa-card" data-search="q104 how do you influence teams without authority? build technical trust by listening to team pain points, building working pocs that solve immediate developer friction, demonstrating clear value through proof, and fostering collaborative architecture guilds.">
+    <div class="question"><span>Q104</span><h3>How do you influence teams without authority?</h3></div>
+    <div class="answer"><p>Build technical trust by listening to team pain points, building working POCs that solve immediate developer friction, demonstrating clear value through proof, and fostering collaborative architecture guilds.</p></div>
+  </article>
+  <article class="qa-card" data-search="q105 describe an architecture review you led. led an aws well-architected review for a business-critical application. identified high risks around hardcoded secrets and single-region database reliance. created a prioritized remediation plan, replacing hardcoded keys with aws secrets manager and converting the db tier to aurora multi-az.">
+    <div class="question"><span>Q105</span><h3>Describe an architecture review you led.</h3></div>
+    <div class="answer"><p>Led an AWS Well-Architected Review for a business-critical application. Identified high risks around hardcoded secrets and single-region database reliance. Created a prioritized remediation plan, replacing hardcoded keys with AWS Secrets Manager and converting the DB tier to Aurora Multi-AZ.</p></div>
+  </article>
+  <article class="qa-card" data-search="q106 how do you prioritize technical debt? quantify risk in terms of operational cost, security exposure, or delivery velocity impact. allocate a fixed budget (e.g., 20% of every sprint) directly to tech debt, infrastructure upgrades, and refactoring tasks.">
+    <div class="question"><span>Q106</span><h3>How do you prioritize technical debt?</h3></div>
+    <div class="answer"><p>Quantify risk in terms of operational cost, security exposure, or delivery velocity impact. Allocate a fixed budget (e.g., 20% of every sprint) directly to tech debt, infrastructure upgrades, and refactoring tasks.</p></div>
+  </article>
+  <article class="qa-card" data-search="q107 how do you communicate with executives? abstract low-level technical jargon into business outcomes: risk reduction, cost efficiency, speed to market, and reliability/sla metrics. use clear high-level target state architecture diagrams.">
+    <div class="question"><span>Q107</span><h3>How do you communicate with executives?</h3></div>
+    <div class="answer"><div class="answer-row"><strong>Abstract low-level technical jargon into business outcomes</strong><span>Risk reduction, Cost efficiency, Speed to market, and Reliability/SLA metrics. Use clear high-level target state architecture diagrams.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q108 how do you balance speed vs quality? build modular, adaptable foundation layers. ensure non-negotiables (security guardrails, ci/cd pipelines, observability) are established on day one, allowing developers to build features rapidly without sacrificing long-term technical integrity.">
+    <div class="question"><span>Q108</span><h3>How do you balance speed vs quality?</h3></div>
+    <div class="answer"><p>Build modular, adaptable foundation layers. Ensure non-negotiables (Security guardrails, CI/CD pipelines, Observability) are established on day one, allowing developers to build features rapidly without sacrificing long-term technical integrity.</p></div>
+  </article>
+  <article class="qa-card" data-search="q109 describe your biggest technical achievement. modernizing legacy, fragile ci/cd pipelines into modular, standard github actions reusable workflows and multi-account terraform codebases-cutting deployment times by 60%, enforcing automated security scans, and achieving zero-downtime production deployments.">
+    <div class="question"><span>Q109</span><h3>Describe your biggest technical achievement.</h3></div>
+    <div class="answer"><p>Modernizing legacy, fragile CI/CD pipelines into modular, standard GitHub Actions reusable workflows and multi-account Terraform codebases-cutting deployment times by 60%, enforcing automated security scans, and achieving zero-downtime production deployments.</p></div>
+  </article>
+  <article class="qa-card" data-search="q110 describe a project failure and what you learned. underestimated cross-region network egress costs during an active-active multi-region data replication pilot. learned to rigorously profile cross-region network throughput and cost structures during initial poc phases, implementing edge caching strategies upfront.">
+    <div class="question"><span>Q110</span><h3>Describe a project failure and what you learned.</h3></div>
+    <div class="answer"><p>Underestimated cross-region network egress costs during an active-active multi-region data replication pilot. Learned to rigorously profile cross-region network throughput and cost structures during initial POC phases, implementing edge caching strategies upfront.</p></div>
+  </article>
+</section>
+<section class="section" id="section-12">
+  <div class="section-heading"><span>12</span><h2>Scenario-Based Questions</h2><em>10 questions</em></div>
+  <article class="qa-card" data-search="q111 50 million requests per day design. breakdown: ~ 600 req/sec average, peaking at 3,000+ req/sec. edge: cloudfront + waf for global caching and l7 protection. api layer: regional api gateway with caching enabled and rate-limiting throttling. compute: eks auto-scaled via karpenter / hpa, or lambda behind alb. caching: elasticache redis offloading read traffic. database: aurora multi-az with read replicas, or dynamodb with auto-scaling / on-demand capacity. async decoupling: sqs/eventbridge buffering non-critical writes.">
+    <div class="question"><span>Q111</span><h3>50 million requests per day design.</h3></div>
+    <div class="answer"><div class="answer-row"><strong>Breakdown</strong><span>~ 600 req/sec average, peaking at 3,000+ req/sec.</span></div>
+<div class="answer-row"><strong>Edge</strong><span>CloudFront + WAF for global caching and L7 protection.</span></div>
+<div class="answer-row"><strong>API Layer</strong><span>Regional API Gateway with caching enabled and rate-limiting throttling.</span></div>
+<div class="answer-row"><strong>Compute</strong><span>EKS auto-scaled via Karpenter / HPA, or Lambda behind ALB.</span></div>
+<div class="answer-row"><strong>Caching</strong><span>ElastiCache Redis offloading read traffic.</span></div>
+<div class="answer-row"><strong>Database</strong><span>Aurora Multi-AZ with Read Replicas, or DynamoDB with Auto-Scaling / On-Demand capacity.</span></div>
+<div class="answer-row"><strong>Async Decoupling</strong><span>SQS/EventBridge buffering non-critical writes.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q112 a lambda function times out. how would you troubleshoot it?  check cloudwatch logs to pinpoint the exact code line/call timing out. inspect downstream dependencies (e.g., slow database queries, third-party api response times). verify vpc eni networking, subnet routing, and nat gateway configuration. increase memory allocation (which proportionally increases cpu allocation) or adjust the timeout configuration parameter.">
+    <div class="question"><span>Q112</span><h3>A Lambda function times out. How would you troubleshoot it?</h3></div>
+    <div class="answer"><p> Check CloudWatch Logs to pinpoint the exact code line/call timing out. Inspect downstream dependencies (e.g., slow database queries, third-party API response times). Verify VPC ENI networking, subnet routing, and NAT Gateway configuration. Increase memory allocation (which proportionally increases CPU allocation) or adjust the timeout configuration parameter.</p></div>
+  </article>
+  <article class="qa-card" data-search="q113 terraform deployment fails halfway. what do you do?  review pipeline logs to identify the exact failed resource block. inspect local/remote state using terraform state list to confirm what was created vs. what failed. check aws console to see if a partially configured resource exists. run terraform refresh or target-import/taint the corrupted resource (terraform taint &lt;resource_name&gt;), fix the code root cause, and re-run terraform plan/apply.">
+    <div class="question"><span>Q113</span><h3>Terraform deployment fails halfway. What do you do?</h3></div>
+    <div class="answer"><p> Review pipeline logs to identify the exact failed resource block. Inspect local/remote state using terraform state list to confirm what was created vs. what failed. Check AWS Console to see if a partially configured resource exists. Run terraform refresh or target-import/taint the corrupted resource (terraform taint &lt;resource_name&gt;), fix the code root cause, and re-run terraform plan/apply.</p></div>
+  </article>
+  <article class="qa-card" data-search="q114 github actions deployment fails in production. how do you recover? trigger an automated rollback to the last known stable git release tag / docker container image tag. halt the pipeline, pull deployment logs, fix the bug on a hotfix branch, validate in lower environments, and re-deploy.">
+    <div class="question"><span>Q114</span><h3>GitHub Actions deployment fails in production. How do you recover?</h3></div>
+    <div class="answer"><p>Trigger an automated rollback to the last known stable Git release tag / Docker container image tag. Halt the pipeline, pull deployment logs, fix the bug on a hotfix branch, validate in lower environments, and re-deploy.</p></div>
+  </article>
+  <article class="qa-card" data-search="q115 an api gateway starts returning 429 errors. what is your investigation? http 429 means &quot;too many requests&quot; (throttling). inspect cloudwatch metrics (4xxerror, throttledrequests). check if global account concurrency limits or specific stage/usage plan limits were exceeded. inspect waf logs to check for malicious traffic or ddos attempts. adjust rate/burst limits on usage plans, or enable api gateway stage caching.">
+    <div class="question"><span>Q115</span><h3>An API Gateway starts returning 429 errors. What is your investigation?</h3></div>
+    <div class="answer"><p>HTTP 429 means &quot;Too Many Requests&quot; (Throttling). Inspect CloudWatch metrics (4XXError, ThrottledRequests). Check if global account concurrency limits or specific stage/usage plan limits were exceeded. Inspect WAF logs to check for malicious traffic or DDoS attempts. Adjust rate/burst limits on usage plans, or enable API Gateway stage caching.</p></div>
+  </article>
+  <article class="qa-card" data-search="q116 aws costs increase by 40% overnight. how do you investigate?  check aws cost explorer and cost anomaly detection alerts to isolate the specific service, account, and region. review cloudtrail audit logs for resources provisioned overnight (e.g., runaway auto-scaling, unmanaged gpu instances, large database backups). check nat gateway data transfer usage or un-deleted benchmark environments.">
+    <div class="question"><span>Q116</span><h3>AWS costs increase by 40% overnight. How do you investigate?</h3></div>
+    <div class="answer"><p> Check AWS Cost Explorer and Cost Anomaly Detection alerts to isolate the specific service, account, and region. Review CloudTrail audit logs for resources provisioned overnight (e.g., runaway auto-scaling, unmanaged GPU instances, large database backups). Check NAT Gateway data transfer usage or un-deleted benchmark environments.</p></div>
+  </article>
+  <article class="qa-card" data-search="q117 your application needs zero downtime during deployment. what architecture would you use?  compute: eks/ecs running rolling updates or blue/green deployments behind an alb with health checks and long connection draining. database: backward-compatible database schema migrations using the expand/contract pattern (ensure new code works with old schema and vice versa before dropping old columns).">
+    <div class="question"><span>Q117</span><h3>Your application needs zero downtime during deployment. What architecture would you use?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>Compute</strong><span>EKS/ECS running Rolling Updates or Blue/Green deployments behind an ALB with health checks and long connection draining.</span></div>
+<div class="answer-row"><strong>Database</strong><span>Backward-compatible database schema migrations using the Expand/Contract pattern (ensure new code works with old schema and vice versa before dropping old columns).</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q118 migrating 200 applications to aws. what strategy would you propose?  assess: use aws application discovery service and migration evaluator to portfolio-map dependencies. mobilize: build an aws landing zone / control tower multi-account structure, core automated terraform modules, and ci/cd foundations. migrate (wave approach): categorize apps via the 6 rs. shift low-risk apps first using automated migration waves (aws mgn/dms) before refactoring core systems.">
+    <div class="question"><span>Q118</span><h3>Migrating 200 applications to AWS. What strategy would you propose?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>Assess</strong><span>Use AWS Application Discovery Service and Migration Evaluator to portfolio-map dependencies.</span></div>
+<div class="answer-row"><strong>Mobilize</strong><span>Build an AWS Landing Zone / Control Tower multi-account structure, core automated Terraform modules, and CI/CD foundations.</span></div>
+<div class="answer-row"><strong>Migrate (Wave approach)</strong><span>Categorize apps via the 6 Rs. Shift low-risk apps first using automated migration waves (AWS MGN/DMS) before refactoring core systems.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q119 security asks for immediate jwt token revocation with api gateway authorizer caching enabled. how do you balance security and performance? maintain a token revocation blacklist in an elasticache redis cluster. configure the lambda authorizer to perform a sub-millisecond check against redis on every call while caching the authorized iam policy for a short ttl (e.g., 30-60 seconds). provide an admin api to flush/invalidate the authorizer cache instantly when a high-risk revocation occurs.">
+    <div class="question"><span>Q119</span><h3>Security asks for immediate JWT token revocation with API Gateway authorizer caching enabled. How do you balance security and performance?</h3></div>
+    <div class="answer"><p>Maintain a token revocation blacklist in an ElastiCache Redis cluster. Configure the Lambda Authorizer to perform a sub-millisecond check against Redis on every call while caching the authorized IAM policy for a short TTL (e.g., 30-60 seconds). Provide an admin API to flush/invalidate the authorizer cache instantly when a high-risk revocation occurs.</p></div>
+  </article>
+  <article class="qa-card" data-search="q120 design a secure enterprise platform using route 53, cloudfront, waf, api gateway, lambda, eks, aurora, elasticache, secrets manager, and kms.  edge: route 53 routes traffic to cloudfront protected by aws waf (rate limiting, owasp rules). api layer: requests hit api gateway, invoking a custom lambda authorizer that validates jwt tokens and fetches keys encrypted via kms. compute tier: api gateway forwards validated traffic through private integrations to eks microservices running in private subnets. storage &amp; caching: microservices read/write to elasticache redis and aurora postgresql multi-az placed in isolated subnets. secrets management: database credentials and api keys are stored in aws secrets manager (encrypted with a kms cmk) and mounted into eks pods using the secrets store csi driver.">
+    <div class="question"><span>Q120</span><h3>Design a secure enterprise platform using Route 53, CloudFront, WAF, API Gateway, Lambda, EKS, Aurora, ElastiCache, Secrets Manager, and KMS.</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>Edge</strong><span>Route 53 routes traffic to CloudFront protected by AWS WAF (rate limiting, OWASP rules).</span></div>
+<div class="answer-row"><strong>API Layer</strong><span>Requests hit API Gateway, invoking a custom Lambda Authorizer that validates JWT tokens and fetches keys encrypted via KMS.</span></div>
+<div class="answer-row"><strong>Compute Tier</strong><span>API Gateway forwards validated traffic through private integrations to EKS microservices running in Private Subnets.</span></div>
+<div class="answer-row"><strong>Storage &amp; Caching</strong><span>Microservices read/write to ElastiCache Redis and Aurora PostgreSQL Multi-AZ placed in Isolated Subnets.</span></div>
+<div class="answer-row"><strong>Secrets Management</strong><span>Database credentials and API keys are stored in AWS Secrets Manager (encrypted with a KMS CMK) and mounted into EKS pods using the Secrets Store CSI Driver.</span></div></div>
+  </article>
+</section>
+<section class="section" id="section-13">
+  <div class="section-heading"><span>13</span><h2>Questions Relevant to OneSource QA Platform / AWS Architectural Experience</h2><em>10 questions</em></div>
+  <article class="qa-card" data-search="q121 explain the architecture of your onesource qa platform. enterprise qa platform designed for scalable test execution and analytics: frontend/api: cloudfront -&gt; api gateway protected by custom lambda authorizer and waf. execution compute: microservices hosted on eks for long-running execution orchestrations, with lambda handling event-driven processing tasks. storage: aurora postgresql for test state/metadata; s3 (kms encrypted) for execution logs and report artifacts. infrastructure: provisioned using modular terraform environments and deployed via github actions reusable workflows.">
+    <div class="question"><span>Q121</span><h3>Explain the architecture of your OneSource QA platform.</h3></div>
+    <div class="answer"><h4>Enterprise QA platform designed for scalable test execution and analytics</h4>
+<div class="answer-row"><strong>Frontend/API</strong><span>CloudFront -&gt; API Gateway protected by custom Lambda Authorizer and WAF.</span></div>
+<div class="answer-row"><strong>Execution Compute</strong><span>Microservices hosted on EKS for long-running execution orchestrations, with Lambda handling event-driven processing tasks.</span></div>
+<div class="answer-row"><strong>Storage</strong><span>Aurora PostgreSQL for test state/metadata; S3 (KMS encrypted) for execution logs and report artifacts.</span></div>
+<div class="answer-row"><strong>Infrastructure</strong><span>Provisioned using modular Terraform environments and deployed via GitHub Actions reusable workflows.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q122 why did you choose api gateway with lambda authorizers? provided flexible, centralized custom jwt authentication logic and corporate idp validation outside the application microservices. allowed fine-grained role-based access control (rbac), tenant rate-limiting, and central policy enforcement at the entry point of the platform.">
+    <div class="question"><span>Q122</span><h3>Why did you choose API Gateway with Lambda authorizers?</h3></div>
+    <div class="answer"><p>Provided flexible, centralized custom JWT authentication logic and corporate IdP validation outside the application microservices. Allowed fine-grained role-based access control (RBAC), tenant rate-limiting, and central policy enforcement at the entry point of the platform.</p></div>
+  </article>
+  <article class="qa-card" data-search="q123 how did you implement github actions reusable workflows? created a central infrastructure workflow repo containing templated workflows (workflow_call). standardized build, test, static analysis (checkov, tfsec), docker image scanning (trivy), and helm deployments across 20+ microservice repositories, reducing code duplication and ensuring security compliance.">
+    <div class="question"><span>Q123</span><h3>How did you implement GitHub Actions reusable workflows?</h3></div>
+    <div class="answer"><p>Created a central infrastructure workflow repo containing templated workflows (workflow_call). Standardized build, test, static analysis (Checkov, tfsec), Docker image scanning (Trivy), and Helm deployments across 20+ microservice repositories, reducing code duplication and ensuring security compliance.</p></div>
+  </article>
+  <article class="qa-card" data-search="q124 how did you organize terraform modules across environments? separated into core modules (modules/eks, modules/rds, modules/vpc) stored in a central repository, and root modules per environment (dev, qa, prod). root modules invoked version-pinned core modules using remote state backends stored in isolated s3 buckets with dynamodb locking.">
+    <div class="question"><span>Q124</span><h3>How did you organize Terraform modules across environments?</h3></div>
+    <div class="answer"><p>Separated into Core Modules (modules/eks, modules/rds, modules/vpc) stored in a central repository, and Root Modules per environment (dev, qa, prod). Root modules invoked version-pinned core modules using remote state backends stored in isolated S3 buckets with DynamoDB locking.</p></div>
+  </article>
+  <article class="qa-card" data-search="q125 why did you use eks for some services and lambda for others?  eks: used for continuous, long-running, containerized qa test runner orchestrations, stateful execution services, and tools relying on the kubernetes ecosystem. lambda: used for rapid, event-driven tasks (webhooks, report generation, artifact conversion, token validation) requiring zero idle compute cost.">
+    <div class="question"><span>Q125</span><h3>Why did you use EKS for some services and Lambda for others?</h3></div>
+    <div class="answer"><p></p>
+<div class="answer-row"><strong>EKS</strong><span>Used for continuous, long-running, containerized QA test runner orchestrations, stateful execution services, and tools relying on the Kubernetes ecosystem.</span></div>
+<div class="answer-row"><strong>Lambda</strong><span>Used for rapid, event-driven tasks (webhooks, report generation, artifact conversion, token validation) requiring zero idle compute cost.</span></div></div>
+  </article>
+  <article class="qa-card" data-search="q126 how did you implement jwt validation and authorization? implemented a custom api gateway lambda authorizer. the authorizer intercepted incoming bearer tokens, fetched public jwks keys from the identity provider, verified token signatures and claims, checked local permissions, and returned a dynamic iam policy caching the authorized access scope.">
+    <div class="question"><span>Q126</span><h3>How did you implement JWT validation and authorization?</h3></div>
+    <div class="answer"><p>Implemented a custom API Gateway Lambda Authorizer. The authorizer intercepted incoming Bearer tokens, fetched public JWKS keys from the Identity Provider, verified token signatures and claims, checked local permissions, and returned a dynamic IAM policy caching the authorized access scope.</p></div>
+  </article>
+  <article class="qa-card" data-search="q127 how did you secure secrets and encryption using kms and secrets manager? provisioned customer managed keys (cmks) in kms for encrypting s3 objects, ebs volumes, and aurora databases. secrets manager stored database credentials and external api tokens. mounted secrets into eks pods dynamically using the aws secrets store csi driver, avoiding secrets on disk or in environment variables.">
+    <div class="question"><span>Q127</span><h3>How did you secure secrets and encryption using KMS and Secrets Manager?</h3></div>
+    <div class="answer"><p>Provisioned Customer Managed Keys (CMKs) in KMS for encrypting S3 objects, EBS volumes, and Aurora databases. Secrets Manager stored database credentials and external API tokens. Mounted secrets into EKS pods dynamically using the AWS Secrets Store CSI Driver, avoiding secrets on disk or in environment variables.</p></div>
+  </article>
+  <article class="qa-card" data-search="q128 how did you optimize aws costs for the platform? adopted compute savings plans for baseline compute; utilized eks spot instances for non-production environments and batch test runner pods; configured s3 lifecycle rules to archive old test reports to glacier; auto-scaled dev node groups down during off-hours; and right-sized aurora db instances.">
+    <div class="question"><span>Q128</span><h3>How did you optimize AWS costs for the platform?</h3></div>
+    <div class="answer"><p>Adopted Compute Savings Plans for baseline compute; utilized EKS Spot Instances for non-production environments and batch test runner pods; configured S3 Lifecycle rules to archive old test reports to Glacier; auto-scaled dev node groups down during off-hours; and right-sized Aurora DB instances.</p></div>
+  </article>
+  <article class="qa-card" data-search="q129 describe a production incident you resolved. resolved an issue where api gateway was returning 504 gateway timeouts during concurrent test execution runs. used aws x-ray traces to isolate the bottleneck to aurora postgresql database connection pool exhaustion. resolved it by deploying rds proxy for connection pooling and tuning elasticache redis cache ttls to reduce direct database queries.">
+    <div class="question"><span>Q129</span><h3>Describe a production incident you resolved.</h3></div>
+    <div class="answer"><p>Resolved an issue where API Gateway was returning 504 Gateway Timeouts during concurrent test execution runs. Used AWS X-Ray traces to isolate the bottleneck to Aurora PostgreSQL database connection pool exhaustion. Resolved it by deploying RDS Proxy for connection pooling and tuning ElastiCache Redis cache TTLs to reduce direct database queries.</p></div>
+  </article>
+  <article class="qa-card" data-search="q130 if you redesigned the platform today, what would you change? i would replace eks cluster autoscaler with karpenter for faster node provisioning times; introduce a service mesh (cilium/istio) for transparent mtls and fine-grained observability; and adopt eventbridge for asynchronous event-driven task routing across microservices.">
+    <div class="question"><span>Q130</span><h3>If you redesigned the platform today, what would you change?</h3></div>
+    <div class="answer"><p>I would replace EKS Cluster Autoscaler with Karpenter for faster node provisioning times; introduce a Service Mesh (Cilium/Istio) for transparent mTLS and fine-grained observability; and adopt EventBridge for asynchronous event-driven task routing across microservices.</p></div>
+  </article>
+</section>
+
+      </div>
+    </main>
+  </div>
+  <script>
+    const search = document.getElementById('search');
+    const count = document.getElementById('count');
+    const cards = Array.from(document.querySelectorAll('.qa-card'));
+    const sections = Array.from(document.querySelectorAll('.section'));
+    const total = cards.length;
+
+    function filterCards() {
+      const term = search.value.trim().toLowerCase();
+      let visible = 0;
+      cards.forEach((card) => {
+        const match = !term || card.dataset.search.includes(term);
+        card.classList.toggle('hidden', !match);
+        if (match) visible += 1;
+      });
+      sections.forEach((section) => {
+        const hasVisibleCard = section.querySelector('.qa-card:not(.hidden)');
+        section.classList.toggle('hidden', Boolean(term) && !hasVisibleCard);
+      });
+      count.textContent = `Showing ${visible} of ${total} questions`;
+    }
+
+    search.addEventListener('input', filterCards);
+  </script>
+</body>
+</html>
