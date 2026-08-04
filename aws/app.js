@@ -1,191 +1,218 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // DOM Elements
-    const navMenu = document.getElementById('navMenu');
-    const questionsContainer = document.getElementById('questionsContainer');
-    const searchInput = document.getElementById('searchInput');
-    const noResults = document.getElementById('noResults');
-    const themeToggle = document.getElementById('themeToggle');
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const sidebar = document.querySelector('.sidebar');
-    const introSection = document.getElementById('introSection');
-    
-    let activeSectionId = null;
+document.addEventListener('DOMContentLoaded', function() {
+    var navMenu = document.getElementById('navMenu');
+    var questionsContainer = document.getElementById('questionsContainer');
+    var searchInput = document.getElementById('searchInput');
+    var noResults = document.getElementById('noResults');
+    var themeToggle = document.getElementById('themeToggle');
+    var mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    var sidebar = document.querySelector('.sidebar');
+    var introSection = document.getElementById('introSection');
+
+    var activeSectionId = null;
 
     // Initialize Theme
-    const initTheme = () => {
-        const savedTheme = localStorage.getItem('aws_theme') || 'dark';
+    function initTheme() {
+        var savedTheme = localStorage.getItem('aws_theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
-    };
+    }
 
-    const updateThemeIcon = (theme) => {
-        const sun = document.querySelector('.sun-icon');
-        const moon = document.querySelector('.moon-icon');
+    function updateThemeIcon(theme) {
+        var sun = document.querySelector('.sun-icon');
+        var moon = document.querySelector('.moon-icon');
         if (theme === 'dark') {
-            sun.style.display = 'block';
-            moon.style.display = 'none';
+            if (sun) sun.style.display = 'block';
+            if (moon) moon.style.display = 'none';
         } else {
-            sun.style.display = 'none';
-            moon.style.display = 'block';
+            if (sun) sun.style.display = 'none';
+            if (moon) moon.style.display = 'block';
         }
-    };
+    }
 
-    themeToggle.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('aws_theme', newTheme);
-        updateThemeIcon(newTheme);
-    });
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            var currentTheme = document.documentElement.getAttribute('data-theme');
+            var newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('aws_theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+    }
 
     // Mobile Menu Toggle
-    mobileMenuBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-    });
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('open');
+        });
+    }
 
-    // Close sidebar when clicking outside on mobile
-    document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 1024 && 
-            !sidebar.contains(e.target) && 
-            !mobileMenuBtn.contains(e.target)) {
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 1024 && sidebar &&
+            !sidebar.contains(e.target) &&
+            mobileMenuBtn && !mobileMenuBtn.contains(e.target)) {
             sidebar.classList.remove('open');
         }
     });
 
     // Render Navigation
-    const renderNav = () => {
-        if (!window.interviewData) return;
-        
+    function renderNav() {
+        if (!window.interviewData || !navMenu) return;
+
         navMenu.innerHTML = '';
-        window.interviewData.forEach((section, index) => {
-            const navItem = document.createElement('div');
+        window.interviewData.forEach(function(section) {
+            var navItem = document.createElement('div');
             navItem.className = 'nav-item';
-            navItem.dataset.id = section.id;
-            
-            navItem.innerHTML = `
-                <span>${section.title}</span>
-                <span class="nav-count">${section.questions.length}</span>
-            `;
-            
-            navItem.addEventListener('click', () => {
-                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            navItem.setAttribute('data-id', section.id);
+
+            var titleSpan = document.createElement('span');
+            titleSpan.textContent = section.title;
+
+            var countSpan = document.createElement('span');
+            countSpan.className = 'nav-count';
+            countSpan.textContent = section.questions.length;
+
+            navItem.appendChild(titleSpan);
+            navItem.appendChild(countSpan);
+
+            navItem.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(function(el) {
+                    el.classList.remove('active');
+                });
                 navItem.classList.add('active');
                 activeSectionId = section.id;
-                renderQuestions(section.id);
-                if (window.innerWidth <= 1024) {
+                renderQuestions(section.id, '');
+                if (window.innerWidth <= 1024 && sidebar) {
                     sidebar.classList.remove('open');
                 }
-                searchInput.value = ''; // clear search when navigating
-                
-                // Hide intro section when a category is selected
-                if(introSection) introSection.style.display = 'none';
+                if (searchInput) searchInput.value = '';
+                if (introSection) introSection.style.display = 'none';
             });
-            
+
             navMenu.appendChild(navItem);
         });
 
-        // Auto-select the first section on initial load
-        if (window.interviewData.length > 0 && !activeSectionId) {
-            const firstNav = navMenu.querySelector('.nav-item');
+        // Auto-select the first section on load
+        if (window.interviewData.length > 0) {
+            var firstNav = navMenu.querySelector('.nav-item');
             if (firstNav) {
                 firstNav.click();
             }
         }
-    };
+    }
 
-    // Highlight text helper
-    const highlightText = (text, term) => {
+    // Highlight matching search text
+    function highlightText(text, term) {
         if (!term) return text;
-        const regex = new RegExp(`(${term.replace(/[.*+?^$\\{\\}()|[\\]\\\\]/g, '\\\\$&')})`, 'gi');
-        return text.replace(regex, '<mark>$1</mark>');
-    };
+        try {
+            var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            var regex = new RegExp('(' + escaped + ')', 'gi');
+            return text.replace(regex, '<mark>$1</mark>');
+        } catch(e) {
+            return text;
+        }
+    }
 
     // Render Questions
-    const renderQuestions = (sectionId = null, searchTerm = '') => {
-        if (!window.interviewData) return;
-        
+    function renderQuestions(sectionId, searchTerm) {
+        if (!window.interviewData || !questionsContainer) return;
+
         questionsContainer.innerHTML = '';
-        let hasResults = false;
-        
-        const sectionsToRender = sectionId 
-            ? window.interviewData.filter(s => s.id === sectionId)
+        var hasResults = false;
+
+        var sectionsToRender = sectionId
+            ? window.interviewData.filter(function(s) { return s.id === sectionId; })
             : window.interviewData;
 
-        sectionsToRender.forEach(section => {
-            const matchedQuestions = section.questions.filter(q => {
+        sectionsToRender.forEach(function(section) {
+            var matchedQuestions = section.questions.filter(function(q) {
                 if (!searchTerm) return true;
-                const searchLower = searchTerm.toLowerCase();
-                return q.question.toLowerCase().includes(searchLower) || 
-                       q.answer.toLowerCase().includes(searchLower);
+                var lower = searchTerm.toLowerCase();
+                return q.question.toLowerCase().indexOf(lower) !== -1 ||
+                       q.answer.toLowerCase().indexOf(lower) !== -1;
             });
 
             if (matchedQuestions.length === 0) return;
             hasResults = true;
 
-            const sectionEl = document.createElement('div');
+            var sectionEl = document.createElement('div');
             sectionEl.className = 'section-container';
-            
-            // Only show section title if searching globally or it's a specific section
+
             if (!sectionId || searchTerm) {
-                const titleEl = document.createElement('h2');
+                var titleEl = document.createElement('h2');
                 titleEl.className = 'section-title';
                 titleEl.textContent = section.title;
                 sectionEl.appendChild(titleEl);
             }
 
-            matchedQuestions.forEach(q => {
-                const card = document.createElement('div');
+            matchedQuestions.forEach(function(q) {
+                var card = document.createElement('div');
                 card.className = 'qna-card';
-                
-                // If searching, auto-expand cards
+
                 if (searchTerm) card.classList.add('expanded');
 
-                card.innerHTML = `
-                    <button class="question-btn">
-                        <span class="question-text">${q.id}. ${highlightText(q.question, searchTerm)}</span>
-                        <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </button>
-                    <div class="answer-content">
-                        ${highlightText(q.answer, searchTerm)}
-                    </div>
-                `;
+                var btn = document.createElement('button');
+                btn.className = 'question-btn';
 
-                const btn = card.querySelector('.question-btn');
-                btn.addEventListener('click', () => {
+                var qText = document.createElement('span');
+                qText.className = 'question-text';
+                qText.innerHTML = q.id + '. ' + highlightText(q.question, searchTerm);
+
+                var chevron = document.createElement('svg');
+                chevron.setAttribute('class', 'toggle-icon');
+                chevron.setAttribute('viewBox', '0 0 24 24');
+                chevron.setAttribute('fill', 'none');
+                chevron.setAttribute('stroke', 'currentColor');
+                chevron.setAttribute('stroke-width', '2');
+                chevron.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
+
+                btn.appendChild(qText);
+                btn.appendChild(chevron);
+
+                var answerDiv = document.createElement('div');
+                answerDiv.className = 'answer-content';
+                answerDiv.innerHTML = highlightText(q.answer, searchTerm);
+
+                btn.addEventListener('click', function() {
                     card.classList.toggle('expanded');
                 });
 
+                card.appendChild(btn);
+                card.appendChild(answerDiv);
                 sectionEl.appendChild(card);
             });
 
             questionsContainer.appendChild(sectionEl);
         });
 
-        noResults.style.display = hasResults ? 'none' : 'block';
-    };
-
-    // Search functionality
-    searchInput.addEventListener('input', (e) => {
-        const term = e.target.value.trim();
-        if (term) {
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            activeSectionId = null;
-            if(introSection) introSection.style.display = 'none';
-            renderQuestions(null, term);
-        } else {
-            // Restore previous state if search is cleared
-            if (activeSectionId) {
-                document.querySelector(\`.nav-item[data-id="\${activeSectionId}"]\`)?.classList.add('active');
-                renderQuestions(activeSectionId);
-            } else {
-                questionsContainer.innerHTML = '';
-                if(introSection) introSection.style.display = 'block';
-            }
-            noResults.style.display = 'none';
+        if (noResults) {
+            noResults.style.display = hasResults ? 'none' : 'block';
         }
-    });
+    }
+
+    // Search
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            var term = e.target.value.trim();
+            if (term) {
+                document.querySelectorAll('.nav-item').forEach(function(el) {
+                    el.classList.remove('active');
+                });
+                activeSectionId = null;
+                if (introSection) introSection.style.display = 'none';
+                renderQuestions(null, term);
+            } else {
+                if (activeSectionId) {
+                    var activeNavItem = navMenu.querySelector('.nav-item[data-id="' + activeSectionId + '"]');
+                    if (activeNavItem) activeNavItem.classList.add('active');
+                    renderQuestions(activeSectionId, '');
+                } else {
+                    questionsContainer.innerHTML = '';
+                    if (introSection) introSection.style.display = 'block';
+                }
+                if (noResults) noResults.style.display = 'none';
+            }
+        });
+    }
 
     // Initialize
     initTheme();
