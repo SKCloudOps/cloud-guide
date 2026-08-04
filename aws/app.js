@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Theme
     const initTheme = () => {
-        const savedTheme = localStorage.getItem('theme') || 'dark';
+        const savedTheme = localStorage.getItem('aws_theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
     };
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+        localStorage.setItem('aws_theme', newTheme);
         updateThemeIcon(newTheme);
     });
 
