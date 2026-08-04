@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Interview Guide | SKCloudOps</title>
+  <meta name="description" content="Comprehensive cloud architect interview preparation covering AWS, Kubernetes/EKS, DevOps, Security, Networking, Databases, Serverless, and more.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: rgba(99, 102, 241, 0.1);
+      --bg-main: #0f1117;
+      --bg-surface: #1a1d2e;
+      --bg-card: #1e2235;
+      --bg-sidebar: #13151f;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: #252840;
+      --border-hover: #6366f1;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+      --radius: 12px;
+      --sidebar-w: 280px;
+
+      --cat-aws: #ec7211;
+      --cat-k8s: #326ce5;
+      --cat-devops: #22c55e;
+      --cat-security: #ef4444;
+      --cat-ai: #a855f7;
+      --cat-arch: #f59e0b;
+      --cat-other: #64748b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg-main);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      z-index: 100;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .sidebar-logo {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-logo .brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .brand-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--primary), #818cf8);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .brand-icon svg { width: 20px; height: 20px; color: #fff; }
+    .brand-text { line-height: 1.2; }
+    .brand-text strong { font-size: 0.95rem; color: var(--text-primary); display: block; }
+    .brand-text span { font-size: 0.75rem; color: var(--text-muted); }
+
+    .sidebar-search {
+      padding: 16px 16px 8px;
+    }
+    .sidebar-search input {
+      width: 100%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 12px 9px 34px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 10px center;
+      transition: border-color 0.2s;
+    }
+    .sidebar-search input:focus { border-color: var(--primary); }
+    .sidebar-search input::placeholder { color: var(--text-muted); }
+
+    .nav-section { padding: 8px 0; }
+    .nav-section-title {
+      padding: 8px 20px 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 20px;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.87rem;
+      font-weight: 500;
+      transition: all 0.15s ease;
+      border-left: 3px solid transparent;
+    }
+    .nav-link:hover {
+      background: var(--primary-light);
+      color: var(--text-primary);
+      border-left-color: var(--primary);
+    }
+    .nav-link.active {
+      background: var(--primary-light);
+      color: var(--primary);
+      border-left-color: var(--primary);
+    }
+    .nav-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .nav-badge {
+      margin-left: auto;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 10px;
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    /* ── Main ── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      min-height: 100vh;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #0f1117 0%, #1a1040 50%, #0f1117 100%);
+      padding: 80px 48px 60px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #f8fafc 30%, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 640px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .stat { text-align: left; }
+    .stat-num {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Content grid */
+    .content {
+      padding: 48px;
+    }
+
+    .section-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 24px;
+    }
+    .section-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-icon svg { width: 18px; height: 18px; }
+    .section-header h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .section-header p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .guide-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .guide-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--card-accent, var(--primary));
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .guide-card:hover {
+      border-color: var(--card-accent, var(--primary));
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .guide-card:hover::before { opacity: 1; }
+
+    .card-top {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 12px;
+    }
+    .card-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.2rem;
+    }
+    .card-arrow {
+      width: 20px; height: 20px;
+      color: var(--text-muted);
+      transition: all 0.2s;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .guide-card:hover .card-arrow { color: var(--card-accent, var(--primary)); transform: translate(2px,-2px); }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+    .card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .card-tags {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: auto;
+    }
+    .tag {
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    /* Featured cards */
+    .featured-card {
+      background: linear-gradient(135deg, var(--bg-card) 0%, rgba(99,102,241,0.08) 100%);
+      border-color: rgba(99,102,241,0.3);
+    }
+
+    /* Mobile hamburger */
+    .hamburger {
+      display: none;
+      position: fixed; top: 16px; left: 16px; z-index: 200;
+      background: var(--bg-surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px; cursor: pointer;
+    }
+    .hamburger svg { width: 20px; height: 20px; color: var(--text-primary); display: block; }
+    .sidebar-overlay {
+      display: none;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 90;
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.open { display: block; }
+      .hamburger { display: flex; }
+      .main { margin-left: 0; }
+      .hero { padding: 60px 24px 40px; }
+      .hero h1 { font-size: 2rem; }
+      .content { padding: 24px; }
+    }
+
+    /* Search highlight */
+    .guide-card.hidden { display: none; }
+
+    /* Divider */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 0 48px;
+    }
+
+    /* Footer */
+    footer {
+      padding: 32px 48px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Mobile hamburger -->
+<button class="hamburger" id="hamburger" aria-label="Open menu">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+  </svg>
+</button>
+<div class="sidebar-overlay" id="overlay"></div>
+
+<!-- ══════ SIDEBAR ══════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <a class="brand" href="index.html">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+          <polyline points="2 17 12 22 22 17"/>
+          <polyline points="2 12 12 17 22 12"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <strong>Cloud Interview Guide</strong>
+        <span>SKCloudOps</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="sidebar-search">
+    <input type="text" id="sidebarSearch" placeholder="Filter guides..." autocomplete="off">
+  </div>
+
+  <nav id="sidebarNav">
+    <!-- Featured / Interactive Guides -->
+    <div class="nav-section">
+      <div class="nav-section-title">⭐ Interactive Guides</div>
+      <a class="nav-link" href="eks/index.html" data-filter="kubernetes eks senior architect">
+        <span class="nav-dot" style="background:#326ce5;"></span>Kubernetes &amp; EKS Guide
+        <span class="nav-badge">280 Q</span>
+      </a>
+      <a class="nav-link" href="aws/index.html" data-filter="aws senior architect solutions">
+        <span class="nav-dot" style="background:#ec7211;"></span>AWS Architect Guide
+        <span class="nav-badge">110 Q</span>
+      </a>
+      <a class="nav-link" href="cca/index.html" data-filter="cca cloud">
+        <span class="nav-dot" style="background:#6366f1;"></span>CCA Study Portal
+      </a>
+    </div>
+
+    <!-- AWS -->
+    <div class="nav-section">
+      <div class="nav-section-title">☁️ AWS</div>
+      <a class="nav-link" href="aws.html" data-filter="aws cloud">
+        <span class="nav-dot" style="background:#ec7211;"></span>AWS Overview
+      </a>
+      <a class="nav-link" href="aws-100.html" data-filter="aws 100 questions">
+        <span class="nav-dot" style="background:#ec7211;"></span>AWS 100 Questions
+      </a>
+      <a class="nav-link" href="aws-compute.html" data-filter="aws compute ec2 lambda">
+        <span class="nav-dot" style="background:#ec7211;"></span>AWS Compute
+      </a>
+      <a class="nav-link" href="aws-security-flow.html" data-filter="aws security">
+        <span class="nav-dot" style="background:#ef4444;"></span>AWS Security Flow
+      </a>
+      <a class="nav-link" href="compute.html" data-filter="compute cloud">
+        <span class="nav-dot" style="background:#ec7211;"></span>Compute Deep Dive
+      </a>
+      <a class="nav-link" href="compute-article.html" data-filter="compute article">
+        <span class="nav-dot" style="background:#ec7211;"></span>Compute Article
+      </a>
+      <a class="nav-link" href="compute-aws.html" data-filter="compute aws">
+        <span class="nav-dot" style="background:#ec7211;"></span>Compute AWS Patterns
+      </a>
+      <a class="nav-link" href="cost.html" data-filter="cost optimization aws">
+        <span class="nav-dot" style="background:#22c55e;"></span>Cost Optimization
+      </a>
+      <a class="nav-link" href="serverless.html" data-filter="serverless lambda api gateway">
+        <span class="nav-dot" style="background:#ec7211;"></span>Serverless
+      </a>
+      <a class="nav-link" href="storage.html" data-filter="storage s3 ebs efs">
+        <span class="nav-dot" style="background:#f59e0b;"></span>Storage
+      </a>
+      <a class="nav-link" href="databases.html" data-filter="databases rds dynamodb aurora">
+        <span class="nav-dot" style="background:#f59e0b;"></span>Databases
+      </a>
+      <a class="nav-link" href="networking.html" data-filter="networking vpc route53">
+        <span class="nav-dot" style="background:#3b82f6;"></span>Networking
+      </a>
+      <a class="nav-link" href="security.html" data-filter="security iam kms">
+        <span class="nav-dot" style="background:#ef4444;"></span>Security
+      </a>
+      <a class="nav-link" href="reinvent.html" data-filter="aws reinvent announcements">
+        <span class="nav-dot" style="background:#ec7211;"></span>AWS re:Invent
+      </a>
+    </div>
+
+    <!-- Kubernetes -->
+    <div class="nav-section">
+      <div class="nav-section-title">⎈ Kubernetes</div>
+      <a class="nav-link" href="kubernetes.html" data-filter="kubernetes k8s">
+        <span class="nav-dot" style="background:#326ce5;"></span>Kubernetes Guide
+      </a>
+      <a class="nav-link" href="eks-interview.html" data-filter="eks kubernetes interview">
+        <span class="nav-dot" style="background:#326ce5;"></span>EKS Interview Q&amp;A
+      </a>
+      <a class="nav-link" href="patch.html" data-filter="patch update kubernetes">
+        <span class="nav-dot" style="background:#326ce5;"></span>Patch Management
+      </a>
+      <a class="nav-link" href="streaming.html" data-filter="streaming kafka kinesis">
+        <span class="nav-dot" style="background:#326ce5;"></span>Streaming Architecture
+      </a>
+    </div>
+
+    <!-- DevOps & Platform -->
+    <div class="nav-section">
+      <div class="nav-section-title">🔧 DevOps &amp; Platform</div>
+      <a class="nav-link" href="devops.html" data-filter="devops cicd pipeline">
+        <span class="nav-dot" style="background:#22c55e;"></span>DevOps Guide
+      </a>
+      <a class="nav-link" href="devops-interview.html" data-filter="devops interview">
+        <span class="nav-dot" style="background:#22c55e;"></span>DevOps Interview Q&amp;A
+      </a>
+      <a class="nav-link" href="devopsagent.html" data-filter="devops agent ai">
+        <span class="nav-dot" style="background:#22c55e;"></span>DevOps Agent
+      </a>
+      <a class="nav-link" href="cicd-ansible-interview.html" data-filter="cicd ansible jenkins">
+        <span class="nav-dot" style="background:#22c55e;"></span>CI/CD &amp; Ansible
+      </a>
+      <a class="nav-link" href="git-docker-interview.html" data-filter="git docker containers">
+        <span class="nav-dot" style="background:#22c55e;"></span>Git &amp; Docker
+      </a>
+      <a class="nav-link" href="terraform-interview.html" data-filter="terraform iac infrastructure">
+        <span class="nav-dot" style="background:#7c3aed;"></span>Terraform
+      </a>
+      <a class="nav-link" href="vault-interview.html" data-filter="vault hashicorp secrets">
+        <span class="nav-dot" style="background:#f59e0b;"></span>HashiCorp Vault
+      </a>
+      <a class="nav-link" href="platform-interview.html" data-filter="platform engineering">
+        <span class="nav-dot" style="background:#22c55e;"></span>Platform Engineering
+      </a>
+    </div>
+
+    <!-- Architecture -->
+    <div class="nav-section">
+      <div class="nav-section-title">🏗️ Architecture</div>
+      <a class="nav-link" href="architecture.html" data-filter="architecture design patterns">
+        <span class="nav-dot" style="background:#f59e0b;"></span>Architecture Patterns
+      </a>
+      <a class="nav-link" href="interview-arch.html" data-filter="architecture interview">
+        <span class="nav-dot" style="background:#f59e0b;"></span>Architecture Interview
+      </a>
+      <a class="nav-link" href="enterprise-aws-arch.html" data-filter="enterprise aws architecture">
+        <span class="nav-dot" style="background:#f59e0b;"></span>Enterprise AWS Arch
+      </a>
+      <a class="nav-link" href="fault-tolerant-architecture.html" data-filter="fault tolerant ha resilience">
+        <span class="nav-dot" style="background:#ef4444;"></span>Fault Tolerant Arch
+      </a>
+      <a class="nav-link" href="fundamentals.html" data-filter="cloud fundamentals basics">
+        <span class="nav-dot" style="background:#6366f1;"></span>Cloud Fundamentals
+      </a>
+    </div>
+
+    <!-- AI & GenAI -->
+    <div class="nav-section">
+      <div class="nav-section-title">🤖 AI &amp; GenAI</div>
+      <a class="nav-link" href="genai.html" data-filter="genai generative ai llm">
+        <span class="nav-dot" style="background:#a855f7;"></span>GenAI Guide
+      </a>
+      <a class="nav-link" href="genai_interview_guide.html" data-filter="genai interview llm">
+        <span class="nav-dot" style="background:#a855f7;"></span>GenAI Interview
+      </a>
+      <a class="nav-link" href="rag.html" data-filter="rag retrieval augmented generation">
+        <span class="nav-dot" style="background:#a855f7;"></span>RAG Architecture
+      </a>
+      <a class="nav-link" href="llmops.html" data-filter="llmops mlops operations">
+        <span class="nav-dot" style="background:#a855f7;"></span>LLMOps
+      </a>
+      <a class="nav-link" href="autonomous-it-operations.html" data-filter="autonomous ai operations agentic">
+        <span class="nav-dot" style="background:#a855f7;"></span>Autonomous IT Ops
+      </a>
+      <a class="nav-link" href="enterprise-ai-assistant.html" data-filter="enterprise ai assistant chatbot">
+        <span class="nav-dot" style="background:#a855f7;"></span>Enterprise AI Assistant
+      </a>
+    </div>
+
+    <!-- Interview Q&A -->
+    <div class="nav-section">
+      <div class="nav-section-title">📝 Interview Q&amp;A</div>
+      <a class="nav-link" href="interview.html" data-filter="interview questions general">
+        <span class="nav-dot" style="background:#6366f1;"></span>General Interview
+      </a>
+      <a class="nav-link" href="qa.html" data-filter="qa questions answers cloud">
+        <span class="nav-dot" style="background:#6366f1;"></span>Q&amp;A Vol. 1
+      </a>
+      <a class="nav-link" href="qa2.html" data-filter="qa questions answers">
+        <span class="nav-dot" style="background:#6366f1;"></span>Q&amp;A Vol. 2
+      </a>
+      <a class="nav-link" href="qa3.html" data-filter="qa questions answers advanced">
+        <span class="nav-dot" style="background:#6366f1;"></span>Q&amp;A Vol. 3
+      </a>
+      <a class="nav-link" href="claude.html" data-filter="claude ai answers">
+        <span class="nav-dot" style="background:#a855f7;"></span>Claude Session
+      </a>
+      <a class="nav-link" href="claude-m1.html" data-filter="claude ai session">
+        <span class="nav-dot" style="background:#a855f7;"></span>Claude M1 Session
+      </a>
+      <a class="nav-link" href="ms.html" data-filter="microsoft azure cloud">
+        <span class="nav-dot" style="background:#0078d4;"></span>Microsoft / Azure
+      </a>
+      <a class="nav-link" href="fhdl.html" data-filter="fhidl deep learning ml">
+        <span class="nav-dot" style="background:#a855f7;"></span>FHDL Guide
+      </a>
+      <a class="nav-link" href="99.html" data-filter="99 questions cloud">
+        <span class="nav-dot" style="background:#6366f1;"></span>99 Cloud Questions
+      </a>
+      <a class="nav-link" href="akt.html" data-filter="akt cloud aws">
+        <span class="nav-dot" style="background:#6366f1;"></span>AKT Guide
+      </a>
+      <a class="nav-link" href="akt2.html" data-filter="akt2 cloud">
+        <span class="nav-dot" style="background:#6366f1;"></span>AKT Guide Vol. 2
+      </a>
+      <a class="nav-link" href="akt3.html" data-filter="akt3 cloud">
+        <span class="nav-dot" style="background:#6366f1;"></span>AKT Guide Vol. 3
+      </a>
+    </div>
+
+    <!-- CCA Portal -->
+    <div class="nav-section">
+      <div class="nav-section-title">📚 CCA Portal</div>
+      <a class="nav-link" href="cca/index.html" data-filter="cca cloud study">
+        <span class="nav-dot" style="background:#6366f1;"></span>CCA Home
+      </a>
+      <a class="nav-link" href="cca/cca.html" data-filter="cca full guide">
+        <span class="nav-dot" style="background:#6366f1;"></span>Full CCA Guide
+      </a>
+      <a class="nav-link" href="cca/topics.html" data-filter="cca topics">
+        <span class="nav-dot" style="background:#6366f1;"></span>CCA Topics
+      </a>
+      <a class="nav-link" href="cca/exam.html" data-filter="cca exam practice">
+        <span class="nav-dot" style="background:#6366f1;"></span>CCA Exam Practice
+      </a>
+      <a class="nav-link" href="cca/refs.html" data-filter="cca references">
+        <span class="nav-dot" style="background:#6366f1;"></span>CCA References
+      </a>
+    </div>
+  </nav>
+</aside>
+
+<!-- ══════ MAIN ══════ -->
+<main class="main">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-label">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Senior Architect Interview Prep
+    </div>
+    <h1>Cloud Interview Guide</h1>
+    <p>Comprehensive preparation for Senior Cloud Architect, Platform Engineer, and AWS Solutions Architect interviews. 60+ curated guides covering every domain.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">60+</div><div class="stat-label">Reference Guides</div></div>
+      <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Interview Questions</div></div>
+      <div class="stat"><div class="stat-num">12</div><div class="stat-label">Topic Domains</div></div>
+      <div class="stat"><div class="stat-num">2</div><div class="stat-label">Interactive Apps</div></div>
+    </div>
+  </section>
+
+  <div class="content">
+
+    <!-- Featured Interactive Guides -->
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(99,102,241,0.15);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+      </div>
+      <div>
+        <h2>Interactive Interview Guides</h2>
+        <p>Full-featured apps with search, categories, and architecture diagrams</p>
+      </div>
+    </div>
+
+    <div class="guide-grid" id="featuredGrid">
+
+      <a class="guide-card featured-card" href="eks/index.html" style="--card-accent:#326ce5;" data-tags="kubernetes eks platform">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(50,108,229,0.15); font-size:1.4rem;">⎈</div>
+          <svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </div>
+        <div>
+          <div class="card-title">Kubernetes &amp; Amazon EKS</div>
+          <div class="card-desc">280 architect-level Q&amp;As covering K8s fundamentals, scheduling, networking, storage, security, EKS-specific features, and senior leadership design questions.</div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">280 Questions</span><span class="tag">12 Sections</span><span class="tag">Architecture Diagrams</span><span class="tag">Interactive</span>
+        </div>
+      </a>
+
+      <a class="guide-card featured-card" href="aws/index.html" style="--card-accent:#ec7211;" data-tags="aws solutions architect">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(236,114,17,0.15); font-size:1.4rem;">☁️</div>
+          <svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </div>
+        <div>
+          <div class="card-title">AWS Senior Architect Guide</div>
+          <div class="card-desc">110 deep-dive Q&amp;As on Compute, Networking, Storage, Databases, Security, Well-Architected Framework, DevOps, Observability, Analytics, and Leadership.</div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">110 Questions</span><span class="tag">11 Sections</span><span class="tag">Architecture Diagrams</span><span class="tag">Interactive</span>
+        </div>
+      </a>
+
+      <a class="guide-card featured-card" href="cca/index.html" style="--card-accent:#6366f1;" data-tags="cca cloud study portal">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(99,102,241,0.15); font-size:1.4rem;">📚</div>
+          <svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </div>
+        <div>
+          <div class="card-title">CCA Study Portal</div>
+          <div class="card-desc">Complete Certified Cloud Architect study portal with topics, exam practice, references, and comprehensive guides.</div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">Study Portal</span><span class="tag">Exam Practice</span><span class="tag">References</span>
+        </div>
+      </a>
+
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- AWS Guides -->
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(236,114,17,0.15);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#ec7211" stroke-width="2"><path d="M3 15a4 4 0 0 0 4 4h9a5 5 0 0 0 1.8-9.7A7 7 0 1 0 5.4 15"/></svg>
+      </div>
+      <div><h2>AWS Service Guides</h2><p>Deep dives into AWS compute, storage, databases, security, and more</p></div>
+    </div>
+
+    <div class="guide-grid" id="awsGrid">
+      <a class="guide-card" href="aws.html" style="--card-accent:#ec7211;" data-tags="aws overview cloud"><div class="card-top"><div class="card-icon" style="background:rgba(236,114,17,0.12);">☁️</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">AWS Overview</div><div class="card-desc">Comprehensive AWS services overview for architects.</div><div class="card-tags"><span class="tag">AWS</span><span class="tag">Overview</span></div></a>
+
+      <a class="guide-card" href="aws-100.html" style="--card-accent:#ec7211;" data-tags="aws 100 questions interview"><div class="card-top"><div class="card-icon" style="background:rgba(236,114,17,0.12);">💯</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">AWS 100 Questions</div><div class="card-desc">Top 100 AWS interview questions with detailed answers.</div><div class="card-tags"><span class="tag">AWS</span><span class="tag">Interview</span><span class="tag">100 Q</span></div></a>
+
+      <a class="guide-card" href="aws-compute.html" style="--card-accent:#ec7211;" data-tags="aws compute ec2 lambda fargate"><div class="card-top"><div class="card-icon" style="background:rgba(236,114,17,0.12);">⚡</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">AWS Compute</div><div class="card-desc">EC2, Lambda, ECS, Fargate, Auto Scaling deep dive.</div><div class="card-tags"><span class="tag">EC2</span><span class="tag">Lambda</span><span class="tag">ECS</span></div></a>
+
+      <a class="guide-card" href="aws-security-flow.html" style="--card-accent:#ef4444;" data-tags="aws security iam kms waf"><div class="card-top"><div class="card-icon" style="background:rgba(239,68,68,0.12);">🔒</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">AWS Security Flow</div><div class="card-desc">End-to-end AWS security architecture and threat modeling.</div><div class="card-tags"><span class="tag">IAM</span><span class="tag">KMS</span><span class="tag">WAF</span></div></a>
+
+      <a class="guide-card" href="compute.html" style="--card-accent:#ec7211;" data-tags="compute cloud servers"><div class="card-top"><div class="card-icon" style="background:rgba(236,114,17,0.12);">🖥️</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Compute Deep Dive</div><div class="card-desc">Detailed compute concepts and best practices.</div><div class="card-tags"><span class="tag">Compute</span><span class="tag">EC2</span></div></a>
+
+      <a class="guide-card" href="cost.html" style="--card-accent:#22c55e;" data-tags="cost optimization aws savings spot"><div class="card-top"><div class="card-icon" style="background:rgba(34,197,94,0.12);">💰</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Cost Optimization</div><div class="card-desc">AWS cost reduction strategies, Spot Instances, Savings Plans.</div><div class="card-tags"><span class="tag">Cost</span><span class="tag">Savings Plans</span><span class="tag">Spot</span></div></a>
+
+      <a class="guide-card" href="serverless.html" style="--card-accent:#ec7211;" data-tags="serverless lambda api gateway eventbridge"><div class="card-top"><div class="card-icon" style="background:rgba(236,114,17,0.12);">⚡</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Serverless Architecture</div><div class="card-desc">Lambda, API Gateway, EventBridge, SQS/SNS patterns.</div><div class="card-tags"><span class="tag">Lambda</span><span class="tag">API Gateway</span><span class="tag">EventBridge</span></div></a>
+
+      <a class="guide-card" href="storage.html" style="--card-accent:#f59e0b;" data-tags="storage s3 ebs efs glacier"><div class="card-top"><div class="card-icon" style="background:rgba(245,158,11,0.12);">💾</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Storage</div><div class="card-desc">S3, EBS, EFS, Glacier storage classes and patterns.</div><div class="card-tags"><span class="tag">S3</span><span class="tag">EBS</span><span class="tag">EFS</span></div></a>
+
+      <a class="guide-card" href="databases.html" style="--card-accent:#f59e0b;" data-tags="databases rds aurora dynamodb redis"><div class="card-top"><div class="card-icon" style="background:rgba(245,158,11,0.12);">🗄️</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Databases</div><div class="card-desc">RDS, Aurora, DynamoDB, ElastiCache, Redshift.</div><div class="card-tags"><span class="tag">RDS</span><span class="tag">DynamoDB</span><span class="tag">Aurora</span></div></a>
+
+      <a class="guide-card" href="networking.html" style="--card-accent:#3b82f6;" data-tags="networking vpc route53 cloudfront alb"><div class="card-top"><div class="card-icon" style="background:rgba(59,130,246,0.12);">🌐</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Networking</div><div class="card-desc">VPC design, Route53, CloudFront, Transit Gateway, Direct Connect.</div><div class="card-tags"><span class="tag">VPC</span><span class="tag">Route53</span><span class="tag">CloudFront</span></div></a>
+
+      <a class="guide-card" href="security.html" style="--card-accent:#ef4444;" data-tags="security iam guarduty waf shield"><div class="card-top"><div class="card-icon" style="background:rgba(239,68,68,0.12);">🛡️</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Security</div><div class="card-desc">IAM, KMS, GuardDuty, Security Hub, WAF, Shield.</div><div class="card-tags"><span class="tag">IAM</span><span class="tag">GuardDuty</span><span class="tag">KMS</span></div></a>
+
+      <a class="guide-card" href="reinvent.html" style="--card-accent:#ec7211;" data-tags="aws reinvent announcements new"><div class="card-top"><div class="card-icon" style="background:rgba(236,114,17,0.12);">🎪</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">AWS re:Invent</div><div class="card-desc">Latest AWS announcements and new service summaries.</div><div class="card-tags"><span class="tag">AWS</span><span class="tag">Announcements</span></div></a>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Kubernetes & Platform -->
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(50,108,229,0.15);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#326ce5" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/></svg>
+      </div>
+      <div><h2>Kubernetes &amp; Platform</h2><p>Container orchestration, EKS, and platform engineering</p></div>
+    </div>
+
+    <div class="guide-grid">
+      <a class="guide-card" href="kubernetes.html" style="--card-accent:#326ce5;" data-tags="kubernetes k8s containers pods"><div class="card-top"><div class="card-icon" style="background:rgba(50,108,229,0.12);">⎈</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Kubernetes Guide</div><div class="card-desc">Kubernetes fundamentals, architecture, and operations.</div><div class="card-tags"><span class="tag">K8s</span><span class="tag">Pods</span><span class="tag">Services</span></div></a>
+
+      <a class="guide-card" href="eks-interview.html" style="--card-accent:#326ce5;" data-tags="eks kubernetes interview amazon"><div class="card-top"><div class="card-icon" style="background:rgba(50,108,229,0.12);">🎯</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">EKS Interview Q&amp;A</div><div class="card-desc">Amazon EKS specific interview questions with answers.</div><div class="card-tags"><span class="tag">EKS</span><span class="tag">Interview</span></div></a>
+
+      <a class="guide-card" href="streaming.html" style="--card-accent:#326ce5;" data-tags="streaming kafka kinesis real-time"><div class="card-top"><div class="card-icon" style="background:rgba(50,108,229,0.12);">🌊</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Streaming Architecture</div><div class="card-desc">Kafka, Kinesis, and real-time event streaming patterns.</div><div class="card-tags"><span class="tag">Kafka</span><span class="tag">Kinesis</span><span class="tag">Streaming</span></div></a>
+
+      <a class="guide-card" href="patch.html" style="--card-accent:#326ce5;" data-tags="patch management update kubernetes nodes"><div class="card-top"><div class="card-icon" style="background:rgba(50,108,229,0.12);">🔧</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Patch Management</div><div class="card-desc">Node patching, OS updates, and maintenance strategies.</div><div class="card-tags"><span class="tag">Patching</span><span class="tag">Maintenance</span></div></a>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- DevOps -->
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(34,197,94,0.15);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      </div>
+      <div><h2>DevOps &amp; Platform Engineering</h2><p>CI/CD, IaC, containers, and modern delivery practices</p></div>
+    </div>
+
+    <div class="guide-grid">
+      <a class="guide-card" href="devops.html" style="--card-accent:#22c55e;" data-tags="devops cicd pipeline automation"><div class="card-top"><div class="card-icon" style="background:rgba(34,197,94,0.12);">♾️</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">DevOps Guide</div><div class="card-desc">CI/CD, automation, monitoring, and DevOps culture.</div><div class="card-tags"><span class="tag">CI/CD</span><span class="tag">Automation</span></div></a>
+
+      <a class="guide-card" href="devops-interview.html" style="--card-accent:#22c55e;" data-tags="devops interview questions"><div class="card-top"><div class="card-icon" style="background:rgba(34,197,94,0.12);">📋</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">DevOps Interview</div><div class="card-desc">Top DevOps interview questions and expert answers.</div><div class="card-tags"><span class="tag">DevOps</span><span class="tag">Interview</span></div></a>
+
+      <a class="guide-card" href="cicd-ansible-interview.html" style="--card-accent:#22c55e;" data-tags="cicd ansible jenkins gitlab pipeline"><div class="card-top"><div class="card-icon" style="background:rgba(34,197,94,0.12);">🔄</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">CI/CD &amp; Ansible</div><div class="card-desc">Pipeline design, Ansible automation, and deployment strategies.</div><div class="card-tags"><span class="tag">Ansible</span><span class="tag">Jenkins</span><span class="tag">GitLab</span></div></a>
+
+      <a class="guide-card" href="git-docker-interview.html" style="--card-accent:#22c55e;" data-tags="git docker containers registry"><div class="card-top"><div class="card-icon" style="background:rgba(34,197,94,0.12);">🐳</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Git &amp; Docker</div><div class="card-desc">Git workflows, Docker containerization, and registry management.</div><div class="card-tags"><span class="tag">Git</span><span class="tag">Docker</span><span class="tag">Containers</span></div></a>
+
+      <a class="guide-card" href="terraform-interview.html" style="--card-accent:#7c3aed;" data-tags="terraform iac infrastructure code"><div class="card-top"><div class="card-icon" style="background:rgba(124,58,237,0.12);">🏗️</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Terraform</div><div class="card-desc">Terraform IaC patterns, modules, state management.</div><div class="card-tags"><span class="tag">Terraform</span><span class="tag">IaC</span><span class="tag">HCL</span></div></a>
+
+      <a class="guide-card" href="vault-interview.html" style="--card-accent:#f59e0b;" data-tags="vault hashicorp secrets management"><div class="card-top"><div class="card-icon" style="background:rgba(245,158,11,0.12);">🔑</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">HashiCorp Vault</div><div class="card-desc">Secrets management, PKI, dynamic credentials with Vault.</div><div class="card-tags"><span class="tag">Vault</span><span class="tag">Secrets</span><span class="tag">PKI</span></div></a>
+
+      <a class="guide-card" href="platform-interview.html" style="--card-accent:#22c55e;" data-tags="platform engineering developer experience"><div class="card-top"><div class="card-icon" style="background:rgba(34,197,94,0.12);">🚀</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Platform Engineering</div><div class="card-desc">Internal developer platforms, golden paths, self-service infra.</div><div class="card-tags"><span class="tag">IDP</span><span class="tag">Platform</span></div></a>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Architecture -->
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(245,158,11,0.15);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <div><h2>Architecture &amp; Design Patterns</h2><p>Cloud architecture, enterprise design, and fault tolerance</p></div>
+    </div>
+
+    <div class="guide-grid">
+      <a class="guide-card" href="architecture.html" style="--card-accent:#f59e0b;" data-tags="architecture design cloud patterns"><div class="card-top"><div class="card-icon" style="background:rgba(245,158,11,0.12);">🏛️</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Architecture Patterns</div><div class="card-desc">Cloud architecture patterns and design principles.</div><div class="card-tags"><span class="tag">Architecture</span><span class="tag">Patterns</span></div></a>
+
+      <a class="guide-card" href="interview-arch.html" style="--card-accent:#f59e0b;" data-tags="architecture interview design system"><div class="card-top"><div class="card-icon" style="background:rgba(245,158,11,0.12);">🎯</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Architecture Interview</div><div class="card-desc">System design interview preparation for architects.</div><div class="card-tags"><span class="tag">System Design</span><span class="tag">Interview</span></div></a>
+
+      <a class="guide-card" href="enterprise-aws-arch.html" style="--card-accent:#f59e0b;" data-tags="enterprise aws architecture large scale"><div class="card-top"><div class="card-icon" style="background:rgba(245,158,11,0.12);">🏢</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Enterprise AWS Architecture</div><div class="card-desc">Large-scale enterprise patterns on AWS at scale.</div><div class="card-tags"><span class="tag">Enterprise</span><span class="tag">AWS</span><span class="tag">Scale</span></div></a>
+
+      <a class="guide-card" href="fault-tolerant-architecture.html" style="--card-accent:#ef4444;" data-tags="fault tolerant ha resilience disaster recovery"><div class="card-top"><div class="card-icon" style="background:rgba(239,68,68,0.12);">🛡️</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Fault-Tolerant Architecture</div><div class="card-desc">HA design, disaster recovery, and resilience engineering.</div><div class="card-tags"><span class="tag">HA</span><span class="tag">Resilience</span><span class="tag">DR</span></div></a>
+
+      <a class="guide-card" href="fundamentals.html" style="--card-accent:#6366f1;" data-tags="cloud fundamentals basics concepts"><div class="card-top"><div class="card-icon" style="background:rgba(99,102,241,0.12);">📖</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Cloud Fundamentals</div><div class="card-desc">Core cloud computing concepts and terminology.</div><div class="card-tags"><span class="tag">Fundamentals</span><span class="tag">Basics</span></div></a>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- AI & GenAI -->
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(168,85,247,0.15);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8v4l3 3"/><circle cx="19" cy="5" r="3"/></svg>
+      </div>
+      <div><h2>AI, GenAI &amp; LLMOps</h2><p>Generative AI, RAG, LLMOps, and enterprise AI architectures</p></div>
+    </div>
+
+    <div class="guide-grid">
+      <a class="guide-card" href="genai.html" style="--card-accent:#a855f7;" data-tags="genai llm gpt ai"><div class="card-top"><div class="card-icon" style="background:rgba(168,85,247,0.12);">🤖</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">GenAI Guide</div><div class="card-desc">Generative AI concepts, models, and application architecture.</div><div class="card-tags"><span class="tag">GenAI</span><span class="tag">LLM</span><span class="tag">GPT</span></div></a>
+
+      <a class="guide-card" href="genai_interview_guide.html" style="--card-accent:#a855f7;" data-tags="genai interview questions llm ai"><div class="card-top"><div class="card-icon" style="background:rgba(168,85,247,0.12);">🎯</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">GenAI Interview Guide</div><div class="card-desc">AI/ML engineer interview questions and expert answers.</div><div class="card-tags"><span class="tag">GenAI</span><span class="tag">Interview</span></div></a>
+
+      <a class="guide-card" href="rag.html" style="--card-accent:#a855f7;" data-tags="rag retrieval augmented generation vector"><div class="card-top"><div class="card-icon" style="background:rgba(168,85,247,0.12);">🔍</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">RAG Architecture</div><div class="card-desc">Retrieval Augmented Generation patterns and vector databases.</div><div class="card-tags"><span class="tag">RAG</span><span class="tag">Vector DB</span><span class="tag">Embeddings</span></div></a>
+
+      <a class="guide-card" href="llmops.html" style="--card-accent:#a855f7;" data-tags="llmops mlops operations deployment ai"><div class="card-top"><div class="card-icon" style="background:rgba(168,85,247,0.12);">⚙️</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">LLMOps</div><div class="card-desc">Operationalizing LLMs — monitoring, evaluation, fine-tuning.</div><div class="card-tags"><span class="tag">LLMOps</span><span class="tag">MLOps</span><span class="tag">Deployment</span></div></a>
+
+      <a class="guide-card" href="autonomous-it-operations.html" style="--card-accent:#a855f7;" data-tags="autonomous ai operations agentic aiops"><div class="card-top"><div class="card-icon" style="background:rgba(168,85,247,0.12);">🦾</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Autonomous IT Operations</div><div class="card-desc">AIOps, agentic automation, and self-healing infrastructure.</div><div class="card-tags"><span class="tag">AIOps</span><span class="tag">Agentic</span></div></a>
+
+      <a class="guide-card" href="enterprise-ai-assistant.html" style="--card-accent:#a855f7;" data-tags="enterprise ai assistant chatbot"><div class="card-top"><div class="card-icon" style="background:rgba(168,85,247,0.12);">💬</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Enterprise AI Assistant</div><div class="card-desc">Building and deploying enterprise AI chatbots and assistants.</div><div class="card-tags"><span class="tag">AI Assistant</span><span class="tag">Enterprise</span></div></a>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Interview Q&A Bank -->
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(99,102,241,0.15);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </div>
+      <div><h2>Interview Q&amp;A Bank</h2><p>Comprehensive question banks and session notes</p></div>
+    </div>
+
+    <div class="guide-grid">
+      <a class="guide-card" href="interview.html" style="--card-accent:#6366f1;" data-tags="interview general questions"><div class="card-top"><div class="card-icon" style="background:rgba(99,102,241,0.12);">📝</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">General Interview Q&amp;A</div><div class="card-desc">Broad cloud and architecture interview question set.</div><div class="card-tags"><span class="tag">Interview</span><span class="tag">General</span></div></a>
+
+      <a class="guide-card" href="qa.html" style="--card-accent:#6366f1;" data-tags="qa questions answers volume 1"><div class="card-top"><div class="card-icon" style="background:rgba(99,102,241,0.12);">📚</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Q&amp;A Volume 1</div><div class="card-desc">First volume of curated cloud architect Q&amp;A.</div><div class="card-tags"><span class="tag">Q&amp;A</span><span class="tag">Vol. 1</span></div></a>
+
+      <a class="guide-card" href="qa2.html" style="--card-accent:#6366f1;" data-tags="qa questions answers volume 2"><div class="card-top"><div class="card-icon" style="background:rgba(99,102,241,0.12);">📚</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Q&amp;A Volume 2</div><div class="card-desc">Extended Q&amp;A collection with advanced questions.</div><div class="card-tags"><span class="tag">Q&amp;A</span><span class="tag">Vol. 2</span></div></a>
+
+      <a class="guide-card" href="qa3.html" style="--card-accent:#6366f1;" data-tags="qa questions answers volume 3 advanced"><div class="card-top"><div class="card-icon" style="background:rgba(99,102,241,0.12);">📚</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Q&amp;A Volume 3</div><div class="card-desc">Advanced architect Q&amp;A — senior-level depth.</div><div class="card-tags"><span class="tag">Q&amp;A</span><span class="tag">Vol. 3</span><span class="tag">Advanced</span></div></a>
+
+      <a class="guide-card" href="devopsagent.html" style="--card-accent:#22c55e;" data-tags="devops agent ai automation"><div class="card-top"><div class="card-icon" style="background:rgba(34,197,94,0.12);">🤖</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">DevOps Agent</div><div class="card-desc">AI-assisted DevOps operations and automation guide.</div><div class="card-tags"><span class="tag">DevOps</span><span class="tag">AI Agent</span></div></a>
+
+      <a class="guide-card" href="ms.html" style="--card-accent:#0078d4;" data-tags="microsoft azure cloud ms"><div class="card-top"><div class="card-icon" style="background:rgba(0,120,212,0.12);">🪟</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">Microsoft / Azure Guide</div><div class="card-desc">Azure architecture, services, and hybrid cloud patterns.</div><div class="card-tags"><span class="tag">Azure</span><span class="tag">Microsoft</span></div></a>
+
+      <a class="guide-card" href="99.html" style="--card-accent:#6366f1;" data-tags="99 cloud questions answers"><div class="card-top"><div class="card-icon" style="background:rgba(99,102,241,0.12);">💯</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">99 Cloud Questions</div><div class="card-desc">99 must-know cloud architect interview questions.</div><div class="card-tags"><span class="tag">Interview</span><span class="tag">99 Q</span></div></a>
+
+      <a class="guide-card" href="fhdl.html" style="--card-accent:#a855f7;" data-tags="fhdl deep learning ml ai"><div class="card-top"><div class="card-icon" style="background:rgba(168,85,247,0.12);">🧠</div><svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div><div class="card-title">FHDL Deep Learning</div><div class="card-desc">Deep learning, neural networks, and ML architecture guide.</div><div class="card-tags"><span class="tag">Deep Learning</span><span class="tag">ML</span></div></a>
+    </div>
+
+  </div><!-- /content -->
+
+  <footer>
+    <span>© 2024 SKCloudOps · Cloud Interview Guide</span>
+    <span>60+ Guides · 500+ Questions · Senior Architect Level</span>
+  </footer>
+
+</main>
+
+<script>
+  // Mobile sidebar toggle
+  var hamburger = document.getElementById('hamburger');
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('overlay');
+
+  hamburger.addEventListener('click', function() {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+  });
+  overlay.addEventListener('click', function() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+
+  // Sidebar search filter
+  document.getElementById('sidebarSearch').addEventListener('input', function() {
+    var term = this.value.toLowerCase().trim();
+    document.querySelectorAll('#sidebarNav .nav-link').forEach(function(link) {
+      var text = (link.textContent + ' ' + (link.getAttribute('data-filter') || '')).toLowerCase();
+      link.style.display = (!term || text.indexOf(term) !== -1) ? '' : 'none';
+    });
+    // Show/hide section titles based on visible children
+    document.querySelectorAll('#sidebarNav .nav-section').forEach(function(section) {
+      var visibleLinks = section.querySelectorAll('.nav-link:not([style*="display: none"])');
+      section.style.display = visibleLinks.length > 0 ? '' : 'none';
+    });
+  });
+
+  // Active link highlighting
+  document.querySelectorAll('#sidebarNav .nav-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+      document.querySelectorAll('#sidebarNav .nav-link').forEach(function(l) { l.classList.remove('active'); });
+      link.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
