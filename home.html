@@ -10,18 +10,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary:       #6366f1;
-      --primary-light: rgba(99,102,241,0.12);
-      --bg-main:       #0f1117;
-      --bg-surface:    #1a1d2e;
-      --bg-sidebar:    #13151f;
-      --text-primary:  #f8fafc;
-      --text-secondary:#94a3b8;
-      --text-muted:    #64748b;
-      --border:        #252840;
+      --primary:       #4c5fd6;
+      --primary-hover: #5a6ce0;
+      --primary-light: rgba(76,95,214,0.11);
+      --bg-main:       #0e1015;
+      --bg-surface:    #171a26;
+      --bg-sidebar:    #12141c;
+      --text-primary:  #f1f4f9;
+      --text-secondary:#94a0b8;
+      --text-muted:    #616c85;
+      --border:        #23273a;
       --sidebar-w:     290px;
-      --header-h:      52px;
+      --header-h:      54px;
       --transition:    0.28s ease;
+      --shadow-sm:     0 1px 2px rgba(0,0,0,0.24);
+      --shadow-md:     0 4px 16px rgba(0,0,0,0.28);
+      --shadow-lg:     0 10px 30px rgba(0,0,0,0.35);
     }
 
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -43,6 +47,7 @@
       width: var(--sidebar-w);
       background: var(--bg-sidebar);
       border-right: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
       display: flex;
       flex-direction: column;
       z-index: 200;
@@ -71,19 +76,20 @@
     .brand { display:flex; align-items:center; gap:10px; text-decoration:none; cursor:pointer; }
     .brand-icon {
       width: 32px; height: 32px;
-      background: linear-gradient(135deg,#6366f1,#818cf8);
+      background: linear-gradient(135deg,var(--primary),#3a4bb0);
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-sm);
     }
     .brand-icon svg { width:16px; height:16px; color:#fff; }
-    .brand-text strong { font-size:0.88rem; color:var(--text-primary); display:block; line-height:1.3; }
-    .brand-text span   { font-size:0.7rem;  color:var(--text-muted); }
+    .brand-text strong { font-size:0.87rem; font-weight:600; letter-spacing:0.005em; color:var(--text-primary); display:block; line-height:1.3; }
+    .brand-text span   { font-size:0.68rem; font-weight:500; letter-spacing:0.02em; color:var(--text-muted); }
 
     /* Search */
     .sidebar-search { padding:12px 14px 6px; flex-shrink:0; }
     .sidebar-search input {
       width: 100%;
-      background: var(--bg-surface);
+      background: var(--bg-main);
       border: 1px solid var(--border);
       border-radius: 7px;
       padding: 7px 10px 7px 30px;
@@ -91,12 +97,13 @@
       font-family: inherit;
       font-size: 0.82rem;
       outline: none;
-      transition: border-color 0.2s;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%23616c85' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: 9px center;
     }
-    .sidebar-search input:focus  { border-color: var(--primary); }
+    .sidebar-search input:focus  { border-color: var(--primary); box-shadow: inset 0 1px 2px rgba(0,0,0,0.2), 0 0 0 3px var(--primary-light); }
     .sidebar-search input::placeholder { color: var(--text-muted); }
 
     /* Nav scroll area */
@@ -110,27 +117,31 @@
     .nav-scroll::-webkit-scrollbar { width: 4px; }
     .nav-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-    .nav-section { padding: 4px 0; }
+    .nav-section { padding: 6px 0; }
+    .nav-section + .nav-section { border-top: 1px solid var(--border); }
     .nav-section-title {
-      padding: 10px 18px 3px;
-      font-size: 0.67rem; font-weight: 700;
-      letter-spacing: 0.09em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 7px;
+      padding: 12px 18px 6px;
+      font-size: 0.66rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
       color: var(--text-muted);
     }
+    .nav-section-title svg { width:13px; height:13px; flex-shrink:0; opacity:0.85; }
     .nav-link {
-      display: flex; align-items: center; gap: 8px;
-      padding: 7px 18px;
+      display: flex; align-items: center; gap: 9px;
+      padding: 6px 18px;
+      margin: 1px 0;
       text-decoration: none;
       color: var(--text-secondary);
-      font-size: 0.83rem; font-weight: 500;
-      border-left: 3px solid transparent;
+      font-size: 0.82rem; font-weight: 500;
+      border-left: 2px solid transparent;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
       white-space: nowrap; overflow: hidden;
     }
-    .nav-link:hover  { background: var(--primary-light); color: var(--text-primary); border-left-color: var(--primary); }
-    .nav-link.active { background: var(--primary-light); color: var(--primary);       border-left-color: var(--primary); }
-    .nav-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+    .nav-link:hover  { background: var(--primary-light); color: var(--text-primary); border-left-color: var(--text-muted); }
+    .nav-link.active { background: var(--primary-light); color: var(--text-primary); border-left-color: var(--primary); font-weight: 600; }
+    .nav-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; opacity:0.9; }
     .nav-link-text { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; }
     .nav-badge {
       font-size:0.64rem; font-weight:700; padding:1px 5px;
@@ -160,6 +171,9 @@
       flex-shrink: 0;
       background: var(--bg-sidebar);
       border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      z-index: 10;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -209,7 +223,7 @@
     }
     .toolbar-crumb svg { width:14px; height:14px; flex-shrink:0; }
     .crumb-title {
-      font-weight: 600; color: var(--text-primary);
+      font-weight: 600; letter-spacing: 0.005em; color: var(--text-primary);
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
@@ -217,16 +231,17 @@
     .toolbar-btn {
       display: flex; align-items: center; gap: 6px;
       background: var(--bg-surface); border: 1px solid var(--border);
-      border-radius: 7px; padding: 5px 11px;
+      border-radius: 7px; padding: 5px 12px;
       font-size: 0.78rem; font-weight: 600;
       color: var(--text-secondary); cursor: pointer;
       text-decoration: none; transition: all 0.15s;
       white-space: nowrap;
+      box-shadow: var(--shadow-sm);
     }
     .toolbar-btn svg { width:13px; height:13px; }
-    .toolbar-btn:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+    .toolbar-btn:hover { background: var(--primary-light); color: var(--text-primary); border-color: var(--primary); }
     .toolbar-btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
-    .toolbar-btn.primary:hover { background: #4f46e5; }
+    .toolbar-btn.primary:hover { background: var(--primary-hover); }
 
     /* Iframe viewport */
     .viewer {
@@ -277,33 +292,41 @@
     }
     .welcome.hidden { display: none; }
     .welcome-icon {
-      width: 72px; height: 72px;
+      width: 68px; height: 68px;
       background: var(--primary-light);
-      border: 1px solid rgba(99,102,241,0.3);
-      border-radius: 20px;
+      border: 1px solid rgba(76,95,214,0.28);
+      border-radius: 18px;
       display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-md);
     }
-    .welcome-icon svg { width:36px; height:36px; color:var(--primary); }
+    .welcome-icon svg { width:32px; height:32px; color:var(--primary); }
     .welcome h2 {
-      font-size: 1.6rem; font-weight: 800;
-      background: linear-gradient(135deg,#f8fafc 30%,#94a3b8);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em;
+      color: var(--text-primary);
     }
-    .welcome p { font-size:0.95rem; color:var(--text-muted); max-width:420px; line-height:1.7; }
+    .welcome p { font-size:0.92rem; color:var(--text-muted); max-width:420px; line-height:1.65; }
 
     .welcome-grid {
       display: grid; grid-template-columns: repeat(3,1fr); gap:12px;
-      max-width: 560px; width: 100%;
+      max-width: 580px; width: 100%;
     }
     .welcome-card {
+      display: flex; flex-direction: column; align-items: flex-start;
       background: var(--bg-surface); border:1px solid var(--border);
-      border-radius: 10px; padding:14px 12px; cursor:pointer;
-      transition: all 0.2s; text-align:left;
+      border-radius: 10px; padding:16px 14px; cursor:pointer;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      text-align:left;
     }
-    .welcome-card:hover { border-color:var(--primary); background:var(--primary-light); }
-    .welcome-card .wc-icon { font-size:1.3rem; margin-bottom:7px; }
-    .welcome-card .wc-title { font-size:0.82rem; font-weight:700; color:var(--text-primary); }
-    .welcome-card .wc-sub   { font-size:0.73rem; color:var(--text-muted); margin-top:2px; }
+    .welcome-card:hover { border-color:var(--primary); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+    .welcome-card .wc-icon {
+      width:32px; height:32px; border-radius:8px;
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:10px; flex-shrink:0;
+    }
+    .welcome-card .wc-icon svg { width:16px; height:16px; }
+    .welcome-card .wc-title { font-size:0.82rem; font-weight:600; color:var(--text-primary); }
+    .welcome-card .wc-sub   { font-size:0.72rem; color:var(--text-muted); margin-top:2px; }
 
     /* ═══════════════════════════════════════
        MOBILE
@@ -357,122 +380,122 @@
 
   <div class="nav-scroll" id="sidebarNav">
 
-    <!-- ⭐ Interactive Apps -->
+    <!-- Interactive Apps -->
     <div class="nav-section">
-      <div class="nav-section-title">⭐ Interactive Apps</div>
+      <div class="nav-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Interactive Apps</div>
       <div class="nav-link" data-src="eks/index.html" data-title="Kubernetes &amp; EKS Guide">
-        <span class="nav-dot" style="background:#326ce5;"></span>
+        <span class="nav-dot" style="background:#4a7fd1;"></span>
         <span class="nav-link-text">Kubernetes &amp; EKS Guide</span>
         <span class="nav-badge">280 Q</span>
       </div>
       <div class="nav-link" data-src="aws/index.html" data-title="AWS Senior Architect Guide">
-        <span class="nav-dot" style="background:#ec7211;"></span>
+        <span class="nav-dot" style="background:#d6832e;"></span>
         <span class="nav-link-text">AWS Senior Architect Guide</span>
         <span class="nav-badge">110 Q</span>
       </div>
       <div class="nav-link" data-src="cca/index.html" data-title="CCA-F Study Portal">
-        <span class="nav-dot" style="background:#6366f1;"></span>
+        <span class="nav-dot" style="background:var(--primary);"></span>
         <span class="nav-link-text">CCA-F Study Portal</span>
       </div>
     </div>
 
-    <!-- ☁️ AWS -->
+    <!-- AWS -->
     <div class="nav-section">
-      <div class="nav-section-title">☁️ AWS Guides</div>
-      <div class="nav-link" data-src="aws.html"            data-title="AWS Core Services Guide"><span class="nav-dot" style="background:#ec7211;"></span><span class="nav-link-text">AWS Core Services Guide</span></div>
-      <div class="nav-link" data-src="aws-100.html"        data-title="AWS 100 — Cloud Fundamentals"><span class="nav-dot" style="background:#ec7211;"></span><span class="nav-link-text">AWS 100 — Cloud Fundamentals</span></div>
-      <div class="nav-link" data-src="aws-compute.html"    data-title="AWS Compute Decision Guide"><span class="nav-dot" style="background:#ec7211;"></span><span class="nav-link-text">AWS Compute Decision Guide</span></div>
-      <div class="nav-link" data-src="aws-security-flow.html" data-title="AWS Security Architecture"><span class="nav-dot" style="background:#ef4444;"></span><span class="nav-link-text">AWS Security Architecture</span></div>
-      <div class="nav-link" data-src="compute.html"        data-title="AWS Compute Services Guide"><span class="nav-dot" style="background:#ec7211;"></span><span class="nav-link-text">AWS Compute Services Guide</span></div>
-      <div class="nav-link" data-src="compute-article.html" data-title="AWS Compute Deep Dive"><span class="nav-dot" style="background:#ec7211;"></span><span class="nav-link-text">AWS Compute Deep Dive</span></div>
-      <div class="nav-link" data-src="compute-aws.html"    data-title="AWS Compute Selection Guide"><span class="nav-dot" style="background:#ec7211;"></span><span class="nav-link-text">AWS Compute Selection Guide</span></div>
-      <div class="nav-link" data-src="cost.html"           data-title="AWS Cost Optimization"><span class="nav-dot" style="background:#22c55e;"></span><span class="nav-link-text">AWS Cost Optimization</span></div>
-      <div class="nav-link" data-src="serverless.html"     data-title="AWS Serverless Guide"><span class="nav-dot" style="background:#ec7211;"></span><span class="nav-link-text">AWS Serverless Guide</span></div>
-      <div class="nav-link" data-src="storage.html"        data-title="AWS Storage Services"><span class="nav-dot" style="background:#f59e0b;"></span><span class="nav-link-text">AWS Storage Services</span></div>
-      <div class="nav-link" data-src="databases.html"      data-title="AWS Database Services"><span class="nav-dot" style="background:#f59e0b;"></span><span class="nav-link-text">AWS Database Services</span></div>
-      <div class="nav-link" data-src="networking.html"     data-title="AWS Networking &amp; VPC"><span class="nav-dot" style="background:#3b82f6;"></span><span class="nav-link-text">AWS Networking &amp; VPC</span></div>
-      <div class="nav-link" data-src="security.html"       data-title="AWS Security &amp; IAM"><span class="nav-dot" style="background:#ef4444;"></span><span class="nav-link-text">AWS Security &amp; IAM</span></div>
-      <div class="nav-link" data-src="streaming.html"      data-title="AWS Streaming &amp; Analytics"><span class="nav-dot" style="background:#3b82f6;"></span><span class="nav-link-text">AWS Streaming &amp; Analytics</span></div>
-      <div class="nav-link" data-src="reinvent.html"       data-title="AWS re:Invent 2024 Highlights"><span class="nav-dot" style="background:#ec7211;"></span><span class="nav-link-text">AWS re:Invent 2024 Highlights</span></div>
+      <div class="nav-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>AWS Guides</div>
+      <div class="nav-link" data-src="aws.html"            data-title="AWS Core Services Guide"><span class="nav-dot" style="background:#d6832e;"></span><span class="nav-link-text">AWS Core Services Guide</span></div>
+      <div class="nav-link" data-src="aws-100.html"        data-title="AWS 100 — Cloud Fundamentals"><span class="nav-dot" style="background:#d6832e;"></span><span class="nav-link-text">AWS 100 — Cloud Fundamentals</span></div>
+      <div class="nav-link" data-src="aws-compute.html"    data-title="AWS Compute Decision Guide"><span class="nav-dot" style="background:#d6832e;"></span><span class="nav-link-text">AWS Compute Decision Guide</span></div>
+      <div class="nav-link" data-src="aws-security-flow.html" data-title="AWS Security Architecture"><span class="nav-dot" style="background:#d5654f;"></span><span class="nav-link-text">AWS Security Architecture</span></div>
+      <div class="nav-link" data-src="compute.html"        data-title="AWS Compute Services Guide"><span class="nav-dot" style="background:#d6832e;"></span><span class="nav-link-text">AWS Compute Services Guide</span></div>
+      <div class="nav-link" data-src="compute-article.html" data-title="AWS Compute Deep Dive"><span class="nav-dot" style="background:#d6832e;"></span><span class="nav-link-text">AWS Compute Deep Dive</span></div>
+      <div class="nav-link" data-src="compute-aws.html"    data-title="AWS Compute Selection Guide"><span class="nav-dot" style="background:#d6832e;"></span><span class="nav-link-text">AWS Compute Selection Guide</span></div>
+      <div class="nav-link" data-src="cost.html"           data-title="AWS Cost Optimization"><span class="nav-dot" style="background:#3fae6e;"></span><span class="nav-link-text">AWS Cost Optimization</span></div>
+      <div class="nav-link" data-src="serverless.html"     data-title="AWS Serverless Guide"><span class="nav-dot" style="background:#d6832e;"></span><span class="nav-link-text">AWS Serverless Guide</span></div>
+      <div class="nav-link" data-src="storage.html"        data-title="AWS Storage Services"><span class="nav-dot" style="background:#cf9744;"></span><span class="nav-link-text">AWS Storage Services</span></div>
+      <div class="nav-link" data-src="databases.html"      data-title="AWS Database Services"><span class="nav-dot" style="background:#cf9744;"></span><span class="nav-link-text">AWS Database Services</span></div>
+      <div class="nav-link" data-src="networking.html"     data-title="AWS Networking &amp; VPC"><span class="nav-dot" style="background:#4d84dd;"></span><span class="nav-link-text">AWS Networking &amp; VPC</span></div>
+      <div class="nav-link" data-src="security.html"       data-title="AWS Security &amp; IAM"><span class="nav-dot" style="background:#d5654f;"></span><span class="nav-link-text">AWS Security &amp; IAM</span></div>
+      <div class="nav-link" data-src="streaming.html"      data-title="AWS Streaming &amp; Analytics"><span class="nav-dot" style="background:#4d84dd;"></span><span class="nav-link-text">AWS Streaming &amp; Analytics</span></div>
+      <div class="nav-link" data-src="reinvent.html"       data-title="AWS re:Invent 2024 Highlights"><span class="nav-dot" style="background:#d6832e;"></span><span class="nav-link-text">AWS re:Invent 2024 Highlights</span></div>
     </div>
 
-    <!-- ⎈ Kubernetes -->
+    <!-- Kubernetes -->
     <div class="nav-section">
-      <div class="nav-section-title">⎈ Kubernetes &amp; EKS</div>
-      <div class="nav-link" data-src="kubernetes.html"   data-title="Kubernetes &amp; EKS Guide"><span class="nav-dot" style="background:#326ce5;"></span><span class="nav-link-text">Kubernetes &amp; EKS Guide</span></div>
-      <div class="nav-link" data-src="eks-interview.html" data-title="EKS Senior Architect Interview Q&amp;A"><span class="nav-dot" style="background:#326ce5;"></span><span class="nav-link-text">EKS Senior Architect Interview</span></div>
-      <div class="nav-link" data-src="patch.html"        data-title="Patch Management"><span class="nav-dot" style="background:#326ce5;"></span><span class="nav-link-text">Patch Management</span></div>
+      <div class="nav-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>Kubernetes &amp; EKS</div>
+      <div class="nav-link" data-src="kubernetes.html"   data-title="Kubernetes &amp; EKS Guide"><span class="nav-dot" style="background:#4a7fd1;"></span><span class="nav-link-text">Kubernetes &amp; EKS Guide</span></div>
+      <div class="nav-link" data-src="eks-interview.html" data-title="EKS Senior Architect Interview Q&amp;A"><span class="nav-dot" style="background:#4a7fd1;"></span><span class="nav-link-text">EKS Senior Architect Interview</span></div>
+      <div class="nav-link" data-src="patch.html"        data-title="Patch Management"><span class="nav-dot" style="background:#4a7fd1;"></span><span class="nav-link-text">Patch Management</span></div>
     </div>
 
-    <!-- 🔧 DevOps -->
+    <!-- DevOps -->
     <div class="nav-section">
-      <div class="nav-section-title">🔧 DevOps &amp; Platform</div>
-      <div class="nav-link" data-src="devops.html"              data-title="DevOps &amp; CI/CD Guide"><span class="nav-dot" style="background:#22c55e;"></span><span class="nav-link-text">DevOps &amp; CI/CD Guide</span></div>
-      <div class="nav-link" data-src="devops-interview.html"    data-title="DevOps Interview — 51 Q&amp;A"><span class="nav-dot" style="background:#22c55e;"></span><span class="nav-link-text">DevOps Interview — 51 Q&amp;A</span></div>
-      <div class="nav-link" data-src="cicd-ansible-interview.html" data-title="CI/CD &amp; Ansible Interview"><span class="nav-dot" style="background:#22c55e;"></span><span class="nav-link-text">CI/CD &amp; Ansible Interview</span></div>
-      <div class="nav-link" data-src="git-docker-interview.html" data-title="Git &amp; Docker Interview"><span class="nav-dot" style="background:#22c55e;"></span><span class="nav-link-text">Git &amp; Docker Interview</span></div>
-      <div class="nav-link" data-src="terraform-interview.html" data-title="Terraform Advanced Interview"><span class="nav-dot" style="background:#7c3aed;"></span><span class="nav-link-text">Terraform Advanced Interview</span></div>
-      <div class="nav-link" data-src="vault-interview.html"     data-title="HashiCorp Vault Interview"><span class="nav-dot" style="background:#f59e0b;"></span><span class="nav-link-text">HashiCorp Vault Interview</span></div>
-      <div class="nav-link" data-src="platform-interview.html"  data-title="Platform Engineering Interview"><span class="nav-dot" style="background:#22c55e;"></span><span class="nav-link-text">Platform Engineering Interview</span></div>
-      <div class="nav-link" data-src="devopsagent.html"         data-title="DevOps AI Agent"><span class="nav-dot" style="background:#a855f7;"></span><span class="nav-link-text">DevOps AI Agent</span></div>
+      <div class="nav-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>DevOps &amp; Platform</div>
+      <div class="nav-link" data-src="devops.html"              data-title="DevOps &amp; CI/CD Guide"><span class="nav-dot" style="background:#3fae6e;"></span><span class="nav-link-text">DevOps &amp; CI/CD Guide</span></div>
+      <div class="nav-link" data-src="devops-interview.html"    data-title="DevOps Interview — 51 Q&amp;A"><span class="nav-dot" style="background:#3fae6e;"></span><span class="nav-link-text">DevOps Interview — 51 Q&amp;A</span></div>
+      <div class="nav-link" data-src="cicd-ansible-interview.html" data-title="CI/CD &amp; Ansible Interview"><span class="nav-dot" style="background:#3fae6e;"></span><span class="nav-link-text">CI/CD &amp; Ansible Interview</span></div>
+      <div class="nav-link" data-src="git-docker-interview.html" data-title="Git &amp; Docker Interview"><span class="nav-dot" style="background:#3fae6e;"></span><span class="nav-link-text">Git &amp; Docker Interview</span></div>
+      <div class="nav-link" data-src="terraform-interview.html" data-title="Terraform Advanced Interview"><span class="nav-dot" style="background:#6b4fc4;"></span><span class="nav-link-text">Terraform Advanced Interview</span></div>
+      <div class="nav-link" data-src="vault-interview.html"     data-title="HashiCorp Vault Interview"><span class="nav-dot" style="background:#cf9744;"></span><span class="nav-link-text">HashiCorp Vault Interview</span></div>
+      <div class="nav-link" data-src="platform-interview.html"  data-title="Platform Engineering Interview"><span class="nav-dot" style="background:#3fae6e;"></span><span class="nav-link-text">Platform Engineering Interview</span></div>
+      <div class="nav-link" data-src="devopsagent.html"         data-title="DevOps AI Agent"><span class="nav-dot" style="background:#a06fd9;"></span><span class="nav-link-text">DevOps AI Agent</span></div>
     </div>
 
-    <!-- 🏗️ Architecture -->
+    <!-- Architecture -->
     <div class="nav-section">
-      <div class="nav-section-title">🏗️ Architecture</div>
-      <div class="nav-link" data-src="architecture.html"           data-title="Cloud Architecture Patterns"><span class="nav-dot" style="background:#f59e0b;"></span><span class="nav-link-text">Cloud Architecture Patterns</span></div>
-      <div class="nav-link" data-src="interview-arch.html"         data-title="AI/Cloud Architect Field Manual"><span class="nav-dot" style="background:#f59e0b;"></span><span class="nav-link-text">AI/Cloud Architect Field Manual</span></div>
-      <div class="nav-link" data-src="enterprise-aws-arch.html"    data-title="Enterprise AWS Architecture"><span class="nav-dot" style="background:#f59e0b;"></span><span class="nav-link-text">Enterprise AWS Architecture</span></div>
-      <div class="nav-link" data-src="fault-tolerant-architecture.html" data-title="Fault-Tolerant Architecture"><span class="nav-dot" style="background:#ef4444;"></span><span class="nav-link-text">Fault-Tolerant Architecture</span></div>
-      <div class="nav-link" data-src="fundamentals.html"           data-title="Cloud Computing Fundamentals"><span class="nav-dot" style="background:#6366f1;"></span><span class="nav-link-text">Cloud Computing Fundamentals</span></div>
+      <div class="nav-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Architecture</div>
+      <div class="nav-link" data-src="architecture.html"           data-title="Cloud Architecture Patterns"><span class="nav-dot" style="background:#cf9744;"></span><span class="nav-link-text">Cloud Architecture Patterns</span></div>
+      <div class="nav-link" data-src="interview-arch.html"         data-title="AI/Cloud Architect Field Manual"><span class="nav-dot" style="background:#cf9744;"></span><span class="nav-link-text">AI/Cloud Architect Field Manual</span></div>
+      <div class="nav-link" data-src="enterprise-aws-arch.html"    data-title="Enterprise AWS Architecture"><span class="nav-dot" style="background:#cf9744;"></span><span class="nav-link-text">Enterprise AWS Architecture</span></div>
+      <div class="nav-link" data-src="fault-tolerant-architecture.html" data-title="Fault-Tolerant Architecture"><span class="nav-dot" style="background:#d5654f;"></span><span class="nav-link-text">Fault-Tolerant Architecture</span></div>
+      <div class="nav-link" data-src="fundamentals.html"           data-title="Cloud Computing Fundamentals"><span class="nav-dot" style="background:var(--primary);"></span><span class="nav-link-text">Cloud Computing Fundamentals</span></div>
     </div>
 
-    <!-- 🤖 AI -->
+    <!-- AI -->
     <div class="nav-section">
-      <div class="nav-section-title">🤖 AI &amp; GenAI</div>
-      <div class="nav-link" data-src="genai.html"                   data-title="Generative AI on AWS"><span class="nav-dot" style="background:#a855f7;"></span><span class="nav-link-text">Generative AI on AWS</span></div>
-      <div class="nav-link" data-src="genai_interview_guide.html"   data-title="GenAI Architect Interview Guide"><span class="nav-dot" style="background:#a855f7;"></span><span class="nav-link-text">GenAI Architect Interview</span></div>
-      <div class="nav-link" data-src="rag.html"                     data-title="Agentic AI / RAG Guide"><span class="nav-dot" style="background:#a855f7;"></span><span class="nav-link-text">Agentic AI / RAG Guide</span></div>
-      <div class="nav-link" data-src="llmops.html"                  data-title="LLMOps Guide"><span class="nav-dot" style="background:#a855f7;"></span><span class="nav-link-text">LLMOps Guide</span></div>
-      <div class="nav-link" data-src="autonomous-it-operations.html" data-title="Autonomous IT Operations"><span class="nav-dot" style="background:#a855f7;"></span><span class="nav-link-text">Autonomous IT Operations</span></div>
-      <div class="nav-link" data-src="enterprise-ai-assistant.html" data-title="Enterprise AI Assistant"><span class="nav-dot" style="background:#a855f7;"></span><span class="nav-link-text">Enterprise AI Assistant</span></div>
+      <div class="nav-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>AI &amp; GenAI</div>
+      <div class="nav-link" data-src="genai.html"                   data-title="Generative AI on AWS"><span class="nav-dot" style="background:#a06fd9;"></span><span class="nav-link-text">Generative AI on AWS</span></div>
+      <div class="nav-link" data-src="genai_interview_guide.html"   data-title="GenAI Architect Interview Guide"><span class="nav-dot" style="background:#a06fd9;"></span><span class="nav-link-text">GenAI Architect Interview</span></div>
+      <div class="nav-link" data-src="rag.html"                     data-title="Agentic AI / RAG Guide"><span class="nav-dot" style="background:#a06fd9;"></span><span class="nav-link-text">Agentic AI / RAG Guide</span></div>
+      <div class="nav-link" data-src="llmops.html"                  data-title="LLMOps Guide"><span class="nav-dot" style="background:#a06fd9;"></span><span class="nav-link-text">LLMOps Guide</span></div>
+      <div class="nav-link" data-src="autonomous-it-operations.html" data-title="Autonomous IT Operations"><span class="nav-dot" style="background:#a06fd9;"></span><span class="nav-link-text">Autonomous IT Operations</span></div>
+      <div class="nav-link" data-src="enterprise-ai-assistant.html" data-title="Enterprise AI Assistant"><span class="nav-dot" style="background:#a06fd9;"></span><span class="nav-link-text">Enterprise AI Assistant</span></div>
     </div>
 
-    <!-- 📝 Interview Sessions -->
+    <!-- Interview Sessions -->
     <div class="nav-section">
-      <div class="nav-section-title">📝 Interview Sessions</div>
-      <div class="nav-link" data-src="akt.html"       data-title="AWS Architecture Interview Guide"><span class="nav-dot" style="background:#ec7211;"></span><span class="nav-link-text">AWS Architecture Interview</span></div>
-      <div class="nav-link" data-src="akt2.html"      data-title="DevOps Cloud Demo Transcript"><span class="nav-dot" style="background:#6366f1;"></span><span class="nav-link-text">DevOps Cloud Demo Transcript</span></div>
-      <div class="nav-link" data-src="akt3.html"      data-title="DevOps Interview (Rephrased)"><span class="nav-dot" style="background:#6366f1;"></span><span class="nav-link-text">DevOps Interview (Rephrased)</span></div>
-      <div class="nav-link" data-src="qa.html"        data-title="DevOps Q&amp;A Knowledge Base"><span class="nav-dot" style="background:#6366f1;"></span><span class="nav-link-text">DevOps Q&amp;A Knowledge Base</span></div>
-      <div class="nav-link" data-src="qa2.html"       data-title="DevOps Q&amp;A — Light Theme"><span class="nav-dot" style="background:#6366f1;"></span><span class="nav-link-text">DevOps Q&amp;A — Light Theme</span></div>
-      <div class="nav-link" data-src="qa3.html"       data-title="DevOps Q&amp;A Extended"><span class="nav-dot" style="background:#6366f1;"></span><span class="nav-link-text">DevOps Q&amp;A Extended</span></div>
-      <div class="nav-link" data-src="interview.html" data-title="Cloud Architect Career Guide"><span class="nav-dot" style="background:#6366f1;"></span><span class="nav-link-text">Cloud Architect Career Guide</span></div>
-      <div class="nav-link" data-src="fhdl.html"      data-title="Lead DevOps Interview — FHLB"><span class="nav-dot" style="background:#f59e0b;"></span><span class="nav-link-text">Lead DevOps Interview (FHLB)</span></div>
+      <div class="nav-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Interview Sessions</div>
+      <div class="nav-link" data-src="akt.html"       data-title="AWS Architecture Interview Guide"><span class="nav-dot" style="background:#d6832e;"></span><span class="nav-link-text">AWS Architecture Interview</span></div>
+      <div class="nav-link" data-src="akt2.html"      data-title="DevOps Cloud Demo Transcript"><span class="nav-dot" style="background:var(--primary);"></span><span class="nav-link-text">DevOps Cloud Demo Transcript</span></div>
+      <div class="nav-link" data-src="akt3.html"      data-title="DevOps Interview (Rephrased)"><span class="nav-dot" style="background:var(--primary);"></span><span class="nav-link-text">DevOps Interview (Rephrased)</span></div>
+      <div class="nav-link" data-src="qa.html"        data-title="DevOps Q&amp;A Knowledge Base"><span class="nav-dot" style="background:var(--primary);"></span><span class="nav-link-text">DevOps Q&amp;A Knowledge Base</span></div>
+      <div class="nav-link" data-src="qa2.html"       data-title="DevOps Q&amp;A — Light Theme"><span class="nav-dot" style="background:var(--primary);"></span><span class="nav-link-text">DevOps Q&amp;A — Light Theme</span></div>
+      <div class="nav-link" data-src="qa3.html"       data-title="DevOps Q&amp;A Extended"><span class="nav-dot" style="background:var(--primary);"></span><span class="nav-link-text">DevOps Q&amp;A Extended</span></div>
+      <div class="nav-link" data-src="interview.html" data-title="Cloud Architect Career Guide"><span class="nav-dot" style="background:var(--primary);"></span><span class="nav-link-text">Cloud Architect Career Guide</span></div>
+      <div class="nav-link" data-src="fhdl.html"      data-title="Lead DevOps Interview — FHLB"><span class="nav-dot" style="background:#cf9744;"></span><span class="nav-link-text">Lead DevOps Interview (FHLB)</span></div>
       <div class="nav-link" data-src="ms.html"        data-title="DevOps Architect Masterstroke"><span class="nav-dot" style="background:#0078d4;"></span><span class="nav-link-text">DevOps Architect Masterstroke</span></div>
     </div>
 
-    <!-- 🎓 CCA-F Portal -->
+    <!-- CCA-F Portal -->
     <div class="nav-section">
-      <div class="nav-section-title">🎓 CCA-F Portal</div>
-      <div class="nav-link" data-src="cca/index.html"  data-title="CCA-F Mock Exams Home"><span class="nav-dot" style="background:#6366f1;"></span><span class="nav-link-text">CCA-F Home &amp; Mock Exams</span></div>
-      <div class="nav-link" data-src="cca/cca.html"    data-title="CCA-F Deep Prep Guide"><span class="nav-dot" style="background:#6366f1;"></span><span class="nav-link-text">CCA-F Deep Prep Guide</span></div>
-      <div class="nav-link" data-src="cca/c.html"      data-title="CCA-F Master Prep — 5 Domains"><span class="nav-dot" style="background:#6366f1;"></span><span class="nav-link-text">CCA-F Master Prep (5 Domains)</span></div>
-      <div class="nav-link" data-src="cca/topics.html" data-title="CCA-F All Topics Explained"><span class="nav-dot" style="background:#6366f1;"></span><span class="nav-link-text">CCA-F All Topics Explained</span></div>
-      <div class="nav-link" data-src="cca/exam.html"   data-title="CCA-F Mock Exam"><span class="nav-dot" style="background:#6366f1;"></span><span class="nav-link-text">CCA-F Mock Exam</span></div>
-      <div class="nav-link" data-src="cca/refs.html"   data-title="CCA-F Reference Links"><span class="nav-dot" style="background:#6366f1;"></span><span class="nav-link-text">CCA-F Reference Links</span></div>
+      <div class="nav-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>CCA-F Portal</div>
+      <div class="nav-link" data-src="cca/index.html"  data-title="CCA-F Mock Exams Home"><span class="nav-dot" style="background:var(--primary);"></span><span class="nav-link-text">CCA-F Home &amp; Mock Exams</span></div>
+      <div class="nav-link" data-src="cca/cca.html"    data-title="CCA-F Deep Prep Guide"><span class="nav-dot" style="background:var(--primary);"></span><span class="nav-link-text">CCA-F Deep Prep Guide</span></div>
+      <div class="nav-link" data-src="cca/c.html"      data-title="CCA-F Master Prep — 5 Domains"><span class="nav-dot" style="background:var(--primary);"></span><span class="nav-link-text">CCA-F Master Prep (5 Domains)</span></div>
+      <div class="nav-link" data-src="cca/topics.html" data-title="CCA-F All Topics Explained"><span class="nav-dot" style="background:var(--primary);"></span><span class="nav-link-text">CCA-F All Topics Explained</span></div>
+      <div class="nav-link" data-src="cca/exam.html"   data-title="CCA-F Mock Exam"><span class="nav-dot" style="background:var(--primary);"></span><span class="nav-link-text">CCA-F Mock Exam</span></div>
+      <div class="nav-link" data-src="cca/refs.html"   data-title="CCA-F Reference Links"><span class="nav-dot" style="background:var(--primary);"></span><span class="nav-link-text">CCA-F Reference Links</span></div>
     </div>
 
-    <!-- 🎓 Claude Certified Architect -->
+    <!-- Claude Certified Architect -->
     <div class="nav-section">
-      <div class="nav-section-title">Claude Certified Architect</div>
-      <div class="nav-link" data-src="claude.html"   data-title="Claude Certified Architect Guide"><span class="nav-dot" style="background:#a855f7;"></span><span class="nav-link-text">Claude Architect Guide</span></div>
-      <div class="nav-link" data-src="claude-m1.html" data-title="Claude Architect Mock Exam"><span class="nav-dot" style="background:#a855f7;"></span><span class="nav-link-text">Claude Architect Mock Exam</span></div>
+      <div class="nav-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Claude Certified Architect</div>
+      <div class="nav-link" data-src="claude.html"   data-title="Claude Certified Architect Guide"><span class="nav-dot" style="background:#a06fd9;"></span><span class="nav-link-text">Claude Architect Guide</span></div>
+      <div class="nav-link" data-src="claude-m1.html" data-title="Claude Architect Mock Exam"><span class="nav-dot" style="background:#a06fd9;"></span><span class="nav-link-text">Claude Architect Mock Exam</span></div>
     </div>
 
-    <!-- 🌐 Other -->
+    <!-- Other -->
     <div class="nav-section">
-      <div class="nav-section-title">🌐 Other</div>
+      <div class="nav-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Other</div>
       <div class="nav-link" data-src="99.html"  data-title="Thirukanitham — 99"><span class="nav-dot" style="background:#64748b;"></span><span class="nav-link-text">Thirukanitham — 99</span></div>
       <div class="nav-link" data-src="src.html" data-title="Full Source Guide v7"><span class="nav-dot" style="background:#64748b;"></span><span class="nav-link-text">Full Source Guide v7</span></div>
     </div>
@@ -537,32 +560,32 @@
       <p>Click any guide in the left sidebar to load it here. Use the search box to quickly find topics.</p>
       <div class="welcome-grid">
         <div class="welcome-card" onclick="loadGuide('eks/index.html','Kubernetes &amp; EKS Guide')">
-          <div class="wc-icon">⎈</div>
+          <div class="wc-icon" style="background:rgba(50,108,229,0.14); color:#5b8fef;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
           <div class="wc-title">EKS Guide</div>
           <div class="wc-sub">280 Questions</div>
         </div>
         <div class="welcome-card" onclick="loadGuide('aws/index.html','AWS Senior Architect Guide')">
-          <div class="wc-icon">☁️</div>
+          <div class="wc-icon" style="background:rgba(236,114,17,0.14); color:#e08a3f;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>
           <div class="wc-title">AWS Guide</div>
           <div class="wc-sub">110 Questions</div>
         </div>
         <div class="welcome-card" onclick="loadGuide('cca/index.html','CCA-F Study Portal')">
-          <div class="wc-icon">🎓</div>
+          <div class="wc-icon" style="background:var(--primary-light); color:var(--primary);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
           <div class="wc-title">CCA-F Portal</div>
           <div class="wc-sub">Mock Exams</div>
         </div>
         <div class="welcome-card" onclick="loadGuide('devops.html','DevOps &amp; CI/CD Guide')">
-          <div class="wc-icon">♾️</div>
+          <div class="wc-icon" style="background:rgba(34,197,94,0.14); color:#4ade80;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
           <div class="wc-title">DevOps Guide</div>
           <div class="wc-sub">CI/CD · GitOps</div>
         </div>
         <div class="welcome-card" onclick="loadGuide('genai.html','Generative AI on AWS')">
-          <div class="wc-icon">🤖</div>
+          <div class="wc-icon" style="background:rgba(168,85,247,0.14); color:#c084fc;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></div>
           <div class="wc-title">GenAI Guide</div>
           <div class="wc-sub">Bedrock · RAG</div>
         </div>
         <div class="welcome-card" onclick="loadGuide('architecture.html','Cloud Architecture Patterns')">
-          <div class="wc-icon">🏗️</div>
+          <div class="wc-icon" style="background:rgba(245,158,11,0.14); color:#eab668;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></div>
           <div class="wc-title">Architecture</div>
           <div class="wc-sub">Patterns · Design</div>
         </div>
