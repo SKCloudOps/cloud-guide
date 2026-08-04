@@ -350,11 +350,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    cursor: pointer;
     font-family: inherit;
     font-size: 1.05rem;
     font-weight: 600;
     color: var(--text-primary);
+    cursor: default;
 }
 
 .question-text {

@@ -146,37 +146,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
             matchedQuestions.forEach(function(q) {
                 var card = document.createElement('div');
-                card.className = 'qna-card';
+                card.className = 'qna-card expanded';
 
-                if (searchTerm) card.classList.add('expanded');
-
-                var btn = document.createElement('button');
-                btn.className = 'question-btn';
+                var questionHeader = document.createElement('div');
+                questionHeader.className = 'question-btn';
 
                 var qText = document.createElement('span');
                 qText.className = 'question-text';
                 qText.innerHTML = q.id + '. ' + highlightText(q.question, searchTerm);
 
-                var chevron = document.createElement('svg');
-                chevron.setAttribute('class', 'toggle-icon');
-                chevron.setAttribute('viewBox', '0 0 24 24');
-                chevron.setAttribute('fill', 'none');
-                chevron.setAttribute('stroke', 'currentColor');
-                chevron.setAttribute('stroke-width', '2');
-                chevron.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
-
-                btn.appendChild(qText);
-                btn.appendChild(chevron);
+                questionHeader.appendChild(qText);
 
                 var answerDiv = document.createElement('div');
                 answerDiv.className = 'answer-content';
                 answerDiv.innerHTML = highlightText(q.answer, searchTerm);
 
-                btn.addEventListener('click', function() {
-                    card.classList.toggle('expanded');
-                });
-
-                card.appendChild(btn);
+                card.appendChild(questionHeader);
                 card.appendChild(answerDiv);
                 sectionEl.appendChild(card);
             });
