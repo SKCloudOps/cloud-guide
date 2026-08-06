@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior Kubernetes & Amazon EKS Interview Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                    <h1>K8s Mastery</h1>
+                </div>
+                <p class="subtitle">Senior Architect Interview Guide</p>
+            </div>
+            
+            <div class="search-container">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search questions..." autocomplete="off">
+            </div>
+
+            <nav class="nav-menu" id="navMenu">
+                <!-- Navigation items will be injected here by JS -->
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <span>Toggle Theme</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="content-header">
+                <button id="mobileMenuBtn" class="mobile-menu-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="header-stats">
+                    <span class="badge"><span id="totalQuestions">280</span> Questions</span>
+                    <span class="badge primary">Architect Level</span>
+                </div>
+            </header>
+
+            <div class="content-scroll-area">
+                <div class="intro-section" id="introSection">
+                    <h2>Ultimate Kubernetes & EKS Interview Guide</h2>
+                    <p>Welcome to the comprehensive preparation guide for Senior Cloud Architect, Principal Engineer, Staff Engineer, Platform Engineer, and AWS Solutions Architect interviews.</p>
+                    <p>Select a category from the sidebar or search for specific concepts to begin your preparation journey.</p>
+                </div>
+
+                <div id="questionsContainer" class="questions-container">
+                    <!-- Questions will be injected here by JS -->
+                </div>
+                
+                <div id="noResults" class="no-results" style="display: none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <h3>No matching questions found</h3>
+                    <p>Try adjusting your search terms.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script tags -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

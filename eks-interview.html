@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kubernetes &amp; EKS — Senior Architect Interview Questions &amp; Answers</title>
+<meta name="description" content="65 advanced Kubernetes and Amazon EKS interview questions for senior architects. Covers EKS architecture, networking (VPC CNI, service mesh), scaling (HPA, VPA, KEDA, Karpenter), security (IRSA, RBAC, Pod Security), observability, GitOps, and production troubleshooting." />
+<meta name="keywords" content="EKS interview questions, Kubernetes architect interview, Karpenter, IRSA, VPC CNI, HPA VPA KEDA, EKS security, service mesh, GitOps, Argo Rollouts, EKS production" />
+<meta name="author" content="SKCloudOps" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://skcloudops.github.io/cloud-guide/eks-interview.html" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="article" />
+<meta property="article:section" content="Interview" />
+<meta property="article:tag" content="Kubernetes,Amazon EKS,Senior Architect,Interview Questions,Karpenter,IRSA,VPC CNI" />
+<meta property="og:title" content="Kubernetes &amp; EKS — Senior Architect Interview Questions &amp; Answers" />
+<meta property="og:description" content="65 advanced Kubernetes and EKS interview questions for senior architects with detailed answers, architecture diagrams, code examples, and comparison tables." />
+<meta property="og:url" content="https://skcloudops.github.io/cloud-guide/eks-interview.html" />
+<meta property="og:site_name" content="Cloud Interview Guide" />
+<meta property="og:image" content="https://skcloudops.github.io/cloud-guide/assets/eks-interview-architecture.png" />
+<meta property="og:image:alt" content="EKS Architecture for Senior Architect Interview" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes &amp; EKS — Senior Architect Interview Questions &amp; Answers" />
+<meta name="twitter:description" content="65 advanced EKS interview questions for senior architects with detailed answers, diagrams, and production patterns." />
+<meta name="twitter:image" content="https://skcloudops.github.io/cloud-guide/assets/eks-interview-architecture.png" />
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0f172a">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Kubernetes & EKS — Senior Architect Interview Questions & Answers",
+      "description": "65 advanced Kubernetes and Amazon EKS interview questions for senior architects covering architecture, networking, scaling, security, observability, GitOps, and troubleshooting.",
+      "url": "https://skcloudops.github.io/cloud-guide/eks-interview.html",
+      "image": "https://skcloudops.github.io/cloud-guide/assets/eks-interview-architecture.png",
+      "author": {"@type": "Organization", "name": "SKCloudOps"},
+      "publisher": {"@type": "Organization", "name": "SKCloudOps", "logo": {"@type": "ImageObject", "url": "https://skcloudops.github.io/cloud-guide/assets/favicon.svg"}},
+      "dateModified": "2026-08-03",
+      "inLanguage": "en-US",
+      "teaches": "EKS architecture, VPC CNI networking, Karpenter autoscaling, IRSA security, GitOps deployments, production troubleshooting",
+      "educationalLevel": "Advanced",
+      "about": [
+        {"@type":"Thing","name":"Amazon EKS"},
+        {"@type":"Thing","name":"Kubernetes"},
+        {"@type":"Thing","name":"Karpenter"},
+        {"@type":"Thing","name":"Container Orchestration"},
+        {"@type":"Thing","name":"Cloud Architecture"}
+      ],
+      "isPartOf": {"@type": "WebSite", "name": "Cloud Interview Guide", "url": "https://skcloudops.github.io/cloud-guide/"}
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Cloud Interview Guide", "item": "https://skcloudops.github.io/cloud-guide/"},
+        {"@type": "ListItem", "position": 2, "name": "Interview", "item": "https://skcloudops.github.io/cloud-guide/"},
+        {"@type": "ListItem", "position": 3, "name": "Kubernetes & EKS Interview", "item": "https://skcloudops.github.io/cloud-guide/eks-interview.html"}
+      ]
+    }
+  ]
+}
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#ffffff;--bg:#f4f6f9;--border:#e2e8f0;--border-md:#cbd5e1;
+  --text:#0f172a;--text-2:#334155;--text-3:#64748b;
+  --accent:#326ce5;--accent-lt:#eff6ff;--accent-dk:#1e40af;
+  --k8s:#326ce5;--aws:#FF9900;--purple:#7c3aed;
+  --sans:"DM Sans",system-ui,sans-serif;
+  --mono:"DM Mono",monospace;
+  --serif:"Playfair Display",Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.nb{font-family:var(--sans);font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.01em}
+.nav-slash{width:1px;height:16px;background:var(--border-md);display:inline-block;margin:0 8px;vertical-align:middle}
+.ntabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.ntabs::-webkit-scrollbar{display:none}
+.nt{padding:6px 14px;border:none;background:transparent;font-family:var(--sans);font-size:12px;font-weight:500;color:var(--text-3);cursor:pointer;border-radius:6px;white-space:nowrap;transition:all .15s}
+.nt:hover{color:var(--text);background:var(--bg)}
+.nt.on{color:var(--accent);background:var(--accent-lt);font-weight:600}
+.badge{font-family:var(--mono);font-size:10px;color:var(--accent);background:var(--accent-lt);border:1px solid rgba(50,108,229,.25);padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;font-weight:600}
+.page{display:none;max-width:1020px;margin:0 auto;padding:40px 24px 80px}
+.page.on{display:block}
+.hero{margin-bottom:40px;padding:32px 36px;background:var(--white);border-radius:16px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.hlabel{font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;font-weight:600}
+.hero h1{font-family:var(--serif);font-size:clamp(24px,3.5vw,38px);font-weight:400;line-height:1.15;letter-spacing:-.02em;margin-bottom:10px;color:var(--text)}
+.hero h1 u{text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:5px;text-decoration-thickness:2px;font-style:normal}
+.hero p{font-size:14px;color:var(--text-2);max-width:580px;line-height:1.7}
+.hero-diagram{margin-top:24px;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.hero-diagram img{width:100%;height:auto;display:block}
+.hero-diagram figcaption{text-align:center;font-size:11px;color:var(--text-3);padding:8px;background:#f8fafc;border-top:1px solid var(--border);font-weight:500}
+.snav{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
+.snt{padding:7px 14px;border:1px solid var(--border);border-radius:20px;background:var(--white);font-family:var(--sans);font-size:11px;font-weight:500;cursor:pointer;color:var(--text-3);transition:all .15s;white-space:nowrap}
+.snt:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-lt)}
+.snt.on{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+.spane{display:none}.spane.on{display:block}
+.topic-def{margin-bottom:24px;border-radius:12px;overflow:hidden;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.topic-def-hd{background:linear-gradient(135deg,var(--k8s) 0%,var(--accent-dk) 100%);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.topic-def-title{font-family:var(--serif);font-size:17px;font-weight:400;color:#fff;letter-spacing:-.01em}
+.topic-def-pills{display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0}
+.tdpill{font-family:var(--mono);font-size:9px;padding:3px 9px;border:1px solid;border-radius:20px;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+.tdpill-weight{color:#fff;border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.15)}
+.tdpill-tag{color:#c7d2fe;border-color:rgba(199,210,254,.4);background:rgba(199,210,254,.1)}
+.topic-def-body{padding:16px 20px;background:var(--white)}
+.topic-def-body p{color:var(--text-2);font-size:13px}
+.qa-list{display:flex;flex-direction:column;gap:10px}
+.qa{border-radius:10px;border:1px solid var(--border);overflow:hidden;background:var(--white);box-shadow:0 1px 3px rgba(0,0,0,.04);transition:box-shadow .15s}
+.qa:hover{box-shadow:0 3px 10px rgba(50,108,229,.1)}
+.qa-q{padding:12px 16px;background:#fafbff;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start}
+.qa-num{font-family:var(--mono);font-size:10px;color:var(--accent);background:var(--accent-lt);border:1px solid rgba(50,108,229,.2);padding:2px 7px;border-radius:4px;flex-shrink:0;margin-top:2px;font-weight:700;white-space:nowrap}
+.qa-qtext{font-size:13px;font-weight:600;color:var(--text);line-height:1.55}
+.qa-a{padding:14px 16px;font-size:13px;color:var(--text-2);line-height:1.75}
+.qa-a strong{color:var(--text);font-weight:700}
+.qa-a em{color:var(--text-3);font-style:italic}
+.qa-a ul{margin:6px 0 4px 20px}
+.qa-a ol{margin:6px 0 4px 20px}
+.qa-a li{font-size:13px;color:var(--text-2);line-height:1.65;margin-bottom:5px}
+.qa-a li strong{color:var(--text)}
+.qa-a code{font-family:var(--mono);font-size:12px;background:#f1f5f9;border:1px solid var(--border);padding:1px 6px;border-radius:4px;color:var(--accent-dk)}
+pre{background:#1e1e2e;border-radius:8px;padding:14px 16px;margin:10px 0;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.7;color:#cdd6f4;border:1px solid #313244}
+pre .k{color:#cba6f7}pre .s{color:#a6e3a1}pre .c{color:#6c7086;font-style:italic}pre .v{color:#89dceb}pre .n{color:#89b4fa}pre .o{color:#f38ba8}
+.rule{margin-bottom:12px;padding:14px 18px;border-left:3px solid var(--accent);background:var(--accent-lt);border-radius:0 8px 8px 0}
+.rule-title{font-size:11px;font-weight:700;color:var(--accent-dk);margin-bottom:5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.rule-body{font-size:13px;color:var(--text-2);line-height:1.65}
+.rule-body code{font-family:var(--mono);font-size:12px;background:rgba(50,108,229,.08);padding:1px 5px;border-radius:3px;color:var(--accent-dk)}
+.dtable{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.dtable th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;padding:9px 12px;text-align:left;background:#f8fafc;color:var(--text-3);border-bottom:1px solid var(--border-md);font-weight:700}
+.dtable td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55;color:var(--text-2)}
+.dtable tr:last-child td{border-bottom:none}
+.dtable td:first-child{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text)}
+.dtable tr.hl td{background:#f0fdf4}
+.dtable tr:hover td{background:#fafbff}
+.tip{margin-top:12px;padding:12px 16px;background:#fffbeb;border:1px solid #fde68a;border-left:3px solid var(--aws);border-radius:0 8px 8px 0;font-size:12px;color:#78350f;line-height:1.65}
+.tip strong{color:#92400e;font-weight:700}
+.tip code{font-family:var(--mono);font-size:11px;background:#fef3c7;padding:1px 5px;border-radius:3px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);margin:14px 0;border-radius:8px;overflow:hidden}
+@media(max-width:600px){.compare{grid-template-columns:1fr}}
+.cmp{padding:14px 16px;font-size:12px;line-height:1.65;border-right:1px solid var(--border);background:var(--white)}
+.cmp:last-child{border-right:none}
+.cmp-lbl{font-family:var(--mono);font-size:10px;font-weight:700;margin-bottom:6px;color:var(--accent);text-transform:uppercase;letter-spacing:.07em}
+.lbl{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;margin:16px 0 10px;display:flex;align-items:center;gap:10px;font-weight:600}
+.lbl::after{content:"";flex:1;height:1px;background:var(--border)}
+p{font-size:13px;color:var(--text-2);line-height:1.65;margin-bottom:8px}
+strong{font-weight:700;color:var(--text)}
+.arch-callout{margin:16px 0;padding:16px 20px;background:linear-gradient(135deg,rgba(50,108,229,.04),rgba(124,58,237,.04));border:1px solid rgba(50,108,229,.15);border-radius:10px}
+.arch-callout-title{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.arch-callout ul{margin:4px 0 0 16px}
+.arch-callout li{font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:4px}
+.scenario{margin:14px 0;padding:14px 18px;border-left:3px solid var(--purple);background:linear-gradient(135deg,#faf5ff,#f5f3ff);border-radius:0 8px 8px 0}
+.scenario-title{font-size:11px;font-weight:700;color:var(--purple);margin-bottom:5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.scenario-body{font-size:13px;color:var(--text-2);line-height:1.65}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-lt);border:1px solid rgba(50,108,229,.25);padding:4px 12px;border-radius:20px;white-space:nowrap;flex-shrink:0">&#8592; Home</a>
+  <span class="nb">Cloud Guide <span class="nav-slash"></span> K8s &amp; EKS Interview</span>
+  <div class="ntabs" role="tablist">
+    <button class="nt on" onclick="showPage('p1',this)" role="tab">☸️ Architecture</button>
+    <button class="nt" onclick="showPage('p2',this)" role="tab">🌐 Networking</button>
+    <button class="nt" onclick="showPage('p3',this)" role="tab">📈 Scaling</button>
+    <button class="nt" onclick="showPage('p4',this)" role="tab">🔒 Security</button>
+    <button class="nt" onclick="showPage('p5',this)" role="tab">🔍 Observability</button>
+    <button class="nt" onclick="showPage('p6',this)" role="tab">🚀 GitOps &amp; CI/CD</button>
+    <button class="nt" onclick="showPage('p7',this)" role="tab">🔧 Troubleshooting</button>
+  </div>
+  <span class="badge">65 Q&amp;A</span>
+</nav>
+
+<!-- ======================================================================
+     PAGE 1: ARCHITECTURE
+     ====================================================================== -->
+<div class="page on" id="p1">
+  <div class="hero">
+    <div class="hlabel">Senior Architect Interview Guide</div>
+    <h1>Kubernetes &amp; <u>Amazon EKS</u> — Deep Dive</h1>
+    <p>65 advanced questions covering EKS architecture, networking, autoscaling, security, observability, GitOps, and production troubleshooting — with architect-grade answers, code examples, and comparison tables.</p>
+    <figure class="hero-diagram">
+      <img src="assets/eks-interview-architecture.png" alt="EKS Architecture Overview — Control Plane, Data Plane, Networking, Security, Scaling, and Observability" />
+      <figcaption>EKS Reference Architecture — Control Plane, Data Plane, Networking, Security &amp; Observability</figcaption>
+    </figure>
+  </div>
+
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s1a',this,'p1')">☸️ EKS Fundamentals (E1–E5)</button>
+    <button class="snt" onclick="showSec('s1b',this,'p1')">🏗️ Control &amp; Data Plane (E6–E10)</button>
+  </div>
+
+  <!-- E1–E5: EKS Fundamentals -->
+  <div class="spane on" id="s1a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">☸️ EKS Fundamentals</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">E1 – E5</span>
+          <span class="tdpill tdpill-tag">Core Architecture</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>EKS managed control plane, Kubernetes API server, etcd, scheduling, and how AWS abstracts the complexity of running production Kubernetes.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E1</span><span class="qa-qtext">What is Amazon EKS and how does it differ from self-managed Kubernetes on EC2?</span></div>
+        <div class="qa-a">
+          <p><strong>Amazon EKS</strong> is a fully managed Kubernetes service that runs the control plane (API server, etcd, scheduler, controller-manager) across three Availability Zones. AWS handles upgrades, patching, and HA for the control plane.</p>
+          <table class="dtable">
+            <tr><th>Aspect</th><th>EKS (Managed)</th><th>Self-Managed on EC2</th></tr>
+            <tr><td>Control Plane</td><td>AWS-managed, 3-AZ HA, auto-patched</td><td>You manage etcd, API server, certs, upgrades</td></tr>
+            <tr><td>etcd</td><td>Managed, encrypted, backed up</td><td>You must backup, monitor, size properly</td></tr>
+            <tr><td>Upgrades</td><td>In-place control plane + managed node group rolling updates</td><td>Manual upgrade of every component</td></tr>
+            <tr><td>Networking</td><td>VPC CNI (native VPC IPs for pods)</td><td>Any CNI (Calico, Flannel, Cilium)</td></tr>
+            <tr><td>Cost</td><td>$0.10/hr control plane + worker nodes</td><td>Only EC2 costs, but higher ops overhead</td></tr>
+            <tr class="hl"><td>Best For</td><td>Production workloads, compliance, teams without deep K8s ops expertise</td><td>Custom CNI needs, air-gapped, cost-sensitive dev/test</td></tr>
+          </table>
+          <div class="tip"><strong>Architect Tip:</strong> EKS Auto Mode (GA 2024) further reduces ops by auto-managing node groups, Karpenter, CoreDNS add-ons, and EBS CSI driver — making EKS closer to a "serverless K8s" experience.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E2</span><span class="qa-qtext">Compare EKS managed node groups, self-managed node groups, Fargate, and EKS Auto Mode. When would you choose each?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Mode</th><th>Node Mgmt</th><th>Scaling</th><th>GPU/Custom AMI</th><th>Best For</th></tr>
+            <tr><td>Managed Node Group</td><td>AWS manages ASG, AMI updates</td><td>Cluster Autoscaler / Karpenter</td><td>✅ Supported</td><td>General production workloads</td></tr>
+            <tr><td>Self-Managed</td><td>You manage ASG, AMIs, bootstrap</td><td>Manual or CA</td><td>✅ Full control</td><td>Custom AMI, Windows nodes, special kernels</td></tr>
+            <tr><td>Fargate</td><td>Serverless — no nodes to manage</td><td>Auto per pod</td><td>❌ No GPU</td><td>Batch jobs, burstable workloads, no node ops</td></tr>
+            <tr class="hl"><td>EKS Auto Mode</td><td>AWS manages Karpenter, CoreDNS, CSI</td><td>Karpenter (built-in)</td><td>✅ GPU supported</td><td>Teams wanting minimal ops, "just run pods"</td></tr>
+          </table>
+          <div class="arch-callout">
+            <div class="arch-callout-title">🏗️ Architect Decision Framework</div>
+            <ul>
+              <li><strong>Start with EKS Auto Mode</strong> for greenfield projects — lowest ops burden</li>
+              <li><strong>Managed Node Groups</strong> when you need specific AMI customizations or Graviton instances</li>
+              <li><strong>Fargate</strong> for isolated, burstable workloads (e.g., batch processing, CI runners)</li>
+              <li><strong>Self-Managed</strong> only when you need Windows containers, custom kernels, or BottleRocket customization</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E3</span><span class="qa-qtext">Explain the Kubernetes control plane components and how EKS manages them differently from vanilla K8s.</span></div>
+        <div class="qa-a">
+          <p>The Kubernetes control plane consists of five core components:</p>
+          <table class="dtable">
+            <tr><th>Component</th><th>Role</th><th>EKS Management</th></tr>
+            <tr><td>kube-apiserver</td><td>REST API gateway for all K8s operations. Validates and processes requests.</td><td>HA across 3 AZs, auto-scaled, managed TLS certs</td></tr>
+            <tr><td>etcd</td><td>Distributed key-value store for cluster state</td><td>Encrypted at rest (AWS KMS), automated backups, 3-AZ replication</td></tr>
+            <tr><td>kube-scheduler</td><td>Assigns pods to nodes based on resource requests, affinity, taints/tolerations</td><td>Managed by AWS, no configuration needed</td></tr>
+            <tr><td>kube-controller-manager</td><td>Runs control loops (ReplicaSet, Deployment, Node controller)</td><td>Managed, includes AWS-specific cloud controller</td></tr>
+            <tr><td>cloud-controller-manager</td><td>Integrates K8s with AWS APIs (ELB, EBS, Route tables)</td><td>AWS manages; creates ALB/NLB, EBS volumes automatically</td></tr>
+          </table>
+          <div class="rule">
+            <div class="rule-title">Key EKS Difference</div>
+            <div class="rule-body">In EKS, the control plane runs in an <strong>AWS-managed VPC</strong> (not your VPC). Communication between your worker nodes and the API server happens via ENIs injected into your VPC or through a public endpoint. You choose: <code>public</code>, <code>private</code>, or <code>public+private</code> endpoint access.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E4</span><span class="qa-qtext">What is the EKS API server endpoint configuration? Compare public, private, and public+private modes from a security perspective.</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Mode</th><th>kubectl Access</th><th>Worker→API</th><th>Security</th></tr>
+            <tr><td>Public Only</td><td>Internet (filterable via CIDR)</td><td>Internet (via NAT GW)</td><td>⚠️ Exposed surface, use CIDR allowlist</td></tr>
+            <tr><td>Private Only</td><td>VPN/Direct Connect/Bastion only</td><td>ENIs in your VPC (private)</td><td>✅ Most secure, no internet exposure</td></tr>
+            <tr class="hl"><td>Public + Private</td><td>Internet (CIDR-filtered)</td><td>ENIs in your VPC (private)</td><td>✅ Recommended — workers use private path, admins can use public with CIDR lock</td></tr>
+          </table>
+          <div class="scenario">
+            <div class="scenario-title">🎯 Production Recommendation</div>
+            <div class="scenario-body">Use <strong>private endpoint</strong> for production clusters. Developers access via VPN or AWS SSM Session Manager. CI/CD pipelines run inside the VPC (e.g., CodeBuild in VPC mode or self-hosted GitHub runners). This eliminates the API server from the internet attack surface.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E5</span><span class="qa-qtext">What is the EKS Kubernetes version upgrade strategy? How would you plan a version upgrade for a production cluster with 200+ microservices?</span></div>
+        <div class="qa-a">
+          <p>EKS supports the latest 4 Kubernetes minor versions. AWS deprecates versions ~14 months after release. Upgrade strategy:</p>
+          <ol>
+            <li><strong>Pre-upgrade Checklist:</strong>
+              <ul>
+                <li>Run <code>kubectl get --raw /apis</code> to find deprecated APIs</li>
+                <li>Use <code>pluto</code> or <code>kubent</code> to scan manifests for removed API versions</li>
+                <li>Test all Helm charts / Kustomize overlays against new version</li>
+                <li>Verify add-on compatibility (VPC CNI, CoreDNS, kube-proxy, CSI drivers)</li>
+              </ul>
+            </li>
+            <li><strong>Upgrade Sequence:</strong> Control plane first → Add-ons → Node groups (rolling)</li>
+            <li><strong>Node Upgrade with Karpenter:</strong> Set <code>drift</code> policy to auto-replace nodes when AMI changes. Karpenter cordons, drains, and replaces nodes with zero manual intervention.</li>
+            <li><strong>Rollback Plan:</strong> Cannot downgrade control plane. Use blue/green cluster strategy — spin up new cluster, migrate workloads via GitOps (ArgoCD), cutover DNS.</li>
+          </ol>
+          <pre><span class="c"># Check deprecated APIs before upgrade</span>
+<span class="k">kubectl</span> get --raw /metrics | grep apiserver_requested_deprecated_apis
+
+<span class="c"># Upgrade control plane</span>
+<span class="k">aws</span> eks update-cluster-version \
+  --name my-cluster \
+  --kubernetes-version <span class="s">"1.30"</span>
+
+<span class="c"># Upgrade managed node group</span>
+<span class="k">aws</span> eks update-nodegroup-version \
+  --cluster-name my-cluster \
+  --nodegroup-name workers</pre>
+          <div class="tip"><strong>Architect Tip:</strong> For 200+ microservices, use a <strong>blue/green cluster strategy</strong> managed via Terraform. Create the new cluster in parallel, deploy via ArgoCD ApplicationSets, run integration tests, then switch Route 53 weighted records. This provides instant rollback capability.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- E6–E10: Control & Data Plane Deep Dive -->
+  <div class="spane" id="s1b">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🏗️ Control &amp; Data Plane Deep Dive</span>
+        <div class="topic-def-pills">
+          <span class="tdpill tdpill-weight">E6 – E10</span>
+          <span class="tdpill tdpill-tag">Architecture Internals</span>
+        </div>
+      </div>
+      <div class="topic-def-body"><p>Deep dive into pod scheduling, node lifecycle, container runtimes, and EKS-specific data plane configurations.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E6</span><span class="qa-qtext">Walk through what happens when you run <code>kubectl apply -f deployment.yaml</code> — from API server to pod running on a node.</span></div>
+        <div class="qa-a">
+          <ol>
+            <li><strong>Authentication &amp; Authorization:</strong> kubectl sends request to API server → authenticates via kubeconfig token (IRSA/aws-iam-authenticator) → checks RBAC policies</li>
+            <li><strong>Admission Controllers:</strong> Mutating webhooks (e.g., inject sidecar, set defaults) → Validating webhooks (e.g., OPA/Gatekeeper policies)</li>
+            <li><strong>etcd Persistence:</strong> API server writes Deployment object to etcd</li>
+            <li><strong>Controller Loop:</strong> Deployment controller creates ReplicaSet → ReplicaSet controller creates Pod objects (still unscheduled)</li>
+            <li><strong>Scheduling:</strong> kube-scheduler finds suitable node (resource requests, affinity, taints/tolerations, topology spread) → binds pod to node</li>
+            <li><strong>Kubelet Execution:</strong> kubelet on the target node receives the pod spec → pulls container images → calls container runtime (containerd) → sets up networking via CNI plugin (VPC CNI assigns ENI IP)</li>
+            <li><strong>Readiness Probes:</strong> kubelet runs readiness probe → pod enters Ready state → kube-proxy updates iptables/IPVS rules → Service endpoints include the pod</li>
+          </ol>
+          <div class="rule">
+            <div class="rule-title">EKS-Specific Detail</div>
+            <div class="rule-body">In EKS, VPC CNI assigns a <strong>real VPC IP</strong> to each pod (not overlay networking). This means pods are directly routable within the VPC — security groups, NACLs, and VPC Flow Logs work natively on pod traffic.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E7</span><span class="qa-qtext">Explain the difference between Deployments, StatefulSets, DaemonSets, and Jobs. When would you use each in production?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Workload Type</th><th>Identity</th><th>Storage</th><th>Scaling</th><th>Use Case</th></tr>
+            <tr><td>Deployment</td><td>Interchangeable pods</td><td>Ephemeral</td><td>HPA/KEDA</td><td>Stateless web services, APIs, microservices</td></tr>
+            <tr><td>StatefulSet</td><td>Stable network IDs (pod-0, pod-1)</td><td>PVC per pod</td><td>Manual/ordered</td><td>Databases, Kafka, Elasticsearch, Zookeeper</td></tr>
+            <tr><td>DaemonSet</td><td>One pod per node</td><td>Host path / ephemeral</td><td>Auto (node count)</td><td>Log collectors (Fluent Bit), monitoring agents, CNI plugins</td></tr>
+            <tr><td>Job / CronJob</td><td>Run-to-completion</td><td>Ephemeral</td><td>Parallelism setting</td><td>Batch processing, DB migrations, scheduled reports</td></tr>
+          </table>
+          <div class="tip"><strong>Architect Tip:</strong> Avoid running stateful databases (PostgreSQL, MySQL) on Kubernetes unless you have deep K8s ops expertise. Use managed services (RDS, Aurora) for critical data. If you must run stateful workloads, use operators (CloudNativePG, Strimzi for Kafka) that handle failover, backups, and upgrades.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E8</span><span class="qa-qtext">What are taints, tolerations, and node affinity? Design a multi-tenant EKS cluster where team-A workloads run only on team-A nodes.</span></div>
+        <div class="qa-a">
+          <p><strong>Taints</strong> repel pods from nodes. <strong>Tolerations</strong> allow pods to schedule on tainted nodes. <strong>Node affinity</strong> attracts pods to specific nodes.</p>
+          <pre><span class="c"># Taint nodes for team-a</span>
+<span class="k">kubectl</span> taint nodes team-a-pool <span class="v">team=a</span>:NoSchedule
+
+<span class="c"># Pod spec with toleration + affinity</span>
+<span class="k">spec</span>:
+  <span class="n">tolerations</span>:
+    - <span class="v">key</span>: <span class="s">"team"</span>
+      <span class="v">operator</span>: <span class="s">"Equal"</span>
+      <span class="v">value</span>: <span class="s">"a"</span>
+      <span class="v">effect</span>: <span class="s">"NoSchedule"</span>
+  <span class="n">affinity</span>:
+    <span class="n">nodeAffinity</span>:
+      <span class="n">requiredDuringSchedulingIgnoredDuringExecution</span>:
+        <span class="n">nodeSelectorTerms</span>:
+          - <span class="n">matchExpressions</span>:
+              - <span class="v">key</span>: <span class="s">"team"</span>
+                <span class="v">operator</span>: In
+                <span class="v">values</span>: [<span class="s">"a"</span>]</pre>
+          <div class="arch-callout">
+            <div class="arch-callout-title">Multi-Tenant Architecture Pattern</div>
+            <ul>
+              <li><strong>Namespace isolation:</strong> One namespace per team with ResourceQuotas and LimitRanges</li>
+              <li><strong>Network policies:</strong> Deny all ingress by default, allow only within namespace</li>
+              <li><strong>Node isolation:</strong> Taints + node affinity for workload separation</li>
+              <li><strong>RBAC:</strong> Role + RoleBinding per namespace (not ClusterRole)</li>
+              <li><strong>Karpenter NodePools:</strong> Separate NodePool per team with different instance types and budgets</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E9</span><span class="qa-qtext">What is Pod Topology Spread and why is it critical for production high availability?</span></div>
+        <div class="qa-a">
+          <p><strong>Topology Spread Constraints</strong> distribute pods evenly across failure domains (AZs, nodes) to prevent all replicas from landing on the same node or AZ.</p>
+          <pre><span class="k">spec</span>:
+  <span class="n">topologySpreadConstraints</span>:
+    - <span class="v">maxSkew</span>: 1
+      <span class="v">topologyKey</span>: <span class="s">"topology.kubernetes.io/zone"</span>
+      <span class="v">whenUnsatisfiable</span>: DoNotSchedule
+      <span class="v">labelSelector</span>:
+        <span class="n">matchLabels</span>:
+          <span class="v">app</span>: <span class="s">"payment-service"</span>
+    - <span class="v">maxSkew</span>: 1
+      <span class="v">topologyKey</span>: <span class="s">"kubernetes.io/hostname"</span>
+      <span class="v">whenUnsatisfiable</span>: ScheduleAnyway</pre>
+          <p><strong>maxSkew: 1</strong> means the difference in pod count between any two zones is at most 1. With 3 replicas across 3 AZs, you get 1-1-1 distribution. If an AZ goes down, 2 replicas survive.</p>
+          <div class="tip"><strong>Production Rule:</strong> Always combine topology spread with <strong>Pod Disruption Budgets</strong> (<code>minAvailable: 2</code> or <code>maxUnavailable: 1</code>) to prevent voluntary disruptions (upgrades, scaling) from taking down too many replicas simultaneously.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E10</span><span class="qa-qtext">Explain resource requests vs limits in Kubernetes. What happens when a pod exceeds its memory limit? What about CPU?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Aspect</th><th>Requests</th><th>Limits</th></tr>
+            <tr><td>Purpose</td><td>Guaranteed minimum — used for scheduling decisions</td><td>Hard ceiling — enforced at runtime</td></tr>
+            <tr><td>CPU Exceeded</td><td>N/A</td><td>Pod is CPU-throttled (not killed)</td></tr>
+            <tr><td>Memory Exceeded</td><td>N/A</td><td>Container is OOMKilled by the kernel</td></tr>
+            <tr><td>QoS Class</td><td colspan="2">requests == limits → Guaranteed | requests &lt; limits → Burstable | no requests/limits → BestEffort</td></tr>
+          </table>
+          <div class="compare">
+            <div class="cmp"><div class="cmp-lbl">✅ Best Practice</div>Always set requests (for proper scheduling). Set memory limits (prevents OOM cascade). Consider NOT setting CPU limits (let pods burst when spare capacity exists — Google's recommendation).</div>
+            <div class="cmp"><div class="cmp-lbl">⚠️ Common Mistake</div>Setting requests too low → pods get scheduled on overcommitted nodes → node-level OOM. Setting limits too low → constant throttling → latency spikes. Use VPA recommendations to right-size.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================================
+     PAGE 2: NETWORKING
+     ====================================================================== -->
+<div class="page" id="p2">
+  <div class="hero">
+    <div class="hlabel">Networking Deep Dive</div>
+    <h1>EKS <u>Networking</u> — VPC CNI, Services, Ingress</h1>
+    <p>Pod networking, service discovery, load balancing, and service mesh — the networking foundation every EKS architect must master.</p>
+  </div>
+
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s2a',this,'p2')">🔌 VPC CNI &amp; Pod Networking (E11–E15)</button>
+    <button class="snt" onclick="showSec('s2b',this,'p2')">🌍 Services, Ingress &amp; Mesh (E16–E20)</button>
+  </div>
+
+  <div class="spane on" id="s2a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔌 VPC CNI &amp; Pod Networking</span>
+        <div class="topic-def-pills"><span class="tdpill tdpill-weight">E11 – E15</span><span class="tdpill tdpill-tag">Networking</span></div>
+      </div>
+      <div class="topic-def-body"><p>How AWS VPC CNI assigns real VPC IPs to pods, ENI limits, prefix delegation, custom networking, and network policies.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E11</span><span class="qa-qtext">How does the AWS VPC CNI plugin work? What problem does it solve compared to overlay networks?</span></div>
+        <div class="qa-a">
+          <p>The VPC CNI plugin assigns <strong>real VPC IP addresses</strong> from the node's subnet to each pod via secondary IPs on Elastic Network Interfaces (ENIs).</p>
+          <div class="compare">
+            <div class="cmp"><div class="cmp-lbl">VPC CNI (EKS Default)</div>Pods get real VPC IPs. No encapsulation overhead. Native VPC routing, security groups, flow logs work on pod traffic. Performance matches EC2 networking. Pod-to-pod across nodes = direct VPC routing.</div>
+            <div class="cmp"><div class="cmp-lbl">Overlay (Calico/Flannel)</div>Pods get IPs from a virtual overlay. Encapsulation (VXLAN/IPIP) adds ~5-10% CPU overhead. Cannot use VPC security groups on pods. Requires separate pod CIDR management.</div>
+          </div>
+          <p><strong>ENI Limits:</strong> Each EC2 instance type has a max number of ENIs and IPs per ENI. For example, <code>m5.large</code> = 3 ENIs × 10 IPs = 29 pod IPs (minus node IPs). This limits pod density per node.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E12</span><span class="qa-qtext">You're running out of pod IPs in your EKS cluster. The VPC subnet is /24 (254 IPs). What are your options?</span></div>
+        <div class="qa-a">
+          <ol>
+            <li><strong>Prefix Delegation:</strong> Enable <code>ENABLE_PREFIX_DELEGATION=true</code> on VPC CNI. Instead of assigning individual IPs, each ENI slot gets a /28 prefix (16 IPs). This 16x increases pod density per node.
+              <pre><span class="k">kubectl</span> set env daemonset aws-node -n kube-system \
+  <span class="v">ENABLE_PREFIX_DELEGATION</span>=<span class="s">"true"</span> \
+  <span class="v">WARM_PREFIX_TARGET</span>=<span class="s">"1"</span></pre>
+            </li>
+            <li><strong>Secondary CIDR:</strong> Add a secondary CIDR block (e.g., 100.64.0.0/16) to your VPC. Use custom networking to place pods in the secondary CIDR subnets.</li>
+            <li><strong>Custom Networking:</strong> <code>AWS_VPC_K8S_CNI_CUSTOM_NETWORK_CFG=true</code> — pods use subnets different from the node's subnet. Keeps node IPs separate from pod IPs.</li>
+            <li><strong>Larger Instance Types:</strong> m5.xlarge supports more ENIs and IPs per ENI than m5.large.</li>
+          </ol>
+          <div class="tip"><strong>Architect Tip:</strong> For large clusters (500+ nodes), always plan IP capacity upfront. Use /16 secondary CIDRs from the 100.64.0.0/10 range (RFC 6598). Enable prefix delegation as the default for all new clusters.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E13</span><span class="qa-qtext">What are Kubernetes Network Policies? How do you implement them in EKS?</span></div>
+        <div class="qa-a">
+          <p>Network Policies are K8s resources that control pod-to-pod traffic (L3/L4). They act as firewalls at the pod level. <strong>VPC CNI alone does NOT enforce Network Policies</strong> — you need an additional plugin.</p>
+          <p><strong>Options for EKS:</strong></p>
+          <ul>
+            <li><strong>VPC CNI Network Policy (native):</strong> Since VPC CNI v1.14+, AWS supports native network policies via eBPF. Enable with <code>ENABLE_NETWORK_POLICY=true</code>.</li>
+            <li><strong>Calico:</strong> Full-featured network policy engine. Supports global policies, DNS-based rules, and L7 policies.</li>
+            <li><strong>Cilium:</strong> eBPF-based, high performance, supports L7 policies and observability.</li>
+          </ul>
+          <pre><span class="c"># Default deny all ingress in a namespace</span>
+<span class="k">apiVersion</span>: networking.k8s.io/v1
+<span class="k">kind</span>: NetworkPolicy
+<span class="k">metadata</span>:
+  <span class="v">name</span>: <span class="s">deny-all-ingress</span>
+  <span class="v">namespace</span>: <span class="s">production</span>
+<span class="k">spec</span>:
+  <span class="v">podSelector</span>: {}  <span class="c"># applies to all pods</span>
+  <span class="v">policyTypes</span>: [<span class="s">Ingress</span>]
+  <span class="c"># empty ingress = deny all</span></pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E14</span><span class="qa-qtext">What are Security Groups for Pods in EKS? When would you use them vs Network Policies?</span></div>
+        <div class="qa-a">
+          <p><strong>Security Groups for Pods (SGP)</strong> allow you to assign AWS VPC Security Groups directly to individual pods, not just nodes. This enables fine-grained, VPC-native L3/L4 access control.</p>
+          <table class="dtable">
+            <tr><th>Feature</th><th>Security Groups for Pods</th><th>K8s Network Policies</th></tr>
+            <tr><td>Scope</td><td>VPC-level (AWS-native)</td><td>Cluster-level (K8s-native)</td></tr>
+            <tr><td>Controls</td><td>Pod ↔ RDS, ElastiCache, other AWS services</td><td>Pod ↔ Pod within cluster</td></tr>
+            <tr><td>L7 Support</td><td>No (L3/L4 only)</td><td>Yes (with Cilium/Calico)</td></tr>
+            <tr class="hl"><td>Best For</td><td>Controlling pod access to AWS resources (databases, queues)</td><td>East-west traffic control within the cluster</td></tr>
+          </table>
+          <div class="rule">
+            <div class="rule-title">Architect Pattern</div>
+            <div class="rule-body">Use <strong>both together</strong>: Security Groups for Pods to control pod → RDS/ElastiCache access (e.g., only <code>payment-service</code> pods can reach the payment database). Network Policies for pod-to-pod isolation within the cluster.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E15</span><span class="qa-qtext">How does CoreDNS work in EKS? A developer reports intermittent DNS resolution failures. How do you troubleshoot?</span></div>
+        <div class="qa-a">
+          <p><strong>CoreDNS</strong> runs as a Deployment in <code>kube-system</code>. It serves DNS for service discovery (<code>my-svc.my-ns.svc.cluster.local</code>). Each node's kubelet configures pods to use CoreDNS ClusterIP (usually 10.100.0.10) as the DNS server.</p>
+          <p><strong>Troubleshooting DNS failures:</strong></p>
+          <ol>
+            <li><strong>Check CoreDNS pods:</strong> <code>kubectl get pods -n kube-system -l k8s-app=kube-dns</code> — are they running? OOMKilled?</li>
+            <li><strong>Check CoreDNS logs:</strong> <code>kubectl logs -n kube-system -l k8s-app=kube-dns</code> — look for SERVFAIL, timeout, loop detection</li>
+            <li><strong>Scale CoreDNS:</strong> Default is 2 replicas. For 200+ node clusters, use the <code>cluster-proportional-autoscaler</code> to auto-scale CoreDNS based on node/pod count</li>
+            <li><strong>ndots issue:</strong> Default <code>ndots:5</code> causes 4-8 DNS lookups per external name. Set <code>ndots:2</code> in pod spec or use fully-qualified names with trailing dot (<code>api.example.com.</code>)</li>
+            <li><strong>NodeLocal DNS Cache:</strong> Deploy NodeLocalDNS (DaemonSet) to cache DNS on each node, reducing CoreDNS load and latency</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="spane" id="s2b">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🌍 Services, Ingress &amp; Service Mesh</span>
+        <div class="topic-def-pills"><span class="tdpill tdpill-weight">E16 – E20</span><span class="tdpill tdpill-tag">Traffic Management</span></div>
+      </div>
+      <div class="topic-def-body"><p>Service types, ALB/NLB Ingress, AWS Load Balancer Controller, and service mesh patterns for production EKS.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E16</span><span class="qa-qtext">Compare ClusterIP, NodePort, LoadBalancer, and Ingress. What is the recommended approach for production EKS?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Type</th><th>Exposure</th><th>Cost</th><th>Use Case</th></tr>
+            <tr><td>ClusterIP</td><td>Internal only (within cluster)</td><td>Free</td><td>Service-to-service communication</td></tr>
+            <tr><td>NodePort</td><td>Static port on every node (30000-32767)</td><td>Free</td><td>Testing, direct node access</td></tr>
+            <tr><td>LoadBalancer</td><td>1 AWS ELB per service</td><td>$$$ (per LB)</td><td>Simple setups, NLB for TCP/gRPC</td></tr>
+            <tr class="hl"><td>Ingress</td><td>1 ALB shared across many services</td><td>$ (single LB)</td><td>✅ Production — path/host routing</td></tr>
+          </table>
+          <p><strong>Production pattern:</strong> Use the <strong>AWS Load Balancer Controller</strong> with Ingress resources. One ALB handles path-based and host-based routing to hundreds of services. Use NLB (LoadBalancer type) only for TCP/UDP workloads (gRPC, game servers, MQTT).</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E17</span><span class="qa-qtext">What is the AWS Load Balancer Controller? How does it differ from the legacy in-tree cloud provider?</span></div>
+        <div class="qa-a">
+          <p>The <strong>AWS Load Balancer Controller</strong> (formerly ALB Ingress Controller) is an out-of-tree controller that watches for Ingress and Service resources and provisions AWS ALBs/NLBs.</p>
+          <div class="compare">
+            <div class="cmp"><div class="cmp-lbl">AWS Load Balancer Controller (Recommended)</div>Creates ALB for Ingress, NLB for Service type LoadBalancer. Supports IP mode (routes directly to pod IPs — bypasses kube-proxy). Target group binding, WAF integration, Shield Advanced, Cognito auth.</div>
+            <div class="cmp"><div class="cmp-lbl">Legacy In-Tree (Deprecated)</div>Only creates Classic Load Balancer. Instance mode only (routes to node ports). No ALB support, no IP mode, no WAF integration. Being phased out.</div>
+          </div>
+          <pre><span class="c"># Ingress with AWS LB Controller — ALB with IP mode</span>
+<span class="k">apiVersion</span>: networking.k8s.io/v1
+<span class="k">kind</span>: Ingress
+<span class="k">metadata</span>:
+  <span class="v">name</span>: <span class="s">api-ingress</span>
+  <span class="n">annotations</span>:
+    <span class="v">alb.ingress.kubernetes.io/scheme</span>: <span class="s">internet-facing</span>
+    <span class="v">alb.ingress.kubernetes.io/target-type</span>: <span class="s">ip</span>
+    <span class="v">alb.ingress.kubernetes.io/wafv2-acl-arn</span>: <span class="s">arn:aws:wafv2:...</span></pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E18</span><span class="qa-qtext">What is a Service Mesh? Compare Istio, AWS App Mesh, and Linkerd for EKS. When is a mesh overkill?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Mesh</th><th>Data Plane</th><th>Complexity</th><th>mTLS</th><th>EKS Integration</th></tr>
+            <tr><td>Istio</td><td>Envoy sidecar</td><td>High (complex CRDs)</td><td>✅ Auto</td><td>Good, but heavy resource usage</td></tr>
+            <tr><td>App Mesh</td><td>Envoy sidecar (AWS-managed)</td><td>Medium</td><td>✅ Auto</td><td>Native AWS, CloudMap integration</td></tr>
+            <tr class="hl"><td>Linkerd</td><td>Rust micro-proxy</td><td>Low</td><td>✅ Auto</td><td>Lightweight, fast, easy to adopt</td></tr>
+          </table>
+          <div class="scenario">
+            <div class="scenario-title">🎯 When is a Service Mesh Overkill?</div>
+            <div class="scenario-body">Skip the mesh if: you have &lt;20 microservices, don't need mTLS (internal VPC traffic is trusted), don't need canary routing at L7 level. Instead, use: <strong>Network Policies</strong> for segmentation, <strong>AWS ALB</strong> for routing, <strong>OpenTelemetry</strong> for tracing. Add a mesh when you genuinely need mTLS, advanced traffic splitting, or circuit breaking at scale.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E19</span><span class="qa-qtext">How does the Gateway API differ from Ingress? Should you migrate to Gateway API on EKS?</span></div>
+        <div class="qa-a">
+          <p><strong>Gateway API</strong> is the next-generation successor to Ingress. It provides a more expressive, role-oriented, and portable traffic routing model.</p>
+          <table class="dtable">
+            <tr><th>Feature</th><th>Ingress</th><th>Gateway API</th></tr>
+            <tr><td>Routing</td><td>Host/path only</td><td>Host, path, headers, query params, method</td></tr>
+            <tr><td>Protocols</td><td>HTTP/HTTPS</td><td>HTTP, HTTPS, TCP, UDP, gRPC, TLS</td></tr>
+            <tr><td>Role Model</td><td>Single resource</td><td>GatewayClass → Gateway → HTTPRoute (infra admin → cluster ops → app dev)</td></tr>
+            <tr><td>Traffic Splitting</td><td>Requires annotations</td><td>Native weighted routing</td></tr>
+            <tr class="hl"><td>EKS Support</td><td>Stable, widely used</td><td>GA since K8s 1.27, AWS LB Controller supports it</td></tr>
+          </table>
+          <p><strong>Migration recommendation:</strong> For new projects, adopt Gateway API. For existing clusters, migrate gradually — both can coexist.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E20</span><span class="qa-qtext">How would you expose a gRPC service running on EKS to external clients?</span></div>
+        <div class="qa-a">
+          <p>gRPC uses HTTP/2 with long-lived connections. This affects load balancing strategy:</p>
+          <ul>
+            <li><strong>Option 1 — NLB + gRPC:</strong> Use Service type LoadBalancer with NLB. NLB operates at L4 (TCP), so connections are balanced per-connection, not per-request. Works for few clients with many requests.</li>
+            <li><strong>Option 2 — ALB + gRPC (Recommended):</strong> ALB supports gRPC natively (since 2020). It terminates HTTP/2, does per-request balancing. Use the AWS LB Controller with <code>alb.ingress.kubernetes.io/backend-protocol-version: GRPC</code>.</li>
+            <li><strong>Option 3 — Service Mesh:</strong> Envoy-based mesh (Istio/Linkerd) does L7 load balancing for gRPC within the cluster. Combine with ALB for external traffic.</li>
+          </ul>
+          <pre><span class="c"># ALB Ingress for gRPC</span>
+<span class="k">metadata</span>:
+  <span class="n">annotations</span>:
+    <span class="v">alb.ingress.kubernetes.io/backend-protocol-version</span>: <span class="s">GRPC</span>
+    <span class="v">alb.ingress.kubernetes.io/target-type</span>: <span class="s">ip</span>
+    <span class="v">alb.ingress.kubernetes.io/healthcheck-protocol</span>: <span class="s">HTTP</span>
+    <span class="v">alb.ingress.kubernetes.io/healthcheck-path</span>: <span class="s">/grpc.health.v1.Health/Check</span></pre>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================================
+     PAGE 3: SCALING
+     ====================================================================== -->
+<div class="page" id="p3">
+  <div class="hero">
+    <div class="hlabel">Autoscaling Deep Dive</div>
+    <h1>EKS <u>Scaling</u> — HPA, VPA, KEDA, Karpenter</h1>
+    <p>Pod-level and node-level autoscaling strategies for production EKS clusters — from reactive scaling to event-driven architectures.</p>
+  </div>
+
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s3a',this,'p3')">📊 Pod Scaling — HPA, VPA, KEDA (E21–E25)</button>
+    <button class="snt" onclick="showSec('s3b',this,'p3')">🖥️ Node Scaling — Karpenter &amp; CA (E26–E30)</button>
+  </div>
+
+  <div class="spane on" id="s3a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">📊 Pod-Level Autoscaling</span>
+        <div class="topic-def-pills"><span class="tdpill tdpill-weight">E21 – E25</span><span class="tdpill tdpill-tag">HPA / VPA / KEDA</span></div>
+      </div>
+      <div class="topic-def-body"><p>Horizontal Pod Autoscaler, Vertical Pod Autoscaler, and KEDA for event-driven scaling — when to use each and how they work together.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E21</span><span class="qa-qtext">Compare HPA, VPA, and KEDA. Can they run together? Design an autoscaling strategy for an e-commerce platform.</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Scaler</th><th>What it Scales</th><th>Trigger</th><th>Speed</th><th>Use Case</th></tr>
+            <tr><td>HPA</td><td>Pod count (horizontal)</td><td>CPU, memory, custom metrics</td><td>15-30s</td><td>Web services, APIs</td></tr>
+            <tr><td>VPA</td><td>Pod resources (vertical)</td><td>Historical usage patterns</td><td>Minutes (restarts pod)</td><td>Right-sizing requests/limits</td></tr>
+            <tr><td>KEDA</td><td>Pod count (event-driven)</td><td>SQS queue depth, Kafka lag, custom</td><td>Seconds</td><td>Queue consumers, event processors</td></tr>
+          </table>
+          <div class="arch-callout">
+            <div class="arch-callout-title">🛒 E-Commerce Autoscaling Design</div>
+            <ul>
+              <li><strong>Frontend (React):</strong> HPA on CPU (target 60%) — scales 3→50 pods during flash sales</li>
+              <li><strong>API Gateway:</strong> HPA on requests-per-second (custom metric via Prometheus adapter)</li>
+              <li><strong>Order Processor:</strong> KEDA on SQS queue depth — scales 0→100 based on pending orders</li>
+              <li><strong>Payment Service:</strong> HPA on CPU + VPA in recommend mode (to tune requests/limits)</li>
+              <li><strong>Node Layer:</strong> Karpenter provisions right-sized nodes (Graviton for API, GPU for ML recs)</li>
+            </ul>
+          </div>
+          <div class="tip"><strong>Important:</strong> Do NOT run HPA and VPA on the same Deployment targeting the same metric. VPA's auto mode can conflict with HPA. Use VPA in <code>recommend</code> mode alongside HPA — VPA suggests optimal requests/limits, you apply them manually.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E22</span><span class="qa-qtext">How does HPA work with custom metrics? Give an example using Prometheus metrics.</span></div>
+        <div class="qa-a">
+          <p>HPA can scale based on custom metrics via the <strong>Prometheus Adapter</strong> or <strong>KEDA</strong>. The flow: App → Prometheus scrapes metrics → Prometheus Adapter exposes them via K8s custom metrics API → HPA reads and scales.</p>
+          <pre><span class="c"># HPA with custom Prometheus metric (requests per second)</span>
+<span class="k">apiVersion</span>: autoscaling/v2
+<span class="k">kind</span>: HorizontalPodAutoscaler
+<span class="k">metadata</span>:
+  <span class="v">name</span>: <span class="s">api-hpa</span>
+<span class="k">spec</span>:
+  <span class="v">scaleTargetRef</span>:
+    <span class="v">apiVersion</span>: apps/v1
+    <span class="v">kind</span>: Deployment
+    <span class="v">name</span>: <span class="s">api-server</span>
+  <span class="v">minReplicas</span>: 3
+  <span class="v">maxReplicas</span>: 100
+  <span class="n">metrics</span>:
+    - <span class="v">type</span>: Pods
+      <span class="n">pods</span>:
+        <span class="n">metric</span>:
+          <span class="v">name</span>: <span class="s">http_requests_per_second</span>
+        <span class="n">target</span>:
+          <span class="v">type</span>: AverageValue
+          <span class="v">averageValue</span>: <span class="s">"1000"</span>  <span class="c"># scale up when >1000 RPS per pod</span>
+  <span class="n">behavior</span>:
+    <span class="n">scaleDown</span>:
+      <span class="v">stabilizationWindowSeconds</span>: 300  <span class="c"># wait 5 min before scaling down</span>
+    <span class="n">scaleUp</span>:
+      <span class="v">stabilizationWindowSeconds</span>: 0    <span class="c"># scale up immediately</span></pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E23</span><span class="qa-qtext">What is KEDA and how does it enable scale-to-zero? Design a KEDA setup for an SQS-driven microservice.</span></div>
+        <div class="qa-a">
+          <p><strong>KEDA (Kubernetes Event-Driven Autoscaling)</strong> extends K8s with event-driven scaling. Unlike HPA, KEDA can scale deployments to zero pods and back — critical for cost optimization.</p>
+          <pre><span class="c"># KEDA ScaledObject for SQS consumer</span>
+<span class="k">apiVersion</span>: keda.sh/v1alpha1
+<span class="k">kind</span>: ScaledObject
+<span class="k">metadata</span>:
+  <span class="v">name</span>: <span class="s">order-processor</span>
+<span class="k">spec</span>:
+  <span class="v">scaleTargetRef</span>:
+    <span class="v">name</span>: <span class="s">order-processor</span>
+  <span class="v">minReplicaCount</span>: 0    <span class="c"># scale to zero when queue is empty</span>
+  <span class="v">maxReplicaCount</span>: 50
+  <span class="v">cooldownPeriod</span>: 60
+  <span class="v">pollingInterval</span>: 5
+  <span class="n">triggers</span>:
+    - <span class="v">type</span>: aws-sqs-queue
+      <span class="n">metadata</span>:
+        <span class="v">queueURL</span>: <span class="s">https://sqs.us-east-1.amazonaws.com/123/orders</span>
+        <span class="v">queueLength</span>: <span class="s">"10"</span>  <span class="c"># 1 pod per 10 messages</span>
+        <span class="v">awsRegion</span>: <span class="s">us-east-1</span>
+      <span class="n">authenticationRef</span>:
+        <span class="v">name</span>: <span class="s">keda-aws-creds</span>  <span class="c"># uses IRSA</span></pre>
+          <p><strong>How it works:</strong> KEDA polls SQS every 5 seconds. At 0 messages → 0 pods. At 50 messages → 5 pods (50/10). At 500 messages → 50 pods (capped at max). When queue drains → cooldown 60s → scale to zero.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E24</span><span class="qa-qtext">How does VPA work? Why shouldn't you use VPA in auto mode with HPA?</span></div>
+        <div class="qa-a">
+          <p><strong>VPA (Vertical Pod Autoscaler)</strong> analyzes historical resource usage and recommends (or auto-applies) optimal CPU/memory requests and limits.</p>
+          <p><strong>VPA Modes:</strong></p>
+          <ul>
+            <li><code>Off</code> — Only calculates recommendations (view via <code>kubectl describe vpa</code>)</li>
+            <li><code>Initial</code> — Sets requests at pod creation only, no restarts</li>
+            <li><code>Recreate</code> — Evicts and recreates pods with updated requests (causes brief downtime)</li>
+            <li><code>Auto</code> — Same as Recreate (currently), may support in-place resize in future</li>
+          </ul>
+          <p><strong>Conflict with HPA:</strong> If both VPA (auto) and HPA target CPU, VPA increases pod CPU requests → HPA sees lower CPU utilization → scales down pods → VPA increases requests again → oscillation loop. Solution: Use VPA in <code>Off</code> mode alongside HPA, apply VPA recommendations manually during maintenance windows.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E25</span><span class="qa-qtext">What is the HPA scaling behavior configuration? How do you prevent flapping (rapid scale up/down cycles)?</span></div>
+        <div class="qa-a">
+          <p>HPA <code>behavior</code> lets you control the speed and stability of scaling decisions:</p>
+          <ul>
+            <li><strong>stabilizationWindowSeconds:</strong> How long to wait before scaling down (prevents flapping). Default: 300s for scale-down, 0s for scale-up.</li>
+            <li><strong>policies:</strong> Rate-limit scaling. E.g., max 4 pods per 60 seconds for scale-up, max 10% per 60 seconds for scale-down.</li>
+            <li><strong>selectPolicy:</strong> <code>Max</code> (most aggressive), <code>Min</code> (most conservative), <code>Disabled</code> (no scaling in that direction).</li>
+          </ul>
+          <div class="rule">
+            <div class="rule-title">Anti-Flapping Strategy</div>
+            <div class="rule-body">Scale up fast (stabilization = 0, aggressive policies), scale down slow (stabilization = 300-600s, conservative policies). This ensures you handle traffic spikes quickly but don't prematurely release capacity.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="spane" id="s3b">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🖥️ Node-Level Scaling — Karpenter &amp; Cluster Autoscaler</span>
+        <div class="topic-def-pills"><span class="tdpill tdpill-weight">E26 – E30</span><span class="tdpill tdpill-tag">Node Autoscaling</span></div>
+      </div>
+      <div class="topic-def-body"><p>Karpenter vs Cluster Autoscaler, NodePools, consolidation, drift detection, and Spot instance management.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E26</span><span class="qa-qtext">Compare Karpenter and Cluster Autoscaler. Why is Karpenter the preferred choice for EKS in 2025+?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Feature</th><th>Karpenter</th><th>Cluster Autoscaler</th></tr>
+            <tr><td>Architecture</td><td>Group-less — provisions optimal instance per pod</td><td>ASG-based — scales existing node groups</td></tr>
+            <tr><td>Instance Selection</td><td>Automatic — picks best instance type from 340+ options</td><td>Fixed per node group — you define instance types</td></tr>
+            <tr><td>Scaling Speed</td><td>Seconds (direct EC2 API calls)</td><td>Minutes (ASG scaling cycle)</td></tr>
+            <tr><td>Consolidation</td><td>Built-in — bin-packs and replaces under-utilized nodes</td><td>No built-in consolidation</td></tr>
+            <tr><td>Drift Detection</td><td>Auto-detects and replaces nodes when AMI, config changes</td><td>No drift detection</td></tr>
+            <tr><td>Spot Management</td><td>Native Spot interruption handling with automatic replacement</td><td>Requires separate Spot handler</td></tr>
+            <tr class="hl"><td>EKS Auto Mode</td><td>✅ Built-in (managed by AWS)</td><td>❌ Not included</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E27</span><span class="qa-qtext">Design a Karpenter NodePool configuration for a cluster running both Spot and On-Demand workloads with Graviton preference.</span></div>
+        <div class="qa-a">
+          <pre><span class="k">apiVersion</span>: karpenter.sh/v1
+<span class="k">kind</span>: NodePool
+<span class="k">metadata</span>:
+  <span class="v">name</span>: <span class="s">general</span>
+<span class="k">spec</span>:
+  <span class="n">template</span>:
+    <span class="k">spec</span>:
+      <span class="n">requirements</span>:
+        - <span class="v">key</span>: <span class="s">"karpenter.sh/capacity-type"</span>
+          <span class="v">operator</span>: In
+          <span class="v">values</span>: [<span class="s">"spot"</span>, <span class="s">"on-demand"</span>]
+        - <span class="v">key</span>: <span class="s">"kubernetes.io/arch"</span>
+          <span class="v">operator</span>: In
+          <span class="v">values</span>: [<span class="s">"arm64"</span>, <span class="s">"amd64"</span>]  <span class="c"># prefers Graviton (arm64) for cost</span>
+        - <span class="v">key</span>: <span class="s">"karpenter.k8s.aws/instance-category"</span>
+          <span class="v">operator</span>: In
+          <span class="v">values</span>: [<span class="s">"m"</span>, <span class="s">"c"</span>, <span class="s">"r"</span>]
+        - <span class="v">key</span>: <span class="s">"karpenter.k8s.aws/instance-generation"</span>
+          <span class="v">operator</span>: Gte
+          <span class="v">values</span>: [<span class="s">"6"</span>]  <span class="c"># only 6th gen or newer</span>
+      <span class="n">nodeClassRef</span>:
+        <span class="v">group</span>: karpenter.k8s.aws
+        <span class="v">kind</span>: EC2NodeClass
+        <span class="v">name</span>: <span class="s">default</span>
+  <span class="n">limits</span>:
+    <span class="v">cpu</span>: <span class="s">"1000"</span>     <span class="c"># max 1000 vCPUs total</span>
+    <span class="v">memory</span>: <span class="s">"2000Gi"</span>
+  <span class="n">disruption</span>:
+    <span class="v">consolidationPolicy</span>: WhenEmptyOrUnderutilized
+    <span class="v">consolidateAfter</span>: 30s</pre>
+          <div class="tip"><strong>Cost Saving:</strong> Karpenter's consolidation continuously bin-packs workloads onto fewer, right-sized nodes. A cluster running 100 m5.xlarge instances might consolidate to 40 m6g.2xlarge Graviton instances — saving 40-60% on compute costs.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E28</span><span class="qa-qtext">How does Karpenter handle Spot instance interruptions? What happens to the pods running on a Spot node that gets reclaimed?</span></div>
+        <div class="qa-a">
+          <p>Karpenter has <strong>native Spot interruption handling</strong>:</p>
+          <ol>
+            <li><strong>AWS sends 2-minute warning</strong> via EC2 metadata and EventBridge</li>
+            <li><strong>Karpenter receives the event</strong> and immediately cordons the node (prevents new pods)</li>
+            <li><strong>Karpenter provisions a replacement node</strong> — picks a different instance type/AZ with available Spot capacity</li>
+            <li><strong>Pods are gracefully drained</strong> from the interrupted node (respects PDBs and terminationGracePeriodSeconds)</li>
+            <li><strong>Pods reschedule</strong> on the new node or existing nodes with capacity</li>
+          </ol>
+          <div class="rule">
+            <div class="rule-title">Spot Best Practices</div>
+            <div class="rule-body">Diversify instance types (Karpenter does this automatically). Set <code>topologySpreadConstraints</code> across AZs. Always have a mix of Spot + On-Demand. Critical workloads (databases, payment processing) should be On-Demand only — use <code>karpenter.sh/capacity-type: on-demand</code> in pod spec.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E29</span><span class="qa-qtext">What is Karpenter consolidation? Explain the difference between WhenEmpty and WhenEmptyOrUnderutilized.</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Policy</th><th>Behavior</th><th>Risk Level</th></tr>
+            <tr><td>WhenEmpty</td><td>Only removes nodes with zero pods (after daemonsets)</td><td>Low — very safe, no pod disruption</td></tr>
+            <tr class="hl"><td>WhenEmptyOrUnderutilized</td><td>Actively bin-packs: replaces multiple under-utilized nodes with fewer right-sized ones</td><td>Medium — causes pod rescheduling, respects PDBs</td></tr>
+          </table>
+          <p><strong>How consolidation works:</strong> Karpenter continuously evaluates if the current set of nodes is optimal. If 3 nodes are running at 20% utilization, it can replace them with 1 larger node — saving 2 nodes worth of cost. It cordons, drains, and terminates the old nodes while ensuring pods move safely.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E30</span><span class="qa-qtext">How do you handle the "cold start" problem with Karpenter? Pods need to wait for a new node to launch before they can run.</span></div>
+        <div class="qa-a">
+          <p>Node cold start = ~60-90 seconds (EC2 launch + kubelet registration + CNI setup). Strategies to reduce impact:</p>
+          <ul>
+            <li><strong>Over-provision buffer pods:</strong> Deploy low-priority "pause" pods that consume resources. When real pods arrive, the pause pods are evicted, and the real pods take their place immediately — no waiting for new nodes.
+              <pre><span class="c"># Pause pod for over-provisioning</span>
+<span class="k">spec</span>:
+  <span class="v">priorityClassName</span>: <span class="s">overprovisioning</span>  <span class="c"># low priority</span>
+  <span class="n">containers</span>:
+    - <span class="v">name</span>: <span class="s">pause</span>
+      <span class="v">image</span>: <span class="s">registry.k8s.io/pause:3.9</span>
+      <span class="n">resources</span>:
+        <span class="n">requests</span>:
+          <span class="v">cpu</span>: <span class="s">"2"</span>
+          <span class="v">memory</span>: <span class="s">"4Gi"</span></pre>
+            </li>
+            <li><strong>Warm pools (Managed Node Groups):</strong> Keep pre-initialized EC2 instances in a warm pool — launch in seconds instead of minutes.</li>
+            <li><strong>Pre-pull images:</strong> Use DaemonSet to pre-pull large container images on all nodes. Reduces pod startup by 30-60s for large images.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================================
+     PAGE 4: SECURITY
+     ====================================================================== -->
+<div class="page" id="p4">
+  <div class="hero">
+    <div class="hlabel">Security Deep Dive</div>
+    <h1>EKS <u>Security</u> — IRSA, RBAC, Pod Security</h1>
+    <p>Identity, access management, secrets, image security, and compliance patterns for production EKS clusters.</p>
+  </div>
+
+  <div class="snav">
+    <button class="snt on" onclick="showSec('s4a',this,'p4')">🔑 Identity &amp; Access (E31–E35)</button>
+    <button class="snt" onclick="showSec('s4b',this,'p4')">🛡️ Workload Security (E36–E40)</button>
+  </div>
+
+  <div class="spane on" id="s4a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔑 Identity &amp; Access Management</span>
+        <div class="topic-def-pills"><span class="tdpill tdpill-weight">E31 – E35</span><span class="tdpill tdpill-tag">IRSA / RBAC / Auth</span></div>
+      </div>
+      <div class="topic-def-body"><p>IRSA, EKS Pod Identity, RBAC design, aws-auth ConfigMap, and EKS access entries for enterprise cluster security.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E31</span><span class="qa-qtext">What is IRSA (IAM Roles for Service Accounts)? How does it work and why is it critical for EKS security?</span></div>
+        <div class="qa-a">
+          <p><strong>IRSA</strong> maps a Kubernetes ServiceAccount to an IAM Role, allowing pods to assume AWS IAM roles without using node-level IAM roles or hardcoded credentials.</p>
+          <p><strong>How it works:</strong></p>
+          <ol>
+            <li>EKS cluster has an <strong>OIDC provider</strong> registered with IAM</li>
+            <li>IAM Role trust policy trusts the OIDC provider with conditions on namespace and service account name</li>
+            <li>Pod's ServiceAccount is annotated with <code>eks.amazonaws.com/role-arn</code></li>
+            <li>EKS mutating webhook injects AWS_ROLE_ARN and a projected JWT token into the pod</li>
+            <li>AWS SDK exchanges the JWT for temporary STS credentials via <code>AssumeRoleWithWebIdentity</code></li>
+          </ol>
+          <pre><span class="c"># ServiceAccount with IRSA</span>
+<span class="k">apiVersion</span>: v1
+<span class="k">kind</span>: ServiceAccount
+<span class="k">metadata</span>:
+  <span class="v">name</span>: <span class="s">s3-reader</span>
+  <span class="v">namespace</span>: <span class="s">data-team</span>
+  <span class="n">annotations</span>:
+    <span class="v">eks.amazonaws.com/role-arn</span>: <span class="s">arn:aws:iam::123:role/S3ReadOnly</span></pre>
+          <div class="rule">
+            <div class="rule-title">Security Principle</div>
+            <div class="rule-body">IRSA provides <strong>least-privilege, pod-level AWS access</strong>. Without IRSA, all pods on a node share the node's IAM role — if any pod is compromised, the attacker gets the node's full permissions. With IRSA, each pod gets only the permissions it needs.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E32</span><span class="qa-qtext">Compare IRSA and EKS Pod Identity. Which should you use in 2025+?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Feature</th><th>IRSA</th><th>EKS Pod Identity (2023+)</th></tr>
+            <tr><td>Setup</td><td>OIDC provider + IAM role trust policy with conditions</td><td>EKS Pod Identity association (simpler API)</td></tr>
+            <tr><td>Cross-Account</td><td>Complex — requires OIDC trust in target account</td><td>Simpler — uses EKS Pod Identity Agent</td></tr>
+            <tr><td>Scalability</td><td>IAM trust policy has 4KB limit (limits service accounts)</td><td>No trust policy limit</td></tr>
+            <tr class="hl"><td>Recommendation</td><td>Works everywhere, mature</td><td>✅ Preferred for new clusters — simpler, more scalable</td></tr>
+          </table>
+          <p><strong>Migration:</strong> Existing IRSA setups continue to work. For new clusters, use EKS Pod Identity. Both can coexist — migrate service accounts incrementally.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E33</span><span class="qa-qtext">Design the RBAC policy for an EKS cluster shared by 3 teams. Each team should only access their own namespace. The platform team needs cluster-wide access.</span></div>
+        <div class="qa-a">
+          <pre><span class="c"># 1. Namespace-scoped Role for app teams</span>
+<span class="k">apiVersion</span>: rbac.authorization.k8s.io/v1
+<span class="k">kind</span>: Role
+<span class="k">metadata</span>:
+  <span class="v">name</span>: <span class="s">app-developer</span>
+  <span class="v">namespace</span>: <span class="s">backend</span>
+<span class="k">rules</span>:
+  - <span class="v">apiGroups</span>: [<span class="s">""</span>, <span class="s">"apps"</span>, <span class="s">"batch"</span>]
+    <span class="v">resources</span>: [<span class="s">"pods"</span>, <span class="s">"deployments"</span>, <span class="s">"services"</span>, <span class="s">"configmaps"</span>, <span class="s">"jobs"</span>]
+    <span class="v">verbs</span>: [<span class="s">"get"</span>, <span class="s">"list"</span>, <span class="s">"watch"</span>, <span class="s">"create"</span>, <span class="s">"update"</span>, <span class="s">"delete"</span>]
+  - <span class="v">apiGroups</span>: [<span class="s">""</span>]
+    <span class="v">resources</span>: [<span class="s">"secrets"</span>]
+    <span class="v">verbs</span>: [<span class="s">"get"</span>, <span class="s">"list"</span>]  <span class="c"># read-only for secrets</span>
+
+<span class="c"># 2. ClusterRole for platform team</span>
+<span class="k">apiVersion</span>: rbac.authorization.k8s.io/v1
+<span class="k">kind</span>: ClusterRole
+<span class="k">metadata</span>:
+  <span class="v">name</span>: <span class="s">platform-admin</span>
+<span class="k">rules</span>:
+  - <span class="v">apiGroups</span>: [<span class="s">"*"</span>]
+    <span class="v">resources</span>: [<span class="s">"*"</span>]
+    <span class="v">verbs</span>: [<span class="s">"*"</span>]
+
+<span class="c"># 3. Map IAM roles to K8s groups via EKS Access Entries</span>
+<span class="c"># aws eks create-access-entry \</span>
+<span class="c">#   --cluster-name prod \</span>
+<span class="c">#   --principal-arn arn:aws:iam::123:role/BackendDevRole \</span>
+<span class="c">#   --kubernetes-groups backend-devs</span></pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E34</span><span class="qa-qtext">What are EKS Access Entries and how do they replace the aws-auth ConfigMap?</span></div>
+        <div class="qa-a">
+          <div class="compare">
+            <div class="cmp"><div class="cmp-lbl">aws-auth ConfigMap (Legacy)</div>Single ConfigMap in kube-system. Manual YAML editing. Easy to break (one typo locks everyone out). No audit trail. No API for automation.</div>
+            <div class="cmp"><div class="cmp-lbl">EKS Access Entries (New)</div>AWS API-managed. CLI/Terraform/CDK support. Built-in audit via CloudTrail. Cannot accidentally lock yourself out. Supports both API and ConfigMap mode simultaneously.</div>
+          </div>
+          <div class="tip"><strong>Migration:</strong> Set cluster to <code>API_AND_CONFIG_MAP</code> authentication mode first (supports both). Migrate entries from aws-auth to Access Entries. Once fully migrated, switch to <code>API</code> mode to deprecate the ConfigMap.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E35</span><span class="qa-qtext">How do you secure secrets in EKS? Compare Kubernetes Secrets, External Secrets Operator, and AWS Secrets Manager CSI driver.</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Approach</th><th>Encryption</th><th>Rotation</th><th>Complexity</th><th>Best For</th></tr>
+            <tr><td>K8s Secrets (default)</td><td>Base64 only (not encrypted!)</td><td>Manual</td><td>Low</td><td>Non-sensitive config</td></tr>
+            <tr><td>K8s Secrets + KMS Envelope</td><td>Encrypted at rest in etcd</td><td>Manual</td><td>Low</td><td>Better than default</td></tr>
+            <tr><td>External Secrets Operator</td><td>Stored in AWS SM, synced to K8s</td><td>Auto-sync</td><td>Medium</td><td>Centralized secret management</td></tr>
+            <tr class="hl"><td>Secrets Store CSI Driver</td><td>Mounted as files, never in etcd</td><td>Auto-rotation</td><td>Medium</td><td>✅ Most secure — secrets never stored in K8s</td></tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="spane" id="s4b">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🛡️ Workload Security</span>
+        <div class="topic-def-pills"><span class="tdpill tdpill-weight">E36 – E40</span><span class="tdpill tdpill-tag">Pod Security / Image Security</span></div>
+      </div>
+      <div class="topic-def-body"><p>Pod Security Standards, OPA/Gatekeeper, image scanning, supply chain security, and runtime threat detection.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E36</span><span class="qa-qtext">What are Pod Security Standards (PSS) and how do they replace PodSecurityPolicies?</span></div>
+        <div class="qa-a">
+          <p>PodSecurityPolicies (PSP) were removed in K8s 1.25. <strong>Pod Security Standards (PSS)</strong> are the replacement, enforced via the Pod Security Admission controller.</p>
+          <table class="dtable">
+            <tr><th>Level</th><th>Policy</th><th>Use Case</th></tr>
+            <tr><td>Privileged</td><td>No restrictions</td><td>System components, CNI plugins</td></tr>
+            <tr><td>Baseline</td><td>Prevents known privilege escalations</td><td>General workloads</td></tr>
+            <tr class="hl"><td>Restricted</td><td>Hardened — no root, read-only fs, drop all capabilities</td><td>Sensitive/production workloads</td></tr>
+          </table>
+          <pre><span class="c"># Enforce restricted on a namespace</span>
+<span class="k">kubectl</span> label namespace production \
+  <span class="v">pod-security.kubernetes.io/enforce</span>=<span class="s">restricted</span> \
+  <span class="v">pod-security.kubernetes.io/warn</span>=<span class="s">restricted</span> \
+  <span class="v">pod-security.kubernetes.io/audit</span>=<span class="s">restricted</span></pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E37</span><span class="qa-qtext">What is OPA Gatekeeper and how does it complement Pod Security Standards?</span></div>
+        <div class="qa-a">
+          <p><strong>OPA Gatekeeper</strong> is a policy engine that enforces custom policies via admission webhooks. While PSS handles basic security levels, Gatekeeper enables fine-grained, organization-specific policies.</p>
+          <p><strong>Example policies:</strong></p>
+          <ul>
+            <li>All images must come from approved registries (ECR only)</li>
+            <li>All pods must have resource requests and limits</li>
+            <li>No <code>latest</code> tag allowed — require specific image digests</li>
+            <li>All services must have specific labels (team, cost-center)</li>
+            <li>Ingress hosts must match approved domains</li>
+          </ul>
+          <div class="rule">
+            <div class="rule-title">Defense in Depth</div>
+            <div class="rule-body">PSS = baseline security guardrails. Gatekeeper = custom organizational policies. Use both: PSS <code>restricted</code> for security fundamentals + Gatekeeper for business rules (naming conventions, approved registries, required labels).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E38</span><span class="qa-qtext">Design a container image security pipeline for EKS. How do you prevent vulnerable images from running in production?</span></div>
+        <div class="qa-a">
+          <ol>
+            <li><strong>Build:</strong> Multi-stage Dockerfile, minimal base image (distroless/Alpine), non-root user</li>
+            <li><strong>Scan:</strong> ECR image scanning (Inspector) on push. Trivy/Snyk in CI pipeline. Block images with Critical/High CVEs.</li>
+            <li><strong>Sign:</strong> Use <code>cosign</code> to sign images. Verify signatures via Kyverno/Gatekeeper admission policy.</li>
+            <li><strong>Admit:</strong> Gatekeeper policy: only allow images from approved ECR registries, require digest (not tag), require signature verification.</li>
+            <li><strong>Runtime:</strong> AWS GuardDuty for EKS — detects runtime threats (crypto mining, privilege escalation, suspicious API calls).</li>
+          </ol>
+          <div class="scenario">
+            <div class="scenario-title">🔐 Supply Chain Security</div>
+            <div class="scenario-body">Implement SLSA Level 3: reproducible builds in isolated CI environment (CodeBuild), signed provenance, immutable image digests. Use ECR replication for cross-region availability. Enable ECR lifecycle policies to clean up untagged images.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E39</span><span class="qa-qtext">How do you implement least-privilege for pod-level filesystem and capabilities?</span></div>
+        <div class="qa-a">
+          <pre><span class="c"># Hardened pod security context</span>
+<span class="k">spec</span>:
+  <span class="n">securityContext</span>:
+    <span class="v">runAsNonRoot</span>: true
+    <span class="v">runAsUser</span>: 1000
+    <span class="v">runAsGroup</span>: 3000
+    <span class="v">fsGroup</span>: 2000
+    <span class="v">seccompProfile</span>:
+      <span class="v">type</span>: RuntimeDefault
+  <span class="n">containers</span>:
+    - <span class="v">name</span>: <span class="s">app</span>
+      <span class="n">securityContext</span>:
+        <span class="v">allowPrivilegeEscalation</span>: false
+        <span class="v">readOnlyRootFilesystem</span>: true
+        <span class="n">capabilities</span>:
+          <span class="v">drop</span>: [<span class="s">"ALL"</span>]
+      <span class="n">volumeMounts</span>:
+        - <span class="v">name</span>: <span class="s">tmp</span>
+          <span class="v">mountPath</span>: <span class="s">/tmp</span>  <span class="c"># writable tmp dir</span>
+  <span class="n">volumes</span>:
+    - <span class="v">name</span>: <span class="s">tmp</span>
+      <span class="v">emptyDir</span>: {}</pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E40</span><span class="qa-qtext">What is AWS GuardDuty for EKS? What kinds of threats does it detect?</span></div>
+        <div class="qa-a">
+          <p><strong>GuardDuty EKS Protection</strong> monitors Kubernetes audit logs and runtime activity to detect threats:</p>
+          <ul>
+            <li><strong>Audit Log Monitoring:</strong> Detects anonymous API calls, exec into pods, exposed dashboards, credential access attempts</li>
+            <li><strong>Runtime Monitoring:</strong> Detects crypto mining processes, reverse shells, privilege escalation, suspicious file downloads, DNS queries to malicious domains</li>
+            <li><strong>Findings examples:</strong>
+              <ul>
+                <li><code>PrivilegeEscalation:Kubernetes/PrivilegedContainer</code> — container running as privileged</li>
+                <li><code>CryptoCurrency:Runtime/BitcoinTool.B</code> — crypto mining detected</li>
+                <li><code>UnauthorizedAccess:Kubernetes/AnonymousAccessGranted</code> — anonymous auth enabled</li>
+              </ul>
+            </li>
+          </ul>
+          <div class="tip"><strong>Enable GuardDuty EKS Runtime Monitoring</strong> for all production clusters. Deploy the GuardDuty agent as a managed add-on. Route findings to Security Hub → EventBridge → SNS/PagerDuty for alerting.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================================
+     PAGE 5: OBSERVABILITY
+     ====================================================================== -->
+<div class="page" id="p5">
+  <div class="hero">
+    <div class="hlabel">Observability</div>
+    <h1>EKS <u>Observability</u> — Metrics, Logs, Traces</h1>
+    <p>Production-grade monitoring, logging, and distributed tracing for EKS clusters using AWS-native and open-source tools.</p>
+  </div>
+
+  <div class="spane on" id="s5a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔍 Observability Stack</span>
+        <div class="topic-def-pills"><span class="tdpill tdpill-weight">E41 – E47</span><span class="tdpill tdpill-tag">Metrics / Logs / Traces</span></div>
+      </div>
+      <div class="topic-def-body"><p>Prometheus, Grafana, Fluent Bit, OpenTelemetry, CloudWatch Container Insights, and distributed tracing for production EKS.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E41</span><span class="qa-qtext">Design the observability stack for a production EKS cluster with 200 microservices. Cover metrics, logs, and traces.</span></div>
+        <div class="qa-a">
+          <div class="arch-callout">
+            <div class="arch-callout-title">📊 Production Observability Architecture</div>
+            <ul>
+              <li><strong>Metrics:</strong> Amazon Managed Prometheus (AMP) ← Prometheus remote_write from ADOT Collector or Prometheus server. Visualized in Amazon Managed Grafana (AMG).</li>
+              <li><strong>Logs:</strong> Fluent Bit DaemonSet → CloudWatch Logs (structured JSON). Or Fluent Bit → OpenSearch for full-text search.</li>
+              <li><strong>Traces:</strong> OpenTelemetry SDK in apps → ADOT Collector → X-Ray. Visualized in X-Ray console or Grafana Tempo.</li>
+              <li><strong>Alerting:</strong> Prometheus AlertManager or CloudWatch Alarms → SNS → PagerDuty/Slack.</li>
+              <li><strong>Dashboards:</strong> Grafana with pre-built dashboards for K8s, Node, Pod, Karpenter, VPC CNI metrics.</li>
+            </ul>
+          </div>
+          <p><strong>Key Metrics to Monitor:</strong></p>
+          <table class="dtable">
+            <tr><th>Layer</th><th>Metrics</th><th>Alert Threshold</th></tr>
+            <tr><td>Cluster</td><td>Node count, pending pods, API server latency</td><td>Pending pods > 0 for 5min</td></tr>
+            <tr><td>Node</td><td>CPU/memory utilization, disk pressure, network I/O</td><td>CPU > 85% for 10min</td></tr>
+            <tr><td>Pod</td><td>Restart count, OOMKills, CPU throttling</td><td>Restarts > 3 in 5min</td></tr>
+            <tr><td>Application</td><td>Request latency (p50/p95/p99), error rate, throughput</td><td>p99 > 500ms, error rate > 1%</td></tr>
+            <tr><td>Karpenter</td><td>Nodes created/terminated, consolidation events, disruption budget</td><td>Unschedulable pods > 0</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E42</span><span class="qa-qtext">What is ADOT (AWS Distro for OpenTelemetry) and how does it integrate with EKS?</span></div>
+        <div class="qa-a">
+          <p><strong>ADOT</strong> is AWS's distribution of the OpenTelemetry project. It provides a single collector that handles metrics, traces, and logs — replacing the need for separate agents (Prometheus + Jaeger + Fluent Bit).</p>
+          <p><strong>EKS Integration:</strong> Deploy ADOT as a DaemonSet (per-node) or Sidecar (per-pod). It scrapes Prometheus metrics, receives OTLP traces, and exports to AMP (metrics), X-Ray (traces), and CloudWatch (logs).</p>
+          <div class="rule">
+            <div class="rule-title">Architect Decision</div>
+            <div class="rule-body">Use ADOT when you want a <strong>single vendor-neutral collector</strong> for all telemetry. Use separate tools (Prometheus + Fluent Bit + Jaeger) when you need maximum flexibility and your team has deep expertise in each tool. ADOT reduces operational complexity at the cost of some customization.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E43</span><span class="qa-qtext">How do you implement structured logging in EKS? Why is structured JSON logging critical for observability?</span></div>
+        <div class="qa-a">
+          <p>Structured JSON logging enables automated parsing, filtering, and alerting. Unstructured logs require regex patterns that break with format changes.</p>
+          <pre><span class="c">// Application log output (JSON)</span>
+{
+  <span class="s">"timestamp"</span>: <span class="s">"2025-08-03T10:15:30Z"</span>,
+  <span class="s">"level"</span>: <span class="s">"ERROR"</span>,
+  <span class="s">"service"</span>: <span class="s">"payment-api"</span>,
+  <span class="s">"trace_id"</span>: <span class="s">"abc123def456"</span>,
+  <span class="s">"message"</span>: <span class="s">"Payment processing failed"</span>,
+  <span class="s">"error"</span>: <span class="s">"timeout after 5s"</span>,
+  <span class="s">"customer_id"</span>: <span class="s">"cust_789"</span>,
+  <span class="s">"amount"</span>: 99.99
+}</pre>
+          <p><strong>Fluent Bit pipeline:</strong> Fluent Bit (DaemonSet) → reads from <code>/var/log/containers/*.log</code> → enriches with K8s metadata (pod name, namespace, labels) → routes to CloudWatch Logs (operational) + S3 (archive) + OpenSearch (search).</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E44</span><span class="qa-qtext">How do you debug a pod that is in CrashLoopBackOff? Walk through the troubleshooting steps.</span></div>
+        <div class="qa-a">
+          <pre><span class="c"># 1. Check pod status and events</span>
+<span class="k">kubectl</span> describe pod &lt;pod-name&gt; -n &lt;namespace&gt;
+<span class="c"># Look for: OOMKilled, ImagePullBackOff, FailedScheduling</span>
+
+<span class="c"># 2. Check previous container logs (crashed container)</span>
+<span class="k">kubectl</span> logs &lt;pod-name&gt; --previous -n &lt;namespace&gt;
+
+<span class="c"># 3. Check resource limits — is it OOMKilled?</span>
+<span class="k">kubectl</span> get pod &lt;pod-name&gt; -o jsonpath='{.status.containerStatuses[*].lastState}'
+
+<span class="c"># 4. If image issue — verify image exists and is pullable</span>
+<span class="k">kubectl</span> get events -n &lt;namespace&gt; --field-selector involvedObject.name=&lt;pod-name&gt;
+
+<span class="c"># 5. Interactive debug — run ephemeral debug container</span>
+<span class="k">kubectl</span> debug -it &lt;pod-name&gt; --image=busybox --target=&lt;container-name&gt;
+
+<span class="c"># 6. Check node resources — is the node under pressure?</span>
+<span class="k">kubectl</span> top node
+<span class="k">kubectl</span> describe node &lt;node-name&gt; | grep -A5 "Conditions"</pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E45</span><span class="qa-qtext">What are EKS control plane logs? Which ones should you enable and why?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Log Type</th><th>Contents</th><th>Enable?</th></tr>
+            <tr class="hl"><td>Audit</td><td>Every API request — who did what, when (critical for compliance)</td><td>✅ Always</td></tr>
+            <tr class="hl"><td>Authenticator</td><td>IAM authentication attempts — login failures, IRSA issues</td><td>✅ Always</td></tr>
+            <tr><td>API Server</td><td>API server processing logs — useful for debugging API issues</td><td>Enable for troubleshooting</td></tr>
+            <tr><td>Controller Manager</td><td>Control loop operations — ReplicaSet scaling, node lifecycle</td><td>Enable for troubleshooting</td></tr>
+            <tr><td>Scheduler</td><td>Pod scheduling decisions — why pods are/aren't placed</td><td>Enable for troubleshooting</td></tr>
+          </table>
+          <p>Logs go to CloudWatch Logs group <code>/aws/eks/&lt;cluster-name&gt;/cluster</code>. Use CloudWatch Logs Insights to query audit logs for security investigations.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E46</span><span class="qa-qtext">How do you implement distributed tracing across microservices on EKS?</span></div>
+        <div class="qa-a">
+          <ol>
+            <li><strong>Instrument apps:</strong> Add OpenTelemetry SDK to each service. Auto-instrumentation available for Java, Python, Node.js, .NET.</li>
+            <li><strong>Propagate context:</strong> Ensure trace headers (<code>traceparent</code>, <code>X-Amzn-Trace-Id</code>) are propagated across service calls.</li>
+            <li><strong>Collect:</strong> ADOT Collector (Sidecar or DaemonSet) receives OTLP spans from apps.</li>
+            <li><strong>Export:</strong> ADOT → X-Ray (AWS native) or Jaeger/Tempo (open-source).</li>
+            <li><strong>Visualize:</strong> Service map in X-Ray console or Grafana Tempo — shows request flow, latency at each hop, error pinpointing.</li>
+          </ol>
+          <div class="tip"><strong>Sampling Strategy:</strong> Don't trace 100% of requests in production — it's expensive. Use <strong>tail-based sampling</strong>: trace all errors and slow requests (p99+), sample 1-5% of normal requests. Configure in ADOT Collector's tail_sampling processor.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E47</span><span class="qa-qtext">What is CloudWatch Container Insights and when would you choose it over Prometheus + Grafana?</span></div>
+        <div class="qa-a">
+          <div class="compare">
+            <div class="cmp"><div class="cmp-lbl">CloudWatch Container Insights</div>Zero-setup (EKS add-on). Pre-built dashboards. Auto-discovers clusters, services, pods. Integrated with CloudWatch Alarms, SNS, EventBridge. Per-query pricing (can be expensive at scale).</div>
+            <div class="cmp"><div class="cmp-lbl">AMP + AMG (Prometheus + Grafana)</div>More setup (ADOT/Prometheus needed). Unlimited custom dashboards and queries. PromQL (powerful query language). Community dashboards. Fixed pricing (per active metrics series). Better for large-scale.</div>
+          </div>
+          <p><strong>Decision:</strong> Use Container Insights for small clusters (&lt;50 nodes) or teams without Prometheus expertise. Use AMP + AMG for large clusters, custom metrics needs, or cost optimization at scale.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================================
+     PAGE 6: GITOPS & CI/CD
+     ====================================================================== -->
+<div class="page" id="p6">
+  <div class="hero">
+    <div class="hlabel">Deployment Strategies</div>
+    <h1>EKS <u>GitOps &amp; CI/CD</u> — ArgoCD, Helm, Rollouts</h1>
+    <p>GitOps workflows, progressive delivery, Helm chart management, and CI/CD pipeline design for enterprise Kubernetes.</p>
+  </div>
+
+  <div class="spane on" id="s6a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🚀 GitOps &amp; Deployments</span>
+        <div class="topic-def-pills"><span class="tdpill tdpill-weight">E48 – E55</span><span class="tdpill tdpill-tag">ArgoCD / Helm / Rollouts</span></div>
+      </div>
+      <div class="topic-def-body"><p>GitOps principles, ArgoCD architecture, Helm chart management, progressive delivery with Argo Rollouts, and multi-cluster deployment strategies.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E48</span><span class="qa-qtext">What is GitOps and why is it the preferred deployment model for Kubernetes?</span></div>
+        <div class="qa-a">
+          <p><strong>GitOps</strong> uses Git as the single source of truth for declarative infrastructure and application code. A GitOps operator (ArgoCD/Flux) continuously reconciles the cluster state with the Git repository.</p>
+          <ul>
+            <li><strong>Declarative:</strong> Desired state is in Git (YAML manifests, Helm charts, Kustomize)</li>
+            <li><strong>Versioned:</strong> Every change is a Git commit — full audit trail, easy rollback</li>
+            <li><strong>Automated:</strong> ArgoCD detects drift and auto-syncs (or alerts)</li>
+            <li><strong>Self-healing:</strong> If someone manually changes a resource, ArgoCD reverts it to match Git</li>
+          </ul>
+          <div class="compare">
+            <div class="cmp"><div class="cmp-lbl">Push-Based CI/CD (Traditional)</div>CI pipeline runs kubectl apply. Pipeline needs cluster credentials. No drift detection. Rollback = re-run old pipeline. Hard to audit who deployed what.</div>
+            <div class="cmp"><div class="cmp-lbl">Pull-Based GitOps (ArgoCD/Flux)</div>ArgoCD pulls from Git. No credentials outside cluster. Continuous drift detection. Rollback = git revert. Full audit trail via Git history.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E49</span><span class="qa-qtext">Design a CI/CD pipeline for deploying microservices to EKS using GitHub Actions and ArgoCD.</span></div>
+        <div class="qa-a">
+          <ol>
+            <li><strong>CI (GitHub Actions):</strong>
+              <ul>
+                <li>Build → Test → Scan (Trivy) → Build Docker image → Push to ECR</li>
+                <li>Sign image with <code>cosign</code></li>
+                <li>Update image tag in GitOps repo (Kustomize overlay or Helm values)</li>
+              </ul>
+            </li>
+            <li><strong>CD (ArgoCD):</strong>
+              <ul>
+                <li>ArgoCD watches the GitOps repo</li>
+                <li>Detects new image tag → syncs to cluster</li>
+                <li>Argo Rollouts performs canary deployment (5% → 25% → 100%)</li>
+                <li>Prometheus metrics check passes → auto-promote</li>
+              </ul>
+            </li>
+          </ol>
+          <div class="rule">
+            <div class="rule-title">Separation of Concerns</div>
+            <div class="rule-body">Keep <strong>two separate repos</strong>: 1) App source code repo (triggers CI), 2) GitOps config repo (Helm values, Kustomize overlays — consumed by ArgoCD). This prevents circular triggers and keeps app code changes separate from config changes.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E50</span><span class="qa-qtext">Compare blue/green, canary, and rolling deployments on EKS. When would you use Argo Rollouts vs native Deployment?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Strategy</th><th>Mechanism</th><th>Rollback Speed</th><th>Resource Cost</th><th>Best For</th></tr>
+            <tr><td>Rolling (native)</td><td>Gradually replace old pods with new</td><td>Slow (re-rollout)</td><td>Low (no extra)</td><td>Simple apps, internal services</td></tr>
+            <tr><td>Blue/Green</td><td>Full new version alongside old, switch traffic</td><td>Instant (switch back)</td><td>High (2× pods)</td><td>Critical services needing instant rollback</td></tr>
+            <tr class="hl"><td>Canary</td><td>Route % of traffic to new version, analyze metrics</td><td>Fast (route back to old)</td><td>Medium (% extra)</td><td>✅ Production — data-driven rollouts</td></tr>
+          </table>
+          <p><strong>Argo Rollouts:</strong> Extends native Deployment with canary + analysis. Integrates with Prometheus — automatically promotes or rolls back based on error rates, latency. Native Deployment only supports rolling updates.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E51</span><span class="qa-qtext">How do you manage Helm charts at scale? Compare Helm vs Kustomize for an enterprise with 100+ microservices.</span></div>
+        <div class="qa-a">
+          <div class="compare">
+            <div class="cmp"><div class="cmp-lbl">Helm</div>Templating engine with values files. Chart versioning and dependency management. Great for third-party apps (Prometheus, Grafana, cert-manager). Supports hooks, tests, rollback. Can become complex with nested templates.</div>
+            <div class="cmp"><div class="cmp-lbl">Kustomize</div>Patch-based overlays (no templates). Native in kubectl. Simpler mental model — base + overlays. Better for environment-specific customization (dev/staging/prod). No templating language to learn.</div>
+          </div>
+          <p><strong>Enterprise pattern:</strong> Use Helm for third-party charts (ingress controller, Prometheus, Karpenter). Use Kustomize for internal microservices (base + per-environment overlays). ArgoCD supports both natively.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E52</span><span class="qa-qtext">How do you implement multi-cluster deployments with ArgoCD? Design for a company with 3 clusters (dev, staging, prod) across 2 regions.</span></div>
+        <div class="qa-a">
+          <p>Use <strong>ArgoCD ApplicationSets</strong> to generate Applications for multiple clusters from a single template:</p>
+          <pre><span class="k">apiVersion</span>: argoproj.io/v1alpha1
+<span class="k">kind</span>: ApplicationSet
+<span class="k">metadata</span>:
+  <span class="v">name</span>: <span class="s">payment-service</span>
+<span class="k">spec</span>:
+  <span class="n">generators</span>:
+    - <span class="n">list</span>:
+        <span class="n">elements</span>:
+          - <span class="v">cluster</span>: <span class="s">dev</span>
+            <span class="v">url</span>: <span class="s">https://eks-dev.us-east-1...</span>
+          - <span class="v">cluster</span>: <span class="s">staging</span>
+            <span class="v">url</span>: <span class="s">https://eks-staging.us-east-1...</span>
+          - <span class="v">cluster</span>: <span class="s">prod-east</span>
+            <span class="v">url</span>: <span class="s">https://eks-prod.us-east-1...</span>
+          - <span class="v">cluster</span>: <span class="s">prod-west</span>
+            <span class="v">url</span>: <span class="s">https://eks-prod.us-west-2...</span>
+  <span class="n">template</span>:
+    <span class="k">spec</span>:
+      <span class="n">source</span>:
+        <span class="v">repoURL</span>: <span class="s">https://github.com/org/gitops</span>
+        <span class="v">path</span>: <span class="s">apps/payment/overlays/{{cluster}}</span>
+      <span class="n">destination</span>:
+        <span class="v">server</span>: <span class="s">"{{url}}"</span>
+        <span class="v">namespace</span>: <span class="s">payment</span></pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E53</span><span class="qa-qtext">How do you handle database schema migrations in a Kubernetes deployment pipeline?</span></div>
+        <div class="qa-a">
+          <p>Database migrations must be <strong>backward-compatible</strong> (expand-contract pattern):</p>
+          <ol>
+            <li><strong>Expand:</strong> Add new columns/tables (never rename or drop). Deploy migration as a K8s Job with <code>initContainers</code> or Helm pre-upgrade hook.</li>
+            <li><strong>Migrate:</strong> Deploy new application version that supports both old and new schema.</li>
+            <li><strong>Contract:</strong> After all pods are updated, remove old columns in a future release.</li>
+          </ol>
+          <pre><span class="c"># Helm pre-upgrade hook for DB migration</span>
+<span class="k">apiVersion</span>: batch/v1
+<span class="k">kind</span>: Job
+<span class="k">metadata</span>:
+  <span class="v">name</span>: <span class="s">db-migrate</span>
+  <span class="n">annotations</span>:
+    <span class="s">"helm.sh/hook"</span>: pre-upgrade
+    <span class="s">"helm.sh/hook-weight"</span>: <span class="s">"-1"</span>
+    <span class="s">"helm.sh/hook-delete-policy"</span>: hook-succeeded</pre>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E54</span><span class="qa-qtext">What is ArgoCD Application-of-Apps pattern and why is it useful for platform teams?</span></div>
+        <div class="qa-a">
+          <p>The <strong>App-of-Apps</strong> pattern is a root ArgoCD Application that manages other Applications. It provides a hierarchical, declarative way to bootstrap an entire cluster's workloads.</p>
+          <ul>
+            <li><strong>Root App:</strong> Points to a Git directory containing Application manifests</li>
+            <li><strong>Child Apps:</strong> Each Application manages a specific workload (cert-manager, ingress, monitoring, app services)</li>
+            <li><strong>Benefits:</strong> Single entry point for cluster bootstrap, dependency ordering via sync waves, self-service for teams (add new app = PR to git repo)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E55</span><span class="qa-qtext">How do you implement canary deployments with automated analysis using Argo Rollouts?</span></div>
+        <div class="qa-a">
+          <pre><span class="k">apiVersion</span>: argoproj.io/v1alpha1
+<span class="k">kind</span>: Rollout
+<span class="k">metadata</span>:
+  <span class="v">name</span>: <span class="s">api-server</span>
+<span class="k">spec</span>:
+  <span class="n">strategy</span>:
+    <span class="n">canary</span>:
+      <span class="n">steps</span>:
+        - <span class="v">setWeight</span>: 5      <span class="c"># 5% traffic to canary</span>
+        - <span class="v">pause</span>: {<span class="v">duration</span>: 2m}
+        - <span class="n">analysis</span>:          <span class="c"># run Prometheus analysis</span>
+            <span class="n">templates</span>:
+              - <span class="v">templateName</span>: <span class="s">success-rate</span>
+        - <span class="v">setWeight</span>: 25     <span class="c"># if analysis passes, 25%</span>
+        - <span class="v">pause</span>: {<span class="v">duration</span>: 5m}
+        - <span class="v">setWeight</span>: 50
+        - <span class="v">pause</span>: {<span class="v">duration</span>: 5m}
+        - <span class="v">setWeight</span>: 100    <span class="c"># full rollout</span>
+
+<span class="c"># AnalysisTemplate — auto-rollback if error rate > 1%</span>
+<span class="k">apiVersion</span>: argoproj.io/v1alpha1
+<span class="k">kind</span>: AnalysisTemplate
+<span class="k">metadata</span>:
+  <span class="v">name</span>: <span class="s">success-rate</span>
+<span class="k">spec</span>:
+  <span class="n">metrics</span>:
+    - <span class="v">name</span>: <span class="s">error-rate</span>
+      <span class="v">successCondition</span>: <span class="s">"result[0] < 0.01"</span>
+      <span class="n">provider</span>:
+        <span class="n">prometheus</span>:
+          <span class="v">address</span>: <span class="s">http://prometheus:9090</span>
+          <span class="v">query</span>: |
+            sum(rate(http_requests_total{status=~"5.*",app="api-server"}[5m]))
+            /
+            sum(rate(http_requests_total{app="api-server"}[5m]))</pre>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================================
+     PAGE 7: TROUBLESHOOTING & PRODUCTION PATTERNS
+     ====================================================================== -->
+<div class="page" id="p7">
+  <div class="hero">
+    <div class="hlabel">Production Patterns</div>
+    <h1>EKS <u>Troubleshooting</u> &amp; Real-World Scenarios</h1>
+    <p>Production troubleshooting, disaster recovery, multi-region architecture, and cost optimization patterns for senior architects.</p>
+  </div>
+
+  <div class="spane on" id="s7a">
+    <div class="topic-def">
+      <div class="topic-def-hd">
+        <span class="topic-def-title">🔧 Production Scenarios</span>
+        <div class="topic-def-pills"><span class="tdpill tdpill-weight">E56 – E65</span><span class="tdpill tdpill-tag">Real-World / DR / Cost</span></div>
+      </div>
+      <div class="topic-def-body"><p>Troubleshooting production issues, disaster recovery, multi-region EKS, cost optimization, and senior architect scenario questions.</p></div>
+    </div>
+    <div class="qa-list">
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E56</span><span class="qa-qtext">Your EKS production cluster is experiencing increased API server latency. Pods take 30+ seconds to schedule. What's your troubleshooting approach?</span></div>
+        <div class="qa-a">
+          <ol>
+            <li><strong>Check API server metrics:</strong> CloudWatch metrics for <code>apiserver_request_duration_seconds</code>. Is it all requests or specific verbs (LIST, WATCH)?</li>
+            <li><strong>Check etcd performance:</strong> Look for <code>etcd_request_duration_seconds</code> spikes. Large etcd database (>8GB) can slow writes.</li>
+            <li><strong>Look for chatty controllers:</strong> Custom controllers or operators making excessive LIST calls without pagination or caching. Check audit logs for high-frequency callers.</li>
+            <li><strong>Webhook latency:</strong> Mutating/validating webhooks add latency to every API call. Check <code>apiserver_admission_webhook_admission_duration_seconds</code>.</li>
+            <li><strong>Scheduler issues:</strong> Enable scheduler logs. Check if complex affinity rules or many unschedulable pods are causing scheduler backlog.</li>
+            <li><strong>Resource limits:</strong> Is the cluster hitting API server rate limits? Check for <code>429 Too Many Requests</code> in audit logs.</li>
+          </ol>
+          <div class="tip"><strong>Quick Fix:</strong> If caused by webhook latency, add <code>failurePolicy: Ignore</code> to non-critical webhooks and set <code>timeoutSeconds: 5</code>. For long-term, optimize webhook performance or eliminate unnecessary ones.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E57</span><span class="qa-qtext">Design a multi-region active-active EKS architecture for a global application with sub-100ms latency requirements.</span></div>
+        <div class="qa-a">
+          <div class="arch-callout">
+            <div class="arch-callout-title">🌍 Multi-Region EKS Architecture</div>
+            <ul>
+              <li><strong>DNS:</strong> Route 53 latency-based routing → nearest regional ALB</li>
+              <li><strong>Compute:</strong> Independent EKS clusters per region (us-east-1, eu-west-1, ap-southeast-1)</li>
+              <li><strong>Data:</strong> Aurora Global Database (1 writer, multi-region readers) or DynamoDB Global Tables</li>
+              <li><strong>State:</strong> ElastiCache Global Datastore for session/cache</li>
+              <li><strong>GitOps:</strong> ArgoCD ApplicationSets deploy to all clusters from single git repo</li>
+              <li><strong>Failover:</strong> Route 53 health checks → auto-failover. Each region is independent — no cross-region pod communication.</li>
+            </ul>
+          </div>
+          <p><strong>Key principle:</strong> Each region must be self-sufficient. No synchronous cross-region calls. Use async replication for data. Design services to handle eventual consistency.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E58</span><span class="qa-qtext">How do you implement disaster recovery for an EKS cluster? What's your RTO/RPO strategy?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Component</th><th>Backup Strategy</th><th>Recovery</th></tr>
+            <tr><td>Cluster Config</td><td>Terraform/CDK state in S3 (versioned)</td><td>terraform apply (rebuild cluster)</td></tr>
+            <tr><td>Workload Definitions</td><td>Git repo (ArgoCD GitOps)</td><td>ArgoCD sync to new cluster</td></tr>
+            <tr><td>Persistent Volumes</td><td>Velero + EBS snapshots (scheduled)</td><td>Velero restore from snapshots</td></tr>
+            <tr><td>Secrets</td><td>AWS Secrets Manager (multi-region)</td><td>External Secrets Operator syncs to new cluster</td></tr>
+            <tr><td>Database</td><td>Aurora Global DB / DynamoDB Global Tables</td><td>Promote read replica to writer</td></tr>
+          </table>
+          <div class="rule">
+            <div class="rule-title">DR Strategy by Tier</div>
+            <div class="rule-body"><strong>Pilot Light (RPO: hours, RTO: 30min):</strong> New cluster + ArgoCD sync. <strong>Warm Standby (RPO: minutes, RTO: 5min):</strong> Standby cluster running at reduced capacity. <strong>Active-Active (RPO: ~0, RTO: ~0):</strong> Full multi-region deployment with Route 53 failover.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E59</span><span class="qa-qtext">How do you optimize EKS costs? A cluster is spending $50K/month — find savings.</span></div>
+        <div class="qa-a">
+          <ol>
+            <li><strong>Right-size pods (VPA):</strong> Run VPA in recommend mode. Most teams over-provision by 2-4x. Potential saving: 30-50%.</li>
+            <li><strong>Karpenter consolidation:</strong> Enable <code>WhenEmptyOrUnderutilized</code> — removes under-utilized nodes automatically. Saving: 20-40%.</li>
+            <li><strong>Graviton instances:</strong> ARM-based instances are 20% cheaper with equal or better performance. Ensure multi-arch container images.</li>
+            <li><strong>Spot instances:</strong> Use Spot for stateless, fault-tolerant workloads (web servers, batch jobs). Saving: 60-90% vs On-Demand.</li>
+            <li><strong>Scale to zero:</strong> KEDA for queue consumers, dev/staging clusters on schedule (scale down at night/weekends).</li>
+            <li><strong>Savings Plans:</strong> Commit to Compute Savings Plans (covers EC2, Fargate, Lambda). 30-40% discount.</li>
+          </ol>
+          <div class="scenario">
+            <div class="scenario-title">💰 Cost Optimization Example</div>
+            <div class="scenario-body">$50K/month cluster: VPA right-sizing (-35%) = $32.5K. Graviton migration (-20%) = $26K. Spot for 40% of workloads (-25% of remainder) = $19.5K. Karpenter consolidation (-15%) = $16.6K. <strong>Total savings: 67% → $16.6K/month.</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E60</span><span class="qa-qtext">A pod keeps getting OOMKilled even though <code>kubectl top pod</code> shows it's using less than its memory limit. What's happening?</span></div>
+        <div class="qa-a">
+          <p><code>kubectl top</code> shows RSS (Resident Set Size) — the working set. But the kernel OOM killer looks at <strong>total memory usage</strong> including:</p>
+          <ul>
+            <li><strong>Page cache:</strong> Memory-mapped files, buffered I/O</li>
+            <li><strong>Kernel memory:</strong> Network buffers, inotify watches, cgroup overhead</li>
+            <li><strong>Off-heap memory:</strong> JVM direct buffers, mmap allocations not tracked by app metrics</li>
+          </ul>
+          <p><strong>Fix:</strong> Check <code>cat /sys/fs/cgroup/memory/memory.usage_in_bytes</code> inside the container — this shows the real cgroup memory usage. Increase limits to account for kernel/cache overhead. For JVM apps, set <code>-XX:MaxRAMPercentage=75</code> to leave room for non-heap memory.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E61</span><span class="qa-qtext">How do you implement Pod Disruption Budgets (PDBs) and why are they critical for production?</span></div>
+        <div class="qa-a">
+          <p>PDBs limit the number of pods that can be simultaneously unavailable during <strong>voluntary disruptions</strong> (node upgrades, Karpenter consolidation, kubectl drain).</p>
+          <pre><span class="k">apiVersion</span>: policy/v1
+<span class="k">kind</span>: PodDisruptionBudget
+<span class="k">metadata</span>:
+  <span class="v">name</span>: <span class="s">api-pdb</span>
+<span class="k">spec</span>:
+  <span class="v">minAvailable</span>: 2       <span class="c"># OR maxUnavailable: 1</span>
+  <span class="n">selector</span>:
+    <span class="n">matchLabels</span>:
+      <span class="v">app</span>: <span class="s">api-server</span></pre>
+          <p><strong>Critical for:</strong> Karpenter consolidation (respects PDBs before draining nodes), EKS node group upgrades, cluster autoscaler scale-down. Without PDBs, all pods could be evicted simultaneously during a rolling upgrade.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E62</span><span class="qa-qtext">How would you migrate 100 microservices from ECS to EKS with zero downtime?</span></div>
+        <div class="qa-a">
+          <ol>
+            <li><strong>Phase 1 — Infrastructure:</strong> Provision EKS cluster via Terraform. Set up VPC CNI, Karpenter, observability stack. Same VPC as ECS (for service discovery).</li>
+            <li><strong>Phase 2 — Strangler Fig:</strong> Migrate services one at a time, starting with stateless, low-risk services. Each service runs on both ECS and EKS behind the same ALB.</li>
+            <li><strong>Phase 3 — Traffic Shift:</strong> Use ALB weighted target groups to shift traffic: 10% → 50% → 100% to EKS. Monitor latency, errors, logs throughout.</li>
+            <li><strong>Phase 4 — Decommission:</strong> Once all traffic is on EKS and stable for 2 weeks, decommission ECS services.</li>
+          </ol>
+          <div class="tip"><strong>Key risk:</strong> Service discovery. ECS uses Cloud Map, K8s uses CoreDNS. During migration, services on both platforms need to discover each other. Solution: Use AWS Cloud Map with both ECS and K8s service registration, or use ALB-based routing for cross-platform calls.</div>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E63</span><span class="qa-qtext">How do you handle stateful workloads (Kafka, Redis, PostgreSQL) on EKS? When should you use managed services instead?</span></div>
+        <div class="qa-a">
+          <div class="compare">
+            <div class="cmp"><div class="cmp-lbl">Self-Managed on EKS</div>Full control over configuration. Use operators (Strimzi for Kafka, CloudNativePG for PostgreSQL). PVC with EBS gp3 volumes. StatefulSet with stable network IDs. Requires deep K8s + database ops expertise.</div>
+            <div class="cmp"><div class="cmp-lbl">AWS Managed Services</div>MSK for Kafka, ElastiCache for Redis, RDS/Aurora for PostgreSQL. Automated backups, patching, failover. Higher cost, less customization. Significantly lower ops burden.</div>
+          </div>
+          <p><strong>Decision framework:</strong> Use managed services for business-critical data stores (payment DB, customer data). Self-managed on K8s is acceptable for: non-critical caches, development environments, workloads requiring custom configurations not available in managed services.</p>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E64</span><span class="qa-qtext">Your team is running EKS in a regulated environment (HIPAA/PCI-DSS). What security controls must be in place?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Control</th><th>Implementation</th></tr>
+            <tr><td>Encryption at rest</td><td>EKS envelope encryption for etcd (KMS), EBS encryption, S3 encryption</td></tr>
+            <tr><td>Encryption in transit</td><td>mTLS via service mesh or VPC CNI network policy, TLS on Ingress</td></tr>
+            <tr><td>Access control</td><td>RBAC with least privilege, IRSA for AWS access, private API endpoint</td></tr>
+            <tr><td>Audit logging</td><td>EKS audit logs → CloudWatch, CloudTrail for API calls</td></tr>
+            <tr><td>Network segmentation</td><td>Network policies, private subnets, security groups for pods</td></tr>
+            <tr><td>Image security</td><td>ECR scanning, signed images, Gatekeeper admission policies</td></tr>
+            <tr><td>Runtime protection</td><td>GuardDuty EKS, Falco for runtime threat detection</td></tr>
+            <tr><td>Secrets management</td><td>AWS Secrets Manager with CSI driver, no secrets in Git</td></tr>
+            <tr><td>Compliance scanning</td><td>kube-bench (CIS benchmarks), Prowler for AWS-level checks</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qa-num">E65</span><span class="qa-qtext">As a senior architect, how would you evaluate whether to use EKS vs ECS vs Lambda for a new platform? What's your decision framework?</span></div>
+        <div class="qa-a">
+          <table class="dtable">
+            <tr><th>Factor</th><th>EKS</th><th>ECS</th><th>Lambda</th></tr>
+            <tr><td>Team K8s Expertise</td><td>Required</td><td>Not needed</td><td>Not needed</td></tr>
+            <tr><td>Portability</td><td>✅ Multi-cloud (K8s is portable)</td><td>❌ AWS-only</td><td>❌ AWS-only</td></tr>
+            <tr><td>Scaling</td><td>HPA/VPA/KEDA/Karpenter</td><td>ASG + Target Tracking</td><td>Auto (per request)</td></tr>
+            <tr><td>Ops Overhead</td><td>High (control plane, add-ons, networking)</td><td>Medium (task definitions, services)</td><td>Low (just code)</td></tr>
+            <tr><td>Cost at Scale</td><td>Lowest (Spot + Graviton + consolidation)</td><td>Medium</td><td>Can be expensive at high throughput</td></tr>
+            <tr><td>Ecosystem</td><td>Massive (CNCF tools, operators, mesh)</td><td>AWS ecosystem</td><td>AWS ecosystem</td></tr>
+            <tr class="hl"><td>Best For</td><td>Complex microservices, multi-cloud, advanced networking</td><td>Simpler container workloads, AWS-native teams</td><td>Event-driven, glue logic, APIs &lt;15min</td></tr>
+          </table>
+          <div class="rule">
+            <div class="rule-title">Architect's Decision</div>
+            <div class="rule-body"><strong>Choose EKS</strong> when: you have 20+ microservices, need portability, require advanced networking (service mesh, network policies), or have an existing K8s investment. <strong>Choose ECS</strong> when: you're AWS-native, team lacks K8s expertise, simpler container workloads. <strong>Choose Lambda</strong> when: event-driven, short-lived tasks, API backends with variable traffic.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelectorAll('.ntabs .nt').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showSec(id,btn,pageId){
+  const page=document.getElementById(pageId);
+  page.querySelectorAll('.spane').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  page.querySelectorAll('.snt').forEach(s=>s.classList.remove('on'));
+  btn.classList.add('on');
+}
+</script>
+</body>
+</html>
